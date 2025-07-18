@@ -1,0 +1,24 @@
+{
+  "name": "admin",
+  "version": "1.0.0",
+  "description": "后台管理系统",
+  "main": "index.js",
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "pnpm --filter @myself/web dev",
+    "lint": "turbo run lint"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "turbo": "^2.5.5",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vue/tsconfig": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vue-tsc": "catalog:",
+    "vue": "catalog:",
+    "@myself/locales": "workspace:*"
+  }
+}

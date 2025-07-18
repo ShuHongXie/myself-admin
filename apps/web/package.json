@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@myself/web",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,13 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.5.17"
+    "vue": "catalog:"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.0",
-    "@vue/tsconfig": "^0.7.0",
-    "typescript": "~5.8.3",
-    "vite": "^7.0.4",
-    "vue-tsc": "^2.2.12"
+    "@vitejs/plugin-vue": "catalog:",
+    "@vue/tsconfig": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vue-tsc": "catalog:"
   }
 }
