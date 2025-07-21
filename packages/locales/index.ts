@@ -1,1 +1,1 @@
-export const locales = '1232';
+export const locales: string = '1232';

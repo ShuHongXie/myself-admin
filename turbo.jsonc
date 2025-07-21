@@ -1,0 +1,19 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "globalEnv": ["IMPORTANT_GLOBAL_VARIABLE"],
+  // tasks配置了build,check-types,dev三个任务。就可以执行turbo build/check-types/dev
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "env": ["VUE_APP_*"]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    }
+  }
+}

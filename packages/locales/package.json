@@ -1,14 +1,9 @@
 {
   "name": "@myself/locales",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.0.1",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    }
   },
   "author": "",
   "license": "ISC",

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@myself/locales": "workspace:*",
     "vue": "catalog:"
   },
   "devDependencies": {
