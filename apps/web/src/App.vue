@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue';
 let a: string;
-a = 123;
+a = 1234;
 </script>
 
 <template>

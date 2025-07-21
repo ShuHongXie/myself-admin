@@ -1,30 +1,33 @@
-import js from '@eslint/js';
 import globals from 'globals';
+import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import pluginVue from 'eslint-plugin-vue';
-import json from '@eslint/json';
-import css from '@eslint/css';
-import { defineConfig } from 'eslint/config';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
-export default defineConfig([
-  { files: ['**/*.{js,mjs,cjs,ts,mts,cts,vue}'], plugins: { js }, extends: ['js/recommended'] },
-  { files: ['**/*.{js,mjs,cjs,ts,mts,cts,vue}'], languageOptions: { globals: globals.browser } },
-  tseslint.configs.recommended,
-  pluginVue.configs['flat/essential'],
-  eslintConfigPrettier.configs.recommended,
+/** @type {import('eslint').Linter.Config[]} */
+export default [
+  { files: ['**/*.{js,mjs,cjs,ts,vue}'] },
+  { languageOptions: { globals: globals.browser } },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  ...pluginVue.configs['flat/essential'],
   { files: ['**/*.vue'], languageOptions: { parserOptions: { parser: tseslint.parser } } },
-  { files: ['**/*.json'], plugins: { json }, language: 'json/json', extends: ['json/recommended'] },
-  {
-    files: ['**/*.jsonc'],
-    plugins: { json },
-    language: 'json/jsonc',
-    extends: ['json/recommended'],
-  },
-  { files: ['**/*.css'], plugins: { css }, language: 'css/css', extends: ['css/recommended'] },
+  // prettier融合配置
+  eslintConfigPrettier,
+  eslintPluginPrettierRecommended,
+  // 新增添加内容：这里我们可以添加自己的 rules
   {
     rules: {
-      'no-console': 'off',
+      semi: ['error', 'never'], // 语句后不带分号
+      'no-unused-vars': 'error', // 没有使用的参数
+      'no-undef': 'off', // 没有定义参数
+      'vue/multi-word-component-names': 'off',
+      'no-irregular-whitespace': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
-]);
+  {
+    ignores: ['node_modules/'], // 忽略目录
+  },
+];
