@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 # . "$(dirname "$0")/h"
-
-pnpm lint:lint-staged
+echo "开始执行"
+npx lint-staged
