@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue';
-let a: string;
-a = 1234;
+import HelloWorld from './components/HelloWorld.vue'
+// let a: string
+// a = 12345
 </script>
 
 <template>

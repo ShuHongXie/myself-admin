@@ -1,0 +1,60 @@
+{
+  "types": [
+    {
+      "value": "feat",
+      "name": "feat:     新功能"
+    },
+    {
+      "value": "fix",
+      "name": "fix:      修复bug"
+    },
+    {
+      "value": "style",
+      "name": "style:    代码样式（不影响功能）"
+    },
+    {
+      "value": "refactor",
+      "name": "refactor: 代码重构（既不是新增功能也不是修复bug）"
+    },
+    {
+      "value": "chore",
+      "name": "chore:    构建过程或辅助工具的变动"
+    },
+    {
+      "value": "test",
+      "name": "test:     测试"
+    },
+    {
+      "value": "perf",
+      "name": "perf:     性能优化"
+    },
+    {
+      "value": "wip",
+      "name": "wip:      开发中（Work in Progress）"
+    },
+    {
+      "value": "ci",
+      "name": "ci:       CI配置相关"
+    }
+  ],
+  "scopes": [
+    {
+      "name": "ui"
+    },
+    {
+      "name": "api"
+    }
+  ],
+  "messages": {
+    "type": "选择一种你的提交类型:",
+    "scope": "选择一个scope（可选）:",
+    "customScope": "请输入自定义的scope:",
+    "subject": "简短描述:\n",
+    "body": "详细描述，使用 '|' 换行（可选）:\n",
+    "footer": "关联关闭的issue，例如：#31, #34(可选):\n",
+    "confirmCommit": "确定提交此内容吗？"
+  },
+  "allowCustomScopes": true,
+  "allowEmptyScopes": true,
+  "footerPrefix": ""
+}

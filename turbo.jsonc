@@ -6,14 +6,14 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "env": ["VUE_APP_*"],
+      "env": ["VUE_APP_*"]
     },
     "check-types": {
-      "dependsOn": ["^check-types"],
+      "dependsOn": ["^check-types"]
     },
     "dev": {
       "persistent": true,
-      "cache": false,
-    },
-  },
+      "cache": false
+    }
+  }
 }
