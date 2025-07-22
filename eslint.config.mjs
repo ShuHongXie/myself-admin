@@ -1,9 +1,9 @@
-import globals from 'globals';
-import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import pluginVue from 'eslint-plugin-vue';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import globals from 'globals'
+import pluginJs from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import pluginVue from 'eslint-plugin-vue'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -24,10 +24,10 @@ export default [
       'no-undef': 'off', // 没有定义参数
       'vue/multi-word-component-names': 'off',
       'no-irregular-whitespace': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-    },
+      '@typescript-eslint/no-explicit-any': 'off'
+    }
   },
   {
-    ignores: ['node_modules/'], // 忽略目录
-  },
-];
+    ignores: ['node_modules/'] // 忽略目录
+  }
+]

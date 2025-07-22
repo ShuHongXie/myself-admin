@@ -10,12 +10,16 @@
   },
   "dependencies": {
     "@myself/locales": "workspace:*",
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "vue-router": "catalog:"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "catalog:",
     "@vue/tsconfig": "catalog:",
+    "element-plus": "catalog:",
     "typescript": "catalog:",
+    "unplugin-auto-import": "catalog:",
+    "unplugin-vue-components": "catalog:",
     "vite": "catalog:",
     "vue-tsc": "catalog:"
   }
