@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 # . "$(dirname "$0")/h"
-echo "开始执行"
+echo "开始执行格式化任务>>>>>>>>>>>>>>>>>>>>>>>>"
 npx lint-staged
