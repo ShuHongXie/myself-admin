@@ -13,9 +13,7 @@ export default [
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/essential'],
   { files: ['**/*.vue'], languageOptions: { parserOptions: { parser: tseslint.parser } } },
-  // prettier融合配置
-  eslintConfigPrettier,
-  eslintPluginPrettierRecommended,
+
   // 新增添加内容：这里我们可以添加自己的 rules
   {
     rules: {
@@ -28,6 +26,9 @@ export default [
     }
   },
   {
-    ignores: ['node_modules/'] // 忽略目录
-  }
+    ignores: ['node_modules/', 'apps/**/dist', '*.md'] // 忽略目录
+  },
+  // prettier融合配置
+  eslintConfigPrettier,
+  eslintPluginPrettierRecommended
 ]

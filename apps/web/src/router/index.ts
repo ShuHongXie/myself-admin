@@ -2,9 +2,6 @@ import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router
 
 import { routes } from './routes'
 
-/**
- *  @zh_CN 创建vue-router实例
- */
 const router = createRouter({
   history:
     import.meta.env.VITE_ROUTER_HISTORY === 'hash'
@@ -17,9 +14,7 @@ const router = createRouter({
       return savedPosition
     }
     return to.hash ? { behavior: 'smooth', el: to.hash } : { left: 0, top: 0 }
-  },
-  // 是否应该禁止尾部斜杠。
-  strict: true
+  }
 })
 
 // const resetRoutes = () =>  resetStaticRoutes(router, routes)

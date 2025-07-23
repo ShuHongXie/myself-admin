@@ -7,7 +7,8 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "pnpm --filter @myself/web dev",
-    "lint": "eslint \"**/*.{ts,js}\" --fix",
+    "dev:ui": "pnpm --filter @myself/web dev",
+    "lint": "eslint \"**/*.{ts,js,vue}\" --fix",
     "prepare": "husky install",
     "format": "prettier --write .",
     "lint:lint-staged": "lint-staged",
@@ -36,7 +37,6 @@
     "@eslint/css": "^0.10.0",
     "@eslint/js": "^9.31.0",
     "@eslint/json": "^0.13.0",
-    "@myself/locales": "workspace:*",
     "@typescript-eslint/eslint-plugin": "^8.37.0",
     "@typescript-eslint/parser": "^8.37.0",
     "@vitejs/plugin-vue": "catalog:",

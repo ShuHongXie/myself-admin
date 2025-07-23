@@ -8,13 +8,13 @@ import { RouterView } from 'vue-router'
   <ElConfigProvider>
     <RouterView />
   </ElConfigProvider>
-  <el-container>
+  <!-- <el-container>
     <el-aside width="200px">Aside</el-aside>
     <el-container>
       <el-header>Header</el-header>
       <el-main>Main</el-main>
     </el-container>
-  </el-container>
+  </el-container> -->
 </template>
 
 <style scoped></style>

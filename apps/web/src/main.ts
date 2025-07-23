@@ -1,9 +1,12 @@
 import { createApp } from 'vue'
+import 'virtual:svg-icons-register'
 import './style.css'
 import App from './App.vue'
-import { locales } from '@myself/locales'
 import 'element-plus/dist/index.css'
 
-console.log(locales)
+import { router } from './router'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+app.use(router)
+
+app.mount('#app')

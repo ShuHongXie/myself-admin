@@ -1,5 +1,5 @@
 {
-  "name": "@myself/web",
+  "name": "@myself/ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,16 +8,16 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },
-  "imports": {
-    "#/*": "./src/*"
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
   },
   "dependencies": {
-    "@myself/locales": "workspace:*",
-    "@myself/ui": "workspace:^",
     "@tailwindcss/vite": "catalog:",
     "tailwindcss": "catalog:",
-    "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue": "catalog:"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "catalog:",
