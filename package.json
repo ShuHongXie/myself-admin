@@ -16,8 +16,8 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx,vue}": [
-      "eslint --fix",
-      "prettier --write"
+      "pnpm lint",
+      "pnpm format"
     ]
   },
   "config": {

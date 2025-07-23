@@ -1,7 +1,11 @@
 import type { RouteRecordRaw } from 'vue-router'
 export const routes: RouteRecordRaw[] = [
   {
-    component: () => import('#/views/@core/404.vue'),
+    path: '/test',
+    component: () => import('#/views/test.vue')
+  },
+  {
+    component: () => import('#/views/@core/NotFound.vue'),
     meta: {
       hideInBreadcrumb: true,
       hideInMenu: true,
@@ -10,9 +14,5 @@ export const routes: RouteRecordRaw[] = [
     },
     name: 'FallbackNotFound',
     path: '/:path(.*)*'
-  },
-  {
-    path: '/test',
-    component: () => import('#/views/test.vue')
   }
 ]
