@@ -4,7 +4,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
 
 export default defineConfig({
@@ -29,7 +28,6 @@ export default defineConfig({
       iconDirs: [resolve(__dirname, 'src/assets/images/svg')],
       // 执行 icon name 的格式
       symbolId: 'icon-[name]'
-    }),
-    tailwindcss()
+    })
   ]
 })

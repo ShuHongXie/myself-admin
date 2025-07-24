@@ -8,6 +8,7 @@ catalog:
   '@vue/tsconfig': ^0.7.0
   element-plus: 2.10.4
   lodash: ^4.17.21
+  sass: ^1.89.2
   tailwindcss: ^4.1.11
   typescript: ~5.8.3
   unplugin-auto-import: 0.17.8

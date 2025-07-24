@@ -15,14 +15,13 @@
     }
   },
   "dependencies": {
-    "@tailwindcss/vite": "catalog:",
-    "tailwindcss": "catalog:",
     "vue": "catalog:"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "catalog:",
     "@vue/tsconfig": "catalog:",
     "element-plus": "catalog:",
+    "sass": "catalog:",
     "typescript": "catalog:",
     "unplugin-auto-import": "catalog:",
     "unplugin-vue-components": "catalog:",
