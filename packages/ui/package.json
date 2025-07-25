@@ -8,6 +8,9 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },
+  "imports": {
+    "#/*": "./src/*"
+  },
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -15,6 +18,8 @@
     }
   },
   "dependencies": {
+    "@iconify/vue": "catalog:",
+    "screenfull": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
   },

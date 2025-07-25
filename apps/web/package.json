@@ -12,6 +12,7 @@
     "#/*": "./src/*"
   },
   "dependencies": {
+    "@iconify/vue": "catalog:",
     "@myself/locales": "workspace:*",
     "@myself/ui": "workspace:^",
     "vue": "catalog:",
