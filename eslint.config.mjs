@@ -18,7 +18,7 @@ export default [
   {
     rules: {
       semi: ['error', 'never'], // 语句后不带分号
-      'no-unused-vars': 'error', // 没有使用的参数
+      'no-unused-vars': 'off', // 没有使用的参数
       'no-undef': 'off', // 没有定义参数
       'vue/multi-word-component-names': 'off',
       'no-irregular-whitespace': 'off',

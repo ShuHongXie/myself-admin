@@ -5,7 +5,13 @@ import { RouterView } from 'vue-router'
 <template>
   <div class="auth">
     <div class="auth-wrap">
-      <RouterView></RouterView>
+      <RouterView v-slot="{ Component, route }">
+        <Transition appear mode="out-in" name="slide-right">
+          <KeepAlive :include="['Login']">
+            <component :is="Component" :key="route.fullPath" />
+          </KeepAlive>
+        </Transition>
+      </RouterView>
     </div>
   </div>
 </template>
@@ -14,7 +20,6 @@ import { RouterView } from 'vue-router'
 .auth {
   height: 100%;
   background: linear-gradient(154deg, #07070915 30%, hsla(212, 78%, 48%, 0.3) 48%, #07070915 64%);
-  // filter: blur(100px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,6 +27,7 @@ import { RouterView } from 'vue-router'
     position: relative;
     z-index: 2;
     width: 50%;
+    max-width: 500px;
     padding: 2rem;
     border-radius: 1.5rem;
     background-color: #fff;

@@ -2,15 +2,17 @@
 
 <template>
   <div class="not-found">
-    <div class="not-found-flag">404</div>
-    <div class="not-found-content">
-      <span class="title-header">系统提示</span>
-      <span class="title-text">特朗普说这个页面你不能进......</span>
-      <span class="title-tip"
-        >请检查您输入的网址是否正确，请点击以下按钮返回主页或者发送错误报告</span
-      >
-      <div><el-button type="primary">返回上一页</el-button></div>
-    </div>
+    <slot>
+      <div class="not-found-flag">404</div>
+      <div class="not-found-content">
+        <span class="title-header">系统提示</span>
+        <span class="title-text">特朗普说这个页面你不能进......</span>
+        <span class="title-tip"
+          >请检查您输入的网址是否正确，请点击以下按钮返回主页或者发送错误报告</span
+        >
+        <div><el-button type="primary">返回上一页</el-button></div>
+      </div>
+    </slot>
   </div>
 </template>
 

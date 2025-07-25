@@ -4,19 +4,28 @@ export const routes: RouteRecordRaw[] = [
     path: '/test',
     component: () => import('#/views/test.vue')
   },
-  // {
-  //   component: BasicLayout,
-  //   meta: {
-  //     hideInBreadcrumb: true,
-  //     title: 'Root'
-  //   },
-  //   name: 'Root',
-  //   path: '/',
-  //   redirect: preferences.app.defaultHomePath,
-  //   children: []
-  // },
   {
-    component: () => import('#/views/@core/Auth.vue'),
+    component: () => import('#/@core/Layout.vue'),
+    meta: {
+      hideInBreadcrumb: true,
+      title: 'Root'
+    },
+    name: 'Root',
+    path: '/',
+    redirect: '/home',
+    children: [
+      {
+        name: 'Hpme',
+        path: 'home',
+        component: () => import('#/views/home.vue'),
+        meta: {
+          title: '登录'
+        }
+      }
+    ]
+  },
+  {
+    component: () => import('#/@core/Auth.vue'),
     meta: {
       hideInTab: true,
       title: 'Authentication'
@@ -28,7 +37,7 @@ export const routes: RouteRecordRaw[] = [
       {
         name: 'Login',
         path: 'login',
-        component: () => import('#/views/@core/Login.vue'),
+        component: () => import('#/@core/Login.vue'),
         meta: {
           title: '登录'
         }
@@ -36,7 +45,7 @@ export const routes: RouteRecordRaw[] = [
     ]
   },
   {
-    component: () => import('#/views/@core/NotFound.vue'),
+    component: () => import('#/@core/NotFound.vue'),
     meta: {
       hideInBreadcrumb: true,
       hideInMenu: true,

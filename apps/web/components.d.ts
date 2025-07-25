@@ -7,11 +7,15 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ElAside: (typeof import('element-plus/es'))['ElAside']
     ElButton: (typeof import('element-plus/es'))['ElButton']
     ElConfigProvider: (typeof import('element-plus/es'))['ElConfigProvider']
+    ElContainer: (typeof import('element-plus/es'))['ElContainer']
     ElForm: (typeof import('element-plus/es'))['ElForm']
     ElFormItem: (typeof import('element-plus/es'))['ElFormItem']
+    ElHeader: (typeof import('element-plus/es'))['ElHeader']
     ElInput: (typeof import('element-plus/es'))['ElInput']
+    ElMain: (typeof import('element-plus/es'))['ElMain']
     ElRadioButton: (typeof import('element-plus/es'))['ElRadioButton']
     ElRadioGroup: (typeof import('element-plus/es'))['ElRadioGroup']
     ElSpace: (typeof import('element-plus/es'))['ElSpace']
