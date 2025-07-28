@@ -1,0 +1,143 @@
+@mixin flex(
+  $display: flex,
+  // 显示类型：flex 或 inline-flex
+  $justify: flex-start,
+  // 主轴对齐：flex-start | center | flex-end | space-between | space-around | space-evenly
+  $align-items: stretch,
+  // 交叉轴对齐：stretch | flex-start | center | flex-end | baseline
+  $direction: row,
+  // 主轴方向：row | column | row-reverse | column-reverse
+  $wrap: nowrap,
+  // 换行方式：nowrap | wrap | wrap-reverse
+  $align-content: stretch,
+  // 多行对齐：stretch | flex-start | center | flex-end | space-between | space-around
+  $gap: 0 // 项目间距
+) {
+  display: $display;
+  justify-content: $justify;
+  align-items: $align-items;
+  flex-direction: $direction;
+  flex-wrap: $wrap;
+  align-content: $align-content;
+  gap: $gap;
+}
+
+// 水平方向：左对齐 + 顶部对齐
+@mixin flex-start-start($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 水平方向：左对齐 + 垂直居中
+@mixin flex-start-center($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 水平方向：左对齐 + 底部对齐
+@mixin flex-start-end($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 水平方向：居中对齐 + 顶部对齐
+@mixin flex-center-start($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 水平方向：居中对齐 + 垂直居中（最常用）
+@mixin flex-center-center($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 水平方向：居中对齐 + 底部对齐
+@mixin flex-center-end($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 水平方向：右对齐 + 顶部对齐
+@mixin flex-end-start($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 水平方向：右对齐 + 垂直居中
+@mixin flex-end-center($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 水平方向：右对齐 + 底部对齐
+@mixin flex-end-end($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 水平方向：两端对齐 + 顶部对齐
+@mixin flex-between-start($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 水平方向：两端对齐 + 垂直居中（常用于导航栏）
+@mixin flex-between-center($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 水平方向：两端对齐 + 底部对齐
+@mixin flex-between-end($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: $wrap;
+  gap: $gap;
+}

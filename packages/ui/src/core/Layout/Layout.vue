@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import screenfull from 'screenfull'
 import { ref } from 'vue'
 const isCollapse = ref(true)
+const handleReload = () => {
+  window.location.reload()
+}
+const handleFullScreen = () => {
+  if (screenfull.isEnabled) {
+    screenfull.toggle()
+  }
+}
 </script>
 
 <template>
@@ -13,10 +22,9 @@ const isCollapse = ref(true)
         }"
       >
         <div class="layout-logo">
-          <!-- <el-space wrap :size="10">
-            
-          </el-space> -->
-          <span>MY</span><span v-if="!isCollapse">&nbsp;ADMIN</span>
+          <slot name="logo">
+            <div><span>MY</span><span v-if="!isCollapse">&nbsp;ADMIN</span></div>
+          </slot>
         </div>
         <div class="layout-menu">
           <el-menu
@@ -62,8 +70,33 @@ const isCollapse = ref(true)
         </div>
       </el-aside>
       <el-container>
-        <el-header>
-          <slot name="header"></slot>
+        <el-header class="layout-header">
+          <slot name="header">
+            <div class="layout-header__left">
+              <div class="header-item" @click.stop="isCollapse = !isCollapse">
+                <Icon icon="ep:fold" color="#999" />
+              </div>
+              <div class="header-item" @click.stop="handleReload">
+                <Icon icon="ep:refresh" color="#999" />
+              </div>
+            </div>
+            <div class="layout-header__right">
+              <div class="header-item" @click.stop="handleFullScreen">
+                <Icon icon="ep:setting" color="#000" />
+              </div>
+              <div class="header-item" @click.stop="handleFullScreen">
+                <Icon icon="ep:full-screen" color="#000" />
+              </div>
+              <!-- 用户头像 -->
+              <div class="header-user" @click.stop="handleFullScreen">
+                <img
+                  class="header-user__avatar"
+                  src="../../assets/images/webp/logo.webp"
+                  alt="用户头像"
+                />
+              </div>
+            </div>
+          </slot>
         </el-header>
         <el-main>
           <RouterView></RouterView>
@@ -74,6 +107,7 @@ const isCollapse = ref(true)
 </template>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/preset.scss';
 :deep(.el-aside) {
   max-width: 224px;
   min-width: 224px;
@@ -84,9 +118,6 @@ const isCollapse = ref(true)
     max-width: 60px;
     min-width: 60px;
   }
-}
-:deep(.el-header) {
-  --el-header-height: 50px;
 }
 :deep(.el-menu) {
   width: 60px;
@@ -127,6 +158,7 @@ const isCollapse = ref(true)
 }
 .layout {
   &-logo {
+    overflow: hidden;
     width: 100%;
     height: 50px;
     text-align: center;
@@ -162,6 +194,57 @@ const isCollapse = ref(true)
       background-color: rgb(228, 228, 231);
       border-radius: 4px;
       cursor: pointer;
+    }
+  }
+  &-header {
+    @include flex-between-start;
+    border-bottom: 1px solid #e4e4e7;
+    box-sizing: border-box;
+    cursor: pointer;
+    --el-header-height: 50px;
+    &__left {
+      height: 100%;
+      @include flex-start-center;
+      .header-item {
+        margin-right: 4px;
+      }
+    }
+    &__right {
+      height: 100%;
+      @include flex-end-center;
+      .header-item {
+        margin-left: 6px;
+      }
+    }
+    .header {
+      &-item {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        @include flex-between-center;
+        padding: 0 4px;
+
+        &:hover {
+          background-color: rgb(228, 228, 231);
+          svg {
+            color: #000000 !important;
+          }
+        }
+      }
+      &-user {
+        width: 44px;
+        height: 44px;
+        padding: 6px;
+        border-radius: 50%;
+        margin-left: 10px;
+        &:hover {
+          background-color: rgba(228, 228, 231, 0.3);
+        }
+        &__avatar {
+          width: 32px;
+          border-radius: 50%;
+        }
+      }
     }
   }
 }
