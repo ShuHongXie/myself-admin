@@ -8,9 +8,9 @@
     "build": "turbo run build",
     "dev": "pnpm --filter @myself/web dev",
     "dev:ui": "pnpm --filter @myself/web dev",
-    "lint": "eslint \"**/*.{ts,js,vue}\" --fix",
+    "lint": "eslint --cache \"**/*.{ts,js,vue}\" --fix",
     "prepare": "husky install",
-    "format": "prettier --write .",
+    "format": "prettier --write \"**/*.{ts,js,vue}\"",
     "lint:lint-staged": "lint-staged",
     "cz": "cz"
   },

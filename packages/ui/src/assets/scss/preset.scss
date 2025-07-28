@@ -141,3 +141,123 @@
   flex-wrap: $wrap;
   gap: $gap;
 }
+
+// 垂直方向：顶部对齐 + 左对齐
+@mixin flex-col-start-start($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 垂直方向：顶部对齐 + 水平居中
+@mixin flex-col-start-center($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 垂直方向：顶部对齐 + 右对齐
+@mixin flex-col-start-end($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 垂直方向：垂直居中 + 左对齐
+@mixin flex-col-center-start($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 垂直方向：垂直居中 + 水平居中（常用于模态框）
+@mixin flex-col-center-center($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 垂直方向：垂直居中 + 右对齐
+@mixin flex-col-center-end($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 垂直方向：底部对齐 + 左对齐
+@mixin flex-col-end-start($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 垂直方向：底部对齐 + 水平居中
+@mixin flex-col-end-center($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 垂直方向：底部对齐 + 右对齐
+@mixin flex-col-end-end($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 垂直方向：均匀分布 + 左对齐
+@mixin flex-col-between-start($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 垂直方向：均匀分布 + 水平居中（常用于卡片）
+@mixin flex-col-between-center($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
+
+// 垂直方向：均匀分布 + 右对齐
+@mixin flex-col-between-end($wrap: nowrap, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: $wrap;
+  gap: $gap;
+}
