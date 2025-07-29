@@ -4,4 +4,10 @@
   <div>Home页</div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+div {
+  width: 100px;
+  height: 1000px;
+  background-color: yellowgreen;
+}
+</style>

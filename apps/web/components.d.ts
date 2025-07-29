@@ -11,6 +11,7 @@ declare module 'vue' {
     ElBadge: (typeof import('element-plus/es'))['ElBadge']
     ElButton: (typeof import('element-plus/es'))['ElButton']
     ElCollapseTransition: (typeof import('element-plus/es'))['ElCollapseTransition']
+    ElColorPicker: (typeof import('element-plus/es'))['ElColorPicker']
     ElConfigProvider: (typeof import('element-plus/es'))['ElConfigProvider']
     ElContainer: (typeof import('element-plus/es'))['ElContainer']
     ElForm: (typeof import('element-plus/es'))['ElForm']

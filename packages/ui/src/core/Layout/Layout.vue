@@ -3,6 +3,7 @@ import { Icon } from '@iconify/vue'
 import screenfull from 'screenfull'
 import { ref } from 'vue'
 
+const themeColor = ref('#000000')
 const editableTabsValue = ref('2')
 const editableTabs = ref([
   {
@@ -24,50 +25,6 @@ const editableTabs = ref([
   {
     title: 'Tab 1',
     content: '系统管理5'
-  },
-  {
-    title: 'Tab 2',
-    content: '用户管理6'
-  },
-  {
-    title: 'Tab 1',
-    content: '系统管理7'
-  },
-  {
-    title: 'Tab 2',
-    content: '用户管理8'
-  },
-  {
-    title: 'Tab 1',
-    content: '系统管理9'
-  },
-  {
-    title: 'Tab 2',
-    content: '用户管理10'
-  },
-  {
-    title: 'Tab 1',
-    content: '系统管理11'
-  },
-  {
-    title: 'Tab 2',
-    content: '用户管理12'
-  },
-  {
-    title: 'Tab 1',
-    content: '系统管理13'
-  },
-  {
-    title: 'Tab 2',
-    content: '用户管理14'
-  },
-  {
-    title: 'Tab 1',
-    content: '系统管理15'
-  },
-  {
-    title: 'Tab 2',
-    content: '用户管理16'
   }
 ])
 const isCollapse = ref(true)
@@ -83,7 +40,7 @@ const handleFullScreen = () => {
 
 <template>
   <div class="layout">
-    <el-container>
+    <el-container class="layout-container">
       <el-aside
         :class="{
           collapse: isCollapse
@@ -110,14 +67,7 @@ const handleFullScreen = () => {
                     collapse: isCollapse
                   }"
                 >
-                  <Icon
-                    icon="ep:fold"
-                    color="#999"
-                    class="layout-menu__icon"
-                    :style="{
-                      'margin-right': isCollapse ? '0' : '8px'
-                    }"
-                  />
+                  <Icon icon="ep:fold" color="#999999" class="layout-menu__icon"></Icon>
                   <span v-if="!isCollapse" class="layout-menu__text">Navigator One</span>
                 </div>
               </template>
@@ -137,7 +87,7 @@ const handleFullScreen = () => {
           </div>
         </div>
       </el-aside>
-      <el-container>
+      <el-container class="layout-container">
         <el-header class="layout-header">
           <slot name="header">
             <div class="layout-header__left">
@@ -149,6 +99,9 @@ const handleFullScreen = () => {
               </div>
             </div>
             <div class="layout-header__right">
+              <div class="header-theme">
+                <el-color-picker v-model="themeColor" size="mini"></el-color-picker>
+              </div>
               <div class="header-item" @click.stop="handleFullScreen">
                 <Icon icon="ep:setting" color="#000" />
               </div>
@@ -231,6 +184,7 @@ const handleFullScreen = () => {
     display: flex;
     align-items: center;
     border-radius: 8px;
+    gap: 8px;
     &.collapse {
       display: flex;
       align-items: center;
@@ -248,6 +202,9 @@ const handleFullScreen = () => {
   }
 }
 .layout {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
   &-logo {
     overflow: hidden;
     width: 100%;
@@ -287,6 +244,9 @@ const handleFullScreen = () => {
       cursor: pointer;
     }
   }
+  &-container {
+    overflow: hidden;
+  }
   &-header {
     @include flex-between-start;
     border-bottom: 1px solid #e4e4e7;
@@ -296,15 +256,14 @@ const handleFullScreen = () => {
     &__left {
       height: 100%;
       @include flex-start-center;
-      .header-item {
-        margin-right: 4px;
-      }
+      gap: 8px;
     }
     &__right {
       height: 100%;
       @include flex-end-center;
-      .header-item {
-        margin-left: 6px;
+      gap: 8px;
+      :deep(.el-color-picker.is-focused .el-color-picker__trigger) {
+        border-color: red;
       }
     }
     .header {
@@ -338,7 +297,6 @@ const handleFullScreen = () => {
     }
   }
   &-tabs {
-    // padding-top: 4px;
     :deep(.el-tabs) {
       width: 100%;
     }
@@ -353,7 +311,6 @@ const handleFullScreen = () => {
       display: none;
     }
     :deep(.el-tabs__item) {
-      // margin: 0 4px;
       min-width: 122px !important;
       padding: 0 10px !important;
       &.is-active,
@@ -374,13 +331,25 @@ const handleFullScreen = () => {
   &-main {
     background-color: #f0f2f5;
     --el-main-padding: 10px;
-    overflow: hidden;
-    display: flex;
+    overflow: hidden scroll;
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background: var(--el-color-primary);
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: #666;
+    }
+
+    &::-webkit-scrollbar-button {
+      display: none;
+    }
     &__content {
-      flex: 1;
-      overflow: hidden auto;
       background-color: #fff;
       border-radius: 4px;
+      overflow: hidden;
     }
   }
 }

@@ -18,6 +18,7 @@
     }
   },
   "dependencies": {
+    "@ctrl/tinycolor": "catalog:",
     "@iconify/vue": "catalog:",
     "screenfull": "catalog:",
     "vue": "catalog:",
