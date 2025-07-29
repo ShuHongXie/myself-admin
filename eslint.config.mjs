@@ -26,7 +26,7 @@ export default [
     }
   },
   {
-    ignores: ['node_modules/', 'apps/**/dist', '*.md'] // 忽略目录
+    ignores: ['node_modules/', 'apps/**/dist', '*.md', '.eslintcache'] // 忽略目录
   },
   // prettier融合配置
   eslintConfigPrettier,

@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ElAside: (typeof import('element-plus/es'))['ElAside']
+    ElBadge: (typeof import('element-plus/es'))['ElBadge']
     ElButton: (typeof import('element-plus/es'))['ElButton']
     ElCollapseTransition: (typeof import('element-plus/es'))['ElCollapseTransition']
     ElConfigProvider: (typeof import('element-plus/es'))['ElConfigProvider']
@@ -25,6 +26,8 @@ declare module 'vue' {
     ElRadioGroup: (typeof import('element-plus/es'))['ElRadioGroup']
     ElSpace: (typeof import('element-plus/es'))['ElSpace']
     ElSubMenu: (typeof import('element-plus/es'))['ElSubMenu']
+    ElTabPane: (typeof import('element-plus/es'))['ElTabPane']
+    ElTabs: (typeof import('element-plus/es'))['ElTabs']
     RouterLink: (typeof import('vue-router'))['RouterLink']
     RouterView: (typeof import('vue-router'))['RouterView']
   }

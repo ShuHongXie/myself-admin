@@ -2,6 +2,74 @@
 import { Icon } from '@iconify/vue'
 import screenfull from 'screenfull'
 import { ref } from 'vue'
+
+const editableTabsValue = ref('2')
+const editableTabs = ref([
+  {
+    title: 'Tab 1',
+    content: '系统管理1'
+  },
+  {
+    title: 'Tab 2',
+    content: '用户管理2'
+  },
+  {
+    title: 'Tab 1',
+    content: '系统管理3'
+  },
+  {
+    title: 'Tab 2',
+    content: '用户管理4'
+  },
+  {
+    title: 'Tab 1',
+    content: '系统管理5'
+  },
+  {
+    title: 'Tab 2',
+    content: '用户管理6'
+  },
+  {
+    title: 'Tab 1',
+    content: '系统管理7'
+  },
+  {
+    title: 'Tab 2',
+    content: '用户管理8'
+  },
+  {
+    title: 'Tab 1',
+    content: '系统管理9'
+  },
+  {
+    title: 'Tab 2',
+    content: '用户管理10'
+  },
+  {
+    title: 'Tab 1',
+    content: '系统管理11'
+  },
+  {
+    title: 'Tab 2',
+    content: '用户管理12'
+  },
+  {
+    title: 'Tab 1',
+    content: '系统管理13'
+  },
+  {
+    title: 'Tab 2',
+    content: '用户管理14'
+  },
+  {
+    title: 'Tab 1',
+    content: '系统管理15'
+  },
+  {
+    title: 'Tab 2',
+    content: '用户管理16'
+  }
+])
 const isCollapse = ref(true)
 const handleReload = () => {
   window.location.reload()
@@ -89,17 +157,39 @@ const handleFullScreen = () => {
               </div>
               <!-- 用户头像 -->
               <div class="header-user" @click.stop="handleFullScreen">
-                <img
-                  class="header-user__avatar"
-                  src="../../assets/images/webp/logo.webp"
-                  alt="用户头像"
-                />
+                <el-badge :value="3">
+                  <img
+                    class="header-user__avatar"
+                    src="../../assets/images/webp/logo.webp"
+                    alt="用户头像"
+                  />
+                </el-badge>
               </div>
             </div>
           </slot>
         </el-header>
-        <el-main>
-          <RouterView></RouterView>
+        <div class="layout-tabs">
+          <el-tabs v-model="editableTabsValue" type="card">
+            <el-tab-pane
+              v-for="item in editableTabs"
+              :key="item.content"
+              :label="item.content"
+              :name="item.content"
+            >
+              <template #label>
+                <div class="layout-tabs__label">
+                  <Icon icon="ep:fold" color="#999" />
+                  <span> {{ item.content }}</span>
+                  <Icon icon="ep:close" color="#999" />
+                </div>
+              </template>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+        <el-main class="layout-main">
+          <div class="layout-main__content">
+            <RouterView></RouterView>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -107,7 +197,8 @@ const handleFullScreen = () => {
 </template>
 
 <style lang="scss" scoped>
-@import '../../assets/scss/preset.scss';
+@use '../../assets/scss/font.scss' as *;
+@use '../../assets/scss/preset.scss' as *;
 :deep(.el-aside) {
   max-width: 224px;
   min-width: 224px;
@@ -223,7 +314,6 @@ const handleFullScreen = () => {
         border-radius: 6px;
         @include flex-between-center;
         padding: 0 4px;
-
         &:hover {
           background-color: rgb(228, 228, 231);
           svg {
@@ -245,6 +335,52 @@ const handleFullScreen = () => {
           border-radius: 50%;
         }
       }
+    }
+  }
+  &-tabs {
+    // padding-top: 4px;
+    :deep(.el-tabs) {
+      width: 100%;
+    }
+    :deep(.el-tabs__nav) {
+      margin: 0 4px;
+      border-top: none;
+    }
+    :deep(.el-tabs__header) {
+      margin-bottom: 0;
+    }
+    :deep(.el-tabs__content) {
+      display: none;
+    }
+    :deep(.el-tabs__item) {
+      // margin: 0 4px;
+      min-width: 122px !important;
+      padding: 0 10px !important;
+      &.is-active,
+      &:hover {
+        svg {
+          color: var(--el-color-primary) !important;
+        }
+        border-bottom-color: transparent;
+        &.is-closable {
+          padding: 0 6px;
+        }
+      }
+    }
+    &__label {
+      @include flex-center-center(nowrap, 4px);
+    }
+  }
+  &-main {
+    background-color: #f0f2f5;
+    --el-main-padding: 10px;
+    overflow: hidden;
+    display: flex;
+    &__content {
+      flex: 1;
+      overflow: hidden auto;
+      background-color: #fff;
+      border-radius: 4px;
     }
   }
 }
