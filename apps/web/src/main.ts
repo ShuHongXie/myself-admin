@@ -5,6 +5,7 @@ import 'nprogress/nprogress.css'
 import App from './App.vue'
 import 'element-plus/dist/index.css'
 import './assets/scss/global.scss'
+import '@myself/ui/styles'
 
 NProgress.configure({ showSpinner: false })
 import { router } from './router'

@@ -13,8 +13,12 @@
   },
   "exports": {
     ".": {
-      "types": "./src/index.ts",
+      "types": "./src/assets/scss/scss/index.ts",
       "default": "./src/index.ts"
+    },
+    "./styles": {
+      "development": "./src/assets/scss/index.scss",
+      "default": "./dist/scss/index.scss"
     }
   },
   "dependencies": {

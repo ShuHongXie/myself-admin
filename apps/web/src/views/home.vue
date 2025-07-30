@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>Home页</div>
+  <div>Home页<el-button type="primary">主要按钮</el-button></div>
 </template>
 
 <style lang="scss" scoped>

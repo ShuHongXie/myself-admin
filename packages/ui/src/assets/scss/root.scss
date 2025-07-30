@@ -1,0 +1,14 @@
+:root {
+  --font-family:
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  --primary: hsl(266, 89%, 63%);
+  --primary--background: hsla(266, 89%, 63%, 0.15); // 15% 透明度
+  --el-color-primary: var(--primary);
+  // --el-color-primary-light-3: rgb(121, 187, 255);
+  // --el-color-primary-light-5: rgb(160, 207, 255);
+  // --el-color-primary-light-7: rgb(198, 226, 255);
+  // --el-color-primary-light-8: rgb(217, 236, 255);
+  // --el-color-primary-light-9: rgb(236, 245, 255);
+}
+
+// $--color-primary: hsl(266, 89%, 63%) !important;

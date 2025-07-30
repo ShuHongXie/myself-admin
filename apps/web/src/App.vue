@@ -5,7 +5,7 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <ElConfigProvider>
+  <ElConfigProvider size="default">
     <RouterView />
   </ElConfigProvider>
   <!-- <el-container>

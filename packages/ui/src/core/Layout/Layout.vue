@@ -36,11 +36,15 @@ const handleFullScreen = () => {
     screenfull.toggle()
   }
 }
+
+// 颜色更改
+// watch(themeColor, (val) => {})
 </script>
 
 <template>
   <div class="layout">
     <el-container class="layout-container">
+      <!-- 侧边栏 -->
       <el-aside
         :class="{
           collapse: isCollapse
@@ -72,7 +76,17 @@ const handleFullScreen = () => {
                 </div>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="1-1"></el-menu-item>
+                <el-menu-item index="1-1">
+                  <div
+                    class="el-menu-title__wrap"
+                    :class="{
+                      collapse: isCollapse
+                    }"
+                  >
+                    <Icon icon="ep:fold" color="#999999" class="layout-menu__icon"></Icon>
+                    <span v-if="!isCollapse" class="layout-menu__text">子菜单</span>
+                  </div>
+                </el-menu-item>
                 <el-menu-item index="1-2">item two</el-menu-item>
               </el-menu-item-group>
             </el-sub-menu>
@@ -88,6 +102,7 @@ const handleFullScreen = () => {
         </div>
       </el-aside>
       <el-container class="layout-container">
+        <!-- 头部 -->
         <el-header class="layout-header">
           <slot name="header">
             <div class="layout-header__left">
@@ -100,7 +115,7 @@ const handleFullScreen = () => {
             </div>
             <div class="layout-header__right">
               <div class="header-theme">
-                <el-color-picker v-model="themeColor" size="mini"></el-color-picker>
+                <el-color-picker v-model="themeColor" size="small"></el-color-picker>
               </div>
               <div class="header-item" @click.stop="handleFullScreen">
                 <Icon icon="ep:setting" color="#000" />
@@ -121,6 +136,7 @@ const handleFullScreen = () => {
             </div>
           </slot>
         </el-header>
+        <!-- 历史网页tabs -->
         <div class="layout-tabs">
           <el-tabs v-model="editableTabsValue" type="card">
             <el-tab-pane
@@ -139,6 +155,7 @@ const handleFullScreen = () => {
             </el-tab-pane>
           </el-tabs>
         </div>
+        <!-- 主要内容区域 -->
         <el-main class="layout-main">
           <div class="layout-main__content">
             <RouterView></RouterView>
@@ -150,8 +167,8 @@ const handleFullScreen = () => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../assets/scss/font.scss' as *;
-@use '../../assets/scss/preset.scss' as *;
+@use '../../assets/scss/root.scss' as *;
+@use '../../assets/scss/mixin.scss' as *;
 :deep(.el-aside) {
   max-width: 224px;
   min-width: 224px;
@@ -171,10 +188,19 @@ const handleFullScreen = () => {
   &:not(.el-menu--collapse) {
     width: 224px;
   }
+  .el-sub-menu__title {
+    &:hover {
+      background-color: var(--primary--background);
+    }
+  }
   .el-menu-item {
+    &:hover {
+      background-color: var(--primary--background);
+    }
     &.is-active {
+      color: var(--primary);
       .layout-menu__icon {
-        color: var(--el-color-primary) !important;
+        color: var(--primary) !important;
       }
     }
   }
@@ -191,7 +217,8 @@ const handleFullScreen = () => {
       justify-content: center;
     }
   }
-  .el-sub-menu__title {
+  .el-sub-menu__title,
+  .el-menu-item {
     padding: 10px 12px;
     box-sizing: border-box;
     &:hover {
@@ -263,7 +290,7 @@ const handleFullScreen = () => {
       @include flex-end-center;
       gap: 8px;
       :deep(.el-color-picker.is-focused .el-color-picker__trigger) {
-        border-color: red;
+        border-color: var(--primary) !important;
       }
     }
     .header {
