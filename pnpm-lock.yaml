@@ -21,6 +21,9 @@ catalogs:
     '@vue/tsconfig':
       specifier: ^0.7.0
       version: 0.7.0
+    defu:
+      specifier: ^6.1.4
+      version: 6.1.4
     element-plus:
       specifier: 2.10.4
       version: 2.10.4
@@ -33,6 +36,9 @@ catalogs:
     screenfull:
       specifier: ^6.0.2
       version: 6.0.2
+    theme-colors:
+      specifier: 0.1.0
+      version: 0.1.0
     typescript:
       specifier: ~5.8.3
       version: 5.8.3
@@ -198,6 +204,8 @@ importers:
 
   packages/locales: {}
 
+  packages/styles: {}
+
   packages/ui:
     dependencies:
       '@ctrl/tinycolor':
@@ -209,6 +217,9 @@ importers:
       screenfull:
         specifier: 'catalog:'
         version: 6.0.2
+      theme-colors:
+        specifier: 'catalog:'
+        version: 0.1.0
       vue:
         specifier: 'catalog:'
         version: 3.5.17(typescript@5.8.3)
@@ -252,6 +263,15 @@ importers:
       '@ctrl/tinycolor':
         specifier: 'catalog:'
         version: 4.1.0
+      defu:
+        specifier: 'catalog:'
+        version: 6.1.4
+      theme-colors:
+        specifier: 'catalog:'
+        version: 0.1.0
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.17(typescript@5.8.3)
 
 packages:
 
@@ -1543,6 +1563,9 @@ packages:
   define-property@2.0.2:
     resolution: {integrity: sha512-jwK2UV4cnPpbcG7+VRARKTZPUWowwXA8bzH5NP6ud0oeAxyYPuGZUAC7hMugpCdz4BeSZl2Dl9k66CHJ/46ZYQ==}
     engines: {node: '>=0.10.0'}
+
+  defu@6.1.4:
+    resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
 
   detect-file@1.0.0:
     resolution: {integrity: sha512-DtCOLG98P007x7wiiOmfI0fi3eIKyWiLTGJ2MDnVi/E04lWGbf+JzrRHMm0rgIIZJGtHpKpbVgLWHrv8xXpc3Q==}
@@ -3324,6 +3347,9 @@ packages:
     resolution: {integrity: sha512-te/NtwBwfiNRLf9Ijqx3T0nlqZiQ2XrrtBvu+cLL8ZRrGkO0NHTug8MYFKyoSrv/sHTaSKfilUkizV6XhxMJ3g==}
     engines: {node: '>=8'}
 
+  theme-colors@0.1.0:
+    resolution: {integrity: sha512-6gTEHQqWlQNiOEGHCSSQmU//E5SnXHJ4H7oHQOD8x77CvNYNQAmt73dqR71mzw5ULV87zaHLxK5pIBnsToFuZw==}
+
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
 
@@ -5044,6 +5070,8 @@ snapshots:
     dependencies:
       is-descriptor: 1.0.3
       isobject: 3.0.1
+
+  defu@6.1.4: {}
 
   detect-file@1.0.0: {}
 
@@ -6977,6 +7005,8 @@ snapshots:
   term-size@2.2.1: {}
 
   text-extensions@2.4.0: {}
+
+  theme-colors@0.1.0: {}
 
   through@2.3.8: {}
 

@@ -25,6 +25,7 @@
     "@ctrl/tinycolor": "catalog:",
     "@iconify/vue": "catalog:",
     "screenfull": "catalog:",
+    "theme-colors": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
   },

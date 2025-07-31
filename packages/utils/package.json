@@ -15,6 +15,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@ctrl/tinycolor": "catalog:"
+    "@ctrl/tinycolor": "catalog:",
+    "defu": "catalog:",
+    "theme-colors": "catalog:",
+    "vue": "catalog:"
   }
 }
