@@ -24,6 +24,7 @@
   "dependencies": {
     "@ctrl/tinycolor": "catalog:",
     "@iconify/vue": "catalog:",
+    "@myself/utils": "workspace:^",
     "screenfull": "catalog:",
     "theme-colors": "catalog:",
     "vue": "catalog:",

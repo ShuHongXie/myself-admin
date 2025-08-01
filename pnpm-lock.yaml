@@ -158,6 +158,9 @@ importers:
       '@myself/ui':
         specifier: workspace:^
         version: link:../../packages/ui
+      '@myself/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
       '@types/nprogress':
         specifier: 'catalog:'
         version: 0.2.3
@@ -214,6 +217,9 @@ importers:
       '@iconify/vue':
         specifier: 'catalog:'
         version: 5.0.0(vue@3.5.17(typescript@5.8.3))
+      '@myself/utils':
+        specifier: workspace:^
+        version: link:../utils
       screenfull:
         specifier: 'catalog:'
         version: 6.0.2

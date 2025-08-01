@@ -1,4 +1,4 @@
-import { reactive, readonly } from 'vue'
+import { markRaw, reactive, readonly } from 'vue'
 import { StorageManager } from './storageManager'
 import { config } from './config'
 import type { Config } from './types'
@@ -16,7 +16,7 @@ class Guider {
   })
   constructor() {
     this.cache = new StorageManager()
-    this.loadConfig()
+    this.initConfig()
   }
 
   // 初始化配置
@@ -24,19 +24,21 @@ class Guider {
     if (this.isInitialized) {
       return
     }
-    this.updateConfig()
+    this.updateConfig({})
     this.isInitialized = true
   }
 
   // 更新配置
-  private updateConfig(config?: Partial<Config>) {
-    this.state = merge({}, this.state, config)
+  public updateConfig(config?: Partial<Config>) {
+    const cacheState: Config = merge({}, config, markRaw(this.state))
+    Object.assign(this.state, cacheState)
+    console.log('new state: ', this.state)
     updateCSSVariables(this.state)
     this.saveConfig(this.state)
   }
 
   // 保存配置
-  saveConfig(config: Config) {
+  public saveConfig(config: Config) {
     this.cache?.setItem(STORAGE_KEY, config)
   }
 

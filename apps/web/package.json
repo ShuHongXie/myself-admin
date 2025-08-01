@@ -15,6 +15,7 @@
     "@iconify/vue": "catalog:",
     "@myself/locales": "workspace:*",
     "@myself/ui": "workspace:^",
+    "@myself/utils": "workspace:^",
     "@types/nprogress": "catalog:",
     "nprogress": "catalog:",
     "vue": "catalog:",

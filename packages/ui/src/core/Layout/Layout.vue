@@ -3,7 +3,20 @@ import { Icon } from '@iconify/vue'
 import screenfull from 'screenfull'
 import { ref } from 'vue'
 
+// 主题色切换逻辑-----------start---------------
+import { guider } from '@myself/utils'
 const themeColor = ref('#000000')
+const handleThemeChange = (val: string) => {
+  console.log(val)
+
+  guider.updateConfig({
+    theme: {
+      colorPrimary: val
+    }
+  })
+}
+// 主题色切换逻辑-----------end---------------
+
 const editableTabsValue = ref('2')
 const editableTabs = ref([
   {
@@ -115,7 +128,11 @@ const handleFullScreen = () => {
             </div>
             <div class="layout-header__right">
               <div class="header-theme">
-                <el-color-picker v-model="themeColor" size="small"></el-color-picker>
+                <el-color-picker
+                  @change="handleThemeChange"
+                  v-model="themeColor"
+                  size="small"
+                ></el-color-picker>
               </div>
               <div class="header-item" @click.stop="handleFullScreen">
                 <Icon icon="ep:setting" color="#000" />

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-// let a: string
-// a = 12345
+import { useInitGlobalStyle } from '@myself/utils'
+
+useInitGlobalStyle()
 </script>
 
 <template>

@@ -1,38 +1,3 @@
-<template>
-  <div class="login">
-    <slot>
-      <div class="login-text">欢迎回来</div>
-      <div class="login-tip">请输入您的帐户信息以开始管理您的项目</div>
-      <el-form
-        size="large"
-        ref="loginFormRef"
-        label-position="top"
-        label-width="auto"
-        :model="formData"
-        :rules="rules"
-      >
-        <el-form-item prop="username" label="账号">
-          <el-input placeholder="请输入账号" v-model="formData.username" />
-        </el-form-item>
-        <el-form-item prop="password" label="密码">
-          <el-input
-            type="password"
-            placeholder="请输入密码"
-            show-password
-            v-model="formData.password"
-          />
-        </el-form-item>
-        <el-form-item prop="code" label="验证码">
-          <el-input placeholder="请输入验证码" v-model="formData.code" />
-        </el-form-item>
-        <el-button class="login-btn" @click="handleLogin(loginFormRef)" type="primary">{{
-          submitText
-        }}</el-button>
-      </el-form>
-    </slot>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import type { FormInstance, FormRules } from 'element-plus'
 import type { LoginProps, RuleForm } from './Login.types'
@@ -80,6 +45,41 @@ const handleLogin = (formEl: FormInstance | undefined) => {
   })
 }
 </script>
+
+<template>
+  <div class="login">
+    <slot>
+      <div class="login-text">欢迎回来</div>
+      <div class="login-tip">请输入您的帐户信息以开始管理您的项目</div>
+      <el-form
+        size="large"
+        ref="loginFormRef"
+        label-position="top"
+        label-width="auto"
+        :model="formData"
+        :rules="rules"
+      >
+        <el-form-item prop="username" label="账号">
+          <el-input placeholder="请输入账号" v-model="formData.username" />
+        </el-form-item>
+        <el-form-item prop="password" label="密码">
+          <el-input
+            type="password"
+            placeholder="请输入密码"
+            show-password
+            v-model="formData.password"
+          />
+        </el-form-item>
+        <el-form-item prop="code" label="验证码">
+          <el-input placeholder="请输入验证码" v-model="formData.code" />
+        </el-form-item>
+        <el-button class="login-btn" @click="handleLogin(loginFormRef)" type="primary">{{
+          submitText
+        }}</el-button>
+      </el-form>
+    </slot>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .login {
