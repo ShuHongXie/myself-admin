@@ -1,7 +1,7 @@
 import { markRaw, reactive, readonly } from 'vue'
 import { StorageManager } from './storageManager'
-import { config } from './config'
-import type { Config } from './types'
+import { config as defaultConfig } from './config'
+import type { Config, InitialOptions } from './types'
 import { merge } from '../func'
 import { updateCSSVariables } from './updateCssVariables'
 
@@ -16,15 +16,17 @@ class Guider {
   })
   constructor() {
     this.cache = new StorageManager()
-    this.initConfig()
   }
 
   // 初始化配置
-  public initConfig() {
+  public initConfig({ config, namespace }: InitialOptions) {
     if (this.isInitialized) {
       return
     }
-    this.updateConfig({})
+    this.cache = new StorageManager({ prefix: namespace })
+    const mergeDefaultConfig = merge({}, config, defaultConfig)
+    const state = merge({}, this.loadConfig(), mergeDefaultConfig)
+    this.updateConfig(state)
     this.isInitialized = true
   }
 
@@ -44,7 +46,7 @@ class Guider {
 
   // 加载配置
   private loadConfig() {
-    return this.cache?.getItem<Config>(STORAGE_KEY) || config
+    return this.cache?.getItem<Config>(STORAGE_KEY) || defaultConfig
   }
 
   // 获取配置

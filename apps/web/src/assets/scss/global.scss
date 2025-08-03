@@ -18,3 +18,7 @@ body,
 *::after {
   box-sizing: inherit;
 }
+
+#nprogress .bar {
+  background: var(--primary);
+}

@@ -206,14 +206,14 @@ const handleFullScreen = () => {
     width: 224px;
   }
   .el-sub-menu__title {
-    &:hover {
-      background-color: var(--primary--background);
-    }
+    // &:hover {
+    //   background-color: var(--primary--background);
+    // }
   }
   .el-menu-item {
-    &:hover {
-      background-color: var(--primary--background);
-    }
+    // &:hover {
+    //   background-color: var(--primary--background);
+    // }
     &.is-active {
       color: var(--primary);
       .layout-menu__icon {
