@@ -4,11 +4,16 @@ import screenfull from 'screenfull'
 import { ref } from 'vue'
 
 // 主题色切换逻辑-----------start---------------
-import { guider } from '@myself/utils'
+import { guider, userConfig } from '@myself/utils'
 const themeColor = ref('#000000')
-const handleThemeChange = (val: string) => {
-  console.log(val)
 
+/**
+ * @description: 主题色切换
+ * @param {*} val
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleThemeChange = (val: string) => {
   guider.updateConfig({
     theme: {
       colorPrimary: val
@@ -40,14 +45,36 @@ const editableTabs = ref([
     content: '系统管理5'
   }
 ])
-const isCollapse = ref(true)
+/**
+ * @description: 刷新当前页
+ * @return {*}
+ * @Author: xieshuhong
+ */
 const handleReload = () => {
   window.location.reload()
 }
+/**
+ * @description: 全屏控制
+ * @return {*}
+ * @Author: xieshuhong
+ */
 const handleFullScreen = () => {
   if (screenfull.isEnabled) {
     screenfull.toggle()
   }
+}
+
+/**
+ * @description: 侧边栏控制
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleSidebar = () => {
+  guider.updateConfig({
+    sidebar: {
+      collapse: !userConfig.sidebar?.collapse
+    }
+  })
 }
 
 // 颜色更改
@@ -60,20 +87,20 @@ const handleFullScreen = () => {
       <!-- 侧边栏 -->
       <el-aside
         :class="{
-          collapse: isCollapse
+          collapse: userConfig.sidebar?.collapse
         }"
       >
         <div class="layout-logo">
           <slot name="logo">
-            <div><span>MY</span><span v-if="!isCollapse">&nbsp;ADMIN</span></div>
+            <div><span>MY</span><span v-if="!userConfig.sidebar?.collapse">&nbsp;ADMIN</span></div>
           </slot>
         </div>
         <div class="layout-menu">
           <el-menu
             :class="{
-              collapse: isCollapse
+              collapse: userConfig.sidebar?.collapse
             }"
-            :collapse="isCollapse"
+            :collapse="userConfig.sidebar?.collapse"
             default-active="2"
           >
             <el-sub-menu index="1">
@@ -81,11 +108,13 @@ const handleFullScreen = () => {
                 <div
                   class="el-menu-title__wrap"
                   :class="{
-                    collapse: isCollapse
+                    collapse: userConfig.sidebar?.collapse
                   }"
                 >
                   <Icon icon="ep:fold" color="#999999" class="layout-menu__icon"></Icon>
-                  <span v-if="!isCollapse" class="layout-menu__text">Navigator One</span>
+                  <span v-if="!userConfig.sidebar?.collapse" class="layout-menu__text"
+                    >Navigator One</span
+                  >
                 </div>
               </template>
               <el-menu-item-group>
@@ -93,11 +122,13 @@ const handleFullScreen = () => {
                   <div
                     class="el-menu-title__wrap"
                     :class="{
-                      collapse: isCollapse
+                      collapse: userConfig.sidebar?.collapse
                     }"
                   >
                     <Icon icon="ep:fold" color="#999999" class="layout-menu__icon"></Icon>
-                    <span v-if="!isCollapse" class="layout-menu__text">子菜单</span>
+                    <span v-if="!userConfig.sidebar?.collapse" class="layout-menu__text"
+                      >子菜单</span
+                    >
                   </div>
                 </el-menu-item>
                 <el-menu-item index="1-2">item two</el-menu-item>
@@ -109,8 +140,11 @@ const handleFullScreen = () => {
           </el-menu>
         </div>
         <div class="layout-collapse">
-          <div class="layout-collapse__icon" @click.stop="isCollapse = !isCollapse">
-            <Icon :icon="isCollapse ? 'ep:d-arrow-right' : 'ep:d-arrow-left'" color="#999" />
+          <div class="layout-collapse__icon" @click.stop="handleSidebar">
+            <Icon
+              :icon="userConfig.sidebar?.collapse ? 'ep:d-arrow-right' : 'ep:d-arrow-left'"
+              color="#999"
+            />
           </div>
         </div>
       </el-aside>
@@ -119,7 +153,7 @@ const handleFullScreen = () => {
         <el-header class="layout-header">
           <slot name="header">
             <div class="layout-header__left">
-              <div class="header-item" @click.stop="isCollapse = !isCollapse">
+              <div class="header-item" @click.stop="handleSidebar">
                 <Icon icon="ep:fold" color="#999" />
               </div>
               <div class="header-item" @click.stop="handleReload">
@@ -135,7 +169,7 @@ const handleFullScreen = () => {
                 ></el-color-picker>
               </div>
               <div class="header-item" @click.stop="handleFullScreen">
-                <Icon icon="ep:setting" color="#000" />
+                <Icon icon="cil:language" color="#000" />
               </div>
               <div class="header-item" @click.stop="handleFullScreen">
                 <Icon icon="ep:full-screen" color="#000" />
@@ -153,7 +187,7 @@ const handleFullScreen = () => {
             </div>
           </slot>
         </el-header>
-        <!-- 历史网页tabs -->
+        <!-- 历史访问页 -->
         <div class="layout-tabs">
           <el-tabs v-model="editableTabsValue" type="card">
             <el-tab-pane
@@ -180,6 +214,7 @@ const handleFullScreen = () => {
         </el-main>
       </el-container>
     </el-container>
+    <el-backtop target=".layout-main" :visibility-height="1" :right="30" :bottom="30"> </el-backtop>
   </div>
 </template>
 
@@ -205,15 +240,7 @@ const handleFullScreen = () => {
   &:not(.el-menu--collapse) {
     width: 224px;
   }
-  .el-sub-menu__title {
-    // &:hover {
-    //   background-color: var(--primary--background);
-    // }
-  }
   .el-menu-item {
-    // &:hover {
-    //   background-color: var(--primary--background);
-    // }
     &.is-active {
       color: var(--primary);
       .layout-menu__icon {

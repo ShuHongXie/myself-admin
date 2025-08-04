@@ -11,7 +11,14 @@ export const useInitGlobalStyle = () => {
     return rootStyles.getPropertyValue(variable)
   }
 
-  const getCssVariableValue = (variable: string, isColor: boolean = true) => {
+  /**
+   * @description: 将可用颜色转换为hsl颜色格式
+   * @param {string} variable
+   * @param {boolean} isColor
+   * @return {*}
+   * @Author: xieshuhong
+   */
+  const getCssVariableValue = (variable: string, isColor: boolean = true): string => {
     const value = getCssVariableValueRaw(variable)
     return isColor ? convertToRgb(`hsl(${value})`) : value
   }

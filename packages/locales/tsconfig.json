@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "outDir": "./",
-    "rootDir": ""
+    "rootDir": "",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "esnext", // 至少 es2020，支持 Node.js 的 ESM 特性
+    "types": ["vite/client"]
   },
   "exclude": ["node_modules", "dist"]
 }

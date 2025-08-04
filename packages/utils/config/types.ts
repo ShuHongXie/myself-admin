@@ -3,12 +3,31 @@ interface InitialOptions {
   config?: Partial<Config>
 }
 
+// 主题配置
 interface ThemeConfig {
+  // 主题色
   colorPrimary: string
 }
 
+// 侧边栏相关配置
+interface SidebarConfig {
+  // 侧边栏是否折叠
+  collapse: boolean
+}
+
+// 全局配置
+interface AppConfig {
+  // 语言
+  locale: string
+  // 应用名称
+  name: string
+}
+
+// 整体用户偏好配置
 interface Config {
-  theme: ThemeConfig
+  app?: AppConfig
+  theme?: ThemeConfig
+  sidebar?: SidebarConfig
 }
 
 export type { Config, InitialOptions }
