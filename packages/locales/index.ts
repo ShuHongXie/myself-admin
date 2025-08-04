@@ -23,18 +23,25 @@ const setI18nLanguage = (locale: LanguagesType) => {
  * @return {*}
  * @Author: xieshuhong
  */
-const localesMap = async () => {
+const localesMapByDir = async () => {
   const LanguagesTypeEntity = {}
   for (const path in presetLocalMessage) {
     const module = (await presetLocalMessage[path]()) as { default: any }
     const type = path.match(/langs\/([A-Za-z-]+)\//)[1]
+    const name = path.match(/\/([^/]+)\.json$/)[1]
+
     if (!LanguagesTypeEntity[type]) {
       LanguagesTypeEntity[type] = {}
     }
+    if (!LanguagesTypeEntity[type][name]) {
+      LanguagesTypeEntity[type][name] = {}
+    }
     for (const key in module?.default) {
-      LanguagesTypeEntity[type][key] = module?.default[key]
+      LanguagesTypeEntity[type][name][key] = module?.default[key]
     }
   }
+  console.log(LanguagesTypeEntity)
+
   return LanguagesTypeEntity
 }
 
@@ -49,7 +56,7 @@ const loadLocalMessages = async (lang: LanguagesType) => {
     setI18nLanguage(lang)
   }
 
-  const message = await localesMap()
+  const message = await localesMapByDir()
   if (Object.keys(message)) {
     i18n.global.setLocaleMessage(lang, message[lang])
   }
@@ -59,7 +66,7 @@ const loadLocalMessages = async (lang: LanguagesType) => {
 }
 
 /**
- * @description: 开始初始化国际化
+ * @description: 初始化国际化
  * @param {App} app
  * @param {extendOptions} options
  * @return {*}
