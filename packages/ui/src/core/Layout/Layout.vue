@@ -226,6 +226,10 @@ watch(
               <div class="header-item" @click.stop="handleFullScreen">
                 <Icon icon="ep:full-screen" color="#000" />
               </div>
+              <!-- 消息通知 -->
+              <div class="header-item">
+                <Icon icon="ep:bell" color="#000" />
+              </div>
               <!-- 用户头像 -->
               <div class="header-user" @click.stop="handleFullScreen">
                 <el-badge :value="3">
