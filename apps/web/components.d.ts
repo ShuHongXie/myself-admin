@@ -28,6 +28,7 @@ declare module 'vue' {
     ElMenuItem: (typeof import('element-plus/es'))['ElMenuItem']
     ElMenuItemGroup: (typeof import('element-plus/es'))['ElMenuItemGroup']
     ElPopover: (typeof import('element-plus/es'))['ElPopover']
+    ElSubmenu: (typeof import('element-plus/es'))['ElSubmenu']
     ElSubMenu: (typeof import('element-plus/es'))['ElSubMenu']
     ElTabPane: (typeof import('element-plus/es'))['ElTabPane']
     ElTabs: (typeof import('element-plus/es'))['ElTabs']

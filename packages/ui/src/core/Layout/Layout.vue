@@ -143,9 +143,7 @@ watch(
                   }"
                 >
                   <Icon icon="ep:fold" color="#999999" class="layout-menu__icon"></Icon>
-                  <span v-if="!userConfig.sidebar?.collapse" class="layout-menu__text"
-                    >Navigator One</span
-                  >
+                  <span class="layout-menu__text">Navigator One</span>
                 </div>
               </template>
               <el-menu-item-group>
@@ -157,9 +155,7 @@ watch(
                     }"
                   >
                     <Icon icon="ep:fold" color="#999999" class="layout-menu__icon"></Icon>
-                    <span v-if="!userConfig.sidebar?.collapse" class="layout-menu__text"
-                      >子菜单</span
-                    >
+                    <span class="layout-menu__text">子菜单</span>
                   </div>
                 </el-menu-item>
                 <el-menu-item index="1-2">item two</el-menu-item>
@@ -274,11 +270,100 @@ watch(
   </div>
 </template>
 
-<style>
+<style lang="scss">
 .language-dropdown .el-dropdown-menu__item.active {
   background-color: var(--el-dropdown-menuItem-hover-fill);
   color: var(--el-dropdown-menuItem-hover-color);
 }
+.el-menu {
+  width: 60px;
+  height: 100%;
+  border-right: 1px solid #fff;
+  transition: width 0.15s ease;
+  &:not(.el-menu--popup).el-menu--collapse {
+    .layout-menu__text {
+      display: none;
+    }
+  }
+  &:not(.el-menu--collapse) {
+    width: 224px;
+  }
+  .el-menu-item,
+  .el-sub-menu__title {
+    padding: 10px 12px;
+    box-sizing: border-box;
+    &:hover {
+      background-color: var(--el-color-primary-light-8);
+      .layout-menu__icon {
+        transform: scale(1.1);
+      }
+    }
+    .el-menu-title__wrap {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      border-radius: 8px;
+      gap: 8px;
+      &.collapse {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+    }
+  }
+  .el-menu-item {
+    &.is-active {
+      color: var(--primary);
+      .layout-menu__icon {
+        color: var(--primary) !important;
+      }
+    }
+  }
+  .el-sub-menu__title {
+    .el-menu-title__wrap {
+      &.collapse {
+        justify-content: center;
+      }
+    }
+  }
+  .el-menu-item-group__title {
+    display: none;
+  }
+}
+// .el-menu:not(.el-menu--collapse) {
+//   width: 224px;
+// }
+// .el-menu .el-menu-item,
+// .el-menu .el-sub-menu__title {
+//   padding: 10px 12px;
+//   box-sizing: border-box;
+// }
+
+// .el-menu .el-menu-item:hover .layout-menu__icon,
+// .el-menu .el-sub-menu__title:hover .layout-menu__icon {
+//   transform: scale(1.1);
+// }
+// .el-menu .el-menu-item.is-active {
+//   color: var(--primary);
+//   .layout-menu__icon {
+//     color: var(--primary) !important;
+//   }
+// }
+// .el-menu .el-sub-menu__title .el-menu-title__wrap,
+// .el-menu .el-menu-item .el-menu-title__wrap {
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   align-items: center;
+//   border-radius: 8px;
+//   gap: 8px;
+//   &.collapse {
+//     display: flex;
+//     align-items: center;
+//     justify-content: flex-start;
+//   }
+// }
 </style>
 <style lang="scss" scoped>
 @use '../../assets/scss/root.scss' as *;
@@ -294,46 +379,7 @@ watch(
     min-width: 60px;
   }
 }
-:deep(.el-menu) {
-  width: 60px;
-  height: 100%;
-  border-right: 1px solid #fff;
-  transition: width 0.15s ease;
-  &:not(.el-menu--collapse) {
-    width: 224px;
-  }
-  .el-menu-item {
-    &.is-active {
-      color: var(--primary);
-      .layout-menu__icon {
-        color: var(--primary) !important;
-      }
-    }
-  }
-  .el-menu-title__wrap {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    border-radius: 8px;
-    gap: 8px;
-    &.collapse {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-  .el-sub-menu__title,
-  .el-menu-item {
-    padding: 10px 12px;
-    box-sizing: border-box;
-    &:hover {
-      .layout-menu__icon {
-        transform: scale(1.1);
-      }
-    }
-  }
-}
+
 .layout {
   height: 100vh;
   overflow: hidden;

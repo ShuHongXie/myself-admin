@@ -71,7 +71,12 @@ function generatorColorVariables(colorItems: ColorItem[]) {
 function updateCSSVariables(config: Config) {
   const theme = config?.theme ?? {}
 
-  if (Reflect.has(theme, 'colorPrimary')) {
+  if (
+    Reflect.has(theme, 'colorPrimary') ||
+    Reflect.has(theme, 'colorDestructive') ||
+    Reflect.has(theme, 'colorSuccess') ||
+    Reflect.has(theme, 'colorWarning')
+  ) {
     updateMainColorVariables(config)
   }
 }
@@ -80,15 +85,20 @@ function updateMainColorVariables(config: Config) {
   if (!config.theme) {
     return
   }
-  const { colorPrimary } = config.theme
-  const colorVariables = generatorColorVariables([{ color: colorPrimary, name: 'primary' }])
+  const { colorDestructive, colorPrimary, colorSuccess, colorWarning } = config.theme
+  const colorVariables = generatorColorVariables([
+    { color: colorPrimary, name: 'primary' },
+    { alias: 'warning', color: colorWarning, name: 'yellow' },
+    { alias: 'success', color: colorSuccess, name: 'green' },
+    { alias: 'destructive', color: colorDestructive, name: 'red' }
+  ])
 
   // 要设置的 CSS 变量映射
   const colorMappings = {
-    // '--green-500': '--success',
-    '--primary-500': '--primary'
-    // '--red-500': '--destructive',
-    // '--yellow-500': '--warning'
+    '--green-500': '--success',
+    '--primary-500': '--primary',
+    '--red-500': '--destructive',
+    '--yellow-500': '--warning'
   }
 
   // 统一处理颜色变量的更新

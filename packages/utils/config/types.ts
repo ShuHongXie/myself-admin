@@ -5,8 +5,11 @@ interface InitialOptions {
 
 // 主题配置
 interface ThemeConfig {
+  colorDestructive?: string
   // 主题色
-  colorPrimary: string
+  colorPrimary?: string
+  colorSuccess?: string
+  colorWarning?: string
 }
 
 // 侧边栏相关配置
