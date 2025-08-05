@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import screenfull from 'screenfull'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { loadLocaleMessages } from '@myself/locales'
+import { SUPPORT_LANGUAGES } from '@myself/utils'
+
+import type { LanguagesType } from '@myself/locales'
 
 // 主题色切换逻辑-----------start---------------
 import { guider, userConfig } from '@myself/utils'
-const themeColor = ref('#000000')
-
 /**
  * @description: 主题色切换
  * @param {*} val
@@ -77,8 +79,37 @@ const handleSidebar = () => {
   })
 }
 
-// 颜色更改
-// watch(themeColor, (val) => {})
+/**
+ * @description: 语言切换
+ * @param {*} value
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleSwitchLanguage = async (value: string | undefined) => {
+  if (!value) return
+  const locale = value as LanguagesType
+  guider.updateConfig({
+    app: {
+      locale
+    }
+  })
+}
+
+/**
+ * @description: 国际化更改监听
+ * @return {*}
+ * @Author: xieshuhong
+ */
+watch(
+  () => userConfig.app?.locale,
+  async () => {
+    await loadLocaleMessages(userConfig.app?.locale as LanguagesType)
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
 </script>
 
 <template>
@@ -153,24 +184,49 @@ const handleSidebar = () => {
         <el-header class="layout-header">
           <slot name="header">
             <div class="layout-header__left">
+              <!-- 侧边栏折叠 -->
               <div class="header-item" @click.stop="handleSidebar">
                 <Icon icon="ep:fold" color="#999" />
               </div>
+              <!-- 页面刷新 -->
               <div class="header-item" @click.stop="handleReload">
                 <Icon icon="ep:refresh" color="#999" />
               </div>
+              <!-- 路由面包屑 -->
+              <el-breadcrumb>
+                <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
+                <el-breadcrumb-item>promotion management</el-breadcrumb-item>
+                <el-breadcrumb-item>promotion list</el-breadcrumb-item>
+                <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
+              </el-breadcrumb>
             </div>
             <div class="layout-header__right">
+              <!-- 颜色切换 -->
               <div class="header-theme">
                 <el-color-picker
                   @change="handleThemeChange"
-                  v-model="themeColor"
+                  v-model="userConfig.theme!.colorPrimary"
                   size="small"
                 ></el-color-picker>
               </div>
-              <div class="header-item" @click.stop="handleFullScreen">
-                <Icon icon="cil:language" color="#000" />
-              </div>
+              <!-- 中英文切换 -->
+              <el-dropdown popper-class="language-dropdown" trigger="click" placement="bottom-end">
+                <div class="header-item">
+                  <Icon icon="cil:language" color="#000" />
+                </div>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item
+                      @click="handleSwitchLanguage(item.value)"
+                      v-for="item in SUPPORT_LANGUAGES"
+                      :key="item.value"
+                      :class="item.value === userConfig.app?.locale ? 'active' : ''"
+                      >{{ item.label }}</el-dropdown-item
+                    >
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+              <!-- 全屏切换 -->
               <div class="header-item" @click.stop="handleFullScreen">
                 <Icon icon="ep:full-screen" color="#000" />
               </div>
@@ -218,6 +274,12 @@ const handleSidebar = () => {
   </div>
 </template>
 
+<style>
+.language-dropdown .el-dropdown-menu__item.active {
+  background-color: var(--el-dropdown-menuItem-hover-fill);
+  color: var(--el-dropdown-menuItem-hover-color);
+}
+</style>
 <style lang="scss" scoped>
 @use '../../assets/scss/root.scss' as *;
 @use '../../assets/scss/mixin.scss' as *;
@@ -372,7 +434,6 @@ const handleSidebar = () => {
       width: 100%;
     }
     :deep(.el-tabs__nav) {
-      margin: 0 4px;
       border-top: none;
     }
     :deep(.el-tabs__header) {

@@ -18,9 +18,9 @@ interface SidebarConfig {
 // 全局配置
 interface AppConfig {
   // 语言
-  locale: string
+  locale?: string
   // 应用名称
-  name: string
+  name?: string
 }
 
 // 整体用户偏好配置

@@ -1,5 +1,5 @@
 import { App } from 'vue'
-import { createI18n, useI18n } from 'vue-i18n'
+import { createI18n } from 'vue-i18n'
 
 import type { extendOptions, extendMessageFn, LanguagesType } from './types'
 let extendMessage: extendMessageFn
@@ -40,8 +40,6 @@ const localesMapByDir = async () => {
       LanguagesTypeEntity[type][name][key] = module?.default[key]
     }
   }
-  console.log(LanguagesTypeEntity)
-
   return LanguagesTypeEntity
 }
 
@@ -51,18 +49,20 @@ const localesMapByDir = async () => {
  * @return {*}
  * @Author: xieshuhong
  */
-const loadLocalMessages = async (lang: LanguagesType) => {
+const loadLocaleMessages = async (lang: LanguagesType) => {
   if (i18n.global.locale.value === lang) {
     setI18nLanguage(lang)
   }
 
   const message = await localesMapByDir()
+
   if (Object.keys(message)) {
     i18n.global.setLocaleMessage(lang, message[lang])
   }
 
   const mergeMessage = await extendMessage(lang)
   i18n.global.mergeLocaleMessage(lang, mergeMessage)
+  setI18nLanguage(lang)
 }
 
 /**
@@ -75,9 +75,11 @@ const loadLocalMessages = async (lang: LanguagesType) => {
 const initI18n = async (app: App, options: extendOptions = {}) => {
   const { defaultLocale = 'zh-CN' } = options
   extendMessage = options?.extendMessage || (async () => ({}))
-
-  await loadLocalMessages(defaultLocale)
   app.use(i18n)
+  await loadLocaleMessages(defaultLocale)
 }
 
-export { initI18n, useI18n, loadLocalMessages }
+const $t = i18n.global.t
+
+export { initI18n, i18n, $t, loadLocaleMessages }
+export * from './types'
