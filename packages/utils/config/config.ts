@@ -13,5 +13,8 @@ export const config: Config = {
   app: {
     locale: 'zh-CN',
     name: 'Myself Admin'
+  },
+  transition: {
+    progress: true
   }
 }

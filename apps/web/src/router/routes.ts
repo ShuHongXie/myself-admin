@@ -1,9 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-export const routes: RouteRecordRaw[] = [
-  {
-    path: '/test',
-    component: () => import('#/views/test.vue')
-  },
+export const staticRoutes: RouteRecordRaw[] = [
   {
     component: () => import('#/@core/Layout.vue'),
     meta: {
@@ -19,7 +15,8 @@ export const routes: RouteRecordRaw[] = [
         path: 'home',
         component: () => import('#/views/home.vue'),
         meta: {
-          title: '登录'
+          title: 'home页',
+          hideInBreadcrumb: true
         }
       }
     ]
@@ -53,6 +50,19 @@ export const routes: RouteRecordRaw[] = [
       title: '404'
     },
     name: 'FallbackNotFound',
-    path: '/:path(.*)*'
+    path: '/404'
+  }
+]
+
+export const matchRoutes: RouteRecordRaw[] = [
+  {
+    path: '/:path(.*)*',
+    redirect: '/404',
+    meta: {
+      hideInBreadcrumb: true,
+      hideInMenu: true,
+      hideInTab: true,
+      title: '404'
+    }
   }
 ]

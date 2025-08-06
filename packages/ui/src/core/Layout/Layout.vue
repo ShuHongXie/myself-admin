@@ -288,6 +288,14 @@ watch(
   &:not(.el-menu--collapse) {
     width: 224px;
   }
+  &--collapse {
+    .el-sub-menu.is-active {
+      background-color: var(--el-color-primary-light-8);
+      svg {
+        color: var(--el-menu-active-color) !important;
+      }
+    }
+  }
   .el-menu-item,
   .el-sub-menu__title {
     padding: 10px 12px;
@@ -331,39 +339,6 @@ watch(
     display: none;
   }
 }
-// .el-menu:not(.el-menu--collapse) {
-//   width: 224px;
-// }
-// .el-menu .el-menu-item,
-// .el-menu .el-sub-menu__title {
-//   padding: 10px 12px;
-//   box-sizing: border-box;
-// }
-
-// .el-menu .el-menu-item:hover .layout-menu__icon,
-// .el-menu .el-sub-menu__title:hover .layout-menu__icon {
-//   transform: scale(1.1);
-// }
-// .el-menu .el-menu-item.is-active {
-//   color: var(--primary);
-//   .layout-menu__icon {
-//     color: var(--primary) !important;
-//   }
-// }
-// .el-menu .el-sub-menu__title .el-menu-title__wrap,
-// .el-menu .el-menu-item .el-menu-title__wrap {
-//   width: 100%;
-//   height: 100%;
-//   display: flex;
-//   align-items: center;
-//   border-radius: 8px;
-//   gap: 8px;
-//   &.collapse {
-//     display: flex;
-//     align-items: center;
-//     justify-content: flex-start;
-//   }
-// }
 </style>
 <style lang="scss" scoped>
 @use '../../assets/scss/root.scss' as *;

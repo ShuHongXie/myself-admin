@@ -33,8 +33,8 @@ function executeUpdateCSSVariables(
 
 interface ColorItem {
   alias?: string
-  color: string
-  name: string
+  color?: string
+  name?: string
 }
 
 // 根据某个色值生成色值阶梯对象，key=500时为其默认初始值，也就是默认参数

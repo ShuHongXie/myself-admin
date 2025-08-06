@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 
-import { routes } from './routes'
+import { staticRoutes } from './routes'
 import { createRouterGuard } from './guard'
 
 const router = createRouter({
@@ -9,7 +9,7 @@ const router = createRouter({
       ? createWebHashHistory(import.meta.env.VITE_BASE)
       : createWebHistory(import.meta.env.VITE_BASE),
   // 应该添加到路由的初始路由列表。
-  routes,
+  routes: staticRoutes,
   scrollBehavior: (to, _from, savedPosition) => {
     if (savedPosition) {
       return savedPosition

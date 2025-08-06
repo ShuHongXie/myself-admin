@@ -18,6 +18,12 @@ interface SidebarConfig {
   collapse: boolean
 }
 
+// 动画相关配置
+interface TransitionConfig {
+  // 是否开启页面进度条动画
+  progress: boolean
+}
+
 // 全局配置
 interface AppConfig {
   // 语言
@@ -31,6 +37,7 @@ interface Config {
   app?: AppConfig
   theme?: ThemeConfig
   sidebar?: SidebarConfig
+  transition?: TransitionConfig
 }
 
 export type { Config, InitialOptions }
