@@ -2,6 +2,7 @@ import type { Router } from 'vue-router'
 
 import nprogress from 'nprogress'
 import { userConfig } from '@myself/utils'
+// import { data as routerData } from './routerData'
 
 /**
  * 通用守卫配置

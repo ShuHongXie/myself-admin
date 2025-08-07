@@ -14,10 +14,13 @@
   "dependencies": {
     "@iconify/vue": "catalog:",
     "@myself/locales": "workspace:*",
+    "@myself/store": "workspace:^",
     "@myself/ui": "workspace:^",
     "@myself/utils": "workspace:^",
     "@types/nprogress": "catalog:",
     "nprogress": "catalog:",
+    "pinia": "catalog:",
+    "pinia-plugin-persistedstate": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
   },

@@ -1,0 +1,28 @@
+{
+  "name": "@myself/store",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.ts",
+      "default": "./index.ts"
+    },
+    "./init": {
+      "types": "./init.ts",
+      "default": "./init.ts"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "pinia": "catalog:",
+    "pinia-plugin-persistedstate": "catalog:",
+    "vue": "catalog:",
+    "vue-router": "catalog:",
+    "vite": "catalog:"
+  }
+}
