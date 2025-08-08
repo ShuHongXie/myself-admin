@@ -12,7 +12,8 @@ export const config: Config = {
   },
   app: {
     locale: 'zh-CN',
-    name: 'Myself Admin'
+    name: 'Myself Admin',
+    defaultHomePath: '/'
   },
   transition: {
     progress: true

@@ -11,14 +11,17 @@
   "imports": {
     "#/*": "./src/*"
   },
+  "files": [
+    "src/"
+  ],
   "exports": {
     ".": {
       "types": "./src/assets/scss/scss/index.ts",
       "default": "./src/index.ts"
     },
     "./styles": {
-      "development": "./src/assets/scss/index.scss",
-      "default": "./dist/scss/index.scss"
+      "types": "./src/type.d.ts",
+      "default": "./src/assets/scss/index.scss"
     }
   },
   "dependencies": {

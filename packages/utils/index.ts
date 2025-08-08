@@ -1,3 +1,4 @@
+export { default as cloneDeep } from 'lodash.clonedeep'
 export * from './func'
 export * from './config'
 export * from './hooks'

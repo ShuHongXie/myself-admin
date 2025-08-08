@@ -15,5 +15,5 @@
     "baseUrl": "."
   },
   "types": ["element-plus/global", "vite/client", "nprogress"],
-  "include": ["src/**/*.ts", "src/**/*.vue", "auto-imports.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.vue", "auto-imports.d.ts", "node_modules/@myself/ui"]
 }

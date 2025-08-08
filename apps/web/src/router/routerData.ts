@@ -1,3 +1,30 @@
+import type { RouteRecordRaw } from 'vue-router'
+
+export const data: RouteRecordRaw[] = [
+  {
+    component: 'Layout',
+    meta: {
+      hideInBreadcrumb: true,
+      title: 'Root'
+    },
+    name: 'Root',
+    path: '/',
+    redirect: '/home',
+    children: [
+      {
+        name: 'Hpme',
+        path: '/home',
+        component: 'home',
+        meta: {
+          title: 'home页',
+          hideInBreadcrumb: true
+        }
+      }
+    ]
+  }
+]
+
+/*
 export const data = [
   {
     name: 'System',
@@ -304,3 +331,4 @@ export const data = [
     }
   }
 ]
+*/

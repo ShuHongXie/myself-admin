@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 
 import { staticRoutes } from './routes'
-import { createRouterGuard } from './guard'
+// import { createRouterGuard } from './guard'
 
 const router = createRouter({
   history:
@@ -21,6 +21,6 @@ const router = createRouter({
 // const resetRoutes = () =>  resetStaticRoutes(router, routes)
 const resetRoutes = () => {}
 
-createRouterGuard(router)
+// createRouterGuard(router)
 
 export { resetRoutes, router }

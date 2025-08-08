@@ -30,6 +30,8 @@ interface AppConfig {
   locale?: string
   // 应用名称
   name?: string
+  // 默认主页地址
+  defaultHomePath?: string
 }
 
 // 整体用户偏好配置

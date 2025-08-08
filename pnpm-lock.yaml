@@ -12,6 +12,9 @@ catalogs:
     '@iconify/vue':
       specifier: ^5.0.0
       version: 5.0.0
+    '@types/lodash.clonedeep':
+      specifier: ^4.5.9
+      version: 4.5.9
     '@types/nprogress':
       specifier: ^0.2.3
       version: 0.2.3
@@ -27,6 +30,9 @@ catalogs:
     element-plus:
       specifier: 2.10.4
       version: 2.10.4
+    lodash.clonedeep:
+      specifier: ^4.5.0
+      version: 4.5.0
     nprogress:
       specifier: ^0.2.0
       version: 0.2.0
@@ -315,12 +321,19 @@ importers:
       defu:
         specifier: 'catalog:'
         version: 6.1.4
+      lodash.clonedeep:
+        specifier: 'catalog:'
+        version: 4.5.0
       theme-colors:
         specifier: 'catalog:'
         version: 0.1.0
       vue:
         specifier: 'catalog:'
         version: 3.5.17(typescript@5.8.3)
+    devDependencies:
+      '@types/lodash.clonedeep':
+        specifier: 'catalog:'
+        version: 4.5.9
 
 packages:
 
@@ -1006,6 +1019,9 @@ packages:
 
   '@types/lodash-es@4.17.12':
     resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
+
+  '@types/lodash.clonedeep@4.5.9':
+    resolution: {integrity: sha512-19429mWC+FyaAhOLzsS8kZUsI+/GmBAQ0HFiCPsKGU+7pBXOQWhyrY6xNNDwUSX8SMZMJvuFVMF9O5dQOlQK9Q==}
 
   '@types/lodash@4.17.20':
     resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
@@ -2657,6 +2673,9 @@ packages:
 
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
+
+  lodash.clonedeep@4.5.0:
+    resolution: {integrity: sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==}
 
   lodash.isplainobject@4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
@@ -4493,6 +4512,10 @@ snapshots:
   '@types/json-schema@7.0.15': {}
 
   '@types/lodash-es@4.17.12':
+    dependencies:
+      '@types/lodash': 4.17.20
+
+  '@types/lodash.clonedeep@4.5.9':
     dependencies:
       '@types/lodash': 4.17.20
 
@@ -6353,6 +6376,8 @@ snapshots:
       lodash-es: 4.17.21
 
   lodash.camelcase@4.3.0: {}
+
+  lodash.clonedeep@4.5.0: {}
 
   lodash.isplainobject@4.0.6: {}
 

@@ -7,12 +7,14 @@ catalog:
   '@element-plus/icons-vue': ^2.3.1
   '@iconify/vue': ^5.0.0
   '@tailwindcss/vite': ^4.1.11
+  '@types/lodash.clonedeep': ^4.5.9
   '@types/nprogress': ^0.2.3
   '@vitejs/plugin-vue': ^6.0.0
   '@vue/tsconfig': ^0.7.0
   defu: ^6.1.4
   element-plus: 2.10.4
   lodash: ^4.17.21
+  lodash.clonedeep: ^4.5.0
   nprogress: ^0.2.0
   pinia: 3.0.3
   pinia-plugin-persistedstate: 4.4.1
