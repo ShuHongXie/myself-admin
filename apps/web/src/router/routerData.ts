@@ -12,7 +12,7 @@ export const data: RouteRecordRaw[] = [
     redirect: '/home',
     children: [
       {
-        name: 'Hpme',
+        name: 'Home',
         path: '/home',
         component: 'home',
         meta: {
