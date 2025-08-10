@@ -3,21 +3,25 @@ import type { RouteRecordRaw } from 'vue-router'
 export const data: RouteRecordRaw[] = [
   {
     component: 'Layout',
-    meta: {
-      hideInBreadcrumb: true,
-      title: 'Root'
-    },
     name: 'Root',
     path: '/',
     redirect: '/home',
+    meta: {
+      icon: 'ep:help',
+      title: '根路径',
+      no: 1,
+      hideInBreadcrumb: true
+    },
     children: [
       {
         name: 'Home',
         path: '/home',
         component: 'home',
         meta: {
+          icon: 'ep:fork-spoon',
           title: 'home页',
-          hideInBreadcrumb: true
+          hideInBreadcrumb: true,
+          no: 1
         }
       }
     ]

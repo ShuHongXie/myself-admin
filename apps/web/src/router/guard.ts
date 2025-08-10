@@ -2,7 +2,7 @@ import type { Router } from 'vue-router'
 
 import nprogress from 'nprogress'
 import { userConfig } from '@myself/utils'
-import { useRoutesStore } from '@myself/store'
+import { useConfigStore, useRoutesStore } from '@myself/store'
 import { generateRoutes } from './generate'
 import { matchRoutes } from './routes'
 import { toRaw } from 'vue'
@@ -40,6 +40,7 @@ function setupAccessGuard(router: Router) {
   router.beforeEach((to, from) => {
     // const userStore = useUserStore()
     const routesStore = useRoutesStore()
+    const configStore = useConfigStore()
 
     // 默认可进入的路由，需要屏蔽掉404
     // if (routesStore.accessStaticRouteList.includes(to.path)) {
@@ -69,15 +70,16 @@ function setupAccessGuard(router: Router) {
     if (routesStore.mergeRoutes.length) {
       return true
     }
-    const { dynamicRoutes } = generateRoutes()
-
+    const { dynamicRoutes, menuData } = generateRoutes()
     const mergeRoutes = [...toRaw(routesStore.staticRoutes), ...dynamicRoutes, ...matchRoutes]
     mergeRoutes.forEach((routes) => {
       router.addRoute(routes)
     })
     routesStore.setDynamicRoutes(dynamicRoutes)
     routesStore.setMergeRoutes(mergeRoutes)
+    configStore.setMenuData(menuData)
     console.log('路由:', router.getRoutes())
+    console.log('菜单:', configStore.menuData)
     const redirectPath = (from.query.redirect ??
       (to.path === userConfig.app?.defaultHomePath
         ? userConfig.app?.defaultHomePath
