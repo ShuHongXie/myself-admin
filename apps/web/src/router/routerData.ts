@@ -23,6 +23,17 @@ export const data: RouteRecordRaw[] = [
           hideInBreadcrumb: true,
           no: 1
         }
+      },
+      {
+        name: 'Test',
+        path: '/test',
+        component: 'test',
+        meta: {
+          icon: 'ep:notebook',
+          title: '测试页',
+          hideInBreadcrumb: true,
+          no: 1
+        }
       }
     ]
   }

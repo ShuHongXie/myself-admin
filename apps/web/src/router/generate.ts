@@ -22,7 +22,7 @@ export const generateRoutes = () => {
 export const formatRoutes = (routes: RouteRecordRaw[]) => {
   routes.forEach((item) => {
     if (item.component === 'Layout') {
-      item!.component = Layout
+      item.component = Layout
     } else {
       item.component = modules[`../views${item.path}.vue`]
     }
@@ -41,11 +41,18 @@ export const formatRoutes = (routes: RouteRecordRaw[]) => {
 export const generateMenus = (routes: RouteRecordRaw[], menuData: any = []) => {
   // 遍历路由配置数组
   routes.forEach((item) => {
-    const { redirect, name: routeName, meta = {} as RouteMeta } = item
-    const { link, title, icon, showInBreadcrumb = true, showInTab = true, showInMenu = true } = meta
+    const { path, name: routeName, meta = {} as RouteMeta } = item
+    const {
+      link = '',
+      title,
+      icon,
+      showInBreadcrumb = true,
+      showInTab = true,
+      showInMenu = true
+    } = meta
     if (showInMenu) {
       const menu = {
-        path: redirect || link,
+        path: link || path,
         name: title || routeName,
         icon,
         showInBreadcrumb,

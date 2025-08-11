@@ -1,14 +1,53 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import screenfull from 'screenfull'
+import { storeToRefs } from 'pinia'
 import { ref, watch } from 'vue'
+import { guider, userConfig, isHttp } from '@myself/utils'
+import { useRoute, useRouter } from 'vue-router'
 import { loadLocaleMessages } from '@myself/locales'
 import { SUPPORT_LANGUAGES } from '@myself/utils'
+import { useConfigStore } from '@myself/store'
+
+import screenfull from 'screenfull'
+import NestedMenu from './NestedMenu.vue'
+import { Icon } from '@iconify/vue'
 
 import type { LanguagesType } from '@myself/locales'
 
+// 侧边栏相关逻辑-----------start---------------
+const configStore = useConfigStore()
+const { menuData } = storeToRefs(configStore)
+const route = useRoute()
+const router = useRouter()
+
+/**
+ * @description: 菜单选中跳转
+ * @param {*} key
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleSelect = (key: string) => {
+  if (isHttp(key)) {
+    window.open(key, '_blank')
+  } else {
+    router.push({ path: key })
+  }
+}
+
+/**
+ * @description: 侧边栏控制
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleSidebar = () => {
+  guider.updateConfig({
+    sidebar: {
+      collapse: !userConfig.sidebar?.collapse
+    }
+  })
+}
+// 侧边栏相关逻辑-----------end---------------
+
 // 主题色切换逻辑-----------start---------------
-import { guider, userConfig } from '@myself/utils'
 /**
  * @description: 主题色切换
  * @param {*} val
@@ -67,19 +106,6 @@ const handleFullScreen = () => {
 }
 
 /**
- * @description: 侧边栏控制
- * @return {*}
- * @Author: xieshuhong
- */
-const handleSidebar = () => {
-  guider.updateConfig({
-    sidebar: {
-      collapse: !userConfig.sidebar?.collapse
-    }
-  })
-}
-
-/**
  * @description: 语言切换
  * @param {*} value
  * @return {*}
@@ -128,42 +154,15 @@ watch(
         </div>
         <div class="layout-menu">
           <el-menu
+            @select="handleSelect"
+            v-if="menuData.length"
             :class="{
               collapse: userConfig.sidebar?.collapse
             }"
             :collapse="userConfig.sidebar?.collapse"
-            default-active="2"
+            :default-active="route.path"
           >
-            <el-sub-menu index="1">
-              <template #title>
-                <div
-                  class="el-menu-title__wrap"
-                  :class="{
-                    collapse: userConfig.sidebar?.collapse
-                  }"
-                >
-                  <Icon icon="ep:fold" color="#999999" class="layout-menu__icon"></Icon>
-                  <span class="layout-menu__text">Navigator One</span>
-                </div>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1">
-                  <div
-                    class="el-menu-title__wrap"
-                    :class="{
-                      collapse: userConfig.sidebar?.collapse
-                    }"
-                  >
-                    <Icon icon="ep:fold" color="#999999" class="layout-menu__icon"></Icon>
-                    <span class="layout-menu__text">子菜单</span>
-                  </div>
-                </el-menu-item>
-                <el-menu-item index="1-2">item two</el-menu-item>
-              </el-menu-item-group>
-            </el-sub-menu>
-            <el-menu-item index="2">
-              <template #title>Navigator Two</template>
-            </el-menu-item>
+            <NestedMenu :collapse="userConfig.sidebar?.collapse" :menu-data="menuData"></NestedMenu>
           </el-menu>
         </div>
         <div class="layout-collapse">
@@ -181,7 +180,10 @@ watch(
           <slot name="header">
             <div class="layout-header__left">
               <!-- 侧边栏折叠 -->
-              <div class="header-item" @click.stop="handleSidebar">
+              <div
+                :class="{ 'header-item': true, rotate: userConfig.sidebar?.collapse }"
+                @click.stop="handleSidebar"
+              >
                 <Icon icon="ep:fold" color="#999" />
               </div>
               <!-- 页面刷新 -->
@@ -431,11 +433,15 @@ watch(
         border-radius: 6px;
         @include flex-between-center;
         padding: 0 4px;
+
         &:hover {
           background-color: rgb(228, 228, 231);
           svg {
             color: #000000 !important;
           }
+        }
+        &.rotate {
+          transform: rotate(180deg);
         }
       }
       &-user {

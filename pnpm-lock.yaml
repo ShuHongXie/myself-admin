@@ -266,9 +266,15 @@ importers:
       '@iconify/vue':
         specifier: 'catalog:'
         version: 5.0.0(vue@3.5.17(typescript@5.8.3))
+      '@myself/store':
+        specifier: workspace:^
+        version: link:../store
       '@myself/utils':
         specifier: workspace:^
         version: link:../utils
+      pinia:
+        specifier: 'catalog:'
+        version: 3.0.3(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
       screenfull:
         specifier: 'catalog:'
         version: 6.0.2
