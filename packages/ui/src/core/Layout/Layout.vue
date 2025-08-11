@@ -277,6 +277,7 @@ watch(
 </template>
 
 <style lang="scss">
+@use '../../assets/scss/mixin.scss' as *;
 .language-dropdown .el-dropdown-menu__item.active {
   background-color: var(--el-dropdown-menuItem-hover-fill);
   color: var(--el-dropdown-menuItem-hover-color);
@@ -319,10 +320,9 @@ watch(
       align-items: center;
       border-radius: 8px;
       gap: 8px;
+      transition: all 0.15s ease;
       &.collapse {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
+        @include flex-center-center;
       }
     }
   }

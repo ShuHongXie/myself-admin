@@ -28,17 +28,15 @@ defineProps<{
     </el-sub-menu>
     <!-- 无子菜单的情况 -->
     <el-menu-item v-else :index="item.path">
-      <template #title>
-        <div
-          class="el-menu-title__wrap"
-          :class="{
-            collapse
-          }"
-        >
-          <Icon :icon="item.icon" color="#999999" class="layout-menu__icon"></Icon>
-          <span class="layout-menu__text">{{ item.name }}</span>
-        </div>
-      </template>
+      <div
+        class="el-menu-title__wrap"
+        :class="{
+          collapse
+        }"
+      >
+        <Icon :icon="item.icon" color="#999999" class="layout-menu__icon"></Icon>
+        <span class="layout-menu__text">{{ item.name }}</span>
+      </div>
     </el-menu-item>
   </template>
 </template>

@@ -1,4 +1,4 @@
-import type { RouteMeta, RouteRecordRaw } from 'vue-router'
+import type { RouteMeta } from 'vue-router'
 import { cloneDeep } from '@myself/utils'
 import { data as routerData } from './routerData'
 import Layout from '#/@core/Layout.vue'
@@ -19,7 +19,7 @@ export const generateRoutes = () => {
   }
 }
 
-export const formatRoutes = (routes: RouteRecordRaw[]) => {
+export const formatRoutes = (routes: any[]) => {
   routes.forEach((item) => {
     if (item.component === 'Layout') {
       item.component = Layout
@@ -38,9 +38,9 @@ export const formatRoutes = (routes: RouteRecordRaw[]) => {
  * @param routes - 路由配置数组，类型为 RouteRecordRaw
  * @returns 返回符合菜单配置的数据数组
  */
-export const generateMenus = (routes: RouteRecordRaw[], menuData: any = []) => {
+export const generateMenus = (routes: any[], menuData: any = []) => {
   // 遍历路由配置数组
-  routes.forEach((item) => {
+  routes.forEach((item: any) => {
     const { path, name: routeName, meta = {} as RouteMeta } = item
     const {
       link = '',
@@ -50,21 +50,32 @@ export const generateMenus = (routes: RouteRecordRaw[], menuData: any = []) => {
       showInTab = true,
       showInMenu = true
     } = meta
-    if (showInMenu) {
-      const menu = {
-        path: link || path,
-        name: title || routeName,
-        icon,
-        showInBreadcrumb,
-        showInTab,
-        showInMenu,
-        children: []
+    const menu = {
+      path: link || path,
+      name: title || routeName,
+      icon,
+      showInBreadcrumb,
+      showInTab,
+      showInMenu,
+      children: []
+    }
+    if (item.component === 'Layout') {
+      if (item.children && item.children.length) {
+        generateMenus(item.children, menuData)
       }
+    } else {
       if (item.children) {
         menu.children = generateMenus(item.children)
       }
       menuData.push(menu)
     }
+    // if (showInMenu && item.component !== 'Layout') {
+    //   if (item.children) {
+    //     menu.children = generateMenus(item.children)
+    //   }
+    //   menuData.push(menu)
+    // } else if (item.children) {
+    // }
   })
   return menuData
 }

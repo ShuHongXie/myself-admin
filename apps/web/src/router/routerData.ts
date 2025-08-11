@@ -1,6 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router'
-
-export const data: RouteRecordRaw[] = [
+export const data: any[] = [
   {
     component: 'Layout',
     name: 'Root',
@@ -14,15 +12,28 @@ export const data: RouteRecordRaw[] = [
     },
     children: [
       {
-        name: 'Home',
-        path: '/home',
-        component: 'home',
+        name: 'manage',
+        path: '',
+        component: '',
         meta: {
           icon: 'ep:fork-spoon',
-          title: 'home页',
+          title: '状态管理',
           hideInBreadcrumb: true,
           no: 1
-        }
+        },
+        children: [
+          {
+            name: 'Home',
+            path: '/home',
+            component: 'home',
+            meta: {
+              icon: 'ep:fork-spoon',
+              title: '概览页',
+              hideInBreadcrumb: true,
+              no: 1
+            }
+          }
+        ]
       },
       {
         name: 'Test',
@@ -31,6 +42,17 @@ export const data: RouteRecordRaw[] = [
         meta: {
           icon: 'ep:notebook',
           title: '测试页',
+          hideInBreadcrumb: true,
+          no: 1
+        }
+      },
+      {
+        name: 'new',
+        path: '/new',
+        component: 'home',
+        meta: {
+          icon: 'ep:fork-spoon',
+          title: 'home页',
           hideInBreadcrumb: true,
           no: 1
         }
