@@ -41,4 +41,25 @@ defineProps<{
   </template>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.layout {
+  &-menu {
+    &__icon {
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+    &__text {
+      transition: all 0.2s ease;
+    }
+  }
+}
+.el-menu-title__wrap {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  &.collapse {
+    justify-content: center;
+  }
+}
+</style>

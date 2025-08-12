@@ -8,11 +8,8 @@ const modules = import.meta.glob('../views/**/*.vue')
 export const generateRoutes = () => {
   let data = cloneDeep(routerData)
   let menuData = [] as any
-  menuData = generateMenus(data, menuData)
-  menuData = menuData.sort((a: any, b: any) => (a?.no ?? 999) - (b?.no ?? 999))
-
+  menuData = generateMenus(data, menuData).sort((a: any, b: any) => (a?.no ?? 999) - (b?.no ?? 999))
   data = formatRoutes(data)
-  console.log(menuData)
   return {
     menuData,
     dynamicRoutes: data
@@ -21,7 +18,7 @@ export const generateRoutes = () => {
 
 export const formatRoutes = (routes: any[]) => {
   routes.forEach((item) => {
-    if (item.component === 'Layout') {
+    if ((item.component as any) === 'Layout') {
       item.component = Layout
     } else {
       item.component = modules[`../views${item.path}.vue`]
@@ -41,7 +38,7 @@ export const formatRoutes = (routes: any[]) => {
 export const generateMenus = (routes: any[], menuData: any = []) => {
   // 遍历路由配置数组
   routes.forEach((item: any) => {
-    const { path, name: routeName, meta = {} as RouteMeta } = item
+    const { path, redirect, name: routeName, meta = {} as RouteMeta } = item
     const {
       link = '',
       title,
@@ -51,7 +48,7 @@ export const generateMenus = (routes: any[], menuData: any = []) => {
       showInMenu = true
     } = meta
     const menu = {
-      path: link || path,
+      path: link || path || redirect,
       name: title || routeName,
       icon,
       showInBreadcrumb,
@@ -69,13 +66,6 @@ export const generateMenus = (routes: any[], menuData: any = []) => {
       }
       menuData.push(menu)
     }
-    // if (showInMenu && item.component !== 'Layout') {
-    //   if (item.children) {
-    //     menu.children = generateMenus(item.children)
-    //   }
-    //   menuData.push(menu)
-    // } else if (item.children) {
-    // }
   })
   return menuData
 }

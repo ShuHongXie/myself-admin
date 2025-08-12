@@ -21,8 +21,11 @@
   "dependencies": {
     "pinia": "catalog:",
     "pinia-plugin-persistedstate": "catalog:",
+    "vite": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:",
-    "vite": "catalog:"
+    "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "@myself/types": "workspace:^"
   }
 }

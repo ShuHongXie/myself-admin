@@ -3,7 +3,6 @@ export const data: any[] = [
     component: 'Layout',
     name: 'Root',
     path: '/',
-    redirect: '/home',
     meta: {
       icon: 'ep:help',
       title: '根路径',
@@ -13,7 +12,8 @@ export const data: any[] = [
     children: [
       {
         name: 'manage',
-        path: '',
+        path: '/',
+        redirect: '/home',
         component: '',
         meta: {
           icon: 'ep:fork-spoon',
@@ -29,6 +29,17 @@ export const data: any[] = [
             meta: {
               icon: 'ep:fork-spoon',
               title: '概览页',
+              hideInBreadcrumb: true,
+              no: 1
+            }
+          },
+          {
+            name: 'Other',
+            path: '/other',
+            component: 'other',
+            meta: {
+              icon: 'ep:toilet-paper',
+              title: '其他页',
               hideInBreadcrumb: true,
               no: 1
             }

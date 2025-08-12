@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { guider, userConfig, isHttp } from '@myself/utils'
 import { useRoute, useRouter } from 'vue-router'
 import { loadLocaleMessages } from '@myself/locales'
-import { SUPPORT_LANGUAGES } from '@myself/utils'
+import { SUPPORT_LANGUAGES, findLevelRoutes } from '@myself/utils'
 import { useConfigStore } from '@myself/store'
 
 import screenfull from 'screenfull'
@@ -18,6 +18,14 @@ const configStore = useConfigStore()
 const { menuData } = storeToRefs(configStore)
 const route = useRoute()
 const router = useRouter()
+
+/**
+ * @description: 面包屑数据
+ * @param {*} computed
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const breadcrumbData = computed(() => findLevelRoutes(menuData.value, route.path))
 
 /**
  * @description: 菜单选中跳转
@@ -147,11 +155,13 @@ watch(
           collapse: userConfig.sidebar?.collapse
         }"
       >
+        <!-- LOGO -->
         <div class="layout-logo">
           <slot name="logo">
             <div><span>MY</span><span v-if="!userConfig.sidebar?.collapse">&nbsp;ADMIN</span></div>
           </slot>
         </div>
+        <!-- 侧边菜单栏 -->
         <div class="layout-menu">
           <el-menu
             @select="handleSelect"
@@ -165,6 +175,7 @@ watch(
             <NestedMenu :collapse="userConfig.sidebar?.collapse" :menu-data="menuData"></NestedMenu>
           </el-menu>
         </div>
+        <!-- 侧边菜单控制 -->
         <div class="layout-collapse">
           <div class="layout-collapse__icon" @click.stop="handleSidebar">
             <Icon
@@ -192,10 +203,12 @@ watch(
               </div>
               <!-- 路由面包屑 -->
               <el-breadcrumb>
-                <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
-                <el-breadcrumb-item>promotion management</el-breadcrumb-item>
-                <el-breadcrumb-item>promotion list</el-breadcrumb-item>
-                <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
+                <el-breadcrumb-item
+                  v-for="item in breadcrumbData"
+                  :key="item.path"
+                  :to="{ path: item.path }"
+                  >{{ item.name }}</el-breadcrumb-item
+                >
               </el-breadcrumb>
             </div>
             <div class="layout-header__right">
@@ -285,11 +298,11 @@ watch(
 .el-menu {
   width: 60px;
   height: 100%;
-  border-right: 1px solid #fff;
-  transition: width 0.15s ease;
+  border-right: none !important;
+  transition: all 0.15s ease;
   &:not(.el-menu--popup).el-menu--collapse {
     .layout-menu__text {
-      display: none;
+      width: 0;
     }
   }
   &:not(.el-menu--collapse) {
@@ -310,7 +323,7 @@ watch(
     &:hover {
       background-color: var(--el-color-primary-light-8);
       .layout-menu__icon {
-        transform: scale(1.1);
+        transform: scale(1.2);
       }
     }
     .el-menu-title__wrap {
@@ -329,6 +342,7 @@ watch(
   .el-menu-item {
     &.is-active {
       color: var(--primary);
+      background-color: var(--el-color-primary-light-8);
       .layout-menu__icon {
         color: var(--primary) !important;
       }
@@ -381,10 +395,6 @@ watch(
     height: calc(100vh - 50px - 42px);
     background-color: #fff;
     overflow: hidden auto;
-    &__icon {
-      font-size: 16px;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
   }
   &-collapse {
     width: 100%;
@@ -433,7 +443,6 @@ watch(
         border-radius: 6px;
         @include flex-between-center;
         padding: 0 4px;
-
         &:hover {
           background-color: rgb(228, 228, 231);
           svg {

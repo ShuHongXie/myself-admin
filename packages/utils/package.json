@@ -22,6 +22,7 @@
     "vue": "catalog:"
   },
   "devDependencies": {
+    "@myself/types": "workspace:^",
     "@types/lodash.clonedeep": "catalog:"
   }
 }
