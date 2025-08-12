@@ -13,6 +13,7 @@ export const config: Config = {
   app: {
     locale: 'zh-CN',
     name: 'Myself Admin',
+    logo: '',
     defaultHomePath: '/'
   },
   transition: {

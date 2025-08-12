@@ -174,7 +174,14 @@ watch(
         <!-- LOGO -->
         <div class="layout-logo">
           <slot name="logo">
-            <div><span>MY</span><span v-if="!userConfig.sidebar?.collapse">&nbsp;ADMIN</span></div>
+            <div class="layout-logo__content">
+              <img
+                style="width: 32px; height: 32px"
+                src="../../assets/images/png/logo.png"
+                alt=""
+              />
+              <span v-if="!userConfig.sidebar?.collapse">MY&nbsp;ADMIN</span>
+            </div>
           </slot>
         </div>
         <!-- 侧边菜单栏 -->
@@ -282,9 +289,9 @@ watch(
             >
               <template #label>
                 <div @click.stop="handleClickTab(item.path as string)" class="layout-tabs__label">
-                  <Icon v-if="item.icon" :icon="item!.icon" color="#999" />
+                  <Icon v-if="item.icon" :icon="item!.icon" color="#999999" />
                   <span> {{ item.name }}</span>
-                  <Icon @click.stop="handleRemoveTab(index)" icon="ep:close" color="#999" />
+                  <Icon @click.stop="handleRemoveTab(index)" icon="ep:close" color="#999999" />
                 </div>
               </template>
             </el-tab-pane>
@@ -410,6 +417,10 @@ watch(
     align-items: center;
     transition: width 0.15s ease;
     text-align: center;
+    &__content {
+      @include flex-between-center;
+      gap: 6px;
+    }
   }
   &-menu {
     width: 100%;
@@ -495,7 +506,10 @@ watch(
       width: 100%;
     }
     :deep(.el-tabs__nav) {
-      border-top: none;
+      border-top-width: 0 !important;
+      &:first-child {
+        border-left-width: 0;
+      }
     }
     :deep(.el-tabs__header) {
       margin-bottom: 0;
@@ -506,12 +520,15 @@ watch(
     :deep(.el-tabs__item) {
       min-width: 122px !important;
       padding: 0 10px !important;
+      color: #999999;
       &.is-active,
       &:hover {
         svg {
           color: var(--el-color-primary) !important;
         }
+        color: var(--el-color-primary);
         border-bottom-color: transparent;
+        background-color: var(--el-color-primary-light-9);
         &.is-closable {
           padding: 0 6px;
         }

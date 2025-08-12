@@ -28,7 +28,19 @@ defineProps<{
     </el-sub-menu>
     <!-- 无子菜单的情况 -->
     <el-menu-item v-else :index="item.path">
+      <el-tooltip v-if="collapse" effect="dark" :content="item.name" placement="right">
+        <div
+          class="el-menu-title__wrap"
+          :class="{
+            collapse
+          }"
+        >
+          <Icon :icon="item.icon" color="#999999" class="layout-menu__icon"></Icon>
+          <span class="layout-menu__text">{{ item.name }}</span>
+        </div>
+      </el-tooltip>
       <div
+        v-else
         class="el-menu-title__wrap"
         :class="{
           collapse

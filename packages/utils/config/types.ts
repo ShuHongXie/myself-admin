@@ -32,6 +32,8 @@ interface AppConfig {
   name?: string
   // 默认主页地址
   defaultHomePath?: string
+  // 应用LOGO
+  logo?: string
 }
 
 // 整体用户偏好配置
