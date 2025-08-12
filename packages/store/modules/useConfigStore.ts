@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { ref } from 'vue'
 
-import type { MenuDataItem, BreadcrumbItem } from '@myself/types'
+import type { MenuDataItem, TabItem } from '@myself/types'
 
 /**
  * @description: 全局数据配置
@@ -10,21 +10,38 @@ import type { MenuDataItem, BreadcrumbItem } from '@myself/types'
  */
 export const useConfigStore = defineStore('config', () => {
   const menuData = ref<MenuDataItem[]>([]) // 动态路由
-  const breadcrumbData = ref<BreadcrumbItem[]>([]) // 动态路由
+  const tabData = ref<TabItem[]>([]) // 动态路由
+  const activeTab = ref<string>('') // 当前激活的tab
 
-  const setMenuData = (data: any[]) => {
+  const setMenuData = (data: MenuDataItem[]) => {
     menuData.value = data
   }
 
-  const setBreadcrumbData = (data: any[]) => {
-    breadcrumbData.value = data
+  const setTabData = (data: TabItem) => {
+    const index = tabData.value.findIndex((item: TabItem) => item.path === data.path)
+    if (index !== -1) {
+      tabData.value.splice(index, 1, data)
+    } else {
+      tabData.value.push(data)
+    }
+  }
+
+  const removeTabData = (index: number) => {
+    tabData.value.splice(index, 1)
+  }
+
+  const setActiveTab = (path: string) => {
+    activeTab.value = path
   }
 
   return {
     menuData,
     setMenuData,
-    breadcrumbData,
-    setBreadcrumbData
+    tabData,
+    setTabData,
+    removeTabData,
+    activeTab,
+    setActiveTab
   }
 })
 

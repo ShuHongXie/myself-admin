@@ -49,7 +49,7 @@ defineProps<{
       transition: all 0.2s ease;
     }
     &__text {
-      transition: all 0.2s ease;
+      transition: none;
     }
   }
 }

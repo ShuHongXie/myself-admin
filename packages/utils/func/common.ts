@@ -49,3 +49,22 @@ export function findLevelRoutes(
   }
   return [] // 未找到
 }
+
+/**
+ * @description 查找菜单栏中当前path对应的菜单项
+ * @author xieshuhong
+ * @export
+ * @param {MenuDataItem[]} items
+ * @param {string} targetPath
+ * @return {*}  {(MenuDataItem | null)}
+ */
+export function findMenuItem(items: MenuDataItem[], targetPath: string): MenuDataItem | null {
+  for (const item of items) {
+    if (item.path === targetPath) return item
+    if (item.children) {
+      const found = findMenuItem(item.children, targetPath)
+      if (found) return found
+    }
+  }
+  return null
+}

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed, ref, watch } from 'vue'
-import { guider, userConfig, isHttp } from '@myself/utils'
+import { computed, watch } from 'vue'
+import { guider, userConfig, isHttp, findMenuItem } from '@myself/utils'
 import { useRoute, useRouter } from 'vue-router'
 import { loadLocaleMessages } from '@myself/locales'
 import { SUPPORT_LANGUAGES, findLevelRoutes } from '@myself/utils'
@@ -13,11 +13,12 @@ import { Icon } from '@iconify/vue'
 
 import type { LanguagesType } from '@myself/locales'
 
-// 侧边栏相关逻辑-----------start---------------
 const configStore = useConfigStore()
-const { menuData } = storeToRefs(configStore)
+const { menuData, tabData, activeTab } = storeToRefs(configStore)
 const route = useRoute()
 const router = useRouter()
+
+// 侧边栏相关逻辑-----------start---------------
 
 /**
  * @description: 面包屑数据
@@ -29,15 +30,15 @@ const breadcrumbData = computed(() => findLevelRoutes(menuData.value, route.path
 
 /**
  * @description: 菜单选中跳转
- * @param {*} key
+ * @param {*} path
  * @return {*}
  * @Author: xieshuhong
  */
-const handleSelect = (key: string) => {
-  if (isHttp(key)) {
-    window.open(key, '_blank')
+const handleSelect = (path: string) => {
+  if (isHttp(path)) {
+    window.open(path, '_blank')
   } else {
-    router.push({ path: key })
+    router.push({ path })
   }
 }
 
@@ -53,12 +54,50 @@ const handleSidebar = () => {
     }
   })
 }
+
+/**
+ * @description: 移除tab栏
+ * @param {*} index
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleRemoveTab = (index: number) => {
+  configStore.removeTabData(index)
+}
+
+/**
+ * @description: 点击tab栏
+ * @param {*} path 路径
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleClickTab = (path: string) => {
+  configStore.setActiveTab(path)
+  router.push({ path })
+}
+
+watch(
+  () => route.path,
+  () => {
+    console.log(route)
+
+    configStore.setActiveTab(route.path)
+    const menuItem = findMenuItem(menuData.value, route.path)
+    configStore.setTabData({
+      ...menuItem,
+      query: route.query
+    })
+  },
+  {
+    immediate: true
+  }
+)
 // 侧边栏相关逻辑-----------end---------------
 
 // 主题色切换逻辑-----------start---------------
 /**
  * @description: 主题色切换
- * @param {*} val
+ * @param {*} val 色值
  * @return {*}
  * @Author: xieshuhong
  */
@@ -71,29 +110,6 @@ const handleThemeChange = (val: string) => {
 }
 // 主题色切换逻辑-----------end---------------
 
-const editableTabsValue = ref('2')
-const editableTabs = ref([
-  {
-    title: 'Tab 1',
-    content: '系统管理1'
-  },
-  {
-    title: 'Tab 2',
-    content: '用户管理2'
-  },
-  {
-    title: 'Tab 1',
-    content: '系统管理3'
-  },
-  {
-    title: 'Tab 2',
-    content: '用户管理4'
-  },
-  {
-    title: 'Tab 1',
-    content: '系统管理5'
-  }
-])
 /**
  * @description: 刷新当前页
  * @return {*}
@@ -203,12 +219,9 @@ watch(
               </div>
               <!-- 路由面包屑 -->
               <el-breadcrumb>
-                <el-breadcrumb-item
-                  v-for="item in breadcrumbData"
-                  :key="item.path"
-                  :to="{ path: item.path }"
-                  >{{ item.name }}</el-breadcrumb-item
-                >
+                <el-breadcrumb-item v-for="item in breadcrumbData" :key="item.path">{{
+                  item.name
+                }}</el-breadcrumb-item>
               </el-breadcrumb>
             </div>
             <div class="layout-header__right">
@@ -260,18 +273,18 @@ watch(
         </el-header>
         <!-- 历史访问页 -->
         <div class="layout-tabs">
-          <el-tabs v-model="editableTabsValue" type="card">
+          <el-tabs v-model="activeTab" type="card">
             <el-tab-pane
-              v-for="item in editableTabs"
-              :key="item.content"
-              :label="item.content"
-              :name="item.content"
+              v-for="(item, index) in tabData"
+              :key="item.path"
+              :label="item.name"
+              :name="item.path"
             >
               <template #label>
-                <div class="layout-tabs__label">
-                  <Icon icon="ep:fold" color="#999" />
-                  <span> {{ item.content }}</span>
-                  <Icon icon="ep:close" color="#999" />
+                <div @click.stop="handleClickTab(item.path as string)" class="layout-tabs__label">
+                  <Icon v-if="item.icon" :icon="item!.icon" color="#999" />
+                  <span> {{ item.name }}</span>
+                  <Icon @click.stop="handleRemoveTab(index)" icon="ep:close" color="#999" />
                 </div>
               </template>
             </el-tab-pane>
@@ -280,7 +293,14 @@ watch(
         <!-- 主要内容区域 -->
         <el-main class="layout-main">
           <div class="layout-main__content">
-            <RouterView></RouterView>
+            <RouterView v-slot="{ Component, route }">
+              <Transition name="fade-slide" appear mode="out-in">
+                <KeepAlive v-if="route.meta?.keepAlive">
+                  <component :is="Component" />
+                </KeepAlive>
+                <component :is="Component" v-else />
+              </Transition>
+            </RouterView>
           </div>
         </el-main>
       </el-container>
@@ -302,6 +322,7 @@ watch(
   transition: all 0.15s ease;
   &:not(.el-menu--popup).el-menu--collapse {
     .layout-menu__text {
+      opacity: 0;
       width: 0;
     }
   }
