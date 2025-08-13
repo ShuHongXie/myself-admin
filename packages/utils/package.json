@@ -16,6 +16,7 @@
   "description": "",
   "dependencies": {
     "@ctrl/tinycolor": "catalog:",
+    "@vueuse/core": "catalog:",
     "defu": "catalog:",
     "lodash.clonedeep": "catalog:",
     "theme-colors": "catalog:",

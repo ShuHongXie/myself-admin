@@ -195,6 +195,7 @@ watch(
             }"
             :collapse="userConfig.sidebar?.collapse"
             :default-active="route.path"
+            :collapse-transition="false"
           >
             <NestedMenu :collapse="userConfig.sidebar?.collapse" :menu-data="menuData"></NestedMenu>
           </el-menu>
@@ -264,7 +265,14 @@ watch(
               </div>
               <!-- 消息通知 -->
               <div class="header-item">
-                <Icon icon="ep:bell" color="#000" />
+                <el-popover placement="bottom">
+                  <template #reference>
+                    <el-badge is-dot :offset="[0, 5]">
+                      <Icon icon="ep:bell" color="#000" />
+                    </el-badge>
+                  </template>
+                  <slot name="messageBar"></slot>
+                </el-popover>
               </div>
               <!-- 用户头像 -->
               <el-dropdown trigger="click">
@@ -306,14 +314,16 @@ watch(
         <!-- 主要内容区域 -->
         <el-main class="layout-main">
           <div class="layout-main__content">
-            <RouterView v-slot="{ Component, route }">
-              <Transition name="fade-slide" appear mode="out-in">
-                <KeepAlive v-if="route.meta?.keepAlive">
-                  <component :is="Component" />
-                </KeepAlive>
-                <component :is="Component" v-else />
-              </Transition>
-            </RouterView>
+            <slot name="routerView">
+              <RouterView v-slot="{ Component, route }">
+                <Transition name="fade-slide" appear mode="out-in">
+                  <KeepAlive v-if="route.meta?.keepAlive">
+                    <component :is="Component" />
+                  </KeepAlive>
+                  <component :is="Component" v-else />
+                </Transition>
+              </RouterView>
+            </slot>
           </div>
         </el-main>
       </el-container>
@@ -503,7 +513,6 @@ watch(
         height: 44px;
         padding: 6px;
         border-radius: 50%;
-        margin-left: 10px;
         &:hover {
           background-color: rgba(228, 228, 231, 0.3);
         }
