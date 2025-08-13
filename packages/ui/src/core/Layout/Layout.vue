@@ -6,6 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { loadLocaleMessages } from '@myself/locales'
 import { SUPPORT_LANGUAGES, findLevelRoutes } from '@myself/utils'
 import { useConfigStore } from '@myself/store'
+import { $t } from '@myself/locales'
 
 import screenfull from 'screenfull'
 import NestedMenu from './NestedMenu.vue'
@@ -266,15 +267,20 @@ watch(
                 <Icon icon="ep:bell" color="#000" />
               </div>
               <!-- 用户头像 -->
-              <div class="header-user" @click.stop="handleFullScreen">
-                <el-badge :value="3">
+              <el-dropdown trigger="click">
+                <div class="header-user">
                   <img
                     class="header-user__avatar"
                     src="../../assets/images/webp/logo.webp"
                     alt="用户头像"
                   />
-                </el-badge>
-              </div>
+                </div>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>{{ $t('common.logout') }}</el-dropdown-item>
+                  </el-dropdown-menu></template
+                >
+              </el-dropdown>
             </div>
           </slot>
         </el-header>
@@ -321,6 +327,12 @@ watch(
 .language-dropdown .el-dropdown-menu__item.active {
   background-color: var(--el-dropdown-menuItem-hover-fill);
   color: var(--el-dropdown-menuItem-hover-color);
+}
+.el-popover.el-popper {
+  min-width: 0 !important;
+}
+.header-user__info {
+  @include flex-between-center;
 }
 .el-menu {
   width: 60px;
@@ -391,6 +403,7 @@ watch(
 <style lang="scss" scoped>
 @use '../../assets/scss/root.scss' as *;
 @use '../../assets/scss/mixin.scss' as *;
+@use '../../assets/scss/preset.scss' as *;
 :deep(.el-aside) {
   max-width: 224px;
   min-width: 224px;

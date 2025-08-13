@@ -11,15 +11,15 @@ import 'element-plus/dist/index.css'
 import './assets/scss/global.scss'
 import '@myself/ui/styles'
 
-export const init = () => {
+export const init = async () => {
   NProgress.configure({ showSpinner: false })
   const app = createApp(App)
   // 路由注册
   app.use(router)
-  // 国际化注册
-  initI18n(app)
   // 状态管理注册
   initPersistStores(app)
+  // 国际化注册
+  await initI18n(app)
 
   app.mount('#app')
 }
