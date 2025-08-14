@@ -7,7 +7,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev:web": "pnpm --filter @myself/web dev",
-    "dev:server": "pnpm --filter @myself/server start",
+    "dev:server": "pnpm --filter @myself/server start:dev",
     "dev:ui": "pnpm --filter @myself/web dev",
     "lint": "eslint --cache \"**/*.{ts,js,vue}\" --fix",
     "prepare": "husky install",

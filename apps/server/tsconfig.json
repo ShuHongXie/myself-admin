@@ -20,6 +20,17 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      // 设置对应的别名
+      "@modules/*": ["./src/modules/*"],
+      "@model/*": ["./src/model/*"],
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@dto/*": ["./src/dto/*"],
+      "@utils/*": ["./src/common/utils/*"],
+      "@enums/*": ["./src/common/enums/*"],
+      "@config/*": ["./config/*"],
+      "@decorator/*": ["./src/decorator/*"]
+    }
   }
 }

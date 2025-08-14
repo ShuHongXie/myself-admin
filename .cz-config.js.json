@@ -43,6 +43,9 @@
     },
     {
       "name": "api"
+    },
+    {
+      "name": "server"
     }
   ],
   "messages": {

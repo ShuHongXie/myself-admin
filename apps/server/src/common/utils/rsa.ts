@@ -1,0 +1,35 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const JSEncrypt = require('node-jsencrypt')
+
+export default function decryptKey(password: string): string | boolean {
+  // console.log(publicKey)
+  const encrypt = new JSEncrypt()
+  encrypt.setPrivateKey(`-----BEGIN PRIVATE KEY-----MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC5h3LcXHexLUX+
+MEQFFz2P4gPkj4U342nPmbSMyy/m/wQuqnWNAaNKBM14jTM9g0nQr8fsHsUPER4v
+Z3GcAUzxeoD31hDMlCa+rmcz4fuvvgWd3KyytoQSe/HXqLvZiEH6LrzRybdswPfh
+mzmbWH1DhJbIrZ0R+slecdA/ozAl9fY39JYs1pLs8xwFWYZ7J6MWaA1iTzpCpVED
+CzzNYG1WDo9Iz5I1tnvT0l9HqBoFNKj1QLySpJOuQfclLpnt0YsVhaEF/WKgEhFI
+uc/k9FNy8EP2wQLuXkA8bKqeIkN/N43TtaCGNb9bhhtnewSgeNhAbWrRg1fFCqB6
+kNIXaBs3AgMBAAECggEBAITRT8wrslA3zgTD/t36HktUDV9h04gIGObS7athhqCC
+7jaON2tDwecqewITa5xc0cpBHQmPmZlIsuhS0MVTNQcmoQ9Lw2kBop8dcap13F2a
+1qCFq2ihOvmUm7S9CgYYAsudC/XPx61mk86B9oKcnchpMhzmFS0a8W/YYLI+HCj/
+rF0g6WwdrpBJ2DxGlKliXxsMvJzuTK0VEd7HMP33KrsUlVM7p6ZgFcLYhGY8+RzE
+C80e8ThBKGKAIFTDU71ZFSo7ImYPhl9R5t8U9QgjDgCkQN481ALb3jbYBFJB59m7
+IXl8qOkNnUJQ0tzOLU+uoGYeq1yesPKHYKWwXPFFtZkCgYEA6ycPCaUoRNNdiA29
+h6i/bc40teLWOdE+6th6FfPFLR23TYe1Zcz+YujPcCxpshNUFjJZr1kIoduWJWir
+k9qwQwIlISajr+16gZGReUfloIRAb9LHxf7miWoogWOIGInytaBQ06j7skvH4Zi+
+bkMkTImTJH4nkFMHgfSwuNAsD2MCgYEAyfonGB3aQiwctZ3QS7bc3T7WkVUlwqbw
+pNFoimsaBw0zUu6kTziUD+5/IduvYTq4S9I5w5g+YSWtYXh7lBHOGGJ40MCU+BJb
+SdiE6s338Hot72uJWMltC+DDRJ0CCT0+t0BaIXfIe/3L3xRv5BTbrJXUcdE+bP+F
+9rv0QycrPx0CgYA2uqd4UjUWF698G96RtUegcc64ymubl0SyeeGoPE0W3ASuibhB
+Uj2enZqx+9Q5ut/mLp/K/MjSiv3eBQdx6QL/BX/IwGp2ZqoNf+jAtmgOPNmWbRNL
+1LCpKMj2nEivlWOkvAQzzu+Npq+FpPwlQ4EuQxK4+peQspJbv6xlxyWKCwKBgGGz
+pjGeTzPvTrvz6QyXGmPTv8txmuB8DLBNs/oxMNf0ZL1bPxQrVEQYpFrmgAHSe9AB
+k3uwK4ymwyYBOBY6Pq3BBJxGbElL5+ji2fkTRTqIf6vvIvNWDG/Qe+S25oM9oxbW
+BENoRAzmijYRFscH5/OmTqv4AfCL8muWI+RQEDVpAoGAPBr5ei1k3RDFoMgsz5aS
+n4yi5M3jmfc+pk/vZYHDJY3kC2SdpKtKBPZs9A0c53zPyXsSAZgHsLVL/rmZNlG2
+veBxBs+27PnCLXcnqQ4x1s69epqs+ZWeUUS1elnZohul7d0qB9bFAA0rafx63XEw
+P80k5QPomON3SFpcrsbvhJY=-----END PRIVATE KEY-----`)
+  const originPwd = encrypt.decrypt(password)
+  return originPwd
+}
