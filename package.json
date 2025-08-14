@@ -6,7 +6,8 @@
   "packageManager": "pnpm@10.13.1",
   "scripts": {
     "build": "turbo run build",
-    "dev": "pnpm --filter @myself/web dev",
+    "dev:web": "pnpm --filter @myself/web dev",
+    "dev:server": "pnpm --filter @myself/server start",
     "dev:ui": "pnpm --filter @myself/web dev",
     "lint": "eslint --cache \"**/*.{ts,js,vue}\" --fix",
     "prepare": "husky install",
