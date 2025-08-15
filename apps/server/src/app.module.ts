@@ -3,6 +3,9 @@ import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { UserModule } from './modules/user/user.module'
+
+import { User } from './modules/user/entities/user.entity'
 
 @Module({
   imports: [
@@ -19,9 +22,11 @@ import { TypeOrmModule } from '@nestjs/typeorm'
       username: 'root', // 用户名
       password: '123456', // 密码
       database: 'admin', //数据库名
-      entities: [], //数据库对应的Entity
+      entities: ['**/*.entity.js'], //数据库对应的Entity
+      autoLoadEntities: true,
       synchronize: true //是否自动同步实体文件,生产环境建议关闭
-    })
+    }),
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService]
