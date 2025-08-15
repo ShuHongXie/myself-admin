@@ -23,6 +23,7 @@
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "catalog:",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/jwt": "catalog:",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "catalog:",
@@ -31,8 +32,10 @@
     "class-validator": "catalog:",
     "crypto": "catalog:",
     "mysql2": "catalog:",
+    "redis": "catalog:",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "svg-captcha": "catalog:",
     "typeorm": "catalog:"
   },
   "devDependencies": {

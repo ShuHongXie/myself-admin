@@ -22,8 +22,8 @@ async function bootstrap() {
   app.enableCors()
   // 集成swagger文档
   const config = new DocumentBuilder()
-    .setTitle('瑞吉外卖')
-    .setDescription('瑞吉外卖API文档')
+    .setTitle('MySelf后台管理系统')
+    .setDescription('MySelf后台管理系统API文档')
     .build()
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('api', app, document)

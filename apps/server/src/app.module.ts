@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserModule } from './modules/user/user.module'
-
-import { User } from './modules/user/entities/user.entity'
+import { JwtModule } from '@nestjs/jwt'
+import { APP_GUARD } from '@nestjs/core'
+import { AuthGuard } from '@guard/auth.guard'
+import { CacheModule } from './modules/cache/cache.module'
 
 @Module({
   imports: [
@@ -26,9 +28,29 @@ import { User } from './modules/user/entities/user.entity'
       autoLoadEntities: true,
       synchronize: true //是否自动同步实体文件,生产环境建议关闭
     }),
-    UserModule
+    JwtModule.registerAsync({
+      global: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        return {
+          secret: configService.get('JWT_SECRET'),
+          signOptions: {
+            expiresIn: configService.get('JWT_EXP')
+          }
+        }
+      }
+    }),
+    UserModule,
+    CacheModule
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard
+    }
+  ]
 })
 export class AppModule {}

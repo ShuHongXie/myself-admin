@@ -24,13 +24,14 @@
     "paths": {
       // 设置对应的别名
       "@modules/*": ["./src/modules/*"],
-      "@model/*": ["./src/model/*"],
       "@interfaces/*": ["./src/interfaces/*"],
       "@dto/*": ["./src/dto/*"],
+      "@config/*": ["./config/*"],
       "@utils/*": ["./src/common/utils/*"],
       "@enums/*": ["./src/common/enums/*"],
-      "@config/*": ["./config/*"],
-      "@decorator/*": ["./src/decorator/*"]
+      "@guard/*": ["./src/common/guard/*"],
+      "@decorator/*": ["./src/common/decorator/*"],
+      "@interceptor/*": ["./src/common/interceptor/*"]
     }
   }
 }
