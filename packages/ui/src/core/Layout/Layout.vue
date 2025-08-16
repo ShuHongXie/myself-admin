@@ -3,10 +3,9 @@ import { storeToRefs } from 'pinia'
 import { computed, watch } from 'vue'
 import { guider, userConfig, isHttp, findMenuItem } from '@myself/utils'
 import { useRoute, useRouter } from 'vue-router'
-import { loadLocaleMessages } from '@myself/locales'
 import { SUPPORT_LANGUAGES, findLevelRoutes } from '@myself/utils'
 import { useConfigStore } from '@myself/store'
-import { $t } from '@myself/locales'
+import { $t, loadLocaleMessages } from '@myself/locales'
 
 import screenfull from 'screenfull'
 import NestedMenu from './NestedMenu.vue'
@@ -357,6 +356,31 @@ watch(
   }
   &:not(.el-menu--collapse) {
     width: 224px;
+    .el-menu-item {
+      &:before {
+        content: '';
+        opacity: 0;
+        left: 4px;
+        transition:
+          opacity 0.4s ease-in-out,
+          left 0.2s linear;
+      }
+      &.is-active {
+        position: relative;
+        &:before {
+          content: '';
+          position: absolute;
+          width: 4px;
+          height: 44px;
+          border-radius: 0 16px 16px 0;
+          left: 0;
+          top: 50%;
+          opacity: 1;
+          transform: translateY(-50%);
+          background-color: var(--el-menu-active-color);
+        }
+      }
+    }
   }
   &--collapse {
     .el-sub-menu.is-active {
