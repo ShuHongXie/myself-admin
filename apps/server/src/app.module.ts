@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { APP_GUARD } from '@nestjs/core'
 import { AuthGuard } from '@guard/auth.guard'
 import { CacheModule } from './modules/cache/cache.module'
+import { MenuModule } from './modules/menu/menu.module'
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { CacheModule } from './modules/cache/cache.module'
       }
     }),
     UserModule,
-    CacheModule
+    CacheModule,
+    MenuModule
   ],
   controllers: [AppController],
   providers: [
