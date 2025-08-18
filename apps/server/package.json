@@ -31,6 +31,7 @@
     "class-transformer": "catalog:",
     "class-validator": "catalog:",
     "crypto": "catalog:",
+    "dayjs": "catalog:",
     "mysql2": "catalog:",
     "redis": "catalog:",
     "reflect-metadata": "^0.2.2",

@@ -19,6 +19,7 @@ catalog:
   class-transformer: ^0.5.1
   class-validator: ^0.14.2
   crypto: ^1.0.1
+  dayjs: ^1.11.13
   defu: ^6.1.4
   element-plus: 2.10.4
   lodash: ^4.17.21

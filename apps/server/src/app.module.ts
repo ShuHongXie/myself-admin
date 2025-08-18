@@ -9,7 +9,7 @@ import { APP_GUARD } from '@nestjs/core'
 import { AuthGuard } from '@guard/auth.guard'
 import { CacheModule } from './modules/cache/cache.module'
 import { MenuModule } from './modules/menu/menu.module'
-
+import { RoleModule } from './modules/role/role.module'
 @Module({
   imports: [
     // 加载环境变量配置
@@ -44,7 +44,8 @@ import { MenuModule } from './modules/menu/menu.module'
     }),
     UserModule,
     CacheModule,
-    MenuModule
+    MenuModule,
+    RoleModule
   ],
   controllers: [AppController],
   providers: [
