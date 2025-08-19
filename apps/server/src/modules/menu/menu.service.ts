@@ -16,6 +16,13 @@ export class MenuService {
     @InjectRepository(Menu) private menuRepository: Repository<Menu>
   ) {}
 
+  /**
+   * @description 创建菜单
+   * @author xieshuhong
+   * @param {CreateMenuDto} createMenuDto
+   * @return {*}  {Promise<Menu>}
+   * @memberof MenuService
+   */
   async createMenu(createMenuDto: CreateMenuDto): Promise<Menu> {
     // 1. 转换 DTO 为实体对象
     const menu = this.menuRepository.create(createMenuDto)
@@ -36,14 +43,15 @@ export class MenuService {
         )
       )
     }
-    console.log(menu)
-
     // 4. 保存菜单（级联自动保存 meta 和 children）
     return this.menuRepository.save(menu)
   }
 
   /**
-   * 查询所有菜单，并构建树形结构（含子菜单和元数据）
+   * @description 获取所有菜单
+   * @author xieshuhong
+   * @return {*}
+   * @memberof MenuService
    */
   async findAll() {
     // 1. 查询所有菜单，关联元数据和子菜单
@@ -55,7 +63,6 @@ export class MenuService {
       .addOrderBy('meta.order_num', 'ASC') // 再按元数据的排序号排序
       .getMany()
 
-    // 2. 构建树形结构（顶级菜单 parent_id 为 null 或 0）
     return ResultData.success('获取成功', this.buildMenuTree(allMenus))
   }
 

@@ -49,7 +49,7 @@ export class Menu {
   status: number
   // 父菜单关联（多对一：多个子菜单可属于一个父菜单）
   @ManyToOne(() => Menu, (menu) => menu.children) // 反向引用 children 字段
-  @JoinColumn({ name: 'parentId' }) // 绑定到 parent_id 字段
+  @JoinColumn({ name: 'parent_id' }) // 绑定到 parent_id 字段
   parent: Menu // 父菜单对象
   // 子菜单关联（一对多：一个父菜单可包含多个子菜单）
   @OneToMany(() => Menu, (menu) => menu.parent, {
@@ -63,7 +63,7 @@ export class Menu {
     cascade: true, // 级联操作：保存/删除路由时，同步处理 meta
     eager: true // 查询路由时自动加载 meta（避免手动关联查询）
   })
-  @JoinColumn({ name: 'metaId' }) // 外键在 route_meta 表中
+  @JoinColumn({ name: 'meta_id' }) // 外键在 route_meta 表中
   meta: MenuMeta
   @Column({
     type: 'bigint'
