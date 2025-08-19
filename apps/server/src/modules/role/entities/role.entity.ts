@@ -9,7 +9,7 @@ import {
 } from 'typeorm'
 import { Menu } from '../../menu/entities/menu.entity'
 import dayjs from 'dayjs'
-@Entity('fs_role')
+@Entity('role')
 export class Role {
   @PrimaryGeneratedColumn()
   id: number
@@ -17,10 +17,10 @@ export class Role {
   @Column({
     length: 20
   })
-  role_name: string
+  roleName: string
   //排序
   @Column()
-  role_sort: number
+  roleSort: number
   //角色状态 启用:1 关闭:0
   @Column({
     default: 1
@@ -31,11 +31,10 @@ export class Role {
   remark: string
   //创建人Id
   @Column()
-  create_by: number
+  createBy: number
   //更新人Id
   @Column()
-  update_by: number
-
+  updateBy: number
   @CreateDateColumn({
     transformer: {
       to: (value) => {
@@ -46,7 +45,7 @@ export class Role {
       }
     }
   })
-  create_time: Date
+  createTime: Date
 
   @UpdateDateColumn({
     transformer: {
@@ -58,7 +57,7 @@ export class Role {
       }
     }
   })
-  update_time: Date
+  updateTime: Date
 
   @ManyToMany(() => Menu)
   @JoinTable({

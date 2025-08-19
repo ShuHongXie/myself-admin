@@ -5,7 +5,7 @@ export class CreateRoleDto {
   @ApiProperty({
     example: '技术人员'
   })
-  role_name: string
+  roleName: string
 
   @ApiProperty({
     example: '备注',
@@ -27,25 +27,25 @@ export class CreateRoleDto {
   })
   @IsOptional()
   @IsArray({
-    message: 'role_ids必须是数组'
+    message: 'roleIds必须是数组'
   })
-  @IsNumber({}, { each: true, message: 'role_ids必须是数字数组' })
-  menu_ids?: number[]
+  @IsNumber({}, { each: true, message: 'roleIds必须是数字数组' })
+  menuIds?: number[]
 
   @IsNotEmpty({ message: '排序不可为空' })
   @ApiProperty({
     example: 1
   })
-  role_sort: number
+  roleSort: number
 
   @ApiProperty({
     example: 1
   })
   @IsOptional()
-  create_by: number
+  createBy: number
   @ApiProperty({
     example: 1
   })
   @IsOptional()
-  update_by: number
+  updateBy: number
 }

@@ -12,7 +12,7 @@ import encry from '@utils/crypto'
 import * as crypto from 'crypto'
 import dayjs from 'dayjs'
 import { Role } from '@modules/role/entities/role.entity'
-@Entity('fs_user')
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
   id: number // 标记为主键，值自动生成
@@ -21,7 +21,6 @@ export class User {
   username: string //用户名
   @Column({ nullable: true })
   nickname: string //昵称
-
   //默认密码 123456
   @Column({
     default: '20989eb67e13fdee0a42504dd0b3cf65358b'
@@ -40,7 +39,7 @@ export class User {
   @Column({ nullable: true, default: 'q5+Kdg==' })
   salt: string
   @Column({ nullable: true, default: 0 })
-  is_admin: number //是否为管理员 1:是 0:否
+  isAdmin: number //是否为管理员 1:是 0:否
   @ManyToMany(() => Role)
   @JoinTable({
     name: 'user_role_relation'
@@ -56,8 +55,7 @@ export class User {
       }
     }
   })
-  create_time: Date
-
+  createTime: Date
   @UpdateDateColumn({
     transformer: {
       to: (value) => {
@@ -68,7 +66,7 @@ export class User {
       }
     }
   })
-  update_time: Date
+  updateTime: Date
   @BeforeInsert()
   beforeInsert() {
     this.salt = crypto.randomBytes(4).toString('base64')

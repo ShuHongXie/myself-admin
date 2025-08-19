@@ -21,5 +21,5 @@ export class CreateUserDto {
     description: '密码'
   })
   password: string
-  role_ids: any
+  roleIds: any
 }

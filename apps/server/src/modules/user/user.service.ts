@@ -39,11 +39,11 @@ export class UserService {
     if (userExists) throw new ApiException('用户已存在', ApiErrorCode.USER_EXIST)
     try {
       const newUser = new User()
-      if (createUserDto.role_ids?.length) {
+      if (createUserDto.roleIds?.length) {
         //查询需要绑定的角色列表(自动在关联表生成关联关系)
         const roleList = await this.roleRepository.find({
           where: {
-            id: In(createUserDto.role_ids)
+            id: In(createUserDto.roleIds)
           }
         })
         newUser.roles = roleList
