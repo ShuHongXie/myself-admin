@@ -1,4 +1,4 @@
-import { Post, Body, Request, Controller } from '@nestjs/common'
+import { Post, Body, Request, Controller, Get } from '@nestjs/common'
 import { MenuService } from './menu.service'
 import { CreateMenuDto } from './dto/create-menu.dto'
 import { UpdateMenuDto } from './dto/update-menu.dto'
@@ -9,7 +9,7 @@ import { Public } from '@decorator/public.decorator'
 @Controller('menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
-  @Post('/createMenu')
+  @Post('create')
   @Public()
   @ApiParam({ name: 'createMenuDto', type: CreateMenuDto })
   @ApiOperation({ summary: '新增菜单' })
@@ -20,9 +20,9 @@ export class MenuController {
     return await this.menuService.createMenu(createMenuDto)
   }
 
-  // @Post('getInfo')
-  // @ApiOperation({ summary: '获取路由' })
-  // async getInfo(@Request() req) {
-  //   return await this.menuService.getInfo(req)
-  // }
+  @Get('info')
+  @Public()
+  findAll() {
+    return this.menuService.findAll()
+  }
 }

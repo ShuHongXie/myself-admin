@@ -7,6 +7,7 @@ import { Menu } from './entities/menu.entity'
 import { ApiException } from 'src/common/filter/api.exception'
 import { ResultData } from '@utils/ResultData'
 import { Role } from '@modules/role/entities/role.entity'
+import { MenuMeta } from './entities/menu-meta.entity'
 
 @Injectable()
 export class MenuService {
@@ -15,13 +16,62 @@ export class MenuService {
     @InjectRepository(Menu) private menuRepository: Repository<Menu>
   ) {}
 
-  async createMenu(createMenuDto: CreateMenuDto) {
-    try {
-      await this.menuRepository.save(createMenuDto)
-      return ResultData.success('菜单新增成功')
-    } catch (error) {
-      throw new ApiException('菜单新增失败', 20000)
+  async createMenu(createMenuDto: CreateMenuDto): Promise<Menu> {
+    // 1. 转换 DTO 为实体对象
+    const menu = this.menuRepository.create(createMenuDto)
+
+    // 2. 手动关联元数据（TypeORM 级联会自动处理保存）
+    menu.meta = new MenuMeta()
+    Object.assign(menu.meta, createMenuDto.meta)
+
+    // 3. 处理子菜单（递归创建）
+    if (createMenuDto.children && createMenuDto.children.length > 0) {
+      menu.children = await Promise.all(
+        createMenuDto.children.map((childDto: Menu) =>
+          this.createMenu({
+            ...childDto,
+            parentId: menu.id, // 子菜单的父ID设为当前菜单ID（创建后自动关联）
+            createBy: createMenuDto.createBy // 继承创建人
+          })
+        )
+      )
     }
+    console.log(menu)
+
+    // 4. 保存菜单（级联自动保存 meta 和 children）
+    return this.menuRepository.save(menu)
+  }
+
+  /**
+   * 查询所有菜单，并构建树形结构（含子菜单和元数据）
+   */
+  async findAll() {
+    // 1. 查询所有菜单，关联元数据和子菜单
+    const allMenus = await this.menuRepository
+      .createQueryBuilder('menu')
+      .leftJoinAndSelect('menu.meta', 'meta') // 关联元数据
+      .leftJoinAndSelect('menu.children', 'children') // 关联子菜单
+      .orderBy('menu.parent_id', 'ASC') // 先按父ID排序
+      .addOrderBy('meta.order_num', 'ASC') // 再按元数据的排序号排序
+      .getMany()
+
+    // 2. 构建树形结构（顶级菜单 parent_id 为 null 或 0）
+    return ResultData.success('获取成功', this.buildMenuTree(allMenus))
+  }
+
+  /**
+   * 递归构建菜单树形结构
+   * @param menus 所有菜单数组
+   * @param parentId 父菜单ID（默认顶级菜单为 null）
+   */
+  private buildMenuTree(menus: Menu[], parentId: number | null = null): Menu[] {
+    return menus
+      .filter((menu) => menu.parentId === parentId) // 筛选当前父级的子菜单
+      .map((menu) => ({
+        ...menu,
+        // 递归处理子菜单
+        children: this.buildMenuTree(menus, menu.id)
+      }))
   }
 
   // async getInfo(req): Promise<Menu[]> {

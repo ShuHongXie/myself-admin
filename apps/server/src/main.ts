@@ -26,7 +26,11 @@ async function bootstrap() {
     .setDescription('MySelf后台管理系统API文档')
     .build()
   const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api', app, document)
+  // swagger网页访问地址：http://localhost:4000/swagger
+  // swagger网页json访问地址：http://localhost:4000/swagger-json
+  SwaggerModule.setup('swagger', app, document, {
+    jsonDocumentUrl: 'swagger-json'
+  })
 
   await app.listen(port)
   console.log(`应用运行在: http://localhost:${port}`)

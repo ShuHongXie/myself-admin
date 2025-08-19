@@ -10,6 +10,7 @@ import { AuthGuard } from '@guard/auth.guard'
 import { CacheModule } from './modules/cache/cache.module'
 import { MenuModule } from './modules/menu/menu.module'
 import { RoleModule } from './modules/role/role.module'
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 @Module({
   imports: [
     // 加载环境变量配置
@@ -27,7 +28,8 @@ import { RoleModule } from './modules/role/role.module'
       database: 'admin', //数据库名
       entities: ['**/*.entity.js'], //数据库对应的Entity
       autoLoadEntities: true,
-      synchronize: true //是否自动同步实体文件,生产环境建议关闭
+      synchronize: true, //是否自动同步实体文件,生产环境建议关闭
+      namingStrategy: new SnakeNamingStrategy() // 应用自定义命名策略
     }),
     JwtModule.registerAsync({
       global: true,

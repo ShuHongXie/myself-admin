@@ -1,55 +1,70 @@
-import { IsNotEmpty, IsOptional } from 'class-validator'
-import { ApiProperty } from '@nestjs/swagger'
-export class CreateMenuDto {
-  @IsNotEmpty({ message: '菜单名不可为空' })
-  @ApiProperty({
-    example: '菜单1'
-  })
+// src/modules/menu/dto/create-menu.dto.ts
+import { IsInt, IsString, IsOptional, ValidateNested } from 'class-validator'
+import { Type } from 'class-transformer'
+
+// 菜单元数据 DTO
+class CreateMenuMetaDto {
+  @IsString()
   title: string
 
-  @ApiProperty({
-    example: 1
-  })
-  order_num: number
-
-  @ApiProperty({
-    example: 1,
-    required: false
-  })
-  @IsOptional()
-  parent_id?: number
-
-  @ApiProperty({
-    example: 1
-  })
-  menu_type: number
-  @ApiProperty({
-    example: 'menu'
-  })
-  icon: string
+  @IsInt()
+  orderNum: number
 
   @IsOptional()
-  @ApiProperty({
-    example: 'AA/BB',
-    required: false
-  })
+  @IsString()
+  icon?: string
+
+  @IsOptional()
+  showInBreadcrumb?: boolean
+
+  @IsOptional()
+  showInTab?: boolean
+
+  @IsOptional()
+  showInMenu?: boolean
+
+  @IsOptional()
+  isCache?: boolean
+}
+
+// 菜单 DTO
+export class CreateMenuDto {
+  @IsString()
+  name: string
+
+  @IsOptional()
+  @IsInt()
+  parentId?: number
+
+  @IsInt()
+  menuType: number
+
+  @IsOptional()
+  @IsString()
   component?: string
 
-  @IsNotEmpty({ message: '路由不可为空' })
-  @ApiProperty({
-    example: 'BB'
-  })
+  @IsOptional()
+  @IsString()
+  permission?: string
+
+  @IsString()
   path: string
 
-  @ApiProperty({
-    example: 11
-  })
-  create_by: number
-
   @IsOptional()
-  @ApiProperty({
-    example: 'sys:post:list',
-    required: false
-  })
-  permission?: string
+  @IsInt()
+  status?: number = 1
+
+  @IsInt()
+  createBy: number
+
+  // 嵌套元数据
+  @ValidateNested()
+  @Type(() => CreateMenuMetaDto)
+  meta: CreateMenuMetaDto
+
+  // 可选的子菜单（递归结构）
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateMenuDto)
+  children?: CreateMenuDto[]
 }
