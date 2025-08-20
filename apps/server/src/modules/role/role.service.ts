@@ -8,6 +8,7 @@ import { Menu } from '@modules/menu/entities/menu.entity'
 import { Role } from './entities/role.entity'
 import { ApiErrorCode } from '@enums/responseCode.enum'
 import { InjectRepository } from '@nestjs/typeorm'
+import { ResultData } from '@utils/ResultData'
 
 @Injectable()
 export class RoleService {
@@ -17,7 +18,7 @@ export class RoleService {
     @InjectRepository(Role) private roleRepository: Repository<Role>
   ) {}
 
-  async create(createRoleDto: CreateRoleDto): Promise<string> {
+  async create(createRoleDto: CreateRoleDto) {
     const row = await this.roleRepository.findOne({
       where: { roleName: createRoleDto.roleName }
     })
@@ -36,8 +37,8 @@ export class RoleService {
       newRole.menus = menuList
     }
     try {
-      await this.roleRepository.save({ ...createRoleDto, ...newRole })
-      return 'success'
+      await this.roleRepository.save({ ...newRole, ...createRoleDto })
+      return ResultData.success('创建成功')
     } catch (error) {
       throw new ApiException('系统异常', ApiErrorCode.FAIL)
     }

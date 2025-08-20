@@ -1,0 +1,37 @@
+{
+  "name": "首页-编辑",
+  "menuType": 3,
+  "path": "",
+  "parentId": 2,
+  "component": null,
+  "createBy": 1,
+  "meta": null,
+  "permission": "dashboard:home:add"
+}
+
+{
+  "name": "仪表盘",
+  "menuType": 1,
+  "path": "/dashboard",
+  "createBy": 1,
+  "meta": {
+    "title": "仪表盘",
+    "orderNum": 1,
+    "icon": "dashboard",
+    "showInMenu": true
+  },
+  "children": [
+    {
+      "name": "首页",
+      "menuType": 2,
+      "path": "/dashboard/home",
+      "component": "DashboardHome",
+      "createBy": 1,
+      "meta": {
+        "title": "首页",
+        "orderNum": 1,
+        "showInMenu": true
+      }
+    }
+  ]
+}

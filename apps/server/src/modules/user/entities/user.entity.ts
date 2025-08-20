@@ -42,7 +42,9 @@ export class User {
   isAdmin: number //是否为管理员 1:是 0:否
   @ManyToMany(() => Role)
   @JoinTable({
-    name: 'user_role_relation'
+    name: 'user_role_relation',
+    joinColumn: { name: 'user_id' }, // 关联表中指向当前实体的字段
+    inverseJoinColumn: { name: 'role_id' } // 关联表中指向角色的字段
   })
   roles: Role[]
   @CreateDateColumn({

@@ -27,9 +27,9 @@ export class CreateRoleDto {
   })
   @IsOptional()
   @IsArray({
-    message: 'roleIds必须是数组'
+    message: 'menuIds必须是数组'
   })
-  @IsNumber({}, { each: true, message: 'roleIds必须是数字数组' })
+  @IsNumber({}, { each: true, message: 'menuIds必须是数字数组' })
   menuIds?: number[]
 
   @IsNotEmpty({ message: '排序不可为空' })

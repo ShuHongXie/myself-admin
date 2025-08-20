@@ -28,25 +28,25 @@ export class MenuMeta {
   icon: string
   // 是否显示在面包栏
   @Column({
-    type: 'boolean',
+    type: 'tinyint',
     default: false
   })
   showInBreadcrumb: boolean
   // 是否显示在标签栏
   @Column({
-    type: 'boolean',
+    type: 'tinyint',
     default: false
   })
   showInTab: boolean
   // 是否显示在菜单栏
   @Column({
-    type: 'boolean',
+    type: 'tinyint',
     default: false
   })
   showInMenu: boolean
   // 是否针对组件进行缓存
   @Column({
-    type: 'boolean',
+    type: 'tinyint',
     default: false
   })
   isCache: boolean

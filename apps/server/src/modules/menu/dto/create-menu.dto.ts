@@ -15,20 +15,20 @@ class CreateMenuMetaDto {
   icon?: string
 
   @IsOptional()
-  showInBreadcrumb?: boolean
+  showInBreadcrumb?: boolean = true
 
   @IsOptional()
-  showInTab?: boolean
+  showInTab?: boolean = true
 
   @IsOptional()
-  showInMenu?: boolean
+  showInMenu?: boolean = true
 
   @IsOptional()
-  isCache?: boolean
+  isCache?: boolean = false
 }
 
-// 菜单 DTO
-export class CreateMenuDto {
+// 按钮类型菜单专用DTO（不需要meta和children）
+export class CreateBaseDto {
   @IsString()
   name: string
 
@@ -47,8 +47,9 @@ export class CreateMenuDto {
   @IsString()
   permission?: string
 
+  @IsOptional()
   @IsString()
-  path: string
+  path?: string
 
   @IsOptional()
   @IsInt()
@@ -56,11 +57,15 @@ export class CreateMenuDto {
 
   @IsInt()
   createBy: number
+}
 
+// 目录和菜单专用DTO
+export class CreateMenuDto extends CreateBaseDto {
   // 嵌套元数据
+  @IsOptional()
   @ValidateNested()
   @Type(() => CreateMenuMetaDto)
-  meta: CreateMenuMetaDto
+  meta?: CreateMenuMetaDto
 
   // 可选的子菜单（递归结构）
   @IsOptional()

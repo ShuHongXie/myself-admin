@@ -1,6 +1,6 @@
 import { Post, Body, Request, Controller, Get } from '@nestjs/common'
 import { MenuService } from './menu.service'
-import { CreateMenuDto } from './dto/create-menu.dto'
+import { CreateBaseDto, CreateMenuDto } from './dto/create-menu.dto'
 import { UpdateMenuDto } from './dto/update-menu.dto'
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { Public } from '@decorator/public.decorator'
@@ -15,7 +15,7 @@ export class MenuController {
   @ApiOperation({ summary: '新增菜单' })
   async createMenu(
     @Body()
-    createMenuDto: CreateMenuDto
+    createMenuDto: CreateMenuDto | CreateBaseDto
   ) {
     return await this.menuService.createMenu(createMenuDto)
   }

@@ -3,12 +3,14 @@ import { RoleService } from './role.service'
 import { CreateRoleDto } from './dto/create-role.dto'
 import { UpdateRoleDto } from './dto/update-role.dto'
 import { ApiOperation } from '@nestjs/swagger'
+import { Public } from '@decorator/public.decorator'
 
 @Controller('role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @ApiOperation({ summary: '创建角色' })
+  @Public()
   @Post('create')
   create(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.create(createRoleDto)

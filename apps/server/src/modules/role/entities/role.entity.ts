@@ -9,6 +9,7 @@ import {
 } from 'typeorm'
 import { Menu } from '../../menu/entities/menu.entity'
 import dayjs from 'dayjs'
+// import { Permission } from '@modules/permission/entities/permission.entity'
 @Entity('role')
 export class Role {
   @PrimaryGeneratedColumn()
@@ -46,7 +47,6 @@ export class Role {
     }
   })
   createTime: Date
-
   @UpdateDateColumn({
     transformer: {
       to: (value) => {
@@ -58,10 +58,16 @@ export class Role {
     }
   })
   updateTime: Date
-
   @ManyToMany(() => Menu)
   @JoinTable({
     name: 'role_menu_relation'
   })
   menus: Menu[]
+  // @ManyToMany(() => Permission)
+  // @JoinTable({
+  //   name: 'role_permission_relation',
+  //   joinColumn: { name: 'role_id' },
+  //   inverseJoinColumn: { name: 'permission_id' }
+  // })
+  // permissions: Permission[]
 }
