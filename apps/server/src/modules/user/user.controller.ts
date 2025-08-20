@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Header, Post, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Request, Post, Req, UseGuards } from '@nestjs/common'
 import { CreateUserDto } from './dto/createUser.dto'
 import { ApiOperation, ApiTags, ApiOkResponse } from '@nestjs/swagger'
 
@@ -35,5 +35,11 @@ export class UserController {
   @ApiOperation({ summary: '获取验证码' })
   getCaptcha() {
     return this.userService.getCaptcha()
+  }
+
+  @Post('/getInfo')
+  @ApiOperation({ summary: '获取路由' })
+  async getInfo(@Request() req) {
+    return await this.userService.getInfo(req)
   }
 }

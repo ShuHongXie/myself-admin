@@ -16,14 +16,13 @@ import { Role } from '@modules/role/entities/role.entity'
 export class User {
   @PrimaryGeneratedColumn()
   id: number // 标记为主键，值自动生成
-
   @Column({ length: 30 })
   username: string //用户名
   @Column({ nullable: true })
   nickname: string //昵称
   //默认密码 123456
   @Column({
-    default: '20989eb67e13fdee0a42504dd0b3cf65358b'
+    default: ''
   })
   password: string //密码
   @Column({ nullable: true })

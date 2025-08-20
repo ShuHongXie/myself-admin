@@ -9,6 +9,7 @@ import { MenuMeta } from './entities/menu-meta.entity'
 @Module({
   controllers: [MenuController],
   providers: [MenuService],
-  imports: [TypeOrmModule.forFeature([User, Menu, MenuMeta])]
+  imports: [TypeOrmModule.forFeature([User, Menu, MenuMeta])],
+  exports: [MenuService]
 })
 export class MenuModule {}

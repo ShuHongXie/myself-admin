@@ -1,3 +1,5 @@
+import { Menu } from '@modules/menu/entities/menu.entity'
+
 export const convertToTree = (menuList: any[], parentId: number | null = null) => {
   const tree = [] as any
 
@@ -12,4 +14,12 @@ export const convertToTree = (menuList: any[], parentId: number | null = null) =
   }
 
   return tree
+}
+
+export const filterPermissions = (routers: Menu[]): string[] => {
+  return [
+    ...new Set(
+      routers.map((router) => router.permission).filter((permission) => permission != null)
+    )
+  ]
 }

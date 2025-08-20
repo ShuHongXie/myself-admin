@@ -6,7 +6,7 @@ import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { Public } from '@decorator/public.decorator'
 
 @ApiTags('菜单权限模块')
-@Controller('menu')
+@Controller('')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
   @Post('create')
@@ -20,9 +20,17 @@ export class MenuController {
     return await this.menuService.createMenu(createMenuDto)
   }
 
-  @Get('info')
+  @Get('/getRouters')
+  @ApiOperation({ summary: '获取所有菜单(不含按钮)' })
   @Public()
   findAll() {
+    return this.menuService.findAll(false)
+  }
+
+  @Get('/menu/info')
+  @ApiOperation({ summary: '获取所有菜单' })
+  @Public()
+  find() {
     return this.menuService.findAll()
   }
 }

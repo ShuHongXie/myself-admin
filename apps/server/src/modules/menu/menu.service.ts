@@ -56,20 +56,23 @@ export class MenuService {
   /**
    * @description 获取所有菜单
    * @author xieshuhong
+   * @param {boolean} [includeButton=false] 是否包含按钮
    * @return {*}
    * @memberof MenuService
    */
-  async findAll() {
-    // 1. 查询所有菜单，关联元数据和子菜单
-    const allMenus = await this.menuRepository
+  async findAll(includeButton: boolean = true) {
+    const queryBuilder = this.menuRepository
       .createQueryBuilder('menu')
-      .where('menu.menuType != :menuType', { menuType: MenuType.Button }) // 筛选不为按钮的菜单
       .leftJoinAndSelect('menu.meta', 'meta') // 关联元数据
       .leftJoinAndSelect('menu.children', 'children') // 关联子菜单
       .orderBy('menu.parent_id', 'ASC') // 先按父ID排序
       .addOrderBy('meta.order_num', 'ASC') // 再按元数据的排序号排序
-      .getMany()
 
+    if (!includeButton) {
+      queryBuilder.where('menu.menuType != :menuType', { menuType: MenuType.Button })
+    }
+
+    const allMenus = await queryBuilder.getMany()
     return ResultData.success('获取成功', this.buildMenuTree(allMenus))
   }
 
