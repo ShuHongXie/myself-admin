@@ -1,15 +1,38 @@
 //create-user.dto.ts
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, MinLength } from 'class-validator'
+import { IsArray, IsNotEmpty, MinLength, IsOptional } from 'class-validator'
 export class CreateUserDto {
   @IsNotEmpty({
     message: '用户名不能为空'
   })
   @ApiProperty({
-    example: 'admin',
     description: '用户名'
   })
   username: string
+
+  @IsOptional()
+  @IsNotEmpty({
+    message: '昵称不能为空'
+  })
+  @ApiProperty({
+    description: '昵称'
+  })
+  nickname: string
+
+  @IsOptional()
+  @ApiProperty({
+    description: '是否管理员'
+  })
+  isAdmin: number
+
+  @IsOptional()
+  @ApiProperty({
+    example: '1',
+    description: '状态',
+    required: false
+  })
+  status: number
+
   @IsNotEmpty({
     message: '密码不能为空'
   })
@@ -21,5 +44,11 @@ export class CreateUserDto {
     description: '密码'
   })
   password: string
-  roleIds: any
+
+  @IsOptional()
+  @IsArray()
+  @ApiProperty({
+    description: '角色id集合'
+  })
+  roleIds: number[]
 }

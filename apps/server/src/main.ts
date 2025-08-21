@@ -21,24 +21,24 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true, // 移除未在DTO中定义的属性
       forbidNonWhitelisted: true, // 对未定义的属性抛出错误
-      transform: true // 自动转换请求数据类型
+      transform: true, // 自动转换请求数据类型
       // transformOptions: {
       //   enableImplicitConversion: true, // 允许隐式转换，包括null
       //   strategy: 'excludeAll'
       // },
-      // exceptionFactory: (errors) => {
-      //   console.log(errors)
+      exceptionFactory: (errors) => {
+        console.log(errors)
 
-      //   // 自定义错误格式，提取详细信息
-      //   const result = errors.map((error) => ({
-      //     property: error.property,
-      //     constraints: error.constraints
-      //   }))
-      //   return new BadRequestException({
-      //     message: '请求数据验证失败',
-      //     details: result
-      //   })
-      // }
+        // 自定义错误格式，提取详细信息
+        // const result = errors.map((error) => ({
+        //   property: error.property,
+        //   constraints: error.constraints
+        // }))
+        // return new BadRequestException({
+        //   message: '请求数据验证失败',
+        //   details: result
+        // })
+      }
     })
   )
   // 启用CORS

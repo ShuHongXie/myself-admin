@@ -16,6 +16,13 @@ export class UserController {
   @Public()
   @ApiOperation({ summary: '账号注册' })
   register(@Body() createUserDto: CreateUserDto) {
+    return this.userService.register(createUserDto)
+  }
+
+  @Public()
+  @Post('create')
+  @ApiOperation({ summary: '创建用户' })
+  create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto)
   }
 
@@ -37,8 +44,9 @@ export class UserController {
     return this.userService.getCaptcha()
   }
 
-  @Post('/getInfo')
-  @ApiOperation({ summary: '获取路由' })
+  @Public()
+  @Get('getInfo')
+  @ApiOperation({ summary: '获取用户信息' })
   async getInfo(@Request() req) {
     return await this.userService.getInfo(req)
   }

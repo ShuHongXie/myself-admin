@@ -420,6 +420,9 @@ importers:
       '@iconify/vue':
         specifier: 'catalog:'
         version: 5.0.0(vue@3.5.17(typescript@5.8.3))
+      '@myself/locales':
+        specifier: workspace:^
+        version: link:../locales
       '@myself/store':
         specifier: workspace:^
         version: link:../store

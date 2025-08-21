@@ -99,7 +99,7 @@ export class MenuService {
   //     .createQueryBuilder('fs_user')
   //     .leftJoinAndSelect('fs_user.roles', 'fs_role')
   //     .leftJoinAndSelect('fs_role.menus', 'fs_menu')
-  //     .where({ id: user.sub })
+  //     .where({ id: user.userId })
   //     .orderBy('fs_menu.order_num', 'ASC')
   //     .getOne()
 

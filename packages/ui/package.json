@@ -28,6 +28,7 @@
     "@ctrl/tinycolor": "catalog:",
     "@iconify/vue": "catalog:",
     "@myself/store": "workspace:^",
+    "@myself/locales": "workspace:^",
     "@myself/utils": "workspace:^",
     "pinia": "catalog:",
     "screenfull": "catalog:",

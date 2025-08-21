@@ -21,7 +21,7 @@ export class PermissionsGuard implements CanActivate {
     const request = context.switchToHttp().getRequest()
     const { user } = request
     // 从缓存中获取用户的权限列表
-    const userPermissions = await this.cacheService.get(`${user.sub}_permissions`)
+    const userPermissions = await this.cacheService.get(`${user.userId}_permissions`)
     // 用户未登录或未设置权限，拒绝访问
     if (!user || !userPermissions) {
       return false

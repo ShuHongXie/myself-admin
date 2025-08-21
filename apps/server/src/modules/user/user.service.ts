@@ -37,7 +37,7 @@ export class UserService {
     return user
   }
 
-  async create(createUserDto: CreateUserDto): Promise<ResultData> {
+  async register(createUserDto: CreateUserDto) {
     const userExists = await this.userRepository.findOne({
       where: { username: createUserDto.username }
     })
@@ -45,22 +45,35 @@ export class UserService {
     if (userExists) throw new ApiException('用户已存在', ApiErrorCode.USER_EXIST)
     try {
       const newUser = new User()
-      if (createUserDto.roleIds?.length) {
-        //查询需要绑定的角色列表(自动在关联表生成关联关系)
-        const roleList = await this.roleRepository.find({
-          where: {
-            id: In(createUserDto.roleIds)
-          }
-        })
-        newUser.roles = roleList
-      }
-
       newUser.username = createUserDto.username
       newUser.password = createUserDto.password
+      newUser.isAdmin = createUserDto.isAdmin
       await this.userRepository.save(newUser)
       return ResultData.success('注册成功')
     } catch (error) {
       throw new ApiException('系统异常', ApiErrorCode.FAIL)
+    }
+  }
+
+  async create(createUserDto: CreateUserDto) {
+    const userExists = await this.userRepository.findOne({
+      where: { username: createUserDto.username }
+    })
+    if (userExists) throw new ApiException('用户已存在', ApiErrorCode.USER_EXIST)
+    try {
+      const roleList = await this.roleRepository.find({
+        where: {
+          id: In(createUserDto.roleIds)
+        }
+      })
+      const newUser = new User()
+      newUser.username = createUserDto.username
+      newUser.password = createUserDto.password
+      newUser.roles = roleList
+      await this.userRepository.save(newUser)
+      return ResultData.success('创建成功')
+    } catch (error) {
+      throw new ApiException('创建失败', ApiErrorCode.FAIL)
     }
   }
 
@@ -70,7 +83,7 @@ export class UserService {
     if (user.password !== encry(password, user.salt)) {
       throw new ApiException('密码错误', ApiErrorCode.PASSWORD_ERR)
     }
-    const payload = { username: user.username, sub: user.id }
+    const payload = { username: user.username, userId: user.id }
     const token = await this.jwtService.signAsync(payload)
     return ResultData.success('登录成功', token)
   }
@@ -82,51 +95,42 @@ export class UserService {
 
   async getInfo(req) {
     //user.guard中注入的解析后的JWTtoken的user
-    const { user } = req
+    // const { user } = req
+    const user = {
+      userId: 1,
+      username: 'admin'
+    }
+    const userInfo = await this.userRepository.findOne({
+      where: { id: user.userId }
+    })
+    if (!userInfo) throw new ApiException('用户不存在', ApiErrorCode.USER_NOTEXIST)
     //根据关联关系通过user查询user下的菜单和角色
     const userList: User | null = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.roles', 'role')
-      .leftJoinAndSelect('role.menus', 'menu')
-      .where({ id: user.id })
-      .orderBy('menu.order_num', 'ASC')
+      // .leftJoinAndSelect('role.menus', 'menu')
+      // .where({ id: user.userId })
+      .where({ id: 2 })
       .getOne()
 
     //是否为超级管理员,是的话查询所有菜单和权限
-    const isAdmin = userList?.roles?.find((item) => item.roleName === 'admin')
-    let routers: Menu[] = []
+    const isAdmin = userInfo.isAdmin
     let permissions: string[] = []
-    if (isAdmin) {
-      routers = (await this.menuService.findAll()).data
-      //获取菜单所拥有的权限
-      permissions = filterPermissions(routers)
-      //存储当前用户的权限
-      await this.cacheService.set(`${user.sub}_permissions`, permissions)
-      return {
-        // routers: convertToTree(routers),
-        permissions: permissions
+    try {
+      if (isAdmin) {
+        permissions = ['*:*:*']
+      } else {
+        permissions = []
       }
-    }
-    // interface MenuMap {
-    //   [key: string]: Menu
-    // }
-    // console.log(userList.roles[0].menus);
-
-    //根据id去重
-    // const menus: MenuMap = userList?.roles.reduce((mergedMenus: MenuMap, role: Role) => {
-    //   role.menus.forEach((menu: Menu) => {
-    //     mergedMenus[menu.id] = menu
-    //   })
-    //   return mergedMenus
-    // }, {})
-
-    // routers = Object.values(menus)
-    permissions = filterPermissions(routers)
-    await this.cacheService.set(`${user.sub}_permissions`, permissions, 7200)
-
-    return {
-      // routers: convertToTree(routers),
-      permissions
+      await this.cacheService.set(`${user.userId}_permissions`, permissions, 7200)
+      return ResultData.success('获取用户信息成功', {
+        userList,
+        // routers: convertToTree(routers),
+        permissions: permissions,
+        userInfo
+      })
+    } catch (error) {
+      throw new ApiException('系统异常', ApiErrorCode.FAIL)
     }
   }
 }
