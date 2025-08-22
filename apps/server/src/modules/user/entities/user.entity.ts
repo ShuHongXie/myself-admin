@@ -22,20 +22,22 @@ export class User {
   nickname: string //昵称
   //默认密码 123456
   @Column({
-    default: ''
+    default: '',
+    select: false
   })
   password: string //密码
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   avatar: string //头像
   @Column({ nullable: true })
   email: string //邮箱
   @Column({ nullable: true })
   telephone: string //手机号
   @Column({
-    default: 1
+    default: 1,
+    select: false
   })
   status: number //状态 0:禁用 1:启用
-  @Column({ nullable: true, default: 'q5+Kdg==' })
+  @Column({ nullable: true, default: 'q5+Kdg==', select: false })
   salt: string
   @Column({ nullable: true, default: 0 })
   isAdmin: number //是否为管理员 1:是 0:否
@@ -54,7 +56,8 @@ export class User {
       from: (value) => {
         return dayjs(value).format('YYYY-MM-DD HH:mm:ss')
       }
-    }
+    },
+    select: false
   })
   createTime: Date
   @UpdateDateColumn({
@@ -65,7 +68,8 @@ export class User {
       from: (value) => {
         return dayjs(value).format('YYYY-MM-DD HH:mm:ss')
       }
-    }
+    },
+    select: false
   })
   updateTime: Date
   @BeforeInsert()

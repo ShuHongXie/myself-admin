@@ -27,8 +27,9 @@
   "dependencies": {
     "@ctrl/tinycolor": "catalog:",
     "@iconify/vue": "catalog:",
-    "@myself/store": "workspace:^",
+    "@myself/component": "workspace:^",
     "@myself/locales": "workspace:^",
+    "@myself/store": "workspace:^",
     "@myself/utils": "workspace:^",
     "pinia": "catalog:",
     "screenfull": "catalog:",

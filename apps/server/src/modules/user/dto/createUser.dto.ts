@@ -1,6 +1,6 @@
 //create-user.dto.ts
 import { ApiProperty } from '@nestjs/swagger'
-import { IsArray, IsNotEmpty, MinLength, IsOptional } from 'class-validator'
+import { IsArray, IsNotEmpty, MinLength, IsOptional, IsPhoneNumber } from 'class-validator'
 export class CreateUserDto {
   @IsNotEmpty({
     message: '用户名不能为空'
@@ -18,6 +18,21 @@ export class CreateUserDto {
     description: '昵称'
   })
   nickname: string
+
+  @IsOptional()
+  @ApiProperty({
+    description: '电子邮箱'
+  })
+  email: string
+
+  @IsOptional()
+  @ApiProperty({
+    description: '手机号码'
+  })
+  @IsPhoneNumber('CN', {
+    message: '手机号格式不正确'
+  })
+  telephone: string
 
   @IsOptional()
   @ApiProperty({

@@ -1,0 +1,13 @@
+{
+  "name": "@myself/component",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "ui框架组件库",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

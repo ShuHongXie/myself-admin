@@ -19,21 +19,22 @@ export class RoleService {
   ) {}
 
   async create(createRoleDto: CreateRoleDto) {
-    const row = await this.roleRepository.findOne({
+    const role = await this.roleRepository.findOne({
       where: { roleName: createRoleDto.roleName }
     })
-    if (row) {
+    if (role) {
       throw new ApiException('角色已存在', ApiErrorCode.COMMON_CODE)
     }
     const newRole = new Role()
+    newRole.roleName = createRoleDto.roleName
+    newRole.status = createRoleDto.status
+    // 增加菜单
     if (createRoleDto.menuIds?.length) {
-      //查询包含menu_ids的菜单列表
       const menuList = await this.menuRepository.find({
         where: {
           id: In(createRoleDto.menuIds)
         }
       })
-      //赋值给newRole(插入表中之后就会在关系表中生成对应关系)
       newRole.menus = menuList
     }
     try {

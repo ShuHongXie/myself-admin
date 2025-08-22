@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { UserManage } from '@myself/ui'
+</script>
 
 <template>
-  <div class="component-name">new</div>
+  <UserManage></UserManage>
 </template>
 
 <style lang="scss" scoped></style>

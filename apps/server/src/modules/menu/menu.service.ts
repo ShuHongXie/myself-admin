@@ -6,7 +6,6 @@ import { DeepPartial, Repository } from 'typeorm'
 import { Menu } from './entities/menu.entity'
 import { ApiException } from 'src/common/filter/api.exception'
 import { ResultData } from '@utils/ResultData'
-import { Role } from '@modules/role/entities/role.entity'
 import { MenuMeta } from './entities/menu-meta.entity'
 import { MenuType } from '@enums/common.enum'
 

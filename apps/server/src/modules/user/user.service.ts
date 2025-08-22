@@ -67,8 +67,12 @@ export class UserService {
         }
       })
       const newUser = new User()
-      newUser.username = createUserDto.username
       newUser.password = createUserDto.password
+      newUser.status = createUserDto.status
+      newUser.nickname = createUserDto.nickname
+      newUser.email = createUserDto.email
+      newUser.telephone = createUserDto.telephone
+      newUser.username = createUserDto.username
       newUser.roles = roleList
       await this.userRepository.save(newUser)
       return ResultData.success('创建成功')
@@ -108,24 +112,32 @@ export class UserService {
     const userList: User | null = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.roles', 'role')
-      // .leftJoinAndSelect('role.menus', 'menu')
-      // .where({ id: user.userId })
-      .where({ id: 2 })
+      .leftJoinAndSelect('role.menus', 'menu')
+      .where({ id: user.userId })
       .getOne()
 
-    //是否为超级管理员,是的话查询所有菜单和权限
     const isAdmin = userInfo.isAdmin
     let permissions: string[] = []
     try {
-      if (isAdmin) {
-        permissions = ['*:*:*']
-      } else {
-        permissions = []
+      if (userList) {
+        if (isAdmin) {
+          permissions = ['*:*:*']
+        } else {
+          // 非超级管理员的话就查询所有权限
+          const unFilterPermissions: string[] = []
+          userList.roles.forEach((role) => {
+            role.menus.forEach((menu) => {
+              if (menu.permission) {
+                unFilterPermissions.push(menu.permission)
+              }
+            })
+          })
+          permissions = [...new Set(unFilterPermissions)]
+        }
       }
+
       await this.cacheService.set(`${user.userId}_permissions`, permissions, 7200)
       return ResultData.success('获取用户信息成功', {
-        userList,
-        // routers: convertToTree(routers),
         permissions: permissions,
         userInfo
       })
