@@ -27,7 +27,6 @@
   "dependencies": {
     "@ctrl/tinycolor": "catalog:",
     "@iconify/vue": "catalog:",
-    "@myself/component": "workspace:^",
     "@myself/locales": "workspace:^",
     "@myself/store": "workspace:^",
     "@myself/utils": "workspace:^",
