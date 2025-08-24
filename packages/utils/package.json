@@ -17,7 +17,9 @@
   "dependencies": {
     "@ctrl/tinycolor": "catalog:",
     "@vueuse/core": "catalog:",
+    "axios": "catalog:",
     "defu": "catalog:",
+    "element-plus": "catalog:",
     "lodash.clonedeep": "catalog:",
     "theme-colors": "catalog:",
     "vue": "catalog:"

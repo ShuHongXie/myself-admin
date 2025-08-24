@@ -8,6 +8,7 @@ const dialogTableVisible = ref(false)
 const dialogFormVisible = ref(true)
 const formLabelWidth = '140px'
 const operateType = ref(1) // 1 新增 2 修改
+const data = ref([])
 
 const options = [
   {
@@ -36,13 +37,27 @@ const form = reactive({
   username: '',
   password: '',
   nickname: '',
-  status: 0,
+  status: 1,
   telephone: '',
   email: '',
   roles: []
 })
 
 const formRules = ref({
+  username: [
+    {
+      required: true,
+      message: '请输入手机号码',
+      trigger: ['blur', 'change']
+    }
+  ],
+  password: [
+    {
+      required: true,
+      message: '请输入手机号码',
+      trigger: ['blur', 'change']
+    }
+  ],
   // 邮箱验证规则
   email: [
     {
@@ -52,11 +67,6 @@ const formRules = ref({
     }
   ],
   telephone: [
-    // {
-    //   required: true,
-    //   message: '请输入手机号码',
-    //   trigger: ['blur', 'change']
-    // },
     {
       pattern: /^1[3-9]\d{9}$/,
       message: '请输入有效的11位手机号码',
@@ -97,12 +107,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     <el-form ref="ruleFormRef" :rules="formRules" :model="form" label-width="90px">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="账户:">
+          <el-form-item prop="username" label="账户:">
             <el-input clearable v-model="form.username" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="密码:">
+          <el-form-item prop="password" label="密码:">
             <el-input
               clearable
               v-model="form.password"
@@ -137,15 +147,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         </el-col>
         <el-col :span="12">
           <el-form-item label="选择角色:">
-            <el-select v-model="form.roles" multiple placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
+            <el-tree-select
+              v-model="form.roles"
+              placeholder="请账号拥有的角色"
+              :data="data"
+              multiple
+              :render-after-expand="false"
+              show-checkbox
+            />
           </el-form-item>
         </el-col>
       </el-row>
