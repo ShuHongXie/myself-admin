@@ -10,28 +10,22 @@ const formLabelWidth = '140px'
 const operateType = ref(1) // 1 新增 2 修改
 const data = ref([])
 
-const options = [
-  {
-    value: '选项1',
-    label: '黄金糕'
+const props = defineProps({
+  request: {
+    type: Function,
+    default: () => {}
   },
-  {
-    value: '选项2',
-    label: '双皮奶'
-  },
-  {
-    value: '选项3',
-    label: '蚵仔煎'
-  },
-  {
-    value: '选项4',
-    label: '龙须面'
-  },
-  {
-    value: '选项5',
-    label: '北京烤鸭'
+  confirm: {
+    type: Function,
+    default: () => {}
   }
-]
+})
+
+onMounted(() => {
+  props.request(form)
+})
+
+const emit = defineEmits(['confirm'])
 
 const form = reactive({
   username: '',
@@ -80,6 +74,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
+      emit('confirm', form)
       console.log('submit!')
     } else {
       console.log('error submit!', fields)

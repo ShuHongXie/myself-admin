@@ -2,6 +2,8 @@ import axios, { type AxiosRequestConfig, type AxiosResponse, type CreateAxiosDef
 import { ElMessage } from 'element-plus'
 import { merge } from '../func'
 
+export * from 'axios'
+
 /**
  * 取消所有 pending 状态的请求
  */
