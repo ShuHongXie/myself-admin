@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue'
+import { ref, reactive, onMounted, defineEmits, toRefs } from 'vue'
+import { searchProps } from './props'
+import type { SearchModel } from './props'
 
-const form = reactive({
-  name: '',
-  region: '',
-  date1: '',
-  date2: '',
-  delivery: false,
-  type: [],
-  resource: '',
-  desc: ''
-})
+const searchModel = reactive<SearchModel>({})
 
 // 组件 props 类型定义
-const props = defineProps<{
-  msg?: string
-}>()
+const props = defineProps(searchProps)
+// const { inline, disabled, options } = toRefs(props)
 
 // 组件 emits 类型定义
 const emits = defineEmits<{
@@ -42,11 +34,16 @@ const increment = () => {
 
 <template>
   <div class="search">
-    通用搜索组件
-    <el-form :model="form" label-width="auto" style="max-width: 600px">
-      <el-form-item label="Activity name">
-        <el-input v-model="form.name" />
-      </el-form-item>
+    <el-form :model="searchModel" label-width="auto" style="max-width: 600px">
+      <el-row :gutter="gutter">
+        <template v-for="item in options" :key="item.prop">
+          <el-col :span="item.span">
+            <el-form-item :label="item.label" :prop="item.prop">
+              <el-input v-if="item.type === 'input'" v-model="searchModel[item.prop]" />
+            </el-form-item>
+          </el-col>
+        </template>
+      </el-row>
     </el-form>
   </div>
 </template>

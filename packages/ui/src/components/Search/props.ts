@@ -1,11 +1,17 @@
 interface SearchItem {
   label: string
   prop: string
+  span?: number
   type?: string
   placeholder?: string
   multiple?: boolean
   options?: any[]
-  [keyname: string]: any
+  labelWidth?: string
+}
+
+export interface SearchModel {
+  [key: string]: any // 添加索引签名，允许任何字符串作为键
+  // 其他具体属性...
 }
 
 export const searchProps = {
@@ -31,24 +37,31 @@ export const searchProps = {
     type: String,
     default: ''
   },
-  searchItem: {
-    type: Array<SearchItem[]>,
-    default: () => [
+  gutter: {
+    type: [String, Number],
+    default: 160
+  },
+  options: {
+    type: Array<SearchItem>,
+    default: [
       {
         prop: 'houseName',
         label: '楼栋/房号',
+        labelWidth: '',
         placeholder: '请输入楼栋/房号',
         type: 'div'
       },
       {
         prop: 'lawName',
         label: '外委律所名称',
+        labelWidth: '',
         placeholder: '请输入外委律所名称'
       },
       {
         prop: 'haveDiscount',
         label: '是否涉及让利',
         type: 'select',
+        labelWidth: '',
         placeholder: '请选择是否涉及让利',
         options: [
           {
@@ -64,11 +77,13 @@ export const searchProps = {
       {
         prop: 'ownerName',
         label: '客户姓名',
+        labelWidth: '',
         placeholder: '请输入客户姓名'
       },
       {
         prop: 'ownerMobile',
         label: '客户手机号',
+        labelWidth: '',
         placeholder: '请输入客户手机号'
       },
       {
