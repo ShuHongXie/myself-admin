@@ -34,12 +34,37 @@ const increment = () => {
 
 <template>
   <div class="search">
-    <el-form :model="searchModel" label-width="auto" style="max-width: 600px">
+    <el-form :model="searchModel" :label-width="labelWidth">
       <el-row :gutter="gutter">
         <template v-for="item in options" :key="item.prop">
-          <el-col :span="item.span">
-            <el-form-item :label="item.label" :prop="item.prop">
-              <el-input v-if="item.type === 'input'" v-model="searchModel[item.prop]" />
+          <el-col v-bind="item.colProps">
+            <el-form-item v-bind="item.formItemProps" :prop="item.prop">
+              <!-- 输入框 -->
+              <el-input
+                v-bind="item.inputProps"
+                v-if="item.inputProps.type === 'input'"
+                v-model="searchModel[item.prop]"
+              />
+              <!-- 筛选框 -->
+              <el-select
+                v-if="item.inputProps.type === 'select'"
+                v-model="searchModel[item.prop]"
+                v-bind="item.inputProps"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="subItem in item.inputProps.options"
+                  :key="subItem.value"
+                  :label="subItem.label"
+                  :value="subItem.value"
+                />
+              </el-select>
+              <!-- 时间选择框 -->
+              <el-date-picker
+                v-if="item.inputProps.type === 'date-picker'"
+                v-model="searchModel[item.prop]"
+                v-bind="item.inputProps"
+              />
             </el-form-item>
           </el-col>
         </template>

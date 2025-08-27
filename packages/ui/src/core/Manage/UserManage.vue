@@ -94,7 +94,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       <el-button color="#a30676" :icon="Download">导出</el-button>
     </div>
   </div>
-  <el-dialog
+  <!-- <el-dialog
     v-model="dialogFormVisible"
     :title="operateType === 1 ? '新增用户' : '修改用户'"
     width="700"
@@ -160,7 +160,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         <el-button type="primary" @click="submitForm(ruleFormRef)">确定</el-button>
       </div>
     </template>
-  </el-dialog>
+  </el-dialog> -->
 </template>
 
 <style lang="scss" scoped>
