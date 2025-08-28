@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, defineEmits, toRefs } from 'vue'
+import { ref, reactive, onMounted, defineEmits, toRefs, getCurrentInstance } from 'vue'
 import { searchProps } from './props'
 import type { SearchModel } from './props'
 
@@ -22,22 +22,21 @@ const state = reactive({
 
 // 生命周期钩子
 onMounted(() => {
+  const instance = getCurrentInstance()
+  console.log('instance:', instance)
   console.log('Component mounted')
 })
-
-// 方法
-const increment = () => {
-  count.value++
-  emits('click', 'clicked')
-}
 </script>
 
 <template>
   <div class="search">
     <el-form :model="searchModel" :label-width="labelWidth">
       <el-row :gutter="gutter">
+        <el-col :span="span">
+          <slot name="formItem"> </slot>
+        </el-col>
         <template v-for="item in options" :key="item.prop">
-          <el-col v-bind="item.colProps">
+          <el-col :span="span" v-bind="item.colProps">
             <el-form-item v-bind="item.formItemProps" :prop="item.prop">
               <!-- 输入框 -->
               <el-input

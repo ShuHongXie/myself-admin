@@ -85,7 +85,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
 <template>
   <div class="user-manage">
-    <Search></Search>
+    <Search>
+      <template #formItem>
+        <div>12321</div>
+      </template>
+    </Search>
     <div>
       <el-button type="primary" :icon="Plus">新增</el-button>
       <el-button color="#626aef" :icon="Edit">修改</el-button>

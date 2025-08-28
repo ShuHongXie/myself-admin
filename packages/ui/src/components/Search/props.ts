@@ -44,14 +44,28 @@ export const searchProps = {
     type: [String, Number],
     default: 10
   },
+  span: {
+    type: Number,
+    default: 6
+  },
   options: {
     type: Array<SearchItem>,
     default: [
       {
         prop: 'nickname',
-        colProps: {
-          span: 8
+        colProps: {},
+        formItemProps: {
+          label: '用户姓名',
+          labelWidth: ''
         },
+        inputProps: {
+          type: 'input',
+          placeholder: '请输入用户姓名'
+        }
+      },
+      {
+        prop: 'nickname',
+        colProps: {},
         formItemProps: {
           label: '用户姓名',
           labelWidth: ''
@@ -63,9 +77,7 @@ export const searchProps = {
       },
       {
         prop: 'haveDiscount',
-        colProps: {
-          span: 8
-        },
+        colProps: {},
         formItemProps: {
           label: '是否涉及让利',
           labelWidth: ''
@@ -93,7 +105,26 @@ export const searchProps = {
         startPlaceholder: '开始时间',
         endPlaceholder: '结束时间',
         format: 'yyyy-MM-dd',
-        valueFormat: 'timestamp'
+        valueFormat: 'timestamp',
+        formItemProps: {
+          label: '是否涉及让利',
+          labelWidth: ''
+        },
+        inputProps: {
+          type: 'select',
+          placeholder: '请选择是否涉及让利',
+          labelWidth: '140px',
+          options: [
+            {
+              label: '是',
+              value: true
+            },
+            {
+              label: '否',
+              value: false
+            }
+          ]
+        }
       }
       // {
       //   prop: 'lawName',
