@@ -39,6 +39,7 @@
   "devDependencies": {
     "@myself/types": "workspace:^",
     "@vitejs/plugin-vue": "catalog:",
+    "@vitejs/plugin-vue-jsx": "catalog:",
     "@vue/tsconfig": "catalog:",
     "element-plus": "catalog:",
     "sass": "catalog:",

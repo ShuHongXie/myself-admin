@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { computed } from 'vue'
 import { RouterView } from 'vue-router'
 import { useInitGlobalStyle } from '@myself/utils'

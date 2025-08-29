@@ -6,18 +6,27 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
+    "erasableSyntaxOnly": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+    "jsx": "preserve", // 保留 JSX 语法，由 Vite 插件处理
+    "jsxImportSource": "vue", // 指定 JSX 解析来自 Vue
     "paths": {
       "#/*": ["./src/*"]
     },
     "baseUrl": "."
   },
-  "types": ["element-plus/global", "vite/client", "nprogress"],
+  "types": [
+    "element-plus/global",
+    "vite/client",
+    "nprogress",
+    "@vitejs/plugin-vue-jsx",
+    "vue/jsx-runtime"
+  ],
   "include": [
     "src/**/*.ts",
-    "src/**/*.vue",
+    "src/**/*.ts",
+    "src/**/*.tsx",
     "auto-imports.d.ts",
     "node_modules/@myself/ui",
     "src/router/type.d.ts",

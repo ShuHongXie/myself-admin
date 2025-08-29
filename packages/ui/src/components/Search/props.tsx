@@ -7,15 +7,18 @@ interface SearchItem {
   multiple?: boolean
   options?: any[]
   labelWidth?: string
-  inputProps?: any
+  input?: any
   colProps?: any
   formItemProps?: any
 }
+import { ComponentInternalInstance, defineComponent } from 'vue'
 
 export interface SearchModel {
   [key: string]: any // 添加索引签名，允许任何字符串作为键
   // 其他具体属性...
 }
+
+import Test from '../../core/Manage/Test.vue'
 
 export const searchProps = {
   inline: {
@@ -52,15 +55,21 @@ export const searchProps = {
     type: Array<SearchItem>,
     default: [
       {
-        prop: 'nickname',
-        colProps: {},
-        formItemProps: {
-          label: '用户姓名',
-          labelWidth: ''
-        },
-        inputProps: {
-          type: 'input',
-          placeholder: '请输入用户姓名'
+        prop: 'date',
+        input: {
+          type: 'custom',
+          component: Test,
+          props: {
+            msg: '谢小谢',
+            onClick: (instance: ComponentInternalInstance) => {}
+          },
+          slots: {
+            aa: (props: any, instance: ComponentInternalInstance) => {
+              console.log(props, instance)
+
+              return <div onClick={() => props.onClick(instance)}>{props.msg}</div>
+            }
+          }
         }
       },
       {
@@ -70,9 +79,25 @@ export const searchProps = {
           label: '用户姓名',
           labelWidth: ''
         },
-        inputProps: {
+        input: {
           type: 'input',
-          placeholder: '请输入用户姓名'
+          props: {
+            placeholder: '请输入用户姓名'
+          }
+        }
+      },
+      {
+        prop: 'nickname',
+        colProps: {},
+        formItemProps: {
+          label: '用户姓名',
+          labelWidth: ''
+        },
+        input: {
+          type: 'input',
+          props: {
+            placeholder: '请输入用户姓名'
+          }
         }
       },
       {
@@ -82,20 +107,22 @@ export const searchProps = {
           label: '是否涉及让利',
           labelWidth: ''
         },
-        inputProps: {
+        input: {
           type: 'select',
-          placeholder: '请选择是否涉及让利',
-          labelWidth: '140px',
-          options: [
-            {
-              label: '是',
-              value: true
-            },
-            {
-              label: '否',
-              value: false
-            }
-          ]
+          props: {
+            placeholder: '请选择是否涉及让利',
+            labelWidth: '140px',
+            options: [
+              {
+                label: '是',
+                value: true
+              },
+              {
+                label: '否',
+                value: false
+              }
+            ]
+          }
         }
       },
       {
@@ -110,20 +137,22 @@ export const searchProps = {
           label: '是否涉及让利',
           labelWidth: ''
         },
-        inputProps: {
+        input: {
           type: 'select',
-          placeholder: '请选择是否涉及让利',
-          labelWidth: '140px',
-          options: [
-            {
-              label: '是',
-              value: true
-            },
-            {
-              label: '否',
-              value: false
-            }
-          ]
+          props: {
+            placeholder: '请选择是否涉及让利',
+            labelWidth: '140px',
+            options: [
+              {
+                label: '是',
+                value: true
+              },
+              {
+                label: '否',
+                value: false
+              }
+            ]
+          }
         }
       }
       // {
