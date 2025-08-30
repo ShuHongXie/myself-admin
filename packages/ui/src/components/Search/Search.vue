@@ -25,13 +25,13 @@ const searchModel = defineModel<SearchModel>()
 const name = ref('Search')
 const instance = getCurrentInstance()
 
-const renderSlot = (
-  slotFn: (...strs: any) => void | null,
-  props: any,
-  instance: ComponentInternalInstance
-) => {
-  return slotFn ? slotFn(props, instance) : null
-}
+// const renderSlot = (
+//   slotFn: (...strs: any) => void | null,
+//   props: any,
+//   instance: ComponentInternalInstance
+// ) => {
+//   return slotFn ? slotFn(props, instance) : null
+// }
 
 // 生命周期钩子
 onMounted(() => {
