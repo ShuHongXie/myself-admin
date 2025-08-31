@@ -49,6 +49,15 @@ defineExpose({
     {{ name }}
     <el-form :model="searchModel" :label-width="labelWidth">
       <el-row :gutter="gutter">
+        <template v-for="(slot, index) in customSlots" :key="index">
+          <!-- 使用插槽配置的 span 和 colProps 控制宽度和其他属性 -->
+          <el-col :span="slot.span" v-bind="slot.colProps">
+            <el-form-item v-bind="slot.formItemProps">
+              <!-- 渲染对应名称的插槽，传递插槽参数 -->
+              <slot :name="slot.name" :searchModel="searchModel" />
+            </el-form-item>
+          </el-col>
+        </template>
         <template v-for="item in options" :key="item.prop">
           <el-col :span="span" v-bind="item.colProps">
             <el-form-item v-bind="item.formItemProps" :prop="item.prop">
@@ -79,7 +88,7 @@ defineExpose({
                 v-bind="item.input.props"
               />
               <!-- 自定义组件 -->
-              <component :is="item.input.component" :msg="item.input.props.msg">
+              <!-- <component :is="item.input.component" :msg="item.input.props.msg">
                 <template
                   v-for="slotName in Object.keys(item.input.slots || [])"
                   #[slotName]
@@ -90,7 +99,7 @@ defineExpose({
                     :is="renderSlot(item.input.slots[slotName], item.input.props, instance)"
                   />
                 </template>
-              </component>
+              </component> -->
             </el-form-item>
           </el-col>
         </template>

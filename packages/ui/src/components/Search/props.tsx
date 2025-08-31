@@ -51,26 +51,43 @@ export const searchProps = {
     type: Number,
     default: 6
   },
+  customSlots: {
+    type: Array,
+    default: () => [
+      {
+        name: 'custom1', // 对应插槽名称 #custom1
+        span: 4, // 宽度占 4/24（比默认的 6 更窄）
+        colProps: { offset: 1 }, // 额外的 el-col 属性（如偏移量）
+        formItemProps: { label: '操作' } // el-form-item 的属性
+      },
+      {
+        name: 'custom2', // 对应插槽名称 #custom2
+        span: 8, // 宽度占 8/24（更宽）
+        formItemProps: { label: '自定义项' }
+      }
+    ]
+  },
   options: {
     type: Array<SearchItem>,
     default: [
       {
-        prop: 'date',
-        input: {
-          type: 'custom',
-          component: Test,
-          props: {
-            msg: '谢小谢',
-            onClick: (instance: ComponentInternalInstance) => {}
-          },
-          slots: {
-            aa: (props: any, instance: ComponentInternalInstance) => {
-              console.log(props, instance)
+        prop: 'date'
 
-              return <div onClick={() => props.onClick(instance)}>{props.msg}</div>
-            }
-          }
-        }
+        // input: {
+        //   type: 'custom',
+        //   component: Test,
+        //   props: {
+        //     msg: '谢小谢',
+        //     onClick: (instance: ComponentInternalInstance) => {}
+        //   },
+        //   slots: {
+        //     aa: (props: any, instance: ComponentInternalInstance) => {
+        //       console.log(props, instance)
+
+        //       return <div onClick={() => props.onClick(instance)}>{props.msg}</div>
+        //     }
+        //   }
+        // }
       },
       {
         prop: 'nickname',
