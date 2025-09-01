@@ -9,7 +9,6 @@ const dialogFormVisible = ref(true)
 const formLabelWidth = '140px'
 const operateType = ref(1) // 1 新增 2 修改
 const data = ref([])
-const searchForm = reactive({})
 
 const props = defineProps({
   request: {
@@ -35,7 +34,10 @@ const form = reactive({
   status: 1,
   telephone: '',
   email: '',
-  roles: []
+  roles: [],
+  value: false,
+  num: 10,
+  time: ''
 })
 
 const formRules = ref({
@@ -86,7 +88,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
 <template>
   <div class="user-manage">
-    <Search v-model="searchForm"> </Search>
+    <Search v-model="form">
+      <template #custom1>
+        <el-input v-model="form.value" />
+      </template>
+      <template #custom2>
+        <el-input v-model="form.value" />
+      </template>
+    </Search>
     <div>
       <el-button type="primary" :icon="Plus">新增</el-button>
       <el-button color="#626aef" :icon="Edit">修改</el-button>

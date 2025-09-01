@@ -1,42 +1,68 @@
 <script setup lang="ts">
-import {
-  ref,
-  reactive,
-  onMounted,
-  defineEmits,
-  toRefs,
-  getCurrentInstance,
-  h,
-  ComponentInternalInstance
-} from 'vue'
-import { searchProps } from './props'
-import type { SearchModel } from './props'
+import { ref, reactive, onMounted, defineEmits, onUnmounted } from 'vue'
+import type { SearchModel, SearchProps } from './props'
+import { searchProps, SearchTypeEnum } from './props'
+import { Icon } from '@iconify/vue'
 
-// 组件 props 类型定义
 const props = defineProps(searchProps)
-// const { inline, disabled, options } = toRefs(props)
+const options = ref<SearchProps[]>([])
+const searchRef = ref(null)
+
+// model定义
+const searchModel = defineModel<SearchModel>()
 
 // 组件 emits 类型定义
 const emits = defineEmits<{
   (event: 'click', data: string): void
 }>()
 
-const searchModel = defineModel<SearchModel>()
-const name = ref('Search')
-const instance = getCurrentInstance()
+// 视口监听-----------start-------------
+const windowWidth = ref(window.innerWidth)
+const extraLength = ref(0)
+const exceedRowLength = ref(false)
+const isCollapse = ref(false)
+const rowItemCount = ref(0)
 
-// const renderSlot = (
-//   slotFn: (...strs: any) => void | null,
-//   props: any,
-//   instance: ComponentInternalInstance
-// ) => {
-//   return slotFn ? slotFn(props, instance) : null
-// }
+/**
+ * @description: 视口监听
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleResize = () => {
+  windowWidth.value = window.innerWidth
+  rowItemCount.value = windowWidth.value >= 1900 ? 4 : windowWidth.value >= 1200 ? 3 : 2
+  console.log(rowItemCount.value)
+
+  extraLength.value = rowItemCount.value - props.slots.length
+  exceedRowLength.value = options.value.length > rowItemCount.value
+}
+
+onMounted(() => {
+  handleResize()
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
+// 视口监听-----------end-------------
 
 // 生命周期钩子
 onMounted(() => {
-  console.log('instance:', instance)
-  console.log('this:', this)
+  // 组装项
+  const itemProps = props.item.map((item) => ({
+    type: SearchTypeEnum.ITEM,
+    ...item
+  }))
+  const slotProps = props.slots.map((item) => ({
+    type: SearchTypeEnum.SLOT,
+    ...item
+  }))
+  slotProps.forEach((item) => {
+    itemProps.splice(item.position || 0, 0, item)
+  })
+  options.value = itemProps
+  console.log('配置项的值:', options.value)
 })
 
 defineExpose({
@@ -45,67 +71,98 @@ defineExpose({
 </script>
 
 <template>
-  <div class="search">
-    {{ name }}
-    <el-form :model="searchModel" :label-width="labelWidth">
-      <el-row :gutter="gutter">
-        <template v-for="(slot, index) in customSlots" :key="index">
-          <!-- 使用插槽配置的 span 和 colProps 控制宽度和其他属性 -->
-          <el-col :span="slot.span" v-bind="slot.colProps">
-            <el-form-item v-bind="slot.formItemProps">
-              <!-- 渲染对应名称的插槽，传递插槽参数 -->
-              <slot :name="slot.name" :searchModel="searchModel" />
-            </el-form-item>
-          </el-col>
-        </template>
-        <template v-for="item in options" :key="item.prop">
-          <el-col :span="span" v-bind="item.colProps">
-            <el-form-item v-bind="item.formItemProps" :prop="item.prop">
-              <!-- 输入框 -->
-              <el-input
-                v-bind="item.input.props"
-                v-if="item.input.type === 'input'"
-                v-model="searchModel![item.prop]"
-              />
-              <!-- 筛选框 -->
-              <el-select
-                v-if="item.input.type === 'select'"
-                v-model="searchModel![item.prop]"
-                v-bind="item.input.props"
-                style="width: 100%"
+  <div class="search" ref="searchRef">
+    <el-form
+      :size="size"
+      :label-position="labelPosition"
+      :inline="inline"
+      :model="searchModel"
+      :label-width="labelWidth"
+    >
+      <div class="search-content">
+        <div class="search-content__left">
+          <el-row :gutter="gutter">
+            <template v-for="(item, index) in options" :key="item.prop">
+              <el-col
+                v-show="!isCollapse ? index <= rowItemCount : true"
+                :span="span"
+                v-bind="item.colProps"
               >
-                <el-option
-                  v-for="subItem in item.input.options"
-                  :key="subItem.value"
-                  :label="subItem.label"
-                  :value="subItem.value"
-                />
-              </el-select>
-              <!-- 时间选择框 -->
-              <el-date-picker
-                v-if="item.input.type === 'date-picker'"
-                v-model="searchModel![item.prop]"
-                v-bind="item.input.props"
-              />
-              <!-- 自定义组件 -->
-              <!-- <component :is="item.input.component" :msg="item.input.props.msg">
-                <template
-                  v-for="slotName in Object.keys(item.input.slots || [])"
-                  #[slotName]
-                  :key="slotName"
-                >
-                  <component
-                    v-if="item.input.slots[slotName]"
-                    :is="renderSlot(item.input.slots[slotName], item.input.props, instance)"
-                  />
-                </template>
-              </component> -->
-            </el-form-item>
-          </el-col>
-        </template>
+                <el-form-item v-bind="item.formItemProps" :prop="item.prop">
+                  <template v-if="item.type === SearchTypeEnum.SLOT">
+                    <slot :name="item.prop" :searchModel="searchModel"></slot>
+                  </template>
+                  <template v-else>
+                    <!-- 输入框 -->
+                    <el-input
+                      v-bind="item.input.props"
+                      v-if="item.input.type === 'input'"
+                      v-model="searchModel![item.prop]"
+                    />
+                    <!-- 筛选框 -->
+                    <el-select
+                      v-if="item.input.type === 'select'"
+                      v-model="searchModel![item.prop]"
+                      v-bind="item.input.props"
+                      style="width: 100%"
+                    >
+                      <el-option
+                        v-for="subItem in item.input.props.options"
+                        :key="subItem.value"
+                        :label="subItem[item.input.props.labelKey]"
+                        :value="subItem[item.input.props.valueKey]"
+                        :disabled="subItem.disabled"
+                      />
+                    </el-select>
+                    <!-- 时间选择框 -->
+                    <el-date-picker
+                      v-if="item.input.type === 'date-picker'"
+                      v-model="searchModel![item.prop]"
+                      v-bind="item.input.props"
+                    />
+                  </template>
+                </el-form-item>
+              </el-col>
+            </template>
+          </el-row>
+        </div>
+        <div class="search-content__right">
+          <el-form-item label="操作">
+            <el-button type="primary" :size="size" :loading="false">
+              {{ submitBtnText }}
+            </el-button>
+            <el-button :loading="false">
+              {{ resetBtnText }}
+            </el-button>
+          </el-form-item>
+        </div>
+      </div>
+      <el-row v-if="options.length > rowItemCount">
+        <el-form-item>
+          <el-link type="primary" :underline="false" @click="isCollapse = !isCollapse">
+            {{ isCollapse ? '展开' : '收起' }}更多筛选条件
+            <Icon :icon="isCollapse ? 'ep:arrow-down' : 'ep:arrow-up'" />
+          </el-link>
+        </el-form-item>
       </el-row>
     </el-form>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use '../../assets/scss/mixin.scss' as *;
+.search {
+  &-content {
+    @include flex-between-start;
+    .el-form-item {
+      margin-bottom: 6px;
+    }
+    &__left {
+      flex: 1;
+    }
+    &__right {
+      margin-left: 12px;
+    }
+  }
+}
+</style>
