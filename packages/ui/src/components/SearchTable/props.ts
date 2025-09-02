@@ -1,9 +1,28 @@
 import { CustomSlot } from '../Search/props'
 
+export enum RequestMethodType {
+  GET = 'get',
+  POST = 'post',
+  PUT = 'put',
+  DELETE = 'delete'
+}
+
 export const searchTableProps = {
-  type: {
-    type: String,
+  requestType: {
+    type: String as () => RequestMethodType,
     default: 'get'
+  },
+  url: {
+    type: String,
+    default: ''
+  },
+  headers: {
+    type: Object,
+    default: () => ({})
+  },
+  showPaginiation: {
+    type: Boolean,
+    default: true
   },
   searchProps: {
     type: Object,

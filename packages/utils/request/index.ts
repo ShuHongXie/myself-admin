@@ -29,11 +29,11 @@ export const cancelRequestsByUrl = (url: string) => {
 
 // 创建请求实例
 export const initRequestInstance = (
-  exntendConfig: CreateAxiosDefaults = {},
+  extendConfig: CreateAxiosDefaults = {},
   interceptorsRequestFn: (config?: AxiosRequestConfig) => void = () => {},
   interceptorsResponseFn: (Response?: AxiosResponse) => void = () => {}
 ) => {
-  const axiosConfig = merge({}, exntendConfig, {
+  const axiosConfig = merge({}, extendConfig, {
     baseURL: '/', // 从环境变量获取基础URL
     timeout: 10000, // 超时时间
     headers: {
@@ -129,6 +129,8 @@ export const initRequestInstance = (
       return Promise.reject(error)
     }
   )
+
+  return instance
 }
 
 // 存储当前正在进行的请求

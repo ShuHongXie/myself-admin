@@ -1,12 +1,49 @@
 <script setup lang="ts">
 import { Search } from '../Search'
-import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue'
-import { searchTableProps } from './props'
+import { ref, reactive, onMounted, defineProps, defineEmits, toRaw } from 'vue'
+import { searchTableProps, RequestMethodType } from './props'
 import { SearchModel } from '../Search/props'
+import { AxiosRequestConfig, initRequestInstance } from '@myself/utils'
 
 const searchModel = defineModel<SearchModel>('search')
 const props = defineProps(searchTableProps)
+
+// 列表初始化-----------start-------------
+const axios = initRequestInstance({
+  headers: props.headers
+})
 const data = reactive([])
+const pagination = reactive({})
+
+/**
+ * @description: 请求数据
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleRequest = async () => {
+  try {
+    const params = toRaw(searchModel)
+    const requestParams = [RequestMethodType.GET, RequestMethodType.DELETE].includes(
+      props.requestType
+    )
+      ? { params }
+      : params
+    const res = await axios[props.requestType as RequestMethodType](
+      props.url,
+      requestParams as AxiosRequestConfig
+    )
+    console.log(res)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// 初始化逻辑
+onMounted(() => {
+  handleRequest()
+})
+
+// 列表初始化-----------end-------------
 </script>
 
 <template>

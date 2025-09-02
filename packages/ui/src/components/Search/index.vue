@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, defineEmits, onUnmounted, inject } from 'vue'
-import type { SearchModel, SearchProps } from './props'
-import { searchProps, SearchTypeEnum } from './props'
+import { searchProps, SearchTypeEnum, type SearchModel, type SearchProps } from './props'
 import { Icon } from '@iconify/vue'
 
 const props = defineProps(searchProps)
