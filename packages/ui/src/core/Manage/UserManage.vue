@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue'
-import Search from '../../components/Search/Search.vue'
+import SearchTable from '../../components/SearchTable/index.vue'
 import { Delete, Download, Edit, Plus, Upload } from '@element-plus/icons-vue'
 import { FormInstance, FormRules } from 'element-plus'
 
@@ -88,21 +88,34 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
 <template>
   <div class="user-manage">
-    <Search v-model="form">
+    <!-- <Search v-model="form">
       <template #custom1>
         <el-input v-model="form.value" />
       </template>
       <template #custom2>
         <el-input v-model="form.value" />
       </template>
-    </Search>
-    <div>
-      <el-button type="primary" :icon="Plus">新增</el-button>
-      <el-button color="#626aef" :icon="Edit">修改</el-button>
-      <el-button type="danger" :icon="Delete">删除</el-button>
-      <el-button type="success" :icon="Upload">导入</el-button>
-      <el-button color="#a30676" :icon="Download">导出</el-button>
-    </div>
+    </Search> -->
+    <SearchTable v-model:search="form">
+      <template #custom1>
+        <el-input v-model="form.value" />
+      </template>
+      <template #custom2>
+        <el-input v-model="form.value" />
+      </template>
+      <template #prefix>
+        <div>
+          <el-button type="primary" :icon="Plus">新增</el-button>
+          <el-button color="#626aef" :icon="Edit">修改</el-button>
+          <el-button type="danger" :icon="Delete">删除</el-button>
+          <el-button type="success" :icon="Upload">导入</el-button>
+          <el-button color="#a30676" :icon="Download">导出</el-button>
+        </div>
+      </template>
+      <template #suffix>
+        <div>后置插槽</div>
+      </template>
+    </SearchTable>
   </div>
   <!-- <el-dialog
     v-model="dialogFormVisible"

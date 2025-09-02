@@ -1,25 +1,23 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, defineEmits, onUnmounted } from 'vue'
+import { ref, reactive, onMounted, defineEmits, onUnmounted, inject } from 'vue'
 import type { SearchModel, SearchProps } from './props'
 import { searchProps, SearchTypeEnum } from './props'
 import { Icon } from '@iconify/vue'
 
 const props = defineProps(searchProps)
 const options = ref<SearchProps[]>([])
-const searchRef = ref(null)
+const searchFormRef = ref(null)
 
 // model定义
 const searchModel = defineModel<SearchModel>()
 
 // 组件 emits 类型定义
-const emits = defineEmits<{
-  (event: 'click', data: string): void
+const emit = defineEmits<{
+  (event: string, data?: string): void
 }>()
 
 // 视口监听-----------start-------------
 const windowWidth = ref(window.innerWidth)
-const extraLength = ref(0)
-const exceedRowLength = ref(false)
 const isCollapse = ref(false)
 const rowItemCount = ref(0)
 
@@ -31,10 +29,6 @@ const rowItemCount = ref(0)
 const handleResize = () => {
   windowWidth.value = window.innerWidth
   rowItemCount.value = windowWidth.value >= 1900 ? 4 : windowWidth.value >= 1200 ? 3 : 2
-  console.log(rowItemCount.value)
-
-  extraLength.value = rowItemCount.value - props.slots.length
-  exceedRowLength.value = options.value.length > rowItemCount.value
 }
 
 onMounted(() => {
@@ -47,6 +41,32 @@ onUnmounted(() => {
 })
 // 视口监听-----------end-------------
 
+// 操作-----------start-------------
+const receiveSubmitEvent = inject<() => void>('handleSubmit')
+const receiveResetEvent = inject<() => void>('handleReset')
+
+/**
+ * @description: 搜索
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleSubmit = () => {
+  receiveSubmitEvent?.()
+  emit('onSubmit')
+}
+
+/**
+ * @description: 重置
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleReset = () => {
+  receiveResetEvent?.()
+  emit('onReset')
+}
+
+// 操作-----------end-------------
+
 // 生命周期钩子
 onMounted(() => {
   // 组装项
@@ -58,26 +78,29 @@ onMounted(() => {
     type: SearchTypeEnum.SLOT,
     ...item
   }))
+  let moveIndex = 0,
+    movedNum = 0
   slotProps.forEach((item) => {
+    movedNum++
+    moveIndex = item.position || 0
     itemProps.splice(item.position || 0, 0, item)
   })
   options.value = itemProps
   console.log('配置项的值:', options.value)
 })
 
-defineExpose({
-  name
-})
+defineExpose({})
 </script>
 
 <template>
-  <div class="search" ref="searchRef">
+  <div class="search">
     <el-form
       :size="size"
       :label-position="labelPosition"
       :inline="inline"
       :model="searchModel"
       :label-width="labelWidth"
+      ref="searchFormRef"
     >
       <div class="search-content">
         <div class="search-content__left">
@@ -128,10 +151,10 @@ defineExpose({
         </div>
         <div class="search-content__right">
           <el-form-item label="操作">
-            <el-button type="primary" :size="size" :loading="false">
+            <el-button type="primary" :size="size" :loading="false" @click.stop="handleSubmit">
               {{ submitBtnText }}
             </el-button>
-            <el-button :loading="false">
+            <el-button :loading="false" @click.stop="handleReset">
               {{ resetBtnText }}
             </el-button>
           </el-form-item>
@@ -140,8 +163,8 @@ defineExpose({
       <el-row v-if="options.length > rowItemCount">
         <el-form-item>
           <el-link type="primary" :underline="false" @click="isCollapse = !isCollapse">
-            {{ isCollapse ? '展开' : '收起' }}更多筛选条件
-            <Icon :icon="isCollapse ? 'ep:arrow-down' : 'ep:arrow-up'" />
+            {{ isCollapse ? '收起' : '展开' }}更多筛选条件
+            <Icon :icon="isCollapse ? 'ep:arrow-up' : 'ep:arrow-down'" />
           </el-link>
         </el-form-item>
       </el-row>

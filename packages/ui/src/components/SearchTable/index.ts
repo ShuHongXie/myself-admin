@@ -1,1 +1,1 @@
-export { default as SearchTable } from './SearchTable.vue'
+export { default as SearchTable } from './index.vue'

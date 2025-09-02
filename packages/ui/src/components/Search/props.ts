@@ -3,7 +3,7 @@ export enum SearchTypeEnum {
   SLOT = 2
 }
 
-interface SearchItem {
+export interface SearchItem {
   prop: string
   span?: number
   placeholder?: string
@@ -16,7 +16,7 @@ interface SearchItem {
   [keyname: string]: any
 }
 
-interface CustomSlot {
+export interface CustomSlot {
   prop: string // 对应插槽名称
   span?: number // 宽度占 6/24（默认）
   colProps?: any // el-col传参
