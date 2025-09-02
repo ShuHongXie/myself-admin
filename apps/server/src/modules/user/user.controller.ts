@@ -6,6 +6,7 @@ import { UserService } from './user.service'
 
 import { LoginDto } from './dto/login.dto'
 import { Public } from '@decorator/public.decorator'
+import { GetUserListDto } from './dto/getUserList.dto'
 
 @ApiTags('用户模块')
 @Controller('user')
@@ -49,5 +50,12 @@ export class UserController {
   @ApiOperation({ summary: '获取用户信息' })
   async getInfo(@Request() req) {
     return await this.userService.getInfo(req)
+  }
+
+  @Public()
+  @Get('getUserList')
+  @ApiOperation({ summary: '获取用户列表' })
+  async logout(@Body() getUserListDto: GetUserListDto) {
+    return await this.userService.getUserList(getUserListDto)
   }
 }

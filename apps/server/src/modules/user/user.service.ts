@@ -15,7 +15,10 @@ import { filterPermissions } from '@utils/common'
 import { Menu } from '@modules/menu/entities/menu.entity'
 import { MenuService } from '@modules/menu/menu.service'
 import { CacheService } from '@modules/cache/cache.service'
-import { paginate, Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate'
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate'
+import { GetUserListDto } from './dto/getUserList.dto'
+import { paginateTransform } from '@utils/paginate'
+import { QueryBuilder } from 'typeorm/browser'
 
 @Injectable()
 export class UserService {
@@ -145,5 +148,16 @@ export class UserService {
     } catch (error) {
       throw new ApiException('系统异常', ApiErrorCode.FAIL)
     }
+  }
+
+  async getUserList(getUserListDto: GetUserListDto) {
+    console.log(getUserListDto)
+    const queryBuilder: QueryBuilder<User> = this.userRepository.createQueryBuilder('user')
+    const paginationOptions: IPaginationOptions = {
+      page: getUserListDto.currentPage, // 映射 currentPage -> page
+      limit: getUserListDto.pageSize // 映射 pageSize -> limit
+    }
+    const result = await paginateTransform<User>(queryBuilder, paginationOptions)
+    return ResultData.success('获取用户列表成功', result)
   }
 }
