@@ -142,6 +142,8 @@ const pendingRequests = new Map()
  * @returns {String} 唯一标识
  */
 export const generateRequestKey = (config: AxiosRequestConfig) => {
+  console.log(config.params)
+
   const { method, url, params, data } = config
   // 序列化参数，确保相同参数生成相同key
   const paramsStr = params ? JSON.stringify(params) : ''

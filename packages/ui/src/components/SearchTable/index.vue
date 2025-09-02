@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Search } from '../Search'
-import { ref, reactive, onMounted, defineProps, defineEmits, toRaw } from 'vue'
+import { ref, reactive, onMounted, defineProps, defineEmits, toRaw, provide } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { SearchModel } from '../Search/props'
 import { AxiosRequestConfig, initRequestInstance } from '@myself/utils'
@@ -10,15 +10,16 @@ const props = defineProps(searchTableProps)
 
 // 列表初始化-----------start-------------
 const axios = initRequestInstance({
+  baseURL: import.meta.env.VITE_BASE_URL,
   headers: props.headers
 })
-const data = reactive([])
-const pagination = reactive({
+const data = ref([])
+const pagination = ref({
   currentPage: 1,
   pageSize: 10,
   total: 100
 })
-const searchProps = reactive({
+const searchProps = ref({
   slots: props.searchProps.slots
 })
 
@@ -29,16 +30,24 @@ const searchProps = reactive({
  */
 const handleRequest = async () => {
   try {
-    const params = toRaw(searchModel)
+    const params = {
+      ...searchModel.value,
+      pageSize: pagination.value.pageSize,
+      currentPage: pagination.value.currentPage
+    }
+    console.log(params)
+
     const requestParams = [RequestMethodType.GET, RequestMethodType.DELETE].includes(
-      props.requestType
+      props.methodType
     )
       ? { params }
       : params
-    const res = await axios[props.requestType as RequestMethodType](
+    const res = await axios[props.methodType as RequestMethodType](
       props.url,
       requestParams as AxiosRequestConfig
     )
+    data.value = res.result
+    pagination.value.total = res.total
     console.log(res)
   } catch (error) {
     console.log(error)
@@ -47,10 +56,17 @@ const handleRequest = async () => {
 
 // 初始化逻辑
 onMounted(() => {
-  // handleRequest()
+  handleRequest()
 })
 
 // 列表初始化-----------end-------------
+
+provide('handleSubmit', () => {
+  console.log('搜索')
+})
+provide('handleReset', () => {
+  console.log('重置')
+})
 </script>
 
 <template>

@@ -96,7 +96,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         <el-input v-model="form.value" />
       </template>
     </Search> -->
-    <SearchTable v-model:search="form">
+    <SearchTable url="/user/getUserList" v-model:search="form">
       <template #custom1>
         <el-input v-model="form.value" />
       </template>

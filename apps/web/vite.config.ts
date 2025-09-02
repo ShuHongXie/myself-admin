@@ -9,7 +9,14 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 export default defineConfig({
   server: {
-    port: 3000 // 指定端口号
+    port: 3000, // 指定端口号
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4000', // 后端接口地址
+        changeOrigin: true, // 允许跨域
+        rewrite: (path) => path.replace(/^\/api/, '') // 移除请求路径中的/api前缀
+      }
+    }
   },
   resolve: {
     alias: {

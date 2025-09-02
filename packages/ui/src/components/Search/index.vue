@@ -11,9 +11,7 @@ const searchFormRef = ref(null)
 const searchModel = defineModel<SearchModel>()
 
 // 组件 emits 类型定义
-const emit = defineEmits<{
-  (event: string, data?: string): void
-}>()
+const emit = defineEmits(['onSubmit', 'onReset'])
 
 // 视口监听-----------start-------------
 const windowWidth = ref(window.innerWidth)
@@ -43,7 +41,6 @@ onUnmounted(() => {
 // 操作-----------start-------------
 const receiveSubmitEvent = inject<() => void>('handleSubmit')
 const receiveResetEvent = inject<() => void>('handleReset')
-
 /**
  * @description: 搜索
  * @return {*}
@@ -156,7 +153,7 @@ defineExpose({})
         </div>
       </div>
       <el-row class="search-collapse" v-if="options.length > rowItemCount">
-        <el-link type="primary" :underline="false" @click="isCollapse = !isCollapse">
+        <el-link type="primary" underline="never" @click="isCollapse = !isCollapse">
           {{ isCollapse ? '收起' : '展开' }}更多筛选条件
           <Icon :icon="isCollapse ? 'ep:arrow-up' : 'ep:arrow-down'" />
         </el-link>

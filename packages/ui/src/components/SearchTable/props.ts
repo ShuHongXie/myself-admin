@@ -8,7 +8,7 @@ export enum RequestMethodType {
 }
 
 export const searchTableProps = {
-  requestType: {
+  methodType: {
     type: String as () => RequestMethodType,
     default: 'get'
   },
