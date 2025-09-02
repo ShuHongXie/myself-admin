@@ -33,6 +33,7 @@
     "crypto": "catalog:",
     "dayjs": "catalog:",
     "mysql2": "catalog:",
+    "nestjs-typeorm-paginate": "catalog:",
     "redis": "catalog:",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",

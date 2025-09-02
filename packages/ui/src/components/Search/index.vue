@@ -77,11 +77,7 @@ onMounted(() => {
     type: SearchTypeEnum.SLOT,
     ...item
   }))
-  let moveIndex = 0,
-    movedNum = 0
   slotProps.forEach((item) => {
-    movedNum++
-    moveIndex = item.position || 0
     itemProps.splice(item.position || 0, 0, item)
   })
   options.value = itemProps
@@ -159,13 +155,11 @@ defineExpose({})
           </el-form-item>
         </div>
       </div>
-      <el-row v-if="options.length > rowItemCount">
-        <el-form-item>
-          <el-link type="primary" :underline="false" @click="isCollapse = !isCollapse">
-            {{ isCollapse ? '收起' : '展开' }}更多筛选条件
-            <Icon :icon="isCollapse ? 'ep:arrow-up' : 'ep:arrow-down'" />
-          </el-link>
-        </el-form-item>
+      <el-row class="search-collapse" v-if="options.length > rowItemCount">
+        <el-link type="primary" :underline="false" @click="isCollapse = !isCollapse">
+          {{ isCollapse ? '收起' : '展开' }}更多筛选条件
+          <Icon :icon="isCollapse ? 'ep:arrow-up' : 'ep:arrow-down'" />
+        </el-link>
       </el-row>
     </el-form>
   </div>
@@ -185,6 +179,9 @@ defineExpose({})
     &__right {
       margin-left: 12px;
     }
+  }
+  &-collapse {
+    margin-bottom: 10px;
   }
 }
 </style>

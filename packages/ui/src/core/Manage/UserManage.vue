@@ -112,9 +112,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
           <el-button color="#a30676" :icon="Download">导出</el-button>
         </div>
       </template>
-      <template #suffix>
-        <div>后置插槽</div>
-      </template>
     </SearchTable>
   </div>
   <!-- <el-dialog

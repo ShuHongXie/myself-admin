@@ -77,14 +77,14 @@ export const searchProps = {
     default: () => [
       {
         prop: 'custom1',
-        position: 0,
+        position: 1,
         colProps: {},
-        formItemProps: { label: '操作' }
+        formItemProps: { label: '操作1' }
       },
       {
         prop: 'custom2',
-        position: 1,
-        formItemProps: { label: '自定义项' }
+        position: 2,
+        formItemProps: { label: '自定义项1' }
       }
     ]
   },

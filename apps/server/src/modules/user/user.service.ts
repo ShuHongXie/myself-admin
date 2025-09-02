@@ -15,6 +15,7 @@ import { filterPermissions } from '@utils/common'
 import { Menu } from '@modules/menu/entities/menu.entity'
 import { MenuService } from '@modules/menu/menu.service'
 import { CacheService } from '@modules/cache/cache.service'
+import { paginate, Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate'
 
 @Injectable()
 export class UserService {

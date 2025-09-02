@@ -27,6 +27,7 @@ catalog:
   lodash: ^4.17.21
   lodash.clonedeep: ^4.5.0
   mysql2: ^3.14.3
+  nestjs-typeorm-paginate: ^4.1.0
   nprogress: ^0.2.0
   pinia: 3.0.3
   pinia-plugin-persistedstate: 4.4.1

@@ -13,7 +13,14 @@ const axios = initRequestInstance({
   headers: props.headers
 })
 const data = reactive([])
-const pagination = reactive({})
+const pagination = reactive({
+  currentPage: 1,
+  pageSize: 10,
+  total: 100
+})
+const searchProps = reactive({
+  slots: props.searchProps.slots
+})
 
 /**
  * @description: 请求数据
@@ -40,7 +47,7 @@ const handleRequest = async () => {
 
 // 初始化逻辑
 onMounted(() => {
-  handleRequest()
+  // handleRequest()
 })
 
 // 列表初始化-----------end-------------
@@ -57,9 +64,24 @@ onMounted(() => {
     <el-table v-bind="tableProps" :data="data" style="width: 100%">
       <el-table-column v-for="(item, index) in columns" :key="index" v-bind="item" />
     </el-table>
-    <el-pagination background layout="prev, pager, next" :total="1000" />
+    <el-pagination
+      style="margin-top: 10px"
+      v-if="showPagination"
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      v-model:page-size="pagination.pageSize"
+      v-model:current-page="pagination.currentPage"
+      :total="pagination.total"
+    />
     <slot name="suffix"></slot>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use '../../assets/scss/mixin.scss' as *;
+.search-table {
+  .el-pagination {
+    @include flex-end-center;
+  }
+}
+</style>
