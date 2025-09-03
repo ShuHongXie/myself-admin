@@ -9,6 +9,10 @@
     ".": {
       "types": "./index.ts",
       "default": "./index.ts"
+    },
+    "./request": {
+      "default": "./request/axios.d.ts",
+      "types": "./request/index.ts"
     }
   },
   "author": "",

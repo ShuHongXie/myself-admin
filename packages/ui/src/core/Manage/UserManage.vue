@@ -40,6 +40,51 @@ const form = reactive({
   time: ''
 })
 
+const columns = ref([
+  {
+    type: 'selection'
+  },
+  {
+    prop: 'index',
+    label: '序号',
+    align: 'center',
+    type: 'index',
+    width: 80
+  },
+  {
+    prop: 'username',
+    label: '账户名',
+    align: 'center'
+  },
+  {
+    prop: 'nickname',
+    label: '用户昵称',
+    align: 'center'
+  },
+  {
+    prop: 'telephone',
+    label: '手机号码',
+    align: 'center'
+  },
+  {
+    prop: 'status',
+    label: '用户状态',
+    align: 'center',
+    slotName: 'status'
+  },
+  {
+    prop: 'roles',
+    label: '关联角色',
+    align: 'center'
+  },
+  {
+    prop: 'operation',
+    label: '操作',
+    align: 'center',
+    slotName: 'operation'
+  }
+])
+
 const formRules = ref({
   username: [
     {
@@ -84,6 +129,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     }
   })
 }
+
+const handleEdit = (row: any) => {
+  console.log(row)
+}
 </script>
 
 <template>
@@ -96,12 +145,24 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         <el-input v-model="form.value" />
       </template>
     </Search> -->
-    <SearchTable url="/user/getUserList" v-model:search="form">
+    <SearchTable url="/user/getUserList" :columns="columns" v-model:search="form">
       <template #custom1>
         <el-input v-model="form.value" />
       </template>
       <template #custom2>
         <el-input v-model="form.value" />
+      </template>
+      <template #status="scope">
+        <el-switch
+          v-model="scope.row.status"
+          style="--el-switch-on-color: var(--el-color-primary)"
+          inline-prompt
+          active-text="启用"
+          inactive-text="停用"
+        />
+      </template>
+      <template #operation="scope">
+        <el-link type="primary" @click="handleEdit(scope.row)">编辑</el-link>
       </template>
       <template #prefix>
         <div>

@@ -3,7 +3,7 @@ import { Search } from '../Search'
 import { ref, reactive, onMounted, defineProps, defineEmits, toRaw, provide } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { SearchModel } from '../Search/props'
-import { AxiosRequestConfig, initRequestInstance } from '@myself/utils'
+import { AxiosRequestConfig, initRequestInstance, type ApiResponse } from '@myself/utils'
 
 const searchModel = defineModel<SearchModel>('search')
 const props = defineProps(searchTableProps)
@@ -42,13 +42,12 @@ const handleRequest = async () => {
     )
       ? { params }
       : params
-    const res = await axios[props.methodType as RequestMethodType](
+    const res = await axios[props.methodType as RequestMethodType]<ApiResponse<string[]>>(
       props.url,
       requestParams as AxiosRequestConfig
     )
     data.value = res.result
     pagination.value.total = res.total
-    console.log(res)
   } catch (error) {
     console.log(error)
   }
@@ -77,8 +76,15 @@ provide('handleReset', () => {
       </template>
     </Search>
     <slot name="prefix"></slot>
-    <el-table v-bind="tableProps" :data="data" style="width: 100%">
-      <el-table-column v-for="(item, index) in columns" :key="index" v-bind="item" />
+    <el-table class="search-table__content" v-bind="tableProps" :data="data">
+      <el-table-column v-for="(item, index) in columns" :key="index" v-bind="item">
+        <template v-if="item.slotName" #default="scope">
+          <slot :name="item.slotName" :index="scope.$index" :row="scope.row"></slot>
+        </template>
+        <!-- <template v-e>
+          <span>{{ item[item.prop] }}</span>
+        </template> -->
+      </el-table-column>
     </el-table>
     <el-pagination
       style="margin-top: 10px"
@@ -98,6 +104,10 @@ provide('handleReset', () => {
 .search-table {
   .el-pagination {
     @include flex-end-center;
+  }
+  &__content {
+    width: 100%;
+    margin-top: 10px;
   }
 }
 </style>

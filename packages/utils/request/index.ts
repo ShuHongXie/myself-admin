@@ -5,6 +5,16 @@ import { merge } from '../func'
 export * from 'axios'
 
 /**
+ * 后端统一响应格式
+ * @template T - 响应体中 result 字段的类型
+ */
+export interface ApiResponse<T = any> {
+  data: T // data 可以是任意结构，包含 result、total 等字段
+  code: number
+  msg: string
+}
+
+/**
  * 取消所有 pending 状态的请求
  */
 export const cancelAllRequests = () => {
@@ -68,16 +78,16 @@ export const initRequestInstance = (
 
   // 响应拦截器
   instance.interceptors.response.use(
-    (response) => {
+    (response: AxiosResponse<ApiResponse<any>>) => {
       interceptorsResponseFn(response)
       // 从pending列表移除请求
       removePendingRequest(response.config)
 
-      const { data } = response
+      const data = response.data
 
       // 根据实际后端接口规范处理响应
       if (data.code === 200) {
-        return data.data // 返回实际数据
+        return data.data
       } else {
         // 非成功状态，显示错误信息
         ElMessage.error(data.msg || '请求失败')

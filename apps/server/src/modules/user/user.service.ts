@@ -152,12 +152,20 @@ export class UserService {
 
   async getUserList(getUserListDto: GetUserListDto) {
     console.log(getUserListDto)
-    const queryBuilder: QueryBuilder<User> = this.userRepository.createQueryBuilder('user')
+    const queryBuilder: QueryBuilder<User> = this.userRepository
+      .createQueryBuilder('user')
+      .addSelect('user.status')
+      .leftJoinAndSelect('user.roles', 'role')
+
     const paginationOptions: IPaginationOptions = {
       page: getUserListDto.currentPage, // 映射 currentPage -> page
       limit: getUserListDto.pageSize // 映射 pageSize -> limit
     }
     const result = await paginateTransform<User>(queryBuilder, paginationOptions)
+    result.result = result.result.map((user) => ({
+      ...user,
+      roles: user.roles.map((role) => role.roleName)
+    }))
     return ResultData.success('获取用户列表成功', result)
   }
 }

@@ -30,7 +30,8 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()]
     }),
     Components({
-      resolvers: [ElementPlusResolver()]
+      resolvers: [ElementPlusResolver()],
+      dts: 'src/types/components.d.ts'
     }),
     createSvgIconsPlugin({
       // 要缓存的图标文件夹
