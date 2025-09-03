@@ -7,7 +7,26 @@ import { AxiosRequestConfig, initRequestInstance, type ApiResponse } from '@myse
 
 const searchModel = defineModel<SearchModel>('search')
 const props = defineProps(searchTableProps)
-const emit = defineEmits(['select', 'select-all', 'selection-change'])
+const emit = defineEmits([
+  'select',
+  'select-all',
+  'selection-change',
+  'reset',
+  'cell-mouse-enter',
+  'cell-mouse-leave',
+  'cell-click',
+  'cell-dblclick',
+  'row-click',
+  'row-contextmenu',
+  'row-dblclick',
+  'header-click',
+  'header-contextmenu',
+  'sort-change',
+  'filter-change',
+  'current-change',
+  'header-dragend',
+  'expand-change'
+])
 
 // 列表初始化-----------start-------------
 const axios = initRequestInstance({
@@ -20,30 +39,30 @@ const pagination = ref({
   pageSize: 10,
   total: 100
 })
-const searchProps = ref({
-  slots: props.searchProps.slots
-})
 
 /**
  * @description: 请求数据
  * @return {*}
  * @Author: xieshuhong
  */
-const handleRequest = async () => {
+const handleRequest = async (reset = true) => {
   try {
-    const params = {
+    if (reset) {
+      pagination.value.currentPage = 1
+    }
+    const defaultParams = {
       ...searchModel.value,
       pageSize: pagination.value.pageSize,
       currentPage: pagination.value.currentPage
     }
-    console.log(params)
-
+    // 参数合并
+    const params = props.paramsHandler ? props.paramsHandler(defaultParams) : defaultParams
     const requestParams = [RequestMethodType.GET, RequestMethodType.DELETE].includes(
       props.methodType
     )
       ? { params }
       : params
-    const res = await axios[props.methodType as RequestMethodType]<ApiResponse<string[]>>(
+    const res = await axios[props.methodType as RequestMethodType](
       props.url,
       requestParams as AxiosRequestConfig
     )
@@ -54,11 +73,12 @@ const handleRequest = async () => {
   }
 }
 
-provide('handleSubmit', () => {
-  console.log('搜索')
+provide('submit', () => {
+  handleRequest()
 })
-provide('handleReset', () => {
-  console.log('重置')
+provide('reset', () => {
+  emit('reset')
+  handleRequest()
 })
 
 // 初始化逻辑
@@ -68,7 +88,13 @@ onMounted(() => {
 // 列表初始化-----------end-------------
 
 // 其他逻辑初始化-----------start-------------
-// 事件统一发出
+
+/**
+ * @description: 事件传递处理函数
+ * @param {array} args
+ * @return {*}
+ * @Author: xieshuhong
+ */
 const emitEventHandler = (...args) => {
   emit(args[0], ...args.slice(1))
 }
@@ -87,6 +113,32 @@ const emitEventHandler = (...args) => {
       @select="(selection, row) => emitEventHandler('select', selection, row)"
       @select-all="(selection) => emitEventHandler('select-all', selection)"
       @selection-change="(selection) => emitEventHandler('selection-change', selection)"
+      @cell-mouse-enter="
+        (row, column, cell, event) => emitEventHandler('cell-mouse-enter', row, column, cell, event)
+      "
+      @cell-mouse-leave="
+        (row, column, cell, event) => emitEventHandler('cell-mouse-leave', row, column, cell, event)
+      "
+      @cell-click="
+        (row, column, cell, event) => emitEventHandler('cell-click', row, column, cell, event)
+      "
+      @cell-dblclick="
+        (row, column, cell, event) => emitEventHandler('cell-dblclick', row, column, cell, event)
+      "
+      @row-click="(row, event, column) => emitEventHandler('row-click', row, event, column)"
+      @row-dblclick="(row, event) => emitEventHandler('row-dblclick', row, event)"
+      @row-contextmenu="(row, event) => emitEventHandler('row-contextmenu', row, event)"
+      @header-click="(column, event) => emitEventHandler('header-click', column, event)"
+      @sort-change="(args) => emitEventHandler('sort-change', args)"
+      @filter-change="(filters) => emitEventHandler('filter-change', filters)"
+      @current-change="
+        (currentRow, oldCurrentRow) => emitEventHandler('current-change', currentRow, oldCurrentRow)
+      "
+      @header-dragend="
+        (newWidth, oldWidth, column, event) =>
+          emitEventHandler('header-dragend', newWidth, oldWidth, column, event)
+      "
+      @expand-change="(row, expanded) => emitEventHandler('expand-change', row, expanded)"
       class="search-table__content"
       v-bind="tableProps"
       :data="data"
@@ -95,9 +147,6 @@ const emitEventHandler = (...args) => {
         <template v-if="item.slotName" #default="scope">
           <slot :name="item.slotName" :index="scope.$index" :row="scope.row"></slot>
         </template>
-        <!-- <template v-e>
-          <span>{{ item[item.prop] }}</span>
-        </template> -->
       </el-table-column>
     </el-table>
     <div class="search-table__pagination">

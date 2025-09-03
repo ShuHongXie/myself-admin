@@ -11,7 +11,7 @@ const searchFormRef = ref(null)
 const searchModel = defineModel<SearchModel>()
 
 // 组件 emits 类型定义
-const emit = defineEmits(['onSubmit', 'onReset'])
+const emit = defineEmits(['submit', 'reset'])
 
 // 视口监听-----------start-------------
 const windowWidth = ref(window.innerWidth)
@@ -39,8 +39,8 @@ onUnmounted(() => {
 // 视口监听-----------end-------------
 
 // 操作-----------start-------------
-const receiveSubmitEvent = inject<() => void>('handleSubmit')
-const receiveResetEvent = inject<() => void>('handleReset')
+const receiveSubmitEvent = inject<() => void>('submit')
+const receiveResetEvent = inject<() => void>('reset')
 /**
  * @description: 搜索
  * @return {*}
@@ -48,7 +48,7 @@ const receiveResetEvent = inject<() => void>('handleReset')
  */
 const handleSubmit = () => {
   receiveSubmitEvent?.()
-  emit('onSubmit')
+  emit('submit')
 }
 
 /**
@@ -57,14 +57,17 @@ const handleSubmit = () => {
  * @Author: xieshuhong
  */
 const handleReset = () => {
+  searchFormRef.value?.resetFields()
   receiveResetEvent?.()
-  emit('onReset')
+  emit('reset')
 }
 
 // 操作-----------end-------------
 
 // 生命周期钩子
 onMounted(() => {
+  console.log(props)
+
   // 组装项
   const itemProps = props.item.map((item) => ({
     type: SearchTypeEnum.ITEM,
@@ -152,7 +155,7 @@ defineExpose({})
           </el-form-item>
         </div>
       </div>
-      <el-row class="search-collapse" v-if="options.length > rowItemCount">
+      <el-row class="search-collapse" v-if="options.length < rowItemCount">
         <el-link type="primary" underline="never" @click="isCollapse = !isCollapse">
           {{ isCollapse ? '收起' : '展开' }}更多筛选条件
           <Icon :icon="isCollapse ? 'ep:arrow-up' : 'ep:arrow-down'" />

@@ -74,100 +74,10 @@ export const searchProps = {
   },
   slots: {
     type: Array<CustomSlot>,
-    default: () => [
-      {
-        prop: 'custom1',
-        position: 1,
-        colProps: {},
-        formItemProps: { label: '操作1' }
-      },
-      {
-        prop: 'custom2',
-        position: 2,
-        formItemProps: { label: '自定义项1' }
-      }
-    ]
+    default: () => []
   },
   item: {
     type: Array<SearchItem>,
-    default: [
-      {
-        prop: 'nickname',
-        colProps: {},
-        formItemProps: {
-          label: '用户昵称',
-          labelWidth: ''
-        },
-        input: {
-          type: 'input',
-          props: {
-            placeholder: '请输入用户昵称'
-          }
-        }
-      },
-      {
-        prop: 'password',
-        colProps: {},
-        formItemProps: {
-          label: '密码',
-          labelWidth: ''
-        },
-        input: {
-          type: 'input',
-          props: {
-            placeholder: '请输入密码'
-          }
-        }
-      },
-      {
-        prop: 'status',
-        colProps: {},
-        formItemProps: {
-          label: '状态',
-          labelWidth: ''
-        },
-        input: {
-          type: 'select',
-          props: {
-            placeholder: '请选择状态',
-            labelWidth: '140px',
-            labelKey: 'label',
-            valueKey: 'value',
-            options: [
-              {
-                label: '好',
-                value: 0
-              },
-              {
-                label: '不好',
-                value: 1,
-                disabled: true
-              }
-            ]
-          }
-        }
-      },
-      {
-        prop: 'time',
-        formItemProps: {
-          label: '审核完成时间',
-          labelWidth: ''
-        },
-        input: {
-          type: 'date-picker',
-          props: {
-            type: 'daterange',
-            startPlaceholder: '开始时间',
-            endPlaceholder: '结束时间'
-          }
-        }
-      }
-      // {
-      //   prop: 'lawName',
-      //   label: '外委律所名称',
-      //   labelWidth: '',
-      //   placeholder: '请输入外委律所名称'
-      // },
-    ]
+    default: () => []
   }
 }
