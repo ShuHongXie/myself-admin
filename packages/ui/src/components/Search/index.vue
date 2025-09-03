@@ -165,6 +165,7 @@ defineExpose({})
 <style lang="scss" scoped>
 @use '../../assets/scss/mixin.scss' as *;
 .search {
+  width: 100%;
   &-content {
     @include flex-between-start;
     .el-form-item {

@@ -44,7 +44,9 @@ export const searchTableProps = {
   },
   tableProps: {
     type: Object,
-    default: () => ({})
+    default: () => ({
+      border: true
+    })
   },
   // 表格列
   columns: {

@@ -13,7 +13,6 @@
     "paths": {
       "#/*": ["./src/*"]
     },
-    "typeRoots": ["./src/types"],
     "baseUrl": "."
   },
   "types": [

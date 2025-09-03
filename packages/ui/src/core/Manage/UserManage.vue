@@ -5,10 +5,11 @@ import { Delete, Download, Edit, Plus, Upload } from '@element-plus/icons-vue'
 import { FormInstance, FormRules } from 'element-plus'
 
 const dialogTableVisible = ref(false)
-const dialogFormVisible = ref(true)
+const dialogFormVisible = ref(false)
 const formLabelWidth = '140px'
 const operateType = ref(1) // 1 新增 2 修改
 const data = ref([])
+const selectColumns = ref([])
 
 const props = defineProps({
   request: {
@@ -27,7 +28,7 @@ onMounted(() => {
 
 const emit = defineEmits(['confirm'])
 
-const form = reactive({
+const form = ref({
   username: '',
   password: '',
   nickname: '',
@@ -89,7 +90,14 @@ const formRules = ref({
   username: [
     {
       required: true,
-      message: '请输入手机号码',
+      message: '请输入账户名',
+      trigger: ['blur', 'change']
+    }
+  ],
+  nickname: [
+    {
+      required: true,
+      message: '请输入用户昵称',
       trigger: ['blur', 'change']
     }
   ],
@@ -122,7 +130,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      emit('confirm', form)
+      emit('confirm', form.value)
       console.log('submit!')
     } else {
       console.log('error submit!', fields)
@@ -132,6 +140,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
 const handleEdit = (row: any) => {
   console.log(row)
+  dialogFormVisible.value = true
+  form.value = row
+}
+
+const handleSelect = (val: any) => {
+  selectColumns.value = val
 }
 </script>
 
@@ -145,7 +159,13 @@ const handleEdit = (row: any) => {
         <el-input v-model="form.value" />
       </template>
     </Search> -->
-    <SearchTable url="/user/getUserList" :columns="columns" v-model:search="form">
+    <SearchTable
+      @select-all="handleSelect"
+      @select="handleSelect"
+      url="/user/getUserList"
+      :columns="columns"
+      v-model:search="form"
+    >
       <template #custom1>
         <el-input v-model="form.value" />
       </template>
@@ -175,7 +195,7 @@ const handleEdit = (row: any) => {
       </template>
     </SearchTable>
   </div>
-  <!-- <el-dialog
+  <el-dialog
     v-model="dialogFormVisible"
     :title="operateType === 1 ? '新增用户' : '修改用户'"
     width="700"
@@ -199,7 +219,7 @@ const handleEdit = (row: any) => {
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="用户昵称:">
+          <el-form-item prop="nickname" label="用户昵称:">
             <el-input clearable v-model="form.nickname" />
           </el-form-item>
         </el-col>
@@ -241,11 +261,12 @@ const handleEdit = (row: any) => {
         <el-button type="primary" @click="submitForm(ruleFormRef)">确定</el-button>
       </div>
     </template>
-  </el-dialog> -->
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
 .user-manage {
+  height: 100%;
   padding: 10px;
 }
 </style>

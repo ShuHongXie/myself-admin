@@ -588,6 +588,7 @@ watch(
     background-color: #f0f2f5;
     --el-main-padding: 10px;
     overflow: hidden scroll;
+    display: flex;
     &::-webkit-scrollbar {
       width: 3px;
     }
@@ -603,9 +604,24 @@ watch(
       display: none;
     }
     &__content {
+      width: 100%;
+      height: 100%;
       background-color: #fff;
       border-radius: 4px;
       overflow: hidden;
+    }
+  }
+}
+</style>
+<style lang="scss">
+.el-menu {
+  border-right: none;
+  .el-menu-item {
+    &.is-active {
+      background-color: var(--el-color-primary-light-9);
+      .el-menu-title__wrap {
+        color: var(--el-color-primary);
+      }
     }
   }
 }

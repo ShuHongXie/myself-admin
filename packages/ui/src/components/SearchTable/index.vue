@@ -7,6 +7,7 @@ import { AxiosRequestConfig, initRequestInstance, type ApiResponse } from '@myse
 
 const searchModel = defineModel<SearchModel>('search')
 const props = defineProps(searchTableProps)
+const emit = defineEmits(['select', 'select-all', 'selection-change'])
 
 // 列表初始化-----------start-------------
 const axios = initRequestInstance({
@@ -46,19 +47,12 @@ const handleRequest = async () => {
       props.url,
       requestParams as AxiosRequestConfig
     )
-    data.value = res.result
+    data.value = [...res.result]
     pagination.value.total = res.total
   } catch (error) {
     console.log(error)
   }
 }
-
-// 初始化逻辑
-onMounted(() => {
-  handleRequest()
-})
-
-// 列表初始化-----------end-------------
 
 provide('handleSubmit', () => {
   console.log('搜索')
@@ -66,6 +60,19 @@ provide('handleSubmit', () => {
 provide('handleReset', () => {
   console.log('重置')
 })
+
+// 初始化逻辑
+onMounted(() => {
+  handleRequest()
+})
+// 列表初始化-----------end-------------
+
+// 其他逻辑初始化-----------start-------------
+// 事件统一发出
+const emitEventHandler = (...args) => {
+  emit(args[0], ...args.slice(1))
+}
+// 其他逻辑初始化-----------end-------------
 </script>
 
 <template>
@@ -76,7 +83,14 @@ provide('handleReset', () => {
       </template>
     </Search>
     <slot name="prefix"></slot>
-    <el-table class="search-table__content" v-bind="tableProps" :data="data">
+    <el-table
+      @select="(selection, row) => emitEventHandler('select', selection, row)"
+      @select-all="(selection) => emitEventHandler('select-all', selection)"
+      @selection-change="(selection) => emitEventHandler('selection-change', selection)"
+      class="search-table__content"
+      v-bind="tableProps"
+      :data="data"
+    >
       <el-table-column v-for="(item, index) in columns" :key="index" v-bind="item">
         <template v-if="item.slotName" #default="scope">
           <slot :name="item.slotName" :index="scope.$index" :row="scope.row"></slot>
@@ -86,15 +100,17 @@ provide('handleReset', () => {
         </template> -->
       </el-table-column>
     </el-table>
-    <el-pagination
-      style="margin-top: 10px"
-      v-if="showPagination"
-      background
-      layout="total, sizes, prev, pager, next, jumper"
-      v-model:page-size="pagination.pageSize"
-      v-model:current-page="pagination.currentPage"
-      :total="pagination.total"
-    />
+    <div class="search-table__pagination">
+      <el-pagination
+        style="margin-top: 10px"
+        v-if="showPagination"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        v-model:page-size="pagination.pageSize"
+        v-model:current-page="pagination.currentPage"
+        :total="pagination.total"
+      />
+    </div>
     <slot name="suffix"></slot>
   </div>
 </template>
@@ -102,12 +118,25 @@ provide('handleReset', () => {
 <style lang="scss" scoped>
 @use '../../assets/scss/mixin.scss' as *;
 .search-table {
-  .el-pagination {
-    @include flex-end-center;
+  height: 100%;
+  @include flex-col-start-start;
+  :deep(.el-table) {
+    border-radius: 8px 8px 0 0;
+    th {
+      background-color: #f3f3f3;
+    }
   }
   &__content {
     width: 100%;
     margin-top: 10px;
+    flex: 1;
+  }
+  &__pagination {
+    width: 100%;
+    @include flex-end-center;
+    .el-pagination {
+      @include flex-end-center;
+    }
   }
 }
 </style>

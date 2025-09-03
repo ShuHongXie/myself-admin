@@ -3,9 +3,7 @@ import { UserManage } from '@myself/ui'
 </script>
 
 <template>
-  <div class="new">
-    <UserManage></UserManage>
-  </div>
+  <UserManage></UserManage>
 </template>
 
 <style lang="scss" scoped></style>
