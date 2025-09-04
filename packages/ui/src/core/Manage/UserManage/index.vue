@@ -152,17 +152,9 @@ const reset = () => {
 
 <template>
   <div class="user-manage">
-    <!-- <Search v-model="form">
-      <template #custom1>
-        <el-input v-model="form.value" />
-      </template>
-      <template #custom2>
-        <el-input v-model="form.value" />
-      </template>
-    </Search> -->
     <SearchTable
       v-model:search="form"
-      url="/user/getUserList"
+      url="/user/list"
       :columns="columns"
       :search-props="searchProps"
       @reset="reset"

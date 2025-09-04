@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Type } from 'class-transformer'
 import { IsEmpty, IsNotEmpty, IsNumber, IsOptional, Min, MinLength } from 'class-validator'
 export class GetUserListDto {
   @IsOptional()
@@ -25,6 +26,7 @@ export class GetUserListDto {
     description: '用户状态'
   })
   status: number
+  @Type(() => Number)
   @IsNumber()
   @Min(1)
   @ApiProperty({
@@ -32,6 +34,7 @@ export class GetUserListDto {
     description: '页码'
   })
   currentPage: number
+  @Type(() => Number)
   @IsNumber()
   @Min(1)
   @ApiProperty({

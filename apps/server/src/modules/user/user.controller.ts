@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Request, Post, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Request, Post, Req, UseGuards, Query } from '@nestjs/common'
 import { CreateUserDto } from './dto/createUser.dto'
 import { ApiOperation, ApiTags, ApiOkResponse } from '@nestjs/swagger'
 
@@ -18,13 +18,6 @@ export class UserController {
   @ApiOperation({ summary: '账号注册' })
   register(@Body() createUserDto: CreateUserDto) {
     return this.userService.register(createUserDto)
-  }
-
-  @Public()
-  @Post('create')
-  @ApiOperation({ summary: '创建用户' })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto)
   }
 
   @Post('login')
@@ -53,9 +46,16 @@ export class UserController {
   }
 
   @Public()
-  @Post('getUserList')
+  @Post()
+  @ApiOperation({ summary: '新增用户' })
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto)
+  }
+
+  @Public()
+  @Get('/list')
   @ApiOperation({ summary: '获取用户列表' })
-  async logout(@Body() getUserListDto: GetUserListDto) {
+  async logout(@Query() getUserListDto: GetUserListDto) {
     return await this.userService.getUserList(getUserListDto)
   }
 }

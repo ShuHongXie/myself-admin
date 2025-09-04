@@ -9,7 +9,7 @@ export const searchTableProps = {
   // 请求方式
   methodType: {
     type: String as () => RequestMethodType,
-    default: 'post'
+    default: 'get'
   },
   // 请求地址
   url: {

@@ -49,6 +49,7 @@ export const searchProps = {
           labelWidth: '140px',
           labelKey: 'label',
           valueKey: 'value',
+          clearable: true,
           options: [
             {
               label: '停用',
