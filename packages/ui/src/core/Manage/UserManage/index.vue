@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue'
 import SearchTable from '../../../components/SearchTable/index.vue'
 import { Delete, Download, Edit, Plus, Upload } from '@element-plus/icons-vue'
@@ -71,6 +71,7 @@ const columns = ref([
     prop: 'roles',
     label: '关联角色',
     align: 'center'
+    // render: (row) => <div>{row.roles.join(',')}</div>
   },
   {
     prop: 'operation',

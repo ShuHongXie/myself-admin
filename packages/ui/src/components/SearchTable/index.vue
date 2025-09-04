@@ -4,6 +4,7 @@ import { ref, reactive, onMounted, defineProps, defineEmits, toRaw, provide } fr
 import { searchTableProps, RequestMethodType } from './props'
 import { SearchModel } from '../Search/props'
 import { AxiosRequestConfig, initRequestInstance, type ApiResponse } from '@myself/utils'
+import Render from './render'
 
 const searchModel = defineModel<SearchModel>('search')
 const props = defineProps(searchTableProps)
@@ -144,8 +145,15 @@ const emitEventHandler = (...args) => {
       :data="data"
     >
       <el-table-column v-for="(item, index) in columns" :key="index" v-bind="item">
-        <template v-if="item.slotName" #default="scope">
-          <slot :name="item.slotName" :index="scope.$index" :row="scope.row"></slot>
+        <template #default="scope">
+          <slot
+            v-if="item.slotName"
+            :name="item.slotName"
+            :index="scope.$index"
+            :row="scope.row"
+          ></slot>
+          <!-- 渲染函数 -->
+          <Render v-if="item.render" :scope="scope" :render="item.render" />
         </template>
       </el-table-column>
     </el-table>

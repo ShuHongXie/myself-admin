@@ -11,14 +11,13 @@ import { JwtService } from '@nestjs/jwt'
 import encry from '@utils/crypto'
 import generateCaptcha from '@utils/generateCaptcha'
 import { Role } from '@modules/role/entities/role.entity'
-import { filterPermissions } from '@utils/common'
+import { filterPermissions, isValidNumber } from '@utils/common'
 import { Menu } from '@modules/menu/entities/menu.entity'
 import { MenuService } from '@modules/menu/menu.service'
 import { CacheService } from '@modules/cache/cache.service'
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate'
 import { GetUserListDto } from './dto/getUserList.dto'
 import { paginateTransform } from '@utils/paginate'
-import { QueryBuilder } from 'typeorm/browser'
 
 @Injectable()
 export class UserService {
@@ -152,16 +151,37 @@ export class UserService {
 
   async getUserList(getUserListDto: GetUserListDto) {
     console.log(getUserListDto)
-    const queryBuilder: QueryBuilder<User> = this.userRepository
+
+    const queryBuilder = this.userRepository
       .createQueryBuilder('user')
-      .addSelect('user.status')
       .leftJoinAndSelect('user.roles', 'role')
+      .addSelect('user.status')
+
+    if (getUserListDto?.username) {
+      queryBuilder.andWhere('user.username LIKE :username', {
+        username: `%${getUserListDto.username}%`
+      })
+    }
+    if (getUserListDto?.nickname) {
+      queryBuilder.andWhere('user.nickname LIKE :nickname', {
+        nickname: `%${getUserListDto.nickname}%`
+      })
+    }
+    if (getUserListDto?.telephone) {
+      queryBuilder.andWhere('user.telephone LIKE :telephone', {
+        telephone: `%${getUserListDto.telephone}%`
+      })
+    }
+    if (isValidNumber(getUserListDto?.status)) {
+      queryBuilder.andWhere('user.status = :status', { status: getUserListDto.status })
+    }
 
     const paginationOptions: IPaginationOptions = {
       page: getUserListDto.currentPage, // 映射 currentPage -> page
       limit: getUserListDto.pageSize // 映射 pageSize -> limit
     }
     const result = await paginateTransform<User>(queryBuilder, paginationOptions)
+
     result.result = result.result.map((user) => ({
       ...user,
       roles: user.roles.map((role) => role.roleName)

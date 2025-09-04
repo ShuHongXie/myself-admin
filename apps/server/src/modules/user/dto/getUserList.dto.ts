@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEmpty, IsNotEmpty, IsOptional, MinLength } from 'class-validator'
+import { IsEmpty, IsNotEmpty, IsNumber, IsOptional, Min, MinLength } from 'class-validator'
 export class GetUserListDto {
   @IsOptional()
   @ApiProperty({
@@ -15,23 +15,25 @@ export class GetUserListDto {
   nickname: string
   @IsOptional()
   @ApiProperty({
-    example: 'xiesmallxie',
-    description: '用户昵称'
+    example: '13005322685',
+    description: '手机号码'
   })
   telephone: string
   @IsOptional()
   @ApiProperty({
-    example: '13005322685',
-    description: '手机号码'
+    example: 0,
+    description: '用户状态'
   })
-  password: string
-  @IsOptional()
+  status: number
+  @IsNumber()
+  @Min(1)
   @ApiProperty({
     example: 1,
     description: '页码'
   })
   currentPage: number
-  @IsOptional()
+  @IsNumber()
+  @Min(1)
   @ApiProperty({
     example: 10,
     description: '页面大小'

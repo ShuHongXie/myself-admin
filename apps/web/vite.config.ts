@@ -25,7 +25,10 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    vueJsx(),
+    vueJsx({
+      transformOn: true, // 将 on:click 转换为 onClick
+      mergeProps: true // 合并 props
+    }),
     AutoImport({
       resolvers: [ElementPlusResolver()]
     }),
