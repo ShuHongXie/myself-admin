@@ -12,7 +12,17 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/essential'],
-  { files: ['**/*.vue'], languageOptions: { parserOptions: { parser: tseslint.parser } } },
+  {
+    files: ['**/*.vue'],
+    languageOptions: {
+      parserOptions: {
+        parser: tseslint.parser,
+        ecmaFeatures: {
+          jsx: true // 添加这一行以启用 JSX
+        }
+      }
+    }
+  },
 
   // 新增添加内容：这里我们可以添加自己的 rules
   {

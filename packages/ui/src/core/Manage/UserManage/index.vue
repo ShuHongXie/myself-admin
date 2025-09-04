@@ -70,8 +70,10 @@ const columns = ref([
   {
     prop: 'roles',
     label: '关联角色',
-    align: 'center'
-    // render: (row) => <div>{row.roles.join(',')}</div>
+    align: 'center',
+    render: (row) => {
+      return <span>{row.roles.join(',')}</span>
+    }
   },
   {
     prop: 'operation',
@@ -159,19 +161,21 @@ const reset = () => {
       </template>
     </Search> -->
     <SearchTable
-      @select-all="handleSelect"
-      @select="handleSelect"
+      v-model:search="form"
       url="/user/getUserList"
       :columns="columns"
-      :searchProps="searchProps"
-      v-model:search="form"
+      :search-props="searchProps"
       @reset="reset"
+      @select-all="handleSelect"
+      @select="handleSelect"
     >
       <template #status="scope">
         <el-switch
           v-model="scope.row.status"
           style="--el-switch-on-color: var(--el-color-primary)"
           inline-prompt
+          :active-value="1"
+          :inactive-value="0"
           active-text="启用"
           inactive-text="停用"
         />
