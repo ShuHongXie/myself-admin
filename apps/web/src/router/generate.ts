@@ -1,7 +1,7 @@
 import type { RouteMeta } from 'vue-router'
 import { cloneDeep } from '@myself/utils'
 import { data as routerData } from './routerData'
-import Layout from '#/@core/Layout.vue'
+import Layout from '#/views/@core/Layout.vue'
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('../views/**/*.vue')
 

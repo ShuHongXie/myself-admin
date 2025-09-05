@@ -78,6 +78,17 @@ export const data: any[] = [
           hideInBreadcrumb: true,
           no: 1
         }
+      },
+      {
+        name: 'UserManage',
+        path: '/@core/Manage/UserManage/index',
+        component: 'usermanage',
+        meta: {
+          icon: 'ep:fork-spoon',
+          title: '用户管理页',
+          hideInBreadcrumb: true,
+          no: 1
+        }
       }
     ]
   }

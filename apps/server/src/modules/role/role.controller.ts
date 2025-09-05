@@ -16,10 +16,12 @@ export class RoleController {
     return this.roleService.create(createRoleDto)
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.roleService.findAll();
-  // }
+  @ApiOperation({ summary: '获取所有角色' })
+  @Public()
+  @Get('list')
+  findAll() {
+    return this.roleService.findAll()
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

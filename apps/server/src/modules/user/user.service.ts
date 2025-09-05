@@ -150,8 +150,6 @@ export class UserService {
   }
 
   async getUserList(getUserListDto: GetUserListDto) {
-    console.log(getUserListDto)
-
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.roles', 'role')

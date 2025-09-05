@@ -20,7 +20,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // 移除未在DTO中定义的属性
-      forbidNonWhitelisted: true, // 对未定义的属性抛出错误
+      // forbidNonWhitelisted: true, // 对未定义的属性抛出错误
       transform: true, // 自动转换请求数据类型
       // transformOptions: {
       //   enableImplicitConversion: true, // 允许隐式转换，包括null

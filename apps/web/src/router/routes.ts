@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const staticRoutes: RouteRecordRaw[] = [
   {
-    component: () => import('#/@core/Layout.vue'),
+    component: () => import('#/views/@core/Layout.vue'),
     meta: {
       hideInBreadcrumb: true,
       title: 'Root'
@@ -23,7 +23,7 @@ export const staticRoutes: RouteRecordRaw[] = [
     ]
   },
   {
-    component: () => import('#/@core/Auth.vue'),
+    component: () => import('#/views/@core/Auth.vue'),
     meta: {
       hideInTab: true,
       title: 'Authentication'
@@ -35,7 +35,7 @@ export const staticRoutes: RouteRecordRaw[] = [
       {
         name: 'Login',
         path: 'login',
-        component: () => import('#/@core/Login.vue'),
+        component: () => import('#/views/@core/Login.vue'),
         meta: {
           title: '登录'
         }
@@ -43,7 +43,7 @@ export const staticRoutes: RouteRecordRaw[] = [
     ]
   },
   {
-    component: () => import('#/@core/NotFound.vue'),
+    component: () => import('#/views/@core/NotFound.vue'),
     meta: {
       hideInBreadcrumb: true,
       hideInMenu: true,

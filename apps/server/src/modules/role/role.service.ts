@@ -44,4 +44,13 @@ export class RoleService {
       throw new ApiException('系统异常', ApiErrorCode.FAIL)
     }
   }
+
+  async findAll() {
+    try {
+      const roleList = await this.roleRepository.find()
+      return ResultData.success('', roleList)
+    } catch (error) {
+      throw new ApiException('系统异常', ApiErrorCode.FAIL)
+    }
+  }
 }

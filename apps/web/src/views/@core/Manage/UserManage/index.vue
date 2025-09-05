@@ -1,33 +1,16 @@
 <script setup lang="tsx">
 import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue'
-import SearchTable from '../../../components/SearchTable/index.vue'
+import { SearchTable } from '@myself/ui'
 import { Delete, Download, Edit, Plus, Upload } from '@element-plus/icons-vue'
-import { FormInstance, FormRules } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { searchProps } from './data'
 
-const dialogFormVisible = ref(false)
-const operateType = ref(1) // 1 新增 2 修改
-const data = ref([])
 const selectColumns = ref([])
 const currentOperateItem = ref<any>({})
 
-const props = defineProps({
-  request: {
-    type: Function,
-    default: () => {}
-  },
-  confirm: {
-    type: Function,
-    default: () => {}
-  }
-})
-
-onMounted(() => {
-  props.request(form)
-})
-
 const emit = defineEmits(['confirm'])
 
+// 基础配置----------------start-------------------
 const form = ref({
   username: '',
   nickname: '',
@@ -35,6 +18,7 @@ const form = ref({
   telephone: ''
 })
 
+// 表格字段
 const columns = ref([
   {
     type: 'selection'
@@ -71,7 +55,7 @@ const columns = ref([
     prop: 'roles',
     label: '关联角色',
     align: 'center',
-    render: (row) => {
+    render: (row: any) => {
       return <span>{row.roles.join(',')}</span>
     }
   },
@@ -83,6 +67,7 @@ const columns = ref([
   }
 ])
 
+// 编辑规则
 const formRules = ref({
   username: [
     {
@@ -122,7 +107,8 @@ const formRules = ref({
   ]
 })
 
-const ruleFormRef = ref<FormInstance>()
+// 基础配置----------------end-------------------
+
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
@@ -137,7 +123,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
 const handleEdit = (row: any) => {
   console.log(row)
-  dialogFormVisible.value = true
+  operateDialogVisible.value = true
   currentOperateItem.value = row
 }
 
@@ -145,9 +131,16 @@ const handleSelect = (val: any) => {
   selectColumns.value = val
 }
 
+// 新增编辑操作----------------start-------------------
+const operateDialogVisible = ref(false)
+const operateType = ref(1) // 1 新增 2 修改
+const data = ref([])
+const ruleFormRef = ref<FormInstance>()
+
 const reset = () => {
   console.log('重置')
 }
+// 新增编辑操作----------------end-------------------
 </script>
 
 <template>
@@ -177,14 +170,16 @@ const reset = () => {
       </template>
       <template #prefix>
         <div>
-          <el-button type="primary" :icon="Plus" @click="dialogFormVisible = true">新增</el-button>
+          <el-button type="primary" :icon="Plus" @click="operateDialogVisible = true"
+            >新增</el-button
+          >
           <el-button type="danger" :icon="Delete" :disabled="!selectColumns.length">删除</el-button>
           <el-button type="success" :icon="Upload">导入</el-button>
         </div>
       </template>
     </SearchTable>
     <el-dialog
-      v-model="dialogFormVisible"
+      v-model="operateDialogVisible"
       @close="currentOperateItem = {}"
       :title="operateType === 1 ? '新增用户' : '修改用户'"
       width="700"
@@ -246,7 +241,7 @@ const reset = () => {
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取消</el-button>
+          <el-button @click="operateDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="submitForm(ruleFormRef)">确定</el-button>
         </div>
       </template>
