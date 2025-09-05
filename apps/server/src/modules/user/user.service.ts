@@ -182,7 +182,8 @@ export class UserService {
 
     result.result = result.result.map((user) => ({
       ...user,
-      roles: user.roles.map((role) => role.roleName)
+      rolesName: user.roles.map((role) => role.roleName),
+      rolesId: user.roles.map((role) => role.id)
     }))
     return ResultData.success('获取用户列表成功', result)
   }

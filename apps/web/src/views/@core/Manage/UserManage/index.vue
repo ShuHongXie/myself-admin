@@ -1,14 +1,13 @@
 <script setup lang="tsx">
-import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue'
+import { ref, defineEmits, onMounted } from 'vue'
 import { SearchTable } from '@myself/ui'
 import { Delete, Download, Edit, Plus, Upload } from '@element-plus/icons-vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { searchProps } from './data'
+import { getRolesList } from '#/apis'
 
 const selectColumns = ref([])
 const currentOperateItem = ref<any>({})
-
-const emit = defineEmits(['confirm'])
 
 // 基础配置----------------start-------------------
 const form = ref({
@@ -52,11 +51,11 @@ const columns = ref([
     slotName: 'status'
   },
   {
-    prop: 'roles',
+    prop: 'rolesName',
     label: '关联角色',
     align: 'center',
     render: (row: any) => {
-      return <span>{row.roles.join(',')}</span>
+      return <span>{row.rolesName.join(',')}</span>
     }
   },
   {
@@ -113,7 +112,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      emit('confirm', form.value)
+      // emit('confirm', form.value)
       console.log('submit!')
     } else {
       console.log('error submit!', fields)
@@ -137,9 +136,21 @@ const operateType = ref(1) // 1 新增 2 修改
 const data = ref([])
 const ruleFormRef = ref<FormInstance>()
 
+// 获取所有角色列表
+const loadRoleList = () => {
+  getRolesList().then((res) => {
+    data.value = res
+    console.log(data.value)
+  })
+}
+
 const reset = () => {
   console.log('重置')
 }
+
+onMounted(() => {
+  loadRoleList()
+})
 // 新增编辑操作----------------end-------------------
 </script>
 
@@ -227,14 +238,19 @@ const reset = () => {
           </el-col>
           <el-col :span="12">
             <el-form-item label="选择角色:">
-              <el-tree-select
-                v-model="currentOperateItem.roles"
-                placeholder="请账号拥有的角色"
-                :data="data"
+              <el-select
+                v-model="currentOperateItem.rolesId"
                 multiple
-                :render-after-expand="false"
-                show-checkbox
-              />
+                collapse-tags
+                collapse-tags-tooltip
+              >
+                <el-option
+                  v-for="item in data"
+                  :key="item.id"
+                  :label="item.roleName"
+                  :value="item.id"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>

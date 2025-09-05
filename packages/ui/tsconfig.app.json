@@ -3,6 +3,7 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
     /* Linting */
+    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": false,
@@ -15,5 +16,6 @@
     },
     "baseUrl": "."
   },
+  "types": ["element-plus/global", "vite/client"],
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

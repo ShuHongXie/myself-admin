@@ -47,7 +47,11 @@ export class RoleService {
 
   async findAll() {
     try {
-      const roleList = await this.roleRepository.find()
+      const roleList = await this.roleRepository.find({
+        where: {
+          status: 1
+        }
+      })
       return ResultData.success('', roleList)
     } catch (error) {
       throw new ApiException('系统异常', ApiErrorCode.FAIL)
