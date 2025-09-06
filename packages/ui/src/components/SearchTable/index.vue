@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Search } from '../Search'
-import { ref, reactive, onMounted, defineProps, defineEmits, toRaw, provide } from 'vue'
+import { ref, onMounted, defineProps, defineEmits, provide } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { SearchModel } from '../Search/props'
-import { AxiosRequestConfig, initRequestInstance, type ApiResponse } from '@myself/utils'
+import { AxiosRequestConfig, initRequestInstance } from '@myself/utils'
 import Render from './render'
 
 const searchModel = defineModel<SearchModel>('search')
@@ -67,8 +67,8 @@ const handleRequest = async (reset = true) => {
       props.url,
       requestParams as AxiosRequestConfig
     )
-    data.value = [...res.result]
-    pagination.value.total = res.total
+    data.value = res.data.result
+    pagination.value.total = res.data.total
   } catch (error) {
     console.log(error)
   }
@@ -96,7 +96,7 @@ onMounted(() => {
  * @return {*}
  * @Author: xieshuhong
  */
-const emitEventHandler = (...args) => {
+const emitEventHandler = (...args: any) => {
   emit(args[0], ...args.slice(1))
 }
 // 其他逻辑初始化-----------end-------------
@@ -111,35 +111,42 @@ const emitEventHandler = (...args) => {
     </Search>
     <slot name="prefix"></slot>
     <el-table
-      @select="(selection, row) => emitEventHandler('select', selection, row)"
-      @select-all="(selection) => emitEventHandler('select-all', selection)"
-      @selection-change="(selection) => emitEventHandler('selection-change', selection)"
+      @select="(selection: any, row: any) => emitEventHandler('select', selection, row)"
+      @select-all="(selection: any) => emitEventHandler('select-all', selection)"
+      @selection-change="(selection: any) => emitEventHandler('selection-change', selection)"
       @cell-mouse-enter="
-        (row, column, cell, event) => emitEventHandler('cell-mouse-enter', row, column, cell, event)
+        (row: any, column: any, cell: any, event: any) =>
+          emitEventHandler('cell-mouse-enter', row, column, cell, event)
       "
       @cell-mouse-leave="
-        (row, column, cell, event) => emitEventHandler('cell-mouse-leave', row, column, cell, event)
+        (row: any, column: any, cell: any, event: any) =>
+          emitEventHandler('cell-mouse-leave', row, column, cell, event)
       "
       @cell-click="
-        (row, column, cell, event) => emitEventHandler('cell-click', row, column, cell, event)
+        (row: any, column: any, cell: any, event: any) =>
+          emitEventHandler('cell-click', row, column, cell, event)
       "
       @cell-dblclick="
-        (row, column, cell, event) => emitEventHandler('cell-dblclick', row, column, cell, event)
+        (row: any, column: any, cell: any, event: any) =>
+          emitEventHandler('cell-dblclick', row, column, cell, event)
       "
-      @row-click="(row, event, column) => emitEventHandler('row-click', row, event, column)"
-      @row-dblclick="(row, event) => emitEventHandler('row-dblclick', row, event)"
-      @row-contextmenu="(row, event) => emitEventHandler('row-contextmenu', row, event)"
-      @header-click="(column, event) => emitEventHandler('header-click', column, event)"
-      @sort-change="(args) => emitEventHandler('sort-change', args)"
-      @filter-change="(filters) => emitEventHandler('filter-change', filters)"
+      @row-click="
+        (row: any, event: any, column: any) => emitEventHandler('row-click', row, event, column)
+      "
+      @row-dblclick="(row: any, event: any) => emitEventHandler('row-dblclick', row, event)"
+      @row-contextmenu="(row: any, event: any) => emitEventHandler('row-contextmenu', row, event)"
+      @header-click="(column: any, event: any) => emitEventHandler('header-click', column, event)"
+      @sort-change="(args: any) => emitEventHandler('sort-change', args)"
+      @filter-change="(filters: any) => emitEventHandler('filter-change', filters)"
       @current-change="
-        (currentRow, oldCurrentRow) => emitEventHandler('current-change', currentRow, oldCurrentRow)
+        (currentRow: any, oldCurrentRow: any) =>
+          emitEventHandler('current-change', currentRow, oldCurrentRow)
       "
       @header-dragend="
-        (newWidth, oldWidth, column, event) =>
+        (newWidth: any, oldWidth: any, column: any, event: any) =>
           emitEventHandler('header-dragend', newWidth, oldWidth, column, event)
       "
-      @expand-change="(row, expanded) => emitEventHandler('expand-change', row, expanded)"
+      @expand-change="(row: any, expanded: any) => emitEventHandler('expand-change', row, expanded)"
       class="search-table__content"
       v-bind="tableProps"
       :data="data"
@@ -159,6 +166,7 @@ const emitEventHandler = (...args) => {
     </el-table>
     <div class="search-table__pagination">
       <el-pagination
+        @change="handleRequest"
         style="margin-top: 10px"
         v-if="showPagination"
         background

@@ -2,10 +2,11 @@
 import { ref, reactive, onMounted, defineEmits, onUnmounted, inject } from 'vue'
 import { searchProps, SearchTypeEnum, type SearchModel, type SearchProps } from './props'
 import { Icon } from '@iconify/vue'
+import type { FormInstance } from 'element-plus'
 
 const props = defineProps(searchProps)
 const options = ref<SearchProps[]>([])
-const searchFormRef = ref(null)
+const searchFormRef = ref<FormInstance>()
 
 // model定义
 const searchModel = defineModel<SearchModel>()

@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { ref, defineEmits, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { SearchTable } from '@myself/ui'
 import { Delete, Download, Edit, Plus, Upload } from '@element-plus/icons-vue'
 import type { FormInstance, FormRules } from 'element-plus'
@@ -131,16 +131,22 @@ const handleSelect = (val: any) => {
 }
 
 // 新增编辑操作----------------start-------------------
+interface RoleItem {
+  id: number
+  roleName: string
+  // 可能还有其他属性...
+}
+
 const operateDialogVisible = ref(false)
 const operateType = ref(1) // 1 新增 2 修改
-const data = ref([])
+const rolesList = ref<RoleItem[]>([])
 const ruleFormRef = ref<FormInstance>()
 
 // 获取所有角色列表
 const loadRoleList = () => {
   getRolesList().then((res) => {
-    data.value = res
-    console.log(data.value)
+    rolesList.value = res.data
+    console.log(rolesList.value)
   })
 }
 
@@ -245,7 +251,7 @@ onMounted(() => {
                 collapse-tags-tooltip
               >
                 <el-option
-                  v-for="item in data"
+                  v-for="item in rolesList"
                   :key="item.id"
                   :label="item.roleName"
                   :value="item.id"

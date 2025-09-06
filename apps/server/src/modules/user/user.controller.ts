@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Request, Post, Req, UseGuards, Query } from '@nestjs/common'
+import { Body, Controller, Get, Request, Post, Req, UseGuards, Query, Put } from '@nestjs/common'
 import { CreateUserDto } from './dto/createUser.dto'
 import { ApiOperation, ApiTags, ApiOkResponse } from '@nestjs/swagger'
 
@@ -50,6 +50,13 @@ export class UserController {
   @ApiOperation({ summary: '新增用户' })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto)
+  }
+
+  @Public()
+  @Put()
+  @ApiOperation({ summary: '新增用户' })
+  update(@Body() createUserDto: CreateUserDto) {
+    return this.userService.update(1, createUserDto)
   }
 
   @Public()

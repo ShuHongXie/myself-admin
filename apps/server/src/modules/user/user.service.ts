@@ -84,6 +84,14 @@ export class UserService {
     }
   }
 
+  async update(id: number, createUserDto: CreateUserDto) {
+    try {
+      await this.userRepository.update(id, createUserDto)
+    } catch (error) {
+      throw new ApiException('创建失败', ApiErrorCode.FAIL)
+    }
+  }
+
   async login(loginDto: LoginDto) {
     const { username, password } = loginDto
     const user = await this.findOne(username)

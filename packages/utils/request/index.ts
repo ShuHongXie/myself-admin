@@ -78,7 +78,7 @@ export const initRequestInstance = (
 
   // 响应拦截器
   instance.interceptors.response.use(
-    (response: AxiosResponse<ApiResponse<any>>) => {
+    (response) => {
       interceptorsResponseFn(response)
       // 从pending列表移除请求
       removePendingRequest(response.config)
@@ -87,7 +87,7 @@ export const initRequestInstance = (
 
       // 根据实际后端接口规范处理响应
       if (data.code === 200) {
-        return data.data
+        return data
       } else {
         // 非成功状态，显示错误信息
         ElMessage.error(data.msg || '请求失败')
@@ -152,8 +152,6 @@ const pendingRequests = new Map()
  * @returns {String} 唯一标识
  */
 export const generateRequestKey = (config: AxiosRequestConfig) => {
-  console.log(config.params)
-
   const { method, url, params, data } = config
   // 序列化参数，确保相同参数生成相同key
   const paramsStr = params ? JSON.stringify(params) : ''
