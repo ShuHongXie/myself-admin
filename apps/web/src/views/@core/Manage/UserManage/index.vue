@@ -2,20 +2,26 @@
 import { ref, onMounted } from 'vue'
 import { SearchTable } from '@myself/ui'
 import { Delete, Download, Edit, Plus, Upload } from '@element-plus/icons-vue'
-import type { FormInstance, FormRules } from 'element-plus'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { searchProps } from './data'
-import { getRolesList } from '#/apis'
+import { getRolesList, createUserByAdmin, updateUser } from '#/apis'
+import { cloneDeep } from '@myself/utils'
+
+const defaultOperateItem = {
+  username: '',
+  password: '',
+  nickname: '',
+  telephone: '',
+  email: '',
+  status: 1,
+  rolesId: []
+}
 
 const selectColumns = ref([])
 const currentOperateItem = ref<any>({})
+const form = ref({})
 
 // 基础配置----------------start-------------------
-const form = ref({
-  username: '',
-  nickname: '',
-  status: '',
-  telephone: ''
-})
 
 // 表格字段
 const columns = ref([
@@ -108,24 +114,6 @@ const formRules = ref({
 
 // 基础配置----------------end-------------------
 
-const submitForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  await formEl.validate((valid, fields) => {
-    if (valid) {
-      // emit('confirm', form.value)
-      console.log('submit!')
-    } else {
-      console.log('error submit!', fields)
-    }
-  })
-}
-
-const handleEdit = (row: any) => {
-  console.log(row)
-  operateDialogVisible.value = true
-  currentOperateItem.value = row
-}
-
 const handleSelect = (val: any) => {
   selectColumns.value = val
 }
@@ -138,15 +126,48 @@ interface RoleItem {
 }
 
 const operateDialogVisible = ref(false)
-const operateType = ref(1) // 1 新增 2 修改
+const operateType = ref('add') // 1 新增 2 修改
 const rolesList = ref<RoleItem[]>([])
-const ruleFormRef = ref<FormInstance>()
+const ruleFormRef = ref<FormInstance | undefined>(null)
+const searchTableRef = ref(null)
 
 // 获取所有角色列表
 const loadRoleList = () => {
   getRolesList().then((res) => {
     rolesList.value = res.data
     console.log(rolesList.value)
+  })
+}
+
+// 操作
+const handleOperate = (type: string, row?: any) => {
+  operateType.value = type
+  operateDialogVisible.value = true
+  if (type === 'edit') {
+    currentOperateItem.value = row
+  }
+}
+
+const confirm = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      if (operateType.value === 'add') {
+        createUserByAdmin(currentOperateItem.value).then((res) => {
+          ElMessage.success(res.msg)
+          operateDialogVisible.value = false
+          console.log(searchTableRef.value)
+          currentOperateItem.value = cloneDeep(defaultOperateItem)
+          searchTableRef.value?.handleSearch()
+        })
+      } else {
+        updateUser(currentOperateItem.value).then((res) => {
+          console.log(res)
+        })
+      }
+    } else {
+      console.log('error submit!', fields)
+    }
   })
 }
 
@@ -165,6 +186,7 @@ onMounted(() => {
     <SearchTable
       v-model:search="form"
       url="/user/list"
+      ref="searchTableRef"
       :columns="columns"
       :search-props="searchProps"
       @reset="reset"
@@ -183,13 +205,11 @@ onMounted(() => {
         />
       </template>
       <template #operation="scope">
-        <el-link type="primary" @click="handleEdit(scope.row)">编辑</el-link>
+        <el-link type="primary" @click="handleOperate('edit', scope.row)">编辑</el-link>
       </template>
       <template #prefix>
         <div>
-          <el-button type="primary" :icon="Plus" @click="operateDialogVisible = true"
-            >新增</el-button
-          >
+          <el-button type="primary" :icon="Plus" @click="handleOperate('add')">新增</el-button>
           <el-button type="danger" :icon="Delete" :disabled="!selectColumns.length">删除</el-button>
           <el-button type="success" :icon="Upload">导入</el-button>
         </div>
@@ -198,7 +218,7 @@ onMounted(() => {
     <el-dialog
       v-model="operateDialogVisible"
       @close="currentOperateItem = {}"
-      :title="operateType === 1 ? '新增用户' : '修改用户'"
+      :title="operateType === 'add' ? '新增用户' : '修改用户'"
       width="700"
     >
       <el-form ref="ruleFormRef" :rules="formRules" :model="currentOperateItem" label-width="90px">
@@ -264,7 +284,7 @@ onMounted(() => {
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="operateDialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="submitForm(ruleFormRef)">确定</el-button>
+          <el-button type="primary" @click="confirm(ruleFormRef)">确定</el-button>
         </div>
       </template>
     </el-dialog>

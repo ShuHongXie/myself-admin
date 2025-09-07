@@ -65,5 +65,5 @@ export class CreateUserDto {
   @ApiProperty({
     description: '角色id集合'
   })
-  roleIds: number[]
+  rolesId: number[]
 }

@@ -73,7 +73,7 @@
 {
   "username": "xieshuhong",
   "password": "123456",
-  "roleIds": [
+  "rolesId": [
     2
   ],
 }

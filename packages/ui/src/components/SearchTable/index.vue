@@ -46,7 +46,7 @@ const pagination = ref({
  * @return {*}
  * @Author: xieshuhong
  */
-const handleRequest = async (reset = true) => {
+const handleSearch = async (reset = true) => {
   try {
     if (reset) {
       pagination.value.currentPage = 1
@@ -75,16 +75,19 @@ const handleRequest = async (reset = true) => {
 }
 
 provide('submit', () => {
-  handleRequest()
+  handleSearch()
 })
 provide('reset', () => {
   emit('reset')
-  handleRequest()
+  handleSearch()
 })
 
 // 初始化逻辑
 onMounted(() => {
-  handleRequest()
+  handleSearch()
+})
+defineExpose({
+  handleSearch
 })
 // 列表初始化-----------end-------------
 
@@ -166,7 +169,7 @@ const emitEventHandler = (...args: any) => {
     </el-table>
     <div class="search-table__pagination">
       <el-pagination
-        @change="handleRequest"
+        @change="handleSearch"
         style="margin-top: 10px"
         v-if="showPagination"
         background

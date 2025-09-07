@@ -54,9 +54,9 @@ export class UserController {
 
   @Public()
   @Put()
-  @ApiOperation({ summary: '新增用户' })
+  @ApiOperation({ summary: '更新用户' })
   update(@Body() createUserDto: CreateUserDto) {
-    return this.userService.update(1, createUserDto)
+    return this.userService.update(createUserDto)
   }
 
   @Public()

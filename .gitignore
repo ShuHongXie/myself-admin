@@ -1,3 +1,5 @@
+apps/web/src/types/components.d.ts
+
 # Logs
 logs
 *.log

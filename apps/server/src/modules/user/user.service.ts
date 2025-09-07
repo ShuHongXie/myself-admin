@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { ApiException } from 'src/common/filter/api.exception'
 import { CreateUserDto } from './dto/createUser.dto'
 import { User } from './entities/user.entity'
-import { In, Repository } from 'typeorm'
+import { DataSource, In, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { ApiErrorCode } from '@enums/responseCode.enum'
 import { ResultData } from '@utils/ResultData'
@@ -28,7 +28,8 @@ export class UserService {
     private roleRepository: Repository<Role>,
     private readonly jwtService: JwtService,
     private readonly menuService: MenuService,
-    private readonly cacheService: CacheService
+    private readonly cacheService: CacheService,
+    private dataSource: DataSource
   ) {}
 
   async findOne(username: string) {
@@ -50,7 +51,6 @@ export class UserService {
       const newUser = new User()
       newUser.username = createUserDto.username
       newUser.password = createUserDto.password
-      newUser.isAdmin = createUserDto.isAdmin
       await this.userRepository.save(newUser)
       return ResultData.success('注册成功')
     } catch (error) {
@@ -63,12 +63,12 @@ export class UserService {
       where: { username: createUserDto.username }
     })
     if (userExists) throw new ApiException('用户已存在', ApiErrorCode.USER_EXIST)
+
+    // 获取数据库连接并创建查询执行器
+    const queryRunner = this.dataSource.createQueryRunner()
+    await queryRunner.connect()
+    await queryRunner.startTransaction()
     try {
-      const roleList = await this.roleRepository.find({
-        where: {
-          id: In(createUserDto.roleIds)
-        }
-      })
       const newUser = new User()
       newUser.password = createUserDto.password
       newUser.status = createUserDto.status
@@ -76,17 +76,43 @@ export class UserService {
       newUser.email = createUserDto.email
       newUser.telephone = createUserDto.telephone
       newUser.username = createUserDto.username
-      newUser.roles = roleList
-      await this.userRepository.save(newUser)
+      const savedUser = await this.userRepository
+        .createQueryBuilder('user')
+        .insert() // 指定为插入操作
+        .into(User) // 指定插入的实体
+        .values(newUser)
+        .execute() // 执行插入
+
+      // 有角色就插入
+      if (createUserDto.rolesId?.length) {
+        const assignedRoles = await this.roleRepository
+          .createQueryBuilder('role')
+          .where('role.id IN (:...rolesId)', { rolesId: createUserDto.rolesId }) // 关键：用 :... 展开数组
+          .getMany() // 获取多条记录
+
+        await this.userRepository
+          .createQueryBuilder('user')
+          .relation(User, 'roles')
+          .of(savedUser.generatedMaps[0].id)
+          .add(assignedRoles)
+      }
+
+      // 所有操作成功，提交事务
+      await queryRunner.commitTransaction()
       return ResultData.success('创建成功')
     } catch (error) {
+      // 发生错误，回滚事务
+      await queryRunner.rollbackTransaction()
       throw new ApiException('创建失败', ApiErrorCode.FAIL)
+    } finally {
+      // 无论成功失败，都释放查询执行器
+      await queryRunner.release()
     }
   }
 
-  async update(id: number, createUserDto: CreateUserDto) {
+  async update(createUserDto: CreateUserDto) {
     try {
-      await this.userRepository.update(id, createUserDto)
+      // await this.userRepository.update(createUserDto)
     } catch (error) {
       throw new ApiException('创建失败', ApiErrorCode.FAIL)
     }
