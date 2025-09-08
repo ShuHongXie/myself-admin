@@ -6,6 +6,7 @@ import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { searchProps } from './data'
 import { getRolesList, createUserByAdmin, updateUser } from '#/apis'
 import { cloneDeep } from '@myself/utils'
+import type { ApiResponse } from '@myself/utils'
 
 const defaultOperateItem = {
   username: '',
@@ -128,14 +129,14 @@ interface RoleItem {
 const operateDialogVisible = ref(false)
 const operateType = ref('add') // 1 新增 2 修改
 const rolesList = ref<RoleItem[]>([])
-const ruleFormRef = ref<FormInstance | undefined>(null)
-const searchTableRef = ref(null)
+const ruleFormRef = ref<FormInstance | null>(null)
+const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
 
 // 获取所有角色列表
 const loadRoleList = () => {
   getRolesList().then((res) => {
     rolesList.value = res.data
-    console.log(rolesList.value)
+    console.log(res)
   })
 }
 
@@ -148,21 +149,24 @@ const handleOperate = (type: string, row?: any) => {
   }
 }
 
-const confirm = async (formEl: FormInstance | undefined) => {
+const confirm = async (formEl: FormInstance | null) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
       if (operateType.value === 'add') {
-        createUserByAdmin(currentOperateItem.value).then((res) => {
-          ElMessage.success(res.msg)
+        createUserByAdmin(currentOperateItem.value).then((res: any) => {
+          ElMessage.success(res.msg || '用户创建成功')
           operateDialogVisible.value = false
           console.log(searchTableRef.value)
           currentOperateItem.value = cloneDeep(defaultOperateItem)
           searchTableRef.value?.handleSearch()
         })
       } else {
-        updateUser(currentOperateItem.value).then((res) => {
-          console.log(res)
+        updateUser(currentOperateItem.value).then((res: any) => {
+          ElMessage.success(res.msg || '用户更新成功')
+          operateDialogVisible.value = false
+          currentOperateItem.value = cloneDeep(defaultOperateItem)
+          searchTableRef.value?.handleSearch()
         })
       }
     } else {

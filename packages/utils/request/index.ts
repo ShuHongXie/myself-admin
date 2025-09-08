@@ -78,16 +78,20 @@ export const initRequestInstance = (
 
   // 响应拦截器
   instance.interceptors.response.use(
-    (response) => {
+    (response: AxiosResponse) => {
       interceptorsResponseFn(response)
       // 从pending列表移除请求
       removePendingRequest(response.config)
 
-      const data = response.data
+      const data = response.data as ApiResponse<any>
 
       // 根据实际后端接口规范处理响应
       if (data.code === 200) {
-        return data
+        return Promise.resolve({
+          ...response,
+          ...data,
+          data: data.data
+        })
       } else {
         // 非成功状态，显示错误信息
         ElMessage.error(data.msg || '请求失败')
