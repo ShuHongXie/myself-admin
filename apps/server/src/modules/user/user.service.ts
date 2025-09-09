@@ -64,7 +64,6 @@ export class UserService {
     })
     if (userExists) throw new ApiException('用户已存在', ApiErrorCode.USER_EXIST)
 
-    // 获取数据库连接并创建查询执行器
     const queryRunner = this.dataSource.createQueryRunner()
     await queryRunner.connect()
     await queryRunner.startTransaction()
@@ -111,10 +110,82 @@ export class UserService {
   }
 
   async update(createUserDto: CreateUserDto) {
+    console.log('参数:', createUserDto)
+
+    const userExists = await this.userRepository.findOne({
+      where: { id: createUserDto.id },
+      relations: ['roles']
+    })
+    console.log(userExists)
+
+    if (!userExists) throw new ApiException('用户不存在', ApiErrorCode.USER_NOTEXIST)
+    const queryRunner = this.dataSource.createQueryRunner()
+    await queryRunner.connect()
+    await queryRunner.startTransaction()
+    const userRepo = queryRunner.manager.getRepository(User)
+    const roleRepo = queryRunner.manager.getRepository(Role)
+
     try {
-      // await this.userRepository.update(createUserDto)
+      const newUser = new User()
+      newUser.status = createUserDto.status
+      newUser.nickname = createUserDto.nickname
+      newUser.email = createUserDto.email
+      newUser.telephone = createUserDto.telephone
+      newUser.username = createUserDto.username
+      await userRepo
+        .createQueryBuilder('user', queryRunner)
+        .update(User)
+        .set(newUser)
+        .where('id = :id', { id: createUserDto.id })
+        .execute()
+
+      if (createUserDto.rolesId?.length) {
+        // 查找要分配的新角色
+        const assignedRoles = await roleRepo
+          .createQueryBuilder('role', queryRunner)
+          .where('role.id IN (:...rolesId)', { rolesId: createUserDto.rolesId })
+          .getMany()
+
+        // 获取用户现有角色（从第一步的userExists中获取，避免重复查询）
+        const existingRoles = userExists.roles
+
+        // 先移除现有角色（替代clear()）
+        if (existingRoles.length > 0) {
+          await userRepo
+            .createQueryBuilder('user', queryRunner)
+            .relation(User, 'roles')
+            .of(createUserDto.id) // 直接使用已知的用户ID
+            .remove(existingRoles) // 移除所有旧角色
+        }
+
+        // 再添加新角色
+        await userRepo
+          .createQueryBuilder('user', queryRunner)
+          .relation(User, 'roles')
+          .of(createUserDto.id)
+          .add(assignedRoles)
+      } else {
+        // 如果没有传新角色，移除所有现有角色
+        const existingRoles = userExists.roles
+        if (existingRoles.length > 0) {
+          await userRepo
+            .createQueryBuilder('user', queryRunner)
+            .relation(User, 'roles')
+            .of(createUserDto.id)
+            .remove(existingRoles)
+        }
+      }
+
+      // 所有操作成功，提交事务
+      await queryRunner.commitTransaction()
+      return ResultData.success('用户信息更新成功')
     } catch (error) {
-      throw new ApiException('创建失败', ApiErrorCode.FAIL)
+      // 发生错误，回滚事务
+      await queryRunner.rollbackTransaction()
+      throw new ApiException('更新失败', ApiErrorCode.FAIL)
+    } finally {
+      // 无论成功失败，都释放查询执行器
+      await queryRunner.release()
     }
   }
 

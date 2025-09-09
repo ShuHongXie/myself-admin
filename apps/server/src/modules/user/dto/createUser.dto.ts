@@ -10,6 +10,11 @@ import {
   ValidateIf
 } from 'class-validator'
 export class CreateUserDto {
+  @IsOptional()
+  @ApiProperty({
+    description: '用户标识'
+  })
+  id: number
   @IsNotEmpty({
     message: '用户名不能为空'
   })
@@ -34,7 +39,7 @@ export class CreateUserDto {
   email: string
 
   @IsOptional()
-  @ValidateIf((obj, value) => value !== '') // 只有当值不为空时才进行手机号校验
+  // @ValidateIf((obj, value) => value !== '') // 只有当值不为空时才进行手机号校验
   @IsPhoneNumber('CN', {
     message: '手机号格式不正确'
   })
@@ -51,6 +56,7 @@ export class CreateUserDto {
   })
   status: number
 
+  @IsOptional()
   @IsNotEmpty({
     message: '密码不能为空'
   })

@@ -5,12 +5,13 @@ import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserModule } from './modules/user/user.module'
 import { JwtModule } from '@nestjs/jwt'
-import { APP_GUARD } from '@nestjs/core'
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
 import { AuthGuard } from '@guard/auth.guard'
 import { CacheModule } from './modules/cache/cache.module'
 import { MenuModule } from './modules/menu/menu.module'
 import { RoleModule } from './modules/role/role.module'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
+import { StringToNullInterceptor } from './common/interceptor/stringToNull.interceptor'
 @Module({
   imports: [
     // 加载环境变量配置
@@ -51,6 +52,11 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
   ],
   controllers: [AppController],
   providers: [
+    // 注册全局拦截器：处理空字符串转null
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: StringToNullInterceptor
+    },
     AppService,
     {
       provide: APP_GUARD,

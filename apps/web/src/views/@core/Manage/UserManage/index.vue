@@ -68,6 +68,7 @@ const columns = ref([
   {
     prop: 'operation',
     label: '操作',
+    fixed: 'right',
     align: 'center',
     slotName: 'operation'
   }
@@ -146,6 +147,8 @@ const handleOperate = (type: string, row?: any) => {
   operateDialogVisible.value = true
   if (type === 'edit') {
     currentOperateItem.value = row
+  } else {
+    currentOperateItem.value = cloneDeep(defaultOperateItem)
   }
 }
 
@@ -232,7 +235,7 @@ onMounted(() => {
               <el-input clearable v-model="currentOperateItem.username" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="operateType === 'add'">
             <el-form-item prop="password" label="密码:">
               <el-input
                 clearable

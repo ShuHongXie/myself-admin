@@ -37,7 +37,7 @@ const axios = initRequestInstance({
 const data = ref([])
 const pagination = ref({
   currentPage: 1,
-  pageSize: 10,
+  pageSize: 20,
   total: 100
 })
 
@@ -169,7 +169,7 @@ const emitEventHandler = (...args: any) => {
     </el-table>
     <div class="search-table__pagination">
       <el-pagination
-        @change="handleSearch"
+        @change="handleSearch(false)"
         style="margin-top: 10px"
         v-if="showPagination"
         background
