@@ -19,7 +19,7 @@ const defaultOperateItem = {
 }
 
 const selectColumns = ref([])
-const currentOperateItem = ref<any>({})
+
 const form = ref({})
 
 // 基础配置----------------start-------------------
@@ -132,13 +132,32 @@ const operateType = ref('add') // 1 新增 2 修改
 const rolesList = ref<RoleItem[]>([])
 const ruleFormRef = ref<FormInstance | null>(null)
 const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
+const switchLoading = ref(false)
+const currentOperateItem = ref<any>(defaultOperateItem)
 
 // 获取所有角色列表
 const loadRoleList = () => {
   getRolesList().then((res) => {
     rolesList.value = res.data
-    console.log(res)
   })
+}
+
+// 启动/禁用
+const handleSwitchChange = (row: any) => {
+  currentOperateItem.value = row
+  switchLoading.value = true
+  updateUser({
+    ...currentOperateItem.value
+  })
+    .then(() => {
+      ElMessage.success(`用户${!row.status ? '停用' : '启用'}成功`)
+      operateDialogVisible.value = false
+      currentOperateItem.value = cloneDeep(defaultOperateItem)
+      searchTableRef.value?.handleSearch()
+    })
+    .finally(() => {
+      switchLoading.value = false
+    })
 }
 
 // 操作
@@ -202,7 +221,9 @@ onMounted(() => {
     >
       <template #status="scope">
         <el-switch
+          @click="handleSwitchChange(scope.row)"
           v-model="scope.row.status"
+          :loading="currentOperateItem.id === scope.row.id && switchLoading"
           style="--el-switch-on-color: var(--el-color-primary)"
           inline-prompt
           :active-value="1"
