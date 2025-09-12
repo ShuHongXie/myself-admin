@@ -1,7 +1,7 @@
 import instance from '../instance'
 
 // 获取角色列表
-export const getRolesList = () => instance.get('/role/list')
+export const getRolesList = () => instance.get('/role/allRoles')
 
 // 更新用户信息
 export const updateUser = (data: any) => instance.put('/user', data)

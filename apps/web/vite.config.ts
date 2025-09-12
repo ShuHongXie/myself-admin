@@ -30,7 +30,8 @@ export default defineConfig({
       mergeProps: true // 合并 props
     }),
     AutoImport({
-      resolvers: [ElementPlusResolver()]
+      resolvers: [ElementPlusResolver()],
+      imports: ['vue', 'vue-router', 'pinia']
     }),
     Components({
       resolvers: [ElementPlusResolver()],

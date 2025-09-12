@@ -56,6 +56,7 @@ const handleSearch = async (reset = true) => {
       pageSize: pagination.value.pageSize,
       currentPage: pagination.value.currentPage
     }
+
     // 参数合并
     const params = props.paramsHandler ? props.paramsHandler(defaultParams) : defaultParams
     const requestParams = [RequestMethodType.GET, RequestMethodType.DELETE].includes(
@@ -74,13 +75,13 @@ const handleSearch = async (reset = true) => {
   }
 }
 
-provide('submit', () => {
+const submit = () => {
   handleSearch()
-})
-provide('reset', () => {
+}
+const reset = () => {
   emit('reset')
   handleSearch()
-})
+}
 
 // 初始化逻辑
 onMounted(() => {
@@ -107,7 +108,7 @@ const emitEventHandler = (...args: any) => {
 
 <template>
   <div class="search-table">
-    <Search v-model="searchModel" v-bind="searchProps">
+    <Search @submit="submit" @reset="reset" v-model="searchModel" v-bind="searchProps">
       <template :key="item.prop" #[item.prop] v-for="item in searchProps.slots">
         <slot :name="item.prop"></slot>
       </template>

@@ -89,6 +89,17 @@ export const data: any[] = [
           hideInBreadcrumb: true,
           no: 1
         }
+      },
+      {
+        name: 'RoleManage',
+        path: '/@core/Manage/RoleManage/index',
+        component: 'rolemanage',
+        meta: {
+          icon: 'ep:fork-spoon',
+          title: '角色管理页',
+          hideInBreadcrumb: true,
+          no: 1
+        }
       }
     ]
   }

@@ -263,41 +263,45 @@ export class UserService {
   }
 
   async getUserList(getUserListDto: GetUserListDto) {
-    const queryBuilder = this.userRepository
-      .createQueryBuilder('user')
-      .leftJoinAndSelect('user.roles', 'role')
-      .addSelect('user.status')
+    try {
+      const queryBuilder = this.userRepository
+        .createQueryBuilder('user')
+        .leftJoinAndSelect('user.roles', 'role')
+        .addSelect('user.status')
 
-    if (getUserListDto?.username) {
-      queryBuilder.andWhere('user.username LIKE :username', {
-        username: `%${getUserListDto.username}%`
-      })
-    }
-    if (getUserListDto?.nickname) {
-      queryBuilder.andWhere('user.nickname LIKE :nickname', {
-        nickname: `%${getUserListDto.nickname}%`
-      })
-    }
-    if (getUserListDto?.telephone) {
-      queryBuilder.andWhere('user.telephone LIKE :telephone', {
-        telephone: `%${getUserListDto.telephone}%`
-      })
-    }
-    if (isValidNumber(getUserListDto?.status)) {
-      queryBuilder.andWhere('user.status = :status', { status: getUserListDto.status })
-    }
+      if (getUserListDto?.username) {
+        queryBuilder.andWhere('user.username LIKE :username', {
+          username: `%${getUserListDto.username}%`
+        })
+      }
+      if (getUserListDto?.nickname) {
+        queryBuilder.andWhere('user.nickname LIKE :nickname', {
+          nickname: `%${getUserListDto.nickname}%`
+        })
+      }
+      if (getUserListDto?.telephone) {
+        queryBuilder.andWhere('user.telephone LIKE :telephone', {
+          telephone: `%${getUserListDto.telephone}%`
+        })
+      }
+      if (isValidNumber(getUserListDto?.status)) {
+        queryBuilder.andWhere('user.status = :status', { status: getUserListDto.status })
+      }
 
-    const paginationOptions: IPaginationOptions = {
-      page: getUserListDto.currentPage, // 映射 currentPage -> page
-      limit: getUserListDto.pageSize // 映射 pageSize -> limit
-    }
-    const result = await paginateTransform<User>(queryBuilder, paginationOptions)
+      const paginationOptions: IPaginationOptions = {
+        page: getUserListDto.currentPage, // 映射 currentPage -> page
+        limit: getUserListDto.pageSize // 映射 pageSize -> limit
+      }
+      const result = await paginateTransform<User>(queryBuilder, paginationOptions)
 
-    result.result = result.result.map((user) => ({
-      ...user,
-      rolesName: user.roles.map((role) => role.roleName),
-      rolesId: user.roles.map((role) => role.id)
-    }))
-    return ResultData.success('获取用户列表成功', result)
+      result.result = result.result.map((user) => ({
+        ...user,
+        rolesName: user.roles.map((role) => role.roleName),
+        rolesId: user.roles.map((role) => role.id)
+      }))
+      return ResultData.success('获取用户列表成功', result)
+    } catch (error) {
+      throw new ApiException('系统异常', ApiErrorCode.FAIL)
+    }
   }
 }

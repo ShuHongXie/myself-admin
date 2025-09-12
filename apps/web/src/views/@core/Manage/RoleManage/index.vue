@@ -1,8 +1,8 @@
 <script setup lang="tsx">
 import { SearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
-import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
-import { searchProps, columns, formRules } from './data'
+import { ElMessage, type FormInstance } from 'element-plus'
+import { searchProps, columns, roleFormRules } from './data.tsx'
 import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis'
 import { cloneDeep } from '@myself/utils'
 
@@ -21,8 +21,16 @@ const selectColumns = ref([])
 const form = ref({})
 
 // 基础配置----------------start-------------------
+
 const handleSelect = (val: any) => {
   selectColumns.value = val
+}
+
+// 参数编辑
+const paramsHandler = (params: any) => {
+  params.startCreateDate = params.createTime ? params.createTime[0] : null
+  params.endCreateDate = params.createTime ? params.createTime[1] : null
+  return params
 }
 // 基础配置----------------end-------------------
 
@@ -56,7 +64,7 @@ const handleSwitchChange = (row: any) => {
     ...currentOperateItem.value
   })
     .then(() => {
-      ElMessage.success(`用户${!row.status ? '停用' : '启用'}成功`)
+      ElMessage.success(`角色${!row.status ? '停用' : '启用'}成功`)
       operateDialogVisible.value = false
       currentOperateItem.value = cloneDeep(defaultOperateItem)
       searchTableRef.value?.handleSearch()
@@ -77,13 +85,14 @@ const handleOperate = (type: string, row?: any) => {
   }
 }
 
+// 确认修改/编辑
 const confirm = async (formEl: FormInstance | null) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
       if (operateType.value === 'add') {
         createUserByAdmin(currentOperateItem.value).then((res: any) => {
-          ElMessage.success(res.msg || '用户创建成功')
+          ElMessage.success(res.msg || '角色创建成功')
           operateDialogVisible.value = false
           console.log(searchTableRef.value)
           currentOperateItem.value = cloneDeep(defaultOperateItem)
@@ -91,7 +100,7 @@ const confirm = async (formEl: FormInstance | null) => {
         })
       } else {
         updateUser(currentOperateItem.value).then((res: any) => {
-          ElMessage.success(res.msg || '用户更新成功')
+          ElMessage.success(res.msg || '角色更新成功')
           operateDialogVisible.value = false
           currentOperateItem.value = cloneDeep(defaultOperateItem)
           searchTableRef.value?.handleSearch()
@@ -129,10 +138,11 @@ onMounted(() => {
   <div class="user-manage">
     <SearchTable
       v-model:search="form"
-      url="/user/list"
+      url="/role/rolesByPage"
       ref="searchTableRef"
       :columns="columns"
       :search-props="searchProps"
+      :params-handler="paramsHandler"
       @reset="reset"
       @select-all="handleSelect"
       @select="handleSelect"
@@ -163,48 +173,26 @@ onMounted(() => {
         </div>
       </template>
     </SearchTable>
-    <!-- 新增编辑用户 -->
     <el-dialog
       v-model="operateDialogVisible"
       @close="currentOperateItem = {}"
-      :title="operateType === 'add' ? '新增用户' : '修改用户'"
+      :title="operateType === 'add' ? '新增角色' : '修改角色'"
       width="700"
     >
-      <el-form ref="ruleFormRef" :rules="formRules" :model="currentOperateItem" label-width="90px">
+      <el-form
+        ref="ruleFormRef"
+        :rules="roleFormRules"
+        :model="currentOperateItem"
+        label-width="90px"
+      >
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item prop="username" label="账户:">
+            <el-form-item prop="username" label="角色名:">
               <el-input clearable v-model="currentOperateItem.username" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="operateType === 'add'">
-            <el-form-item prop="password" label="密码:">
-              <el-input
-                clearable
-                v-model="currentOperateItem.password"
-                type="password"
-                placeholder="请输入密码"
-                show-password
-              />
-            </el-form-item>
-          </el-col>
           <el-col :span="12">
-            <el-form-item prop="nickname" label="用户昵称:">
-              <el-input clearable v-model="currentOperateItem.nickname" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item prop="telephone" label="手机号码:">
-              <el-input clearable v-model="currentOperateItem.telephone" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item prop="email" label="邮箱地址:">
-              <el-input clearable v-model="currentOperateItem.email" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="用户状态:">
+            <el-form-item label="角色状态:">
               <el-radio-group v-model="currentOperateItem.status">
                 <el-radio :value="1">正常</el-radio>
                 <el-radio :value="0">停用</el-radio>

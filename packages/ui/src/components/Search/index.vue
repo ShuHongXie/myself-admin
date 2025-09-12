@@ -40,15 +40,12 @@ onUnmounted(() => {
 // 视口监听-----------end-------------
 
 // 操作-----------start-------------
-const receiveSubmitEvent = inject<() => void>('submit')
-const receiveResetEvent = inject<() => void>('reset')
 /**
  * @description: 搜索
  * @return {*}
  * @Author: xieshuhong
  */
 const handleSubmit = () => {
-  receiveSubmitEvent?.()
   emit('submit')
 }
 
@@ -59,7 +56,6 @@ const handleSubmit = () => {
  */
 const handleReset = () => {
   searchFormRef.value?.resetFields()
-  receiveResetEvent?.()
   emit('reset')
 }
 
@@ -114,9 +110,10 @@ defineExpose({})
                   <template v-else>
                     <!-- 输入框 -->
                     <el-input
-                      v-bind="item.input.props"
                       v-if="item.input.type === 'input'"
                       v-model="searchModel![item.prop]"
+                      v-bind="item.input.props"
+                      clearable
                     />
                     <!-- 筛选框 -->
                     <el-select
@@ -124,6 +121,7 @@ defineExpose({})
                       v-model="searchModel![item.prop]"
                       v-bind="item.input.props"
                       style="width: 100%"
+                      clearable
                     >
                       <el-option
                         v-for="subItem in item.input.props.options"
@@ -138,6 +136,7 @@ defineExpose({})
                       v-if="item.input.type === 'date-picker'"
                       v-model="searchModel![item.prop]"
                       v-bind="item.input.props"
+                      value-format="x"
                     />
                   </template>
                 </el-form-item>

@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common'
 import { RoleService } from './role.service'
 import { CreateRoleDto } from './dto/create-role.dto'
 import { UpdateRoleDto } from './dto/update-role.dto'
+import { GetRoleListDto } from './dto/getRoleList.dto'
 import { ApiOperation } from '@nestjs/swagger'
 import { Public } from '@decorator/public.decorator'
 
@@ -16,11 +17,18 @@ export class RoleController {
     return this.roleService.create(createRoleDto)
   }
 
-  @ApiOperation({ summary: '获取所有角色' })
+  @ApiOperation({ summary: '获取角色分页列表' })
   @Public()
-  @Get('list')
-  findAll() {
-    return this.roleService.findAll()
+  @Get('rolesByPage')
+  getRolesByPage(@Query() getRoleListDto: GetRoleListDto) {
+    return this.roleService.getRolesByPage(getRoleListDto)
+  }
+
+  @ApiOperation({ summary: '获取所有角色列表' })
+  @Public()
+  @Get('allRoles')
+  getAllRoles() {
+    return this.roleService.getAllRoles()
   }
 
   // @Get(':id')

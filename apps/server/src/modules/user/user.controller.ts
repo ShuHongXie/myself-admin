@@ -82,7 +82,7 @@ export class UserController {
   @Public()
   @Get('/list')
   @ApiOperation({ summary: '获取用户列表' })
-  async logout(@Query() getUserListDto: GetUserListDto) {
+  async list(@Query() getUserListDto: GetUserListDto) {
     return await this.userService.getUserList(getUserListDto)
   }
 }

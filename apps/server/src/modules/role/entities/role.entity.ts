@@ -58,7 +58,10 @@ export class Role {
     }
   })
   updateTime: Date
-  @ManyToMany(() => Menu)
+  @ManyToMany(() => Menu, {
+    onDelete: 'CASCADE', // 删除用户时级联删除中间表记录
+    onUpdate: 'CASCADE'
+  })
   @JoinTable({
     name: 'role_menu_relation'
   })
