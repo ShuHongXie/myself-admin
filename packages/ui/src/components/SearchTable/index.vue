@@ -2,8 +2,8 @@
 import { Search } from '../Search'
 import { ref, onMounted, defineProps, defineEmits, provide } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
-import { SearchModel } from '../Search/props'
-import { AxiosRequestConfig, initRequestInstance } from '@myself/utils'
+import { type SearchModel } from '../Search/props'
+import { type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
 import Render from './render'
 
 const searchModel = defineModel<SearchModel>('search')
