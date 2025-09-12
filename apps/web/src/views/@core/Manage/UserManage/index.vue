@@ -1,12 +1,11 @@
 <script setup lang="tsx">
 import { ref, onMounted } from 'vue'
 import { SearchTable } from '@myself/ui'
-import { Delete, Download, Edit, Plus, Upload } from '@element-plus/icons-vue'
+import { Delete, Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { searchProps } from './data'
-import { getRolesList, createUserByAdmin, updateUser } from '#/apis'
+import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis'
 import { cloneDeep } from '@myself/utils'
-import type { ApiResponse } from '@myself/utils'
 
 const defaultOperateItem = {
   username: '',
@@ -178,6 +177,18 @@ const confirm = async (formEl: FormInstance | null) => {
   })
 }
 
+// 删除角色
+const handleDelete = (row: any) => {
+  ElMessageBox.confirm(`确认删除账户【${row.username}】?`, 'Warning', {
+    type: 'warning'
+  }).then(() => {
+    deleteUser(row.id).then((res: any) => {
+      ElMessage.success(res.msg)
+      searchTableRef.value?.handleSearch()
+    })
+  })
+}
+
 const reset = () => {
   console.log('重置')
 }
@@ -212,12 +223,14 @@ onMounted(() => {
         />
       </template>
       <template #operation="scope">
-        <el-link type="primary" @click="handleOperate('edit', scope.row)">编辑</el-link>
+        <el-space>
+          <el-link type="primary" @click="handleOperate('edit', scope.row)">编辑</el-link>
+          <el-link type="primary" @click="handleDelete(scope.row)">删除</el-link>
+        </el-space>
       </template>
       <template #prefix>
         <div>
           <el-button type="primary" :icon="Plus" @click="handleOperate('add')">新增</el-button>
-          <el-button type="danger" :icon="Delete" :disabled="!selectColumns.length">删除</el-button>
           <el-button type="success" :icon="Upload">导入</el-button>
         </div>
       </template>

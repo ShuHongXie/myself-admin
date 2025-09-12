@@ -110,8 +110,6 @@ export class UserService {
   }
 
   async update(createUserDto: CreateUserDto) {
-    console.log('参数:', createUserDto)
-
     const userExists = await this.userRepository.findOne({
       where: { id: createUserDto.id },
       relations: ['roles']
@@ -187,6 +185,16 @@ export class UserService {
       // 无论成功失败，都释放查询执行器
       await queryRunner.release()
     }
+  }
+
+  async delete(userId: number) {
+    const userExists = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['roles']
+    })
+    if (!userExists) throw new ApiException('用户不存在', ApiErrorCode.USER_NOTEXIST)
+    await this.userRepository.delete(userId)
+    return ResultData.success('删除成功')
   }
 
   async login(loginDto: LoginDto) {

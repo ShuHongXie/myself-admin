@@ -41,7 +41,10 @@ export class User {
   salt: string
   @Column({ nullable: true, default: 0 })
   isAdmin: number //是否为管理员 1:是 0:否
-  @ManyToMany(() => Role)
+  @ManyToMany(() => Role, {
+    onDelete: 'CASCADE', // 删除用户时级联删除中间表记录
+    onUpdate: 'CASCADE'
+  })
   @JoinTable({
     name: 'user_role_relation',
     joinColumn: { name: 'user_id' }, // 关联表中指向当前实体的字段

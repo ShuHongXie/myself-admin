@@ -1,4 +1,17 @@
-import { Body, Controller, Get, Request, Post, Req, UseGuards, Query, Put } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Request,
+  Post,
+  Req,
+  UseGuards,
+  Query,
+  Put,
+  ParseIntPipe,
+  Param,
+  Delete
+} from '@nestjs/common'
 import { CreateUserDto } from './dto/createUser.dto'
 import { ApiOperation, ApiTags, ApiOkResponse } from '@nestjs/swagger'
 
@@ -57,6 +70,13 @@ export class UserController {
   @ApiOperation({ summary: '更新用户' })
   update(@Body() createUserDto: CreateUserDto) {
     return this.userService.update(createUserDto)
+  }
+
+  @Public()
+  @Delete(':userId')
+  @ApiOperation({ summary: '删除用户' })
+  delete(@Param('userId', new ParseIntPipe()) userId: number) {
+    return this.userService.delete(userId)
   }
 
   @Public()
