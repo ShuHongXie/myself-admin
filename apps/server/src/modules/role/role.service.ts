@@ -116,4 +116,38 @@ export class RoleService {
       throw new ApiException('系统异常', ApiErrorCode.FAIL)
     }
   }
+
+  async remove(id: number) {
+    try {
+      const role = await this.roleRepository.findOne({
+        where: { id },
+        relations: ['menus']
+      })
+      if (!role) {
+        throw new ApiException('角色不存在', ApiErrorCode.COMMON_CODE)
+      }
+
+      // 检查是否有用户关联此角色
+      const usersWithRole = await this.userRepository.find({
+        relations: ['roles'],
+        where: {
+          roles: {
+            id: id
+          }
+        }
+      })
+
+      if (usersWithRole.length > 0) {
+        throw new ApiException('该角色下还有用户，无法删除', ApiErrorCode.COMMON_CODE)
+      }
+
+      await this.roleRepository.remove(role)
+      return ResultData.success('删除成功')
+    } catch (error) {
+      if (error instanceof ApiException) {
+        throw error
+      }
+      throw new ApiException('系统异常', ApiErrorCode.FAIL)
+    }
+  }
 }

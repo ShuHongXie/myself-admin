@@ -31,6 +31,13 @@ export class RoleController {
     return this.roleService.getAllRoles()
   }
 
+  @ApiOperation({ summary: '删除角色' })
+  @Public()
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.roleService.remove(+id)
+  }
+
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.roleService.findOne(+id);
