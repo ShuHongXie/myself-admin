@@ -22,28 +22,183 @@ export class RoleService {
   ) {}
 
   async create(createRoleDto: CreateRoleDto) {
-    const role = await this.roleRepository.findOne({
-      where: { roleName: createRoleDto.roleName }
-    })
-    if (role) {
-      throw new ApiException('角色已存在', ApiErrorCode.COMMON_CODE)
-    }
-    const newRole = new Role()
-    newRole.roleName = createRoleDto.roleName
-    newRole.status = createRoleDto.status
-    // 增加菜单
-    if (createRoleDto.menuIds?.length) {
-      const menuList = await this.menuRepository.find({
-        where: {
-          id: In(createRoleDto.menuIds)
-        }
-      })
-      newRole.menus = menuList
-    }
     try {
-      await this.roleRepository.save({ ...newRole, ...createRoleDto })
-      return ResultData.success('创建成功')
+      // 检查角色名是否已存在
+      const existingRole = await this.roleRepository.findOne({
+        where: { roleName: createRoleDto.roleName }
+      })
+      if (existingRole) {
+        throw new ApiException('角色名已存在', ApiErrorCode.COMMON_CODE)
+      }
+
+      // 验证菜单ID是否有效
+      if (createRoleDto.menuIds?.length) {
+        for (const menuId of createRoleDto.menuIds) {
+          if (!Number.isInteger(menuId) || menuId <= 0) {
+            throw new ApiException('菜单ID必须为有效的正整数', ApiErrorCode.COMMON_CODE)
+          }
+        }
+        const menuList = await this.menuRepository.find({
+          where: {
+            id: In(createRoleDto.menuIds)
+          }
+        })
+        if (menuList.length !== createRoleDto.menuIds.length) {
+          throw new ApiException('部分菜单不存在', ApiErrorCode.COMMON_CODE)
+        }
+      }
+
+      const newRole = new Role()
+      newRole.roleName = createRoleDto.roleName
+      newRole.status = createRoleDto.status
+      newRole.roleSort = createRoleDto.roleSort
+      newRole.remark = createRoleDto.remark || ''
+      newRole.createBy = createRoleDto.createBy || 1
+      newRole.updateBy = createRoleDto.updateBy || 1
+
+      // 关联菜单
+      if (createRoleDto.menuIds?.length) {
+        const menuList = await this.menuRepository.find({
+          where: {
+            id: In(createRoleDto.menuIds)
+          }
+        })
+        newRole.menus = menuList
+      }
+
+      const savedRole = await this.roleRepository.save(newRole)
+      return ResultData.success('创建成功', savedRole)
     } catch (error) {
+      if (error instanceof ApiException) {
+        throw error
+      }
+      throw new ApiException('系统异常', ApiErrorCode.FAIL)
+    }
+  }
+
+  async update(id: number, updateRoleDto: UpdateRoleDto) {
+    try {
+      // 检查角色是否存在
+      const role = await this.roleRepository.findOne({
+        where: { id },
+        relations: ['menus']
+      })
+      if (!role) {
+        throw new ApiException('角色不存在', ApiErrorCode.COMMON_CODE)
+      }
+
+      // 检查角色名是否已存在（排除当前角色）
+      if (updateRoleDto.roleName && updateRoleDto.roleName !== role.roleName) {
+        const existingRole = await this.roleRepository.findOne({
+          where: { roleName: updateRoleDto.roleName }
+        })
+        if (existingRole) {
+          throw new ApiException('角色名已存在', ApiErrorCode.COMMON_CODE)
+        }
+      }
+
+      // 验证菜单ID是否有效
+      if (updateRoleDto.menuIds?.length) {
+        for (const menuId of updateRoleDto.menuIds) {
+          if (!Number.isInteger(menuId) || menuId <= 0) {
+            throw new ApiException('菜单ID必须为有效的正整数', ApiErrorCode.COMMON_CODE)
+          }
+        }
+
+        const menuList = await this.menuRepository.find({
+          where: {
+            id: In(updateRoleDto.menuIds)
+          }
+        })
+        if (menuList.length !== updateRoleDto.menuIds.length) {
+          throw new ApiException('部分菜单不存在', ApiErrorCode.COMMON_CODE)
+        }
+        role.menus = menuList
+      }
+
+      // 更新角色属性
+      if (updateRoleDto.roleName !== undefined) {
+        role.roleName = updateRoleDto.roleName
+      }
+      if (updateRoleDto.status !== undefined) {
+        role.status = updateRoleDto.status
+      }
+      if (updateRoleDto.roleSort !== undefined) {
+        role.roleSort = updateRoleDto.roleSort
+      }
+      if (updateRoleDto.remark !== undefined) {
+        role.remark = updateRoleDto.remark
+      }
+      if (updateRoleDto.updateBy !== undefined) {
+        role.updateBy = updateRoleDto.updateBy
+      }
+
+      const updatedRole = await this.roleRepository.save(role)
+      return ResultData.success('更新成功', updatedRole)
+    } catch (error) {
+      if (error instanceof ApiException) {
+        throw error
+      }
+      throw new ApiException('系统异常', ApiErrorCode.FAIL)
+    }
+  }
+
+  async replace(id: number, createRoleDto: CreateRoleDto) {
+    try {
+      // 棅查角色是否存在
+      const role = await this.roleRepository.findOne({
+        where: { id },
+        relations: ['menus']
+      })
+      if (!role) {
+        throw new ApiException('角色不存在', ApiErrorCode.COMMON_CODE)
+      }
+
+      // 检查角色名是否已存在（排除当前角色）
+      if (createRoleDto.roleName !== role.roleName) {
+        const existingRole = await this.roleRepository.findOne({
+          where: { roleName: createRoleDto.roleName }
+        })
+        if (existingRole) {
+          throw new ApiException('角色名已存在', ApiErrorCode.COMMON_CODE)
+        }
+      }
+
+      // 验证菜单ID是否有效
+      if (createRoleDto.menuIds?.length) {
+        for (const menuId of createRoleDto.menuIds) {
+          if (!Number.isInteger(menuId) || menuId <= 0) {
+            throw new ApiException('菜单ID必须为有效的正整数', ApiErrorCode.COMMON_CODE)
+          }
+        }
+
+        const menuList = await this.menuRepository.find({
+          where: {
+            id: In(createRoleDto.menuIds)
+          }
+        })
+        if (menuList.length !== createRoleDto.menuIds.length) {
+          throw new ApiException('部分菜单不存在', ApiErrorCode.COMMON_CODE)
+        }
+        role.menus = menuList
+      } else {
+        // PUT 语义：如果没有提供 menuIds，则清空关联的菜单
+        role.menus = []
+      }
+
+      // 完全替换角色属性
+      role.roleName = createRoleDto.roleName
+      role.status = createRoleDto.status
+      role.roleSort = createRoleDto.roleSort
+      role.remark = createRoleDto.remark || ''
+      role.updateBy = createRoleDto.updateBy || role.createBy
+
+      const updatedRole = await this.roleRepository.save(role)
+      return ResultData.success('更新成功', updatedRole)
+    } catch (error) {
+      if (error instanceof ApiException) {
+        throw error
+      }
       throw new ApiException('系统异常', ApiErrorCode.FAIL)
     }
   }
@@ -113,6 +268,24 @@ export class RoleService {
       })
       return ResultData.success('', roleList)
     } catch (error) {
+      throw new ApiException('系统异常', ApiErrorCode.FAIL)
+    }
+  }
+
+  async findOne(id: number) {
+    try {
+      const role = await this.roleRepository.findOne({
+        where: { id },
+        relations: ['menus']
+      })
+      if (!role) {
+        throw new ApiException('角色不存在', ApiErrorCode.COMMON_CODE)
+      }
+      return ResultData.success('获取角色信息成功', role)
+    } catch (error) {
+      if (error instanceof ApiException) {
+        throw error
+      }
       throw new ApiException('系统异常', ApiErrorCode.FAIL)
     }
   }

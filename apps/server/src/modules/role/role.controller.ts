@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common'
 import { RoleService } from './role.service'
 import { CreateRoleDto } from './dto/create-role.dto'
 import { UpdateRoleDto } from './dto/update-role.dto'
@@ -31,25 +31,31 @@ export class RoleController {
     return this.roleService.getAllRoles()
   }
 
+  @ApiOperation({ summary: '获取单个角色信息' })
+  @Public()
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.roleService.findOne(+id)
+  }
+
+  @ApiOperation({ summary: '部分更新角色' })
+  @Public()
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
+    return this.roleService.update(+id, updateRoleDto)
+  }
+
+  @ApiOperation({ summary: '完全更新角色' })
+  @Public()
+  @Put(':id')
+  replace(@Param('id') id: string, @Body() createRoleDto: CreateRoleDto) {
+    return this.roleService.replace(+id, createRoleDto)
+  }
+
   @ApiOperation({ summary: '删除角色' })
   @Public()
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.roleService.remove(+id)
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.roleService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
-  //   return this.roleService.update(+id, updateRoleDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.roleService.remove(+id);
-  // }
 }
