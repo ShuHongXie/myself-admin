@@ -1,7 +1,19 @@
-import { Post, Body, Request, Controller, Get } from '@nestjs/common'
+import {
+  Post,
+  Body,
+  Request,
+  Controller,
+  Get,
+  Put,
+  Delete,
+  Param,
+  ParseIntPipe,
+  Query
+} from '@nestjs/common'
 import { MenuService } from './menu.service'
 import { CreateBaseDto, CreateMenuDto } from './dto/create-menu.dto'
 import { UpdateMenuDto } from './dto/update-menu.dto'
+import { QueryMenuDto } from './dto/query-menu.dto'
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { Public } from '@decorator/public.decorator'
 
@@ -17,7 +29,12 @@ export class MenuController {
     @Body()
     createMenuDto: CreateMenuDto | CreateBaseDto
   ) {
-    return await this.menuService.createMenu(createMenuDto)
+    const menu = await this.menuService.createMenu(createMenuDto)
+    return {
+      code: 200,
+      msg: 'success',
+      data: menu
+    }
   }
 
   @Get('/getRouters')
@@ -32,5 +49,58 @@ export class MenuController {
   @Public()
   find() {
     return this.menuService.findAll()
+  }
+
+  @Get('/list')
+  @ApiOperation({ summary: '分页查询菜单列表' })
+  @Public()
+  findByPage(@Query() queryMenuDto: QueryMenuDto) {
+    return this.menuService.findByPage(queryMenuDto)
+  }
+
+  @Get('/:id')
+  @ApiOperation({ summary: '根据ID获取菜单详情' })
+  @Public()
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const menu = await this.menuService.findOne(id)
+    return {
+      code: 200,
+      msg: 'success',
+      data: menu
+    }
+  }
+
+  @Put('/:id')
+  @ApiOperation({ summary: '更新菜单' })
+  @Public()
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updateMenuDto: UpdateMenuDto) {
+    const menu = await this.menuService.update(id, updateMenuDto)
+    return {
+      code: 200,
+      msg: 'success',
+      data: menu
+    }
+  }
+
+  @Delete('/:id')
+  @ApiOperation({ summary: '删除菜单（需要先删除子菜单）' })
+  @Public()
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    await this.menuService.remove(id)
+    return {
+      code: 200,
+      msg: '删除成功'
+    }
+  }
+
+  @Delete('/:id/cascade')
+  @ApiOperation({ summary: '级联删除菜单及其所有子菜单' })
+  @Public()
+  async removeWithChildren(@Param('id', ParseIntPipe) id: number) {
+    await this.menuService.removeWithChildren(id)
+    return {
+      code: 200,
+      msg: '级联删除成功'
+    }
   }
 }

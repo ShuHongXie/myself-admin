@@ -43,7 +43,7 @@ catalogs:
       specifier: ^13.6.0
       version: 13.6.0
     axios:
-      specifier: ^1.11.0
+      specifier: 1.11.0
       version: 1.11.0
     class-transformer:
       specifier: ^0.5.1
@@ -133,6 +133,10 @@ catalogs:
 importers:
 
   .:
+    dependencies:
+      axios:
+        specifier: 'catalog:'
+        version: 1.11.0
     devDependencies:
       '@changesets/cli':
         specifier: ^2.29.5

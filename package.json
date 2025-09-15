@@ -58,5 +58,8 @@
     "vite": "catalog:",
     "vue": "catalog:",
     "vue-tsc": "catalog:"
+  },
+  "dependencies": {
+    "axios": "catalog:"
   }
 }
