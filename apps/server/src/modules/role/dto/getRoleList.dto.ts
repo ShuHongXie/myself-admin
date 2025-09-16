@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsNumber, IsOptional, Min } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { Type } from 'class-transformer'
+import { Menu } from '@modules/menu/entities/menu.entity'
 export class GetRoleListDto {
   @IsOptional()
   @ApiProperty({
@@ -14,6 +15,11 @@ export class GetRoleListDto {
     description: '角色状态，1表示启用，0表示禁用'
   })
   status: number
+  @IsOptional()
+  @ApiProperty({
+    example: '菜单权限'
+  })
+  menus?: Menu[]
 
   @ApiProperty({
     example: 1704067200000,

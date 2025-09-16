@@ -1,3 +1,6 @@
+**/components.d.ts
+**/auto-imports.d.ts
+
 # Dependencies
 node_modules/
 **/node_modules/
@@ -50,3 +53,4 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+

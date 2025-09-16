@@ -1,20 +1,16 @@
 <script setup lang="tsx">
 import { SearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
-import { ElMessage, type FormInstance } from 'element-plus'
-import { searchProps, columns, roleFormRules } from './data.tsx'
-import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis'
+import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
+import {
+  searchProps,
+  columns,
+  roleFormRules,
+  treeSettingSelect,
+  defaultOperateItem
+} from './data.tsx'
+import { createRole, updateRole, deleteRole, getMenuTree } from '#/apis'
 import { cloneDeep } from '@myself/utils'
-
-const defaultOperateItem = {
-  username: '',
-  password: '',
-  nickname: '',
-  telephone: '',
-  email: '',
-  status: 1,
-  rolesId: []
-}
 
 const selectColumns = ref([])
 
@@ -38,30 +34,87 @@ const paramsHandler = (params: any) => {
 interface RoleItem {
   id: number
   roleName: string
-  // 可能还有其他属性...
 }
 
 const operateDialogVisible = ref(false)
-const operateType = ref('add') // 1 新增 2 修改
-const rolesList = ref<RoleItem[]>([])
+const operateType = ref('add') // add 新增 edit 修改
+const menuTree = ref<RoleItem[]>([])
 const ruleFormRef = ref<FormInstance | null>(null)
 const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
 const switchLoading = ref(false)
-const currentOperateItem = ref<any>(defaultOperateItem)
+const currentOperateItem = ref<any>(cloneDeep(defaultOperateItem))
+const treeRef = ref<any>()
+const settingCheckedList = ref(['expand'])
 
-// 获取所有角色列表
-const loadRoleList = () => {
-  getRolesList().then((res) => {
-    rolesList.value = res.data
+// 获取菜单树
+const loadMenuTree = () => {
+  getMenuTree().then((res) => {
+    menuTree.value = res.data
   })
+}
+
+// 树型菜单选中
+const handleCheckedTree = (checkedNodes: any, checkedKeys: any) => {
+  currentOperateItem.value.menuIds = checkedKeys.checkedKeys
+}
+
+// 1. 递归收集所有节点的 key（id）
+const getAllNodeKeys = (data: any, keys = [] as any) => {
+  data.forEach((node: any) => {
+    keys.push(node.id) // 收集当前节点的 key
+    if (node.children && node.children.length) {
+      getAllNodeKeys(node.children, keys) // 递归处理子节点
+    }
+  })
+  return keys
+}
+
+// 全选：勾选所有节点
+const checkAll = () => {
+  const allKeys = getAllNodeKeys(menuTree.value)
+  treeRef.value?.setCheckedKeys(allKeys) // 批量设置勾选
+  currentOperateItem.value.menuIds = allKeys
+}
+
+// 取消全选：清空所有勾选
+const uncheckAll = () => {
+  treeRef.value?.setCheckedKeys([]) // 传入空数组取消所有勾选
+  currentOperateItem.value.menuIds = []
+}
+
+// 树形菜单树形设置
+const handleChangeMenuProps = (key: string, value: any) => {
+  console.log(key, value)
+
+  if (key === 'expand') {
+    if (value) {
+      const nodes = treeRef.value?.store._getAllNodes()
+      nodes.forEach((item: { expanded: boolean }) => {
+        item.expanded = true
+      })
+    } else {
+      const nodes = treeRef.value?.store._getAllNodes()
+      nodes.forEach((item: { expanded: boolean }) => {
+        item.expanded = false
+      })
+    }
+  }
+
+  if (key === 'checkAll') {
+    if (value) {
+      checkAll()
+    } else {
+      uncheckAll()
+    }
+  }
 }
 
 // 启动/禁用
 const handleSwitchChange = (row: any) => {
   currentOperateItem.value = row
   switchLoading.value = true
-  updateUser({
-    ...currentOperateItem.value
+  updateRole(row.id, {
+    status: row.status
   })
     .then(() => {
       ElMessage.success(`角色${!row.status ? '停用' : '启用'}成功`)
@@ -91,7 +144,7 @@ const confirm = async (formEl: FormInstance | null) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       if (operateType.value === 'add') {
-        createUserByAdmin(currentOperateItem.value).then((res: any) => {
+        createRole(currentOperateItem.value).then((res: any) => {
           ElMessage.success(res.msg || '角色创建成功')
           operateDialogVisible.value = false
           console.log(searchTableRef.value)
@@ -99,7 +152,7 @@ const confirm = async (formEl: FormInstance | null) => {
           searchTableRef.value?.handleSearch()
         })
       } else {
-        updateUser(currentOperateItem.value).then((res: any) => {
+        updateRole(currentOperateItem.value.id, currentOperateItem.value).then((res: any) => {
           ElMessage.success(res.msg || '角色更新成功')
           operateDialogVisible.value = false
           currentOperateItem.value = cloneDeep(defaultOperateItem)
@@ -114,10 +167,10 @@ const confirm = async (formEl: FormInstance | null) => {
 
 // 删除角色
 const handleDelete = (row: any) => {
-  ElMessageBox.confirm(`确认删除账户【${row.username}】?`, 'Warning', {
+  ElMessageBox.confirm(`确认删除角色【${row.roleName}】?`, 'Warning', {
     type: 'warning'
   }).then(() => {
-    deleteUser(row.id).then((res: any) => {
+    deleteRole(row.id).then((res: any) => {
       ElMessage.success(res.msg)
       searchTableRef.value?.handleSearch()
     })
@@ -128,10 +181,11 @@ const reset = () => {
   console.log('重置')
 }
 
-onMounted(() => {
-  loadRoleList()
-})
 // 新增编辑操作----------------end-------------------
+
+onMounted(() => {
+  loadMenuTree()
+})
 </script>
 
 <template>
@@ -142,6 +196,9 @@ onMounted(() => {
       ref="searchTableRef"
       :columns="columns"
       :search-props="searchProps"
+      :table-props="{
+        showOverflowTooltip: true
+      }"
       :params-handler="paramsHandler"
       @reset="reset"
       @select-all="handleSelect"
@@ -177,7 +234,8 @@ onMounted(() => {
       v-model="operateDialogVisible"
       @close="currentOperateItem = {}"
       :title="operateType === 'add' ? '新增角色' : '修改角色'"
-      width="700"
+      width="500"
+      destroy-on-close
     >
       <el-form
         ref="ruleFormRef"
@@ -186,12 +244,12 @@ onMounted(() => {
         label-width="90px"
       >
         <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item prop="username" label="角色名:">
-              <el-input clearable v-model="currentOperateItem.username" />
+          <el-col :span="24">
+            <el-form-item prop="roleName" label="角色名:">
+              <el-input clearable v-model="currentOperateItem.roleName" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item label="角色状态:">
               <el-radio-group v-model="currentOperateItem.status">
                 <el-radio :value="1">正常</el-radio>
@@ -199,21 +257,56 @@ onMounted(() => {
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="选择角色:">
-              <el-select
-                v-model="currentOperateItem.rolesId"
-                multiple
-                collapse-tags
-                collapse-tags-tooltip
-              >
-                <el-option
-                  v-for="item in rolesList"
-                  :key="item.id"
-                  :label="item.roleName"
-                  :value="item.id"
-                />
-              </el-select>
+          <el-col :span="24">
+            <el-form-item label="角色顺序:">
+              <el-input-number
+                clearable
+                v-model.number="currentOperateItem.roleSort"
+                :min="1"
+                :max="999"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="备注:">
+              <el-input
+                style="width: 100%"
+                clearable
+                v-model.number="currentOperateItem.remark"
+                type="textarea"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="选择菜单:">
+              <div class="tree-container">
+                <el-checkbox-group v-model="settingCheckedList">
+                  <el-checkbox
+                    v-for="item in treeSettingSelect"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.value"
+                    @change="(value) => handleChangeMenuProps(item.value, value)"
+                  />
+                </el-checkbox-group>
+                <div class="tree-container__content">
+                  <el-tree
+                    @check="handleCheckedTree"
+                    ref="treeRef"
+                    style="max-width: 600px"
+                    :data="menuTree"
+                    :default-checked-keys="currentOperateItem?.menuIds"
+                    show-checkbox
+                    default-expand-all
+                    :check-strictly="!settingCheckedList.includes('linkage')"
+                    node-key="id"
+                    :props="{
+                      children: 'children',
+                      label: 'name'
+                    }"
+                  />
+                </div>
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
@@ -232,5 +325,17 @@ onMounted(() => {
 .user-manage {
   height: 100%;
   padding: 10px;
+}
+.tree-container {
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  &__content {
+    flex: 1;
+    border: 1px solid #dcdfe6;
+    border-radius: var(--el-border-radius-base);
+    overflow: hidden;
+  }
 }
 </style>

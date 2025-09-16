@@ -143,71 +143,10 @@ export class RoleService {
     }
   }
 
-  async replace(id: number, createRoleDto: CreateRoleDto) {
-    try {
-      // 棅查角色是否存在
-      const role = await this.roleRepository.findOne({
-        where: { id },
-        relations: ['menus']
-      })
-      if (!role) {
-        throw new ApiException('角色不存在', ApiErrorCode.COMMON_CODE)
-      }
-
-      // 检查角色名是否已存在（排除当前角色）
-      if (createRoleDto.roleName !== role.roleName) {
-        const existingRole = await this.roleRepository.findOne({
-          where: { roleName: createRoleDto.roleName }
-        })
-        if (existingRole) {
-          throw new ApiException('角色名已存在', ApiErrorCode.COMMON_CODE)
-        }
-      }
-
-      // 验证菜单ID是否有效
-      if (createRoleDto.menuIds?.length) {
-        for (const menuId of createRoleDto.menuIds) {
-          if (!Number.isInteger(menuId) || menuId <= 0) {
-            throw new ApiException('菜单ID必须为有效的正整数', ApiErrorCode.COMMON_CODE)
-          }
-        }
-
-        const menuList = await this.menuRepository.find({
-          where: {
-            id: In(createRoleDto.menuIds)
-          }
-        })
-        if (menuList.length !== createRoleDto.menuIds.length) {
-          throw new ApiException('部分菜单不存在', ApiErrorCode.COMMON_CODE)
-        }
-        role.menus = menuList
-      } else {
-        // PUT 语义：如果没有提供 menuIds，则清空关联的菜单
-        role.menus = []
-      }
-
-      // 完全替换角色属性
-      role.roleName = createRoleDto.roleName
-      role.status = createRoleDto.status
-      role.roleSort = createRoleDto.roleSort
-      role.remark = createRoleDto.remark || ''
-      role.updateBy = createRoleDto.updateBy || role.createBy
-
-      const updatedRole = await this.roleRepository.save(role)
-      return ResultData.success('更新成功', updatedRole)
-    } catch (error) {
-      if (error instanceof ApiException) {
-        throw error
-      }
-      throw new ApiException('系统异常', ApiErrorCode.FAIL)
-    }
-  }
-
   async getRolesByPage(getRoleListDto: GetRoleListDto) {
-    console.log(getRoleListDto)
-
     const queryBuilder = this.roleRepository
       .createQueryBuilder('role')
+      .leftJoinAndSelect('role.menus', 'menu')
       .orderBy('role.createTime', 'DESC')
 
     try {
@@ -250,7 +189,10 @@ export class RoleService {
         limit: getRoleListDto.pageSize // 映射 pageSize -> limit
       }
       const result = await paginateTransform<Role>(queryBuilder, paginationOptions)
-
+      result.result = result.result.map((role) => ({
+        ...role,
+        menuIds: role.menus.map((menu) => menu.id)
+      }))
       return ResultData.success('获取角色列表成功', result)
     } catch (error) {
       console.log(error)

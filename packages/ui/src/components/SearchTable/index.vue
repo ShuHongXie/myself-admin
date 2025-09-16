@@ -153,6 +153,7 @@ const emitEventHandler = (...args: any) => {
       @expand-change="(row: any, expanded: any) => emitEventHandler('expand-change', row, expanded)"
       class="search-table__content"
       v-bind="tableProps"
+      :border="true"
       :data="data"
     >
       <el-table-column v-for="(item, index) in columns" :key="index" v-bind="item">

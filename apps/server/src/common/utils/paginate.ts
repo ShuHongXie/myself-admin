@@ -21,6 +21,7 @@ export async function paginateTransform<T>(
 ): Promise<TransformedPagination<T>> {
   // 调用原始 paginate 方法
   const originalResult: Pagination<T> = await paginate<T>(queryBuilder, options)
+  console.log(originalResult)
 
   // 转换格式
   return {

@@ -1,5 +1,6 @@
 export const searchProps = {
   slots: [],
+  span: 8,
   item: [
     {
       prop: 'roleName',
@@ -48,7 +49,8 @@ export const searchProps = {
         type: 'date-picker',
         props: {
           type: 'daterange',
-          placeholder: '请选择创建时间'
+          startPlaceholder: '开始时间',
+          endPlaceholder: '结束时间'
         }
       }
     }
@@ -79,6 +81,11 @@ export const columns = ref([
     slotName: 'status'
   },
   {
+    prop: 'remark',
+    label: '备注',
+    align: 'center'
+  },
+  {
     prop: 'createTime',
     label: '创建时间',
     align: 'center',
@@ -98,37 +105,36 @@ export const roleFormRules = ref({
   username: [
     {
       required: true,
-      message: '请输入账户名',
+      message: '请输入角色名',
       trigger: ['blur']
-    }
-  ],
-  nickname: [
-    {
-      required: true,
-      message: '请输入用户昵称',
-      trigger: ['blur']
-    }
-  ],
-  password: [
-    {
-      required: true,
-      message: '请输入手机号码',
-      trigger: ['blur']
-    }
-  ],
-  // 邮箱验证规则
-  email: [
-    {
-      pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      message: '邮箱格式不正确（示例：xxx@xxx.com）',
-      trigger: ['blur', 'change']
-    }
-  ],
-  telephone: [
-    {
-      pattern: /^1[3-9]\d{9}$/,
-      message: '请输入有效的11位手机号码',
-      trigger: ['blur', 'change']
     }
   ]
 })
+
+// 菜单树设置
+export const treeSettingSelect = ref([
+  {
+    label: '展开/折叠',
+    id: 1,
+    value: 'expand'
+  },
+  {
+    label: '全选/全不选',
+    id: 2,
+    value: 'checkAll'
+  },
+  {
+    label: '父子联动',
+    id: 3,
+    value: 'linkage'
+  }
+])
+
+// 默认操作对象
+export const defaultOperateItem = {
+  roleName: '',
+  menuIds: [],
+  remark: '',
+  roleSort: '',
+  status: 1
+}

@@ -18,7 +18,7 @@ import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { Public } from '@decorator/public.decorator'
 
 @ApiTags('菜单权限模块')
-@Controller('')
+@Controller('menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
   @Post('create')
@@ -41,10 +41,10 @@ export class MenuController {
   @ApiOperation({ summary: '获取所有菜单(不含按钮)' })
   @Public()
   findAll() {
-    return this.menuService.findAll(false)
+    return this.menuService.findAll()
   }
 
-  @Get('/menu/info')
+  @Get('/info')
   @ApiOperation({ summary: '获取所有菜单' })
   @Public()
   find() {
@@ -74,12 +74,7 @@ export class MenuController {
   @ApiOperation({ summary: '更新菜单' })
   @Public()
   async update(@Param('id', ParseIntPipe) id: number, @Body() updateMenuDto: UpdateMenuDto) {
-    const menu = await this.menuService.update(id, updateMenuDto)
-    return {
-      code: 200,
-      msg: 'success',
-      data: menu
-    }
+    return this.menuService.update(id, updateMenuDto)
   }
 
   @Delete('/:id')

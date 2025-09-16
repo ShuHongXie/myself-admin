@@ -59,21 +59,21 @@ export class MenuService {
   /**
    * @description 获取所有菜单
    * @author xieshuhong
-   * @param {boolean} [includeButton=false] 是否包含按钮
    * @return {*}
    * @memberof MenuService
    */
-  async findAll(includeButton: boolean = true) {
+  async findAll() {
     const queryBuilder = this.menuRepository
       .createQueryBuilder('menu')
       .leftJoinAndSelect('menu.meta', 'meta') // 关联元数据
       .leftJoinAndSelect('menu.children', 'children') // 关联子菜单
       .orderBy('menu.parent_id', 'ASC') // 先按父ID排序
       .addOrderBy('meta.order_num', 'ASC') // 再按元数据的排序号排序
+      .andWhere('menu.menuType != :menuType', { menuType: MenuType.Button })
 
-    if (!includeButton) {
-      queryBuilder.where('menu.menuType != :menuType', { menuType: MenuType.Button })
-    }
+    // if (!includeButton) {
+    //   queryBuilder.where('menu.menuType != :menuType', { menuType: MenuType.Button })
+    // }
 
     const allMenus = await queryBuilder.getMany()
     return ResultData.success('获取成功', this.buildMenuTree(allMenus))
@@ -214,27 +214,26 @@ export class MenuService {
    * @param {UpdateMenuDto} updateMenuDto 更新数据
    * @return {Promise<Menu>} 更新后的菜单
    */
-  async update(id: number, updateMenuDto: UpdateMenuDto): Promise<Menu> {
-    const existingMenu = await this.findOne(id)
+  async update(id: number, updateMenuDto: UpdateMenuDto) {
+    try {
+      const existingMenu = await this.findOne(id)
+      // 更新基础菜单信息
+      const { meta, children, ...menuData } = updateMenuDto
+      Object.assign(existingMenu, menuData)
 
-    // 更新基础菜单信息
-    const { meta, children, ...menuData } = updateMenuDto
-    Object.assign(existingMenu, menuData)
-
-    // 更新元数据
-    if (meta && existingMenu.meta) {
-      Object.assign(existingMenu.meta, meta)
-    } else if (meta && !existingMenu.meta && existingMenu.menuType !== MenuType.Button) {
-      // 如果原来没有meta但现在需要meta（且不是按钮类型）
-      existingMenu.meta = new MenuMeta()
-      Object.assign(existingMenu.meta, meta)
+      // 更新元数据
+      if (meta && existingMenu.meta) {
+        Object.assign(existingMenu.meta, meta)
+      } else if (meta && !existingMenu.meta && existingMenu.menuType !== MenuType.Button) {
+        // 如果原来没有meta但现在需要meta（且不是按钮类型）
+        existingMenu.meta = new MenuMeta()
+        Object.assign(existingMenu.meta, meta)
+      }
+      const updatedMenu = await this.menuRepository.save(existingMenu)
+      return ResultData.success('菜单更新成功', updatedMenu)
+    } catch (error) {
+      throw new ApiException('系统异常', ApiErrorCode.FAIL)
     }
-
-    // 注意：这里不处理children的更新，因为子菜单的更新应该通过各自的更新接口来处理
-    // 如果需要批量更新子菜单，可以考虑单独的接口
-
-    const updatedMenu = await this.menuRepository.save(existingMenu)
-    return updatedMenu
   }
 
   /**
