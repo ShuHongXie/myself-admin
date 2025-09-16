@@ -1,4 +1,3 @@
-import { QueryBuilder } from 'typeorm'
 import { paginate, IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate'
 
 // 定义转换后的分页结果类型（全局复用）
@@ -26,7 +25,8 @@ export async function paginateTransform<T>(
   // 转换格式
   return {
     result: originalResult.items,
-    total: originalResult.meta.totalItems as number,
+    total: (((options.page as number) - 1) * (options.limit as number) +
+      originalResult.meta.itemCount) as number,
     currentPage: originalResult.meta.currentPage,
     pageSize: originalResult.meta.itemsPerPage
   }

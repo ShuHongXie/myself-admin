@@ -185,8 +185,8 @@ export class RoleService {
       }
 
       const paginationOptions: IPaginationOptions = {
-        page: getRoleListDto.currentPage, // 映射 currentPage -> page
-        limit: getRoleListDto.pageSize // 映射 pageSize -> limit
+        page: getRoleListDto.currentPage,
+        limit: getRoleListDto.pageSize
       }
       const result = await paginateTransform<Role>(queryBuilder, paginationOptions)
       result.result = result.result.map((role) => ({
