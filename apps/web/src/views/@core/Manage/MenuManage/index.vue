@@ -2,7 +2,7 @@
 import { SearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
-import operationDialog from './components/operationDialog.vue'
+import OperationDialog from './components/OperationDialog.vue'
 import { searchProps, columns, defaultOperateItem } from './data.tsx'
 import { createMenu, getMenuDetail, deleteMenu, updateMenu } from '#/apis'
 import { cloneDeep } from '@myself/utils'
@@ -12,10 +12,9 @@ const form = ref({})
 // 搜索表单---------------end-------------------
 
 // 新增编辑操作----------------start-------------------
-const operateDialogVisible = ref(false)
+const operateDialogVisible = ref(true)
 const operateType = ref('add') // add 新增 edit 修改
 // const menuTree = ref<MenuItem[]>([])
-
 const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
 const currentOperateItem = ref<any>(cloneDeep(defaultOperateItem))
 
@@ -52,7 +51,7 @@ const confirm = async (formEl: FormInstance | null) => {
         })
       }
     } else {
-      console.log('error submit!', fields)
+      console.log('校验出错!', fields)
     }
   })
 }

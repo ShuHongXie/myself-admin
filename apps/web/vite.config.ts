@@ -18,6 +18,13 @@ export default defineConfig({
       }
     }
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // additionalData: `@use "@myself/ui/styles" as *;`
+      }
+    }
+  },
   resolve: {
     alias: {
       '#': resolve(__dirname, 'src')

@@ -45,6 +45,12 @@ export const searchProps = {
   ]
 }
 
+export enum MenuType {
+  '目录' = 1,
+  '菜单' = 2,
+  '按钮' = 3
+}
+
 export const menuTypeOptions = [
   {
     label: '目录',
@@ -127,6 +133,20 @@ export const menuFormRules = ref({
       message: '请输入菜单名称',
       trigger: ['blur']
     }
+  ],
+  orderNum: [
+    {
+      required: true,
+      message: '请输入输入序号',
+      trigger: ['blur']
+    }
+  ],
+  parentId: [
+    {
+      required: true,
+      message: '请选择父级菜单',
+      trigger: ['blur']
+    }
   ]
 })
 
@@ -152,5 +172,15 @@ export const treeSettingSelect = ref([
 // 默认操作对象
 export const defaultOperateItem = {
   name: '',
-  status: 1
+  menuType: 1,
+  component: '',
+  permission: '',
+  path: '',
+  status: 1,
+  meta: {
+    icon: '',
+    orderNum: '',
+    title: '',
+    isCache: 0
+  }
 }

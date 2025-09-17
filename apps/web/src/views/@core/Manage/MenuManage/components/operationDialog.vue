@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { cloneDeep } from '@myself/utils'
 import {
-  searchProps,
-  columns,
   menuFormRules,
-  treeSettingSelect,
-  defaultOperateItem
+  menuTypeOptions,
+  menuTypeData,
+  defaultOperateItem,
+  MenuType
 } from '../data.tsx'
 import type { FormInstance } from 'element-plus'
 
-defineProps({
+const props = defineProps({
   data: Object,
+  menuList: Array,
   type: {
     type: String,
     default: 'add'
@@ -20,63 +21,129 @@ defineProps({
 const emit = defineEmits(['confirm'])
 const ruleFormRef = ref<FormInstance | null>(null)
 const visible = defineModel<boolean>('visible')
-const currentOperateItem = ref<any>(cloneDeep(defaultOperateItem))
+const form = ref<any>(cloneDeep(defaultOperateItem))
+const coverMenuList = ref<any>([{ id: '', name: '顶层菜单', children: props.menuList }])
+
+onMounted(() => {
+  if (props.data) {
+    form.value = cloneDeep(props.data)
+  }
+})
 </script>
 
 <template>
   <!-- 新增编辑菜单 -->
   <el-dialog
     v-model="visible"
-    @close="currentOperateItem = {}"
+    @close="form = {}"
     :title="type === 'add' ? '新增菜单' : '修改菜单'"
     width="700"
+    destroy-on-close
   >
-    <el-form
-      ref="ruleFormRef"
-      :rules="menuFormRules"
-      :model="currentOperateItem"
-      label-width="90px"
-    >
+    <el-form ref="ruleFormRef" :rules="menuFormRules" :model="form" label-width="90px">
       <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item prop="username" label="账户:">
-            <el-input clearable v-model="currentOperateItem.username" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12" v-if="type === 'add'">
-          <el-form-item prop="password" label="密码:">
-            <el-input
-              clearable
-              v-model="currentOperateItem.password"
-              type="password"
-              placeholder="请输入密码"
-              show-password
+        <el-col :span="24">
+          <el-form-item prop="parentId" label="父级菜单:">
+            <el-tree-select
+              v-model="form.parentId"
+              :data="coverMenuList"
+              check-strictly
+              :render-after-expand="false"
             />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item prop="nickname" label="菜单昵称:">
-            <el-input clearable v-model="currentOperateItem.nickname" />
+        <el-col :span="24">
+          <el-form-item prop="password" label="菜单类型:">
+            <el-radio-group v-model="form.menuType">
+              <el-radio :value="item.value" v-for="item in menuTypeOptions" :key="item.value">{{
+                item.label
+              }}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item prop="meta.icon" label="页面图标:">
+            <div class="icon-input">
+              <el-input clearable v-model="form.meta.icon" />
+              <el-link
+                type="primary"
+                underline="never"
+                href="https://icon-sets.iconify.design/"
+                target="_blank"
+                >复制iconify图标</el-link
+              >
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="telephone" label="手机号码:">
-            <el-input clearable v-model="currentOperateItem.telephone" />
+          <el-form-item prop="name" label="菜单名称:">
+            <el-input clearable v-model="form.name" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="email" label="邮箱地址:">
-            <el-input clearable v-model="currentOperateItem.email" />
+          <el-form-item prop="meta.orderNum" label="排序:">
+            <el-input clearable v-model.number="form.meta.orderNum" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="菜单状态:">
-            <el-radio-group v-model="currentOperateItem.status">
+          <el-form-item prop="component" label="组件名称:">
+            <el-input clearable v-model="form.component" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item prop="permission" label="权限标识:">
+            <el-input clearable v-model="form.permission" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item prop="path" label="路由跳转地址:" label-width="120px">
+            <el-input clearable v-model="form.path" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item :label="`${menuTypeData[form.menuType]}状态:`">
+            <el-radio-group v-model="form.status">
               <el-radio :value="1">正常</el-radio>
               <el-radio :value="0">停用</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
+        <!-- 菜单为菜单时专属 -->
+        <template v-if="form.menuType === MenuType['菜单']">
+          <el-col :span="12">
+            <el-form-item prop="title" label="页面标题:">
+              <el-input clearable v-model="form.title" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="meta.isCache" label="是否缓存组件:" label-width="120px">
+              <el-radio-group v-model="form.meta.isCache">
+                <el-radio :value="1">是</el-radio>
+                <el-radio :value="0">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              prop="meta.showInBreadcrumb"
+              label="是否显示在面包栏:"
+              label-width="130px"
+            >
+              <el-radio-group v-model="form.meta.showInBreadcrumb">
+                <el-radio :value="1">是</el-radio>
+                <el-radio :value="0">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="meta.showInTab" label="是否显示标签栏:" label-width="120px">
+              <el-radio-group v-model="form.meta.showInTab">
+                <el-radio :value="1">是</el-radio>
+                <el-radio :value="0">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </template>
       </el-row>
     </el-form>
     <template #footer>
@@ -88,4 +155,18 @@ const currentOperateItem = ref<any>(cloneDeep(defaultOperateItem))
   </el-dialog>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+// @import '@myself/ui/styles';
+.icon-input {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  .el-link {
+    min-width: 200px;
+    flex: 1;
+    display: inline-block;
+  }
+  // @include flex-start-end();
+}
+</style>
