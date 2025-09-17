@@ -10,6 +10,7 @@ import {
   ManyToOne
 } from 'typeorm'
 import { MenuMeta } from './menu-meta.entity'
+import dayjs from 'dayjs'
 @Entity('menu')
 export class Menu {
   @PrimaryGeneratedColumn()
@@ -69,7 +70,16 @@ export class Menu {
     type: 'bigint'
   })
   createBy: number
-  @CreateDateColumn()
+  @CreateDateColumn({
+    transformer: {
+      to: (value) => {
+        return value
+      },
+      from: (value) => {
+        return dayjs(value).format('YYYY-MM-DD HH:mm:ss')
+      }
+    }
+  })
   createTime: Date
   @UpdateDateColumn()
   updateTime: Date

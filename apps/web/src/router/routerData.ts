@@ -100,6 +100,17 @@ export const data: any[] = [
           hideInBreadcrumb: true,
           no: 1
         }
+      },
+      {
+        name: 'MenuManage',
+        path: '/@core/Manage/MenuManage/index',
+        component: 'menumanage',
+        meta: {
+          icon: 'ep:fork-spoon',
+          title: '菜单管理页',
+          hideInBreadcrumb: true,
+          no: 1
+        }
       }
     ]
   }

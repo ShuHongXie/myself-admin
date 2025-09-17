@@ -26,3 +26,15 @@ export const deleteRole = (roleId: number) => instance.delete(`/role/${roleId}`)
 
 // 获取菜单树
 export const getMenuTree = () => instance.get('/menu/info')
+
+// 获取菜单详情
+export const getMenuDetail = (menuId: number) => instance.get(`/menu/${menuId}`)
+
+// 删除菜单
+export const deleteMenu = (menuId: number) => instance.delete(`/menu/${menuId}`)
+
+// 更新菜单
+export const updateMenu = (menuId: number, data: any) => instance.put(`/menu/${menuId}`, data)
+
+// 创建菜单
+export const createMenu = (data: any) => instance.post('/menu', data)

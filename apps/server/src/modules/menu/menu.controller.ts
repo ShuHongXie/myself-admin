@@ -51,7 +51,7 @@ export class MenuController {
     return this.menuService.findAll()
   }
 
-  @Get('/list')
+  @Get('/menusByPage')
   @ApiOperation({ summary: '分页查询菜单列表' })
   @Public()
   findByPage(@Query() queryMenuDto: QueryMenuDto) {
@@ -81,11 +81,7 @@ export class MenuController {
   @ApiOperation({ summary: '删除菜单（需要先删除子菜单）' })
   @Public()
   async remove(@Param('id', ParseIntPipe) id: number) {
-    await this.menuService.remove(id)
-    return {
-      code: 200,
-      msg: '删除成功'
-    }
+    return this.menuService.remove(id)
   }
 
   @Delete('/:id/cascade')

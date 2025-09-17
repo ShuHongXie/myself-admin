@@ -1,4 +1,4 @@
-import type { MenuDataItem, BreadcrumbItem } from '@myself/types'
+import type { MenuDataItem, BreadcrumbItem, OptionItem } from '@myself/types'
 
 /**
  * @description 判断url是否是http或https
@@ -67,4 +67,27 @@ export function findMenuItem(items: MenuDataItem[], targetPath: string): MenuDat
     }
   }
   return null
+}
+
+/**
+ * @description 将options数组转换为对象，渲染
+ * @author xieshuhong
+ * @export
+ * @param {OptionItem[]} options 数据源
+ * @param {false} inverse 是否反向转换
+ * @return {*}  {(Record<string | number, string>)}
+ */
+export function transOptionsToObject(
+  options: OptionItem[],
+  inverse?: false
+): Record<string | number, string> {
+  const obj: Record<string | number, string> = {}
+  options.forEach((item) => {
+    if (!inverse) {
+      obj[item.value] = item.label
+    } else {
+      obj[item.label] = item.value
+    }
+  })
+  return obj
 }

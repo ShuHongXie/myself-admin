@@ -155,7 +155,7 @@ defineExpose({})
           </el-form-item>
         </div>
       </div>
-      <el-row class="search-collapse" v-if="options.length < rowItemCount">
+      <el-row class="search-collapse" v-if="options.length > rowItemCount">
         <el-link type="primary" underline="never" @click="isCollapse = !isCollapse">
           {{ isCollapse ? '收起' : '展开' }}更多筛选条件
           <Icon :icon="isCollapse ? 'ep:arrow-up' : 'ep:arrow-down'" />

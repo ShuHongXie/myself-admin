@@ -11,6 +11,8 @@ import { ResultData } from '@utils/ResultData'
 import { MenuMeta } from './entities/menu-meta.entity'
 import { MenuType } from '@enums/common.enum'
 import { ApiErrorCode } from '@enums/responseCode.enum'
+import { paginateTransform } from '@utils/paginate'
+import { IPaginationOptions } from 'nestjs-typeorm-paginate'
 
 @Injectable()
 export class MenuService {
@@ -166,46 +168,43 @@ export class MenuService {
    * @return {Promise<{ list: Menu[], total: number }>} 分页结果
    */
   async findByPage(queryMenuDto: QueryMenuDto) {
-    const { page = 1, pageSize = 10, name, menuType, status, parentId } = queryMenuDto
+    const { name, menuType, status, parentId } = queryMenuDto
+    try {
+      const queryBuilder = this.menuRepository
+        .createQueryBuilder('menu')
+        .leftJoinAndSelect('menu.meta', 'meta')
+        .leftJoinAndSelect('menu.parent', 'parent')
 
-    const queryBuilder = this.menuRepository
-      .createQueryBuilder('menu')
-      .leftJoinAndSelect('menu.meta', 'meta')
-      .leftJoinAndSelect('menu.parent', 'parent')
+      // 添加筛选条件
+      if (name) {
+        queryBuilder.andWhere('menu.name LIKE :name', { name: `%${name}%` })
+      }
 
-    // 添加筛选条件
-    if (name) {
-      queryBuilder.andWhere('menu.name LIKE :name', { name: `%${name}%` })
+      if (menuType !== undefined) {
+        queryBuilder.andWhere('menu.menuType = :menuType', { menuType })
+      }
+
+      if (status !== undefined) {
+        queryBuilder.andWhere('menu.status = :status', { status })
+      }
+
+      if (parentId !== undefined) {
+        queryBuilder.andWhere('menu.parentId = :parentId', { parentId })
+      }
+
+      // 添加排序 - 简化排序逻辑
+      queryBuilder.orderBy('menu.parentId', 'ASC').addOrderBy('menu.id', 'ASC')
+
+      const paginationOptions: IPaginationOptions = {
+        page: queryMenuDto.currentPage,
+        limit: queryMenuDto.pageSize
+      }
+      const result = await paginateTransform<Menu>(queryBuilder, paginationOptions)
+
+      return ResultData.success('查询成功', result)
+    } catch (error) {
+      throw new ApiException('系统异常', ApiErrorCode.FAIL)
     }
-
-    if (menuType !== undefined) {
-      queryBuilder.andWhere('menu.menuType = :menuType', { menuType })
-    }
-
-    if (status !== undefined) {
-      queryBuilder.andWhere('menu.status = :status', { status })
-    }
-
-    if (parentId !== undefined) {
-      queryBuilder.andWhere('menu.parentId = :parentId', { parentId })
-    }
-
-    // 添加排序 - 简化排序逻辑
-    queryBuilder.orderBy('menu.parentId', 'ASC').addOrderBy('menu.id', 'ASC')
-
-    // 分页
-    const total = await queryBuilder.getCount()
-    const list = await queryBuilder
-      .skip((page - 1) * pageSize)
-      .take(pageSize)
-      .getMany()
-
-    return ResultData.success('查询成功', {
-      list,
-      total,
-      page,
-      pageSize
-    })
   }
 
   /**
@@ -241,19 +240,23 @@ export class MenuService {
    * @param {number} id 菜单ID
    * @return {Promise<void>}
    */
-  async remove(id: number): Promise<void> {
-    const menu = await this.findOne(id)
+  async remove(id: number) {
+    try {
+      const menu = await this.findOne(id)
+      // 检查是否有子菜单
+      const childrenCount = await this.menuRepository.count({
+        where: { parentId: id }
+      })
+      if (childrenCount > 0) {
+        throw new ApiException('该菜单下存在子菜单，请先删除子菜单', ApiErrorCode.COMMON_CODE)
+      }
 
-    // 检查是否有子菜单
-    const childrenCount = await this.menuRepository.count({
-      where: { parentId: id }
-    })
+      await this.menuRepository.remove(menu)
 
-    if (childrenCount > 0) {
-      throw new ApiException('该菜单下存在子菜单，请先删除子菜单', ApiErrorCode.COMMON_CODE)
+      return ResultData.success('删除成功')
+    } catch (error) {
+      throw new ApiException('系统异常', ApiErrorCode.FAIL)
     }
-
-    await this.menuRepository.remove(menu)
   }
 
   /**

@@ -23,3 +23,8 @@ export interface TabItem {
     [key: string]: any
   }
 }
+
+export interface OptionItem {
+  label: string
+  value: any
+}

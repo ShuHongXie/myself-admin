@@ -1,17 +1,8 @@
-import { IsOptional, IsInt, IsString } from 'class-validator'
+import { IsOptional, IsInt, IsString, IsNumber, Min } from 'class-validator'
 import { Type } from 'class-transformer'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class QueryMenuDto {
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  page?: number = 1
-
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  pageSize?: number = 10
-
   @IsOptional()
   @IsString()
   name?: string
@@ -30,4 +21,21 @@ export class QueryMenuDto {
   @IsInt()
   @Type(() => Number)
   parentId?: number
+
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  @ApiProperty({
+    example: 1,
+    description: '页码'
+  })
+  currentPage: number
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  @ApiProperty({
+    example: 10,
+    description: '页面大小'
+  })
+  pageSize: number
 }
