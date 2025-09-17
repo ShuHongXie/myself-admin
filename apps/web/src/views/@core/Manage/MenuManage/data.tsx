@@ -80,7 +80,7 @@ export const columns = ref([
     label: '菜单类型',
     align: 'center',
     render: (row: any) => (
-      <ElButton type={'primary'} plain>
+      <ElButton type={'primary'} link>
         {menuTypeData[row.menuType]}
       </ElButton>
     )

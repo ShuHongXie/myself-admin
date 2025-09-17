@@ -91,3 +91,31 @@ export function transOptionsToObject(
   })
   return obj
 }
+
+/**
+ * @description 根据多层级键路径从对象中获取值
+ * @author xieshuhong
+ * @param {Object} obj - 要查询的对象
+ * @param {string} path - 键路径，如 'a.b' 或 'a.b.c'
+ * @param {any} [defaultValue] - 可选，路径不存在时返回的默认值
+ * @returns {any} 路径对应的 value 或 defaultValue
+ */
+export function getNestedValue(obj: any, path: string, defaultValue?: any) {
+  // 处理边界情况：如果obj不是对象或path为空，直接返回默认值
+  if (typeof obj !== 'object' || obj === null || !path) {
+    return defaultValue
+  }
+
+  // 将路径按 '.' 分割成数组（支持处理空字符串和连续点的情况）
+  const keys = path.split('.').filter((key) => key !== '')
+
+  // 逐层访问对象属性
+  return keys.reduce((current, key) => {
+    // 如果当前值不是对象，直接返回默认值（避免访问非对象的属性）
+    if (typeof current !== 'object' || current === null) {
+      return defaultValue
+    }
+    // 访问下一级属性
+    return current[key] !== undefined ? current[key] : defaultValue
+  }, obj)
+}

@@ -3,7 +3,7 @@ import { Search } from '../Search'
 import { ref, onMounted, defineProps, defineEmits, provide } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../Search/props'
-import { type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
+import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
 import Render from './render'
 
 const searchModel = defineModel<SearchModel>('search')
@@ -52,9 +52,15 @@ const handleSearch = async (reset = true) => {
       pagination.value.currentPage = 1
     }
     const defaultParams = {
-      ...searchModel.value,
-      pageSize: pagination.value.pageSize,
-      currentPage: pagination.value.currentPage
+      ...searchModel.value
+    }
+
+    // 是否需要分页
+    if (props.showPagination) {
+      Object.assign(defaultParams, {
+        pageSize: pagination.value.pageSize,
+        currentPage: pagination.value.currentPage
+      })
     }
 
     // 参数合并
@@ -68,8 +74,12 @@ const handleSearch = async (reset = true) => {
       props.url,
       requestParams as AxiosRequestConfig
     )
-    data.value = res.data.result
-    pagination.value.total = res.data.total
+    data.value = getNestedValue(res, props.responseDataField)
+    console.log(data.value)
+
+    if (props.showPagination) {
+      pagination.value.total = getNestedValue(res, props.responseTotalField)
+    }
   } catch (error) {
     console.log(error)
   }

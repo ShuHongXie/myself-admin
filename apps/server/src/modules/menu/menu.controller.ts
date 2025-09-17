@@ -45,10 +45,10 @@ export class MenuController {
   }
 
   @Get('/info')
-  @ApiOperation({ summary: '获取所有菜单' })
+  @ApiOperation({ summary: '获取所有菜单（包含按钮）' })
   @Public()
   find() {
-    return this.menuService.findAll()
+    return this.menuService.findAllWithButtons()
   }
 
   @Get('/menusByPage')

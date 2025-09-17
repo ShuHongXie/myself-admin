@@ -2,13 +2,8 @@
 import { SearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
-import {
-  searchProps,
-  columns,
-  menuFormRules,
-  treeSettingSelect,
-  defaultOperateItem
-} from './data.tsx'
+import operationDialog from './components/operationDialog.vue'
+import { searchProps, columns, defaultOperateItem } from './data.tsx'
 import { createMenu, getMenuDetail, deleteMenu, updateMenu } from '#/apis'
 import { cloneDeep } from '@myself/utils'
 
@@ -20,9 +15,8 @@ const form = ref({})
 const operateDialogVisible = ref(false)
 const operateType = ref('add') // add 新增 edit 修改
 // const menuTree = ref<MenuItem[]>([])
-const ruleFormRef = ref<FormInstance | null>(null)
+
 const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
-const switchLoading = ref(false)
 const currentOperateItem = ref<any>(cloneDeep(defaultOperateItem))
 
 // 操作
@@ -82,12 +76,17 @@ const handleDelete = (row: any) => {
   <div class="menu-manage">
     <SearchTable
       v-model:search="form"
-      url="/menu/menusByPage"
+      url="/menu/info"
       ref="searchTableRef"
       :columns="columns"
       :search-props="searchProps"
+      :show-pagination="false"
+      response-data-field="data"
       :table-props="{
-        showOverflowTooltip: true
+        showOverflowTooltip: true,
+        highlightCurrentRow: true,
+        defaultExpandAll: true,
+        rowKey: 'id'
       }"
     >
       <template #operation="scope">
@@ -103,68 +102,12 @@ const handleDelete = (row: any) => {
         </div>
       </template>
     </SearchTable>
-    <!-- 新增编辑用户 -->
-    <el-dialog
-      v-model="operateDialogVisible"
-      @close="currentOperateItem = {}"
-      :title="operateType === 'add' ? '新增用户' : '修改用户'"
-      width="700"
-    >
-      <el-form
-        ref="ruleFormRef"
-        :rules="menuFormRules"
-        :model="currentOperateItem"
-        label-width="90px"
-      >
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item prop="username" label="账户:">
-              <el-input clearable v-model="currentOperateItem.username" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="operateType === 'add'">
-            <el-form-item prop="password" label="密码:">
-              <el-input
-                clearable
-                v-model="currentOperateItem.password"
-                type="password"
-                placeholder="请输入密码"
-                show-password
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item prop="nickname" label="用户昵称:">
-              <el-input clearable v-model="currentOperateItem.nickname" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item prop="telephone" label="手机号码:">
-              <el-input clearable v-model="currentOperateItem.telephone" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item prop="email" label="邮箱地址:">
-              <el-input clearable v-model="currentOperateItem.email" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="用户状态:">
-              <el-radio-group v-model="currentOperateItem.status">
-                <el-radio :value="1">正常</el-radio>
-                <el-radio :value="0">停用</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="operateDialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="confirm(ruleFormRef)">确定</el-button>
-        </div>
-      </template>
-    </el-dialog>
+    <OperationDialog
+      v-model:visible="operateDialogVisible"
+      :type="operateType"
+      :data="currentOperateItem"
+      @confirm="confirm"
+    ></OperationDialog>
   </div>
 </template>
 

@@ -16,6 +16,16 @@ export const searchTableProps = {
     type: String,
     default: ''
   },
+  // 返回结果列表访问字段
+  responseDataField: {
+    type: String,
+    default: 'data.result'
+  },
+  // 返回结果总数访问字段
+  responseTotalField: {
+    type: String,
+    default: 'data.total'
+  },
   // 请求头
   headers: {
     type: Object,

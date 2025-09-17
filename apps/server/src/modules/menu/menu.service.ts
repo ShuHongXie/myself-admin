@@ -59,7 +59,7 @@ export class MenuService {
   }
 
   /**
-   * @description 获取所有菜单
+   * @description 获取所有菜单（不含按钮）
    * @author xieshuhong
    * @return {*}
    * @memberof MenuService
@@ -73,9 +73,23 @@ export class MenuService {
       .addOrderBy('meta.order_num', 'ASC') // 再按元数据的排序号排序
       .andWhere('menu.menuType != :menuType', { menuType: MenuType.Button })
 
-    // if (!includeButton) {
-    //   queryBuilder.where('menu.menuType != :menuType', { menuType: MenuType.Button })
-    // }
+    const allMenus = await queryBuilder.getMany()
+    return ResultData.success('获取成功', this.buildMenuTree(allMenus))
+  }
+
+  /**
+   * @description 获取所有菜单（包含按钮）
+   * @author xieshuhong
+   * @return {*}
+   * @memberof MenuService
+   */
+  async findAllWithButtons() {
+    const queryBuilder = this.menuRepository
+      .createQueryBuilder('menu')
+      .leftJoinAndSelect('menu.meta', 'meta') // 关联元数据
+      .leftJoinAndSelect('menu.children', 'children') // 关联子菜单
+      .orderBy('menu.parent_id', 'ASC') // 先按父ID排序
+      .addOrderBy('meta.order_num', 'ASC') // 再按元数据的排序号排序
 
     const allMenus = await queryBuilder.getMany()
     return ResultData.success('获取成功', this.buildMenuTree(allMenus))
