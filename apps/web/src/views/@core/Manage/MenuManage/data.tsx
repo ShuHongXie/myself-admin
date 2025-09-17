@@ -177,10 +177,13 @@ export const defaultOperateItem = {
   permission: '',
   path: '',
   status: 1,
+  parentId: -1,
   meta: {
     icon: '',
     orderNum: '',
     title: '',
-    isCache: 0
+    isCache: 0,
+    showInMenu: 1,
+    showInBreadcrumb: 1
   }
 }

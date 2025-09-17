@@ -26,13 +26,14 @@ const loadMenuTree = () => {
 }
 // 操作
 const handleOperate = (type: string, row?: any) => {
-  operateType.value = type
-  operateDialogVisible.value = true
   if (type === 'edit') {
     currentOperateItem.value = row
   } else {
     currentOperateItem.value = cloneDeep(defaultOperateItem)
   }
+  console.log(currentOperateItem.value)
+  operateType.value = type
+  operateDialogVisible.value = true
 }
 
 // 确认修改/编辑
@@ -100,6 +101,9 @@ onMounted(() => {
     >
       <template #operation="scope">
         <el-space>
+          <el-button type="primary" :icon="Plus" @click="handleOperate('add', scope.row)"
+            >新增</el-button
+          >
           <el-link type="primary" @click="handleOperate('edit', scope.row)">编辑</el-link>
           <el-link type="primary" @click="handleDelete(scope.row)">删除</el-link>
         </el-space>

@@ -24,8 +24,11 @@ const visible = defineModel<boolean>('visible')
 const form = ref<any>(cloneDeep(defaultOperateItem))
 
 onMounted(() => {
-  if (props.data && props.type === 'add') {
+  console.log('----')
+
+  if (props.data && props.type === 'edit') {
     form.value = cloneDeep(props.data)
+    console.log('--:', form.value)
   }
 })
 </script>
@@ -34,7 +37,6 @@ onMounted(() => {
   <!-- 新增编辑菜单 -->
   <el-dialog
     v-model="visible"
-    @close="form = {}"
     :title="type === 'add' ? '新增菜单' : '修改菜单'"
     width="700"
     destroy-on-close
@@ -160,11 +162,12 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-// @import '@myself/ui/styles';
+@use '@myself/ui/styles' as *;
 .icon-input {
   width: 100%;
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
+  @include flex-start-end();
   gap: 10px;
   .el-link {
     min-width: 200px;
