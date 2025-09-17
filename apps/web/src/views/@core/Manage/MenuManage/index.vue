@@ -4,7 +4,7 @@ import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
 import OperationDialog from './components/OperationDialog.vue'
 import { searchProps, columns, defaultOperateItem } from './data.tsx'
-import { createMenu, getMenuDetail, deleteMenu, updateMenu } from '#/apis'
+import { createMenu, getMenuDetail, deleteMenu, updateMenu, getMenuTree } from '#/apis'
 import { cloneDeep } from '@myself/utils'
 
 // 搜索表单---------------start-------------------
@@ -12,12 +12,18 @@ const form = ref({})
 // 搜索表单---------------end-------------------
 
 // 新增编辑操作----------------start-------------------
-const operateDialogVisible = ref(true)
+const operateDialogVisible = ref(false)
 const operateType = ref('add') // add 新增 edit 修改
-// const menuTree = ref<MenuItem[]>([])
+const menuTree = ref<any[]>([])
 const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
 const currentOperateItem = ref<any>(cloneDeep(defaultOperateItem))
 
+// 获取菜单树
+const loadMenuTree = () => {
+  getMenuTree().then((res) => {
+    menuTree.value = [{ id: -1, name: '顶层菜单', children: res.data }]
+  })
+}
 // 操作
 const handleOperate = (type: string, row?: any) => {
   operateType.value = type
@@ -69,6 +75,10 @@ const handleDelete = (row: any) => {
 }
 
 // 新增编辑操作----------------end---------------------
+
+onMounted(() => {
+  loadMenuTree()
+})
 </script>
 
 <template>
@@ -105,6 +115,7 @@ const handleDelete = (row: any) => {
       v-model:visible="operateDialogVisible"
       :type="operateType"
       :data="currentOperateItem"
+      :menu-list="menuTree"
       @confirm="confirm"
     ></OperationDialog>
   </div>

@@ -22,10 +22,9 @@ const emit = defineEmits(['confirm'])
 const ruleFormRef = ref<FormInstance | null>(null)
 const visible = defineModel<boolean>('visible')
 const form = ref<any>(cloneDeep(defaultOperateItem))
-const coverMenuList = ref<any>([{ id: '', name: '顶层菜单', children: props.menuList }])
 
 onMounted(() => {
-  if (props.data) {
+  if (props.data && props.type === 'add') {
     form.value = cloneDeep(props.data)
   }
 })
@@ -46,8 +45,13 @@ onMounted(() => {
           <el-form-item prop="parentId" label="父级菜单:">
             <el-tree-select
               v-model="form.parentId"
-              :data="coverMenuList"
+              :data="menuList"
               check-strictly
+              node-key="id"
+              :props="{
+                label: 'name'
+              }"
+              default-expand-all
               :render-after-expand="false"
             />
           </el-form-item>
