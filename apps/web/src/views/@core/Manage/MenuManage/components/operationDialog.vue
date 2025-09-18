@@ -24,11 +24,8 @@ const visible = defineModel<boolean>('visible')
 const form = ref<any>(cloneDeep(defaultOperateItem))
 
 onMounted(() => {
-  console.log('----')
-
   if (props.data && props.type === 'edit') {
     form.value = cloneDeep(props.data)
-    console.log('--:', form.value)
   }
 })
 </script>
@@ -162,18 +159,15 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '@myself/ui/styles' as *;
 .icon-input {
   width: 100%;
-  // display: flex;
-  // align-items: center;
-  @include flex-start-end();
+  display: flex;
+  align-items: center;
   gap: 10px;
   .el-link {
     min-width: 200px;
     flex: 1;
     display: inline-block;
   }
-  // @include flex-start-end();
 }
 </style>

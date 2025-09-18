@@ -1,11 +1,4 @@
-<script setup lang="ts">
-import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue'
-
-// 组件 props 类型定义
-const props = defineProps<{
-  msg?: string
-}>()
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="component-name">

@@ -79,12 +79,14 @@ export const columns = ref([
   {
     prop: 'name',
     label: '菜单名称',
-    align: 'center'
+    align: 'center',
+    minWidth: 150
   },
   {
     prop: 'menuType',
     label: '菜单类型',
     align: 'center',
+    minWidth: 90,
     render: (row: any) => (
       <ElButton type={'primary'} link>
         {menuTypeData[row.menuType]}
@@ -120,6 +122,7 @@ export const columns = ref([
     prop: 'operation',
     label: '操作',
     fixed: 'right',
+    minWidth: 180,
     align: 'center',
     slotName: 'operation'
   }

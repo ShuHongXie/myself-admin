@@ -101,11 +101,9 @@ onMounted(() => {
     >
       <template #operation="scope">
         <el-space>
-          <el-button type="primary" :icon="Plus" @click="handleOperate('add', scope.row)"
-            >新增</el-button
-          >
+          <el-link type="primary" @click="handleOperate('add', scope.row)">新增</el-link>
           <el-link type="primary" @click="handleOperate('edit', scope.row)">编辑</el-link>
-          <el-link type="primary" @click="handleDelete(scope.row)">删除</el-link>
+          <el-link type="danger" @click="handleDelete(scope.row)">删除</el-link>
         </el-space>
       </template>
       <template #prefix>
