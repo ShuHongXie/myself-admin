@@ -159,10 +159,12 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+@use '@myself/ui/styles' as styles;
 .icon-input {
   width: 100%;
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
+  @include styles.flex-start-center;
   gap: 10px;
   .el-link {
     min-width: 200px;

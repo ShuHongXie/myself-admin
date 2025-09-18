@@ -1,5 +1,5 @@
-@use './root.scss' as *;
-@use './variable.scss' as *;
-@use './mixin.scss' as *;
-@use './transition.scss' as *;
-@use './preset.scss' as *;
+@forward './root';
+@forward './variable';
+@forward './mixin';
+@forward './transition';
+@forward './preset';
