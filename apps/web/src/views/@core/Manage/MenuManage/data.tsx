@@ -176,14 +176,15 @@ export const treeSettingSelect = ref([
 ])
 
 // 默认操作对象
-export const defaultOperateItem = {
+export const defaultOperateItem: MenuItem = {
+  id: '',
   name: '',
   menuType: 1,
   component: '',
   permission: '',
   path: '',
   status: 1,
-  parentId: -1,
+  parentId: null,
   meta: {
     icon: '',
     orderNum: '',

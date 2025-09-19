@@ -4,11 +4,10 @@ import { Type } from 'class-transformer'
 
 // 菜单元数据 DTO
 class CreateMenuMetaDto {
-  @IsString()
+  @IsOptional()
   title: string
-
-  @IsInt()
-  orderNum: number
+  @IsOptional()
+  orderNum: number = 1
 
   @IsOptional()
   @IsString()
@@ -24,7 +23,7 @@ class CreateMenuMetaDto {
   showInMenu?: boolean = true
 
   @IsOptional()
-  isCache?: boolean = false
+  isCache?: boolean = true
 }
 
 // 按钮类型菜单专用DTO（不需要meta和children）

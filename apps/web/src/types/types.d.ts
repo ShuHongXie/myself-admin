@@ -8,12 +8,12 @@ declare global {
 
   // 菜单项类型
   interface MenuItem {
-    id: number
+    id: number | string
     name: string
     path: string
     component?: string
     permission?: string
-    parentId: number
+    parentId: number | null
     menuType: number
     status: number
     title?: string
@@ -31,7 +31,7 @@ declare global {
 
   // 菜单表单数据类型（用于菜单编辑表单）
   interface MenuFormData extends MenuItem {
-    id?: number
+    id?: number | string
   }
 
   // 用户信息类型

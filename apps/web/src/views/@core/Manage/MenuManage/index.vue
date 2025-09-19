@@ -16,7 +16,7 @@ const operateDialogVisible = ref(false)
 const operateType = ref('add') // add 新增 edit 修改
 const menuTree = ref<any[]>([])
 const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
-const currentOperateItem = ref<any>(cloneDeep(defaultOperateItem))
+const currentOperateItem = ref<MenuItem>(cloneDeep(defaultOperateItem))
 
 // 获取菜单树
 const loadMenuTree = () => {
@@ -46,18 +46,20 @@ const handleOperate = (type: string, row?: any) => {
 const confirm = async () => {
   if (operateType.value === 'add') {
     createMenu(currentOperateItem.value).then((res: any) => {
-      ElMessage.success(res.msg || '菜单创建成功')
+      ElMessage.success(res.msg)
       operateDialogVisible.value = false
       console.log(searchTableRef.value)
       currentOperateItem.value = cloneDeep(defaultOperateItem)
       searchTableRef.value?.handleSearch()
+      loadMenuTree()
     })
   } else {
-    updateMenu(currentOperateItem.value.id, currentOperateItem.value).then((res: any) => {
-      ElMessage.success(res.msg || '菜单更新成功')
+    updateMenu(currentOperateItem.value.id as number, currentOperateItem.value).then((res: any) => {
+      ElMessage.success(res.msg)
       operateDialogVisible.value = false
       currentOperateItem.value = cloneDeep(defaultOperateItem)
       searchTableRef.value?.handleSearch()
+      loadMenuTree()
     })
   }
 }

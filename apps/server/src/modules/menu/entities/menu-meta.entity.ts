@@ -14,11 +14,15 @@ export class MenuMeta {
   id: number
   // 标题
   @Column({
-    length: 20
+    length: 20,
+    nullable: true
   })
   title: string
   // 排序
-  @Column()
+  @Column({
+    type: 'tinyint',
+    default: 1
+  })
   orderNum: number
   // 菜单图标
   @Column({

@@ -40,7 +40,8 @@ export class Menu {
   permission: string
   //路由跳转地址
   @Column({
-    length: 50
+    length: 50,
+    nullable: true
   })
   path: string
   //状态 1:启用 0:禁用
@@ -67,7 +68,8 @@ export class Menu {
   @JoinColumn({ name: 'meta_id' }) // 外键在 route_meta 表中
   meta: MenuMeta
   @Column({
-    type: 'bigint'
+    type: 'bigint',
+    default: 1
   })
   createBy: number
   @CreateDateColumn({

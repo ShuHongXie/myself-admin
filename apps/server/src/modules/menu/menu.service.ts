@@ -28,9 +28,12 @@ export class MenuService {
    * @return {*}  {Promise<Menu>}
    * @memberof MenuService
    */
-  async createMenu(createMenuDto: CreateMenuDto | CreateBaseDto): Promise<Menu> {
+  async createMenu(createMenuDto: CreateMenuDto | CreateBaseDto) {
     // 1. 转换 DTO 为实体对象
-    const menu = this.menuRepository.create(createMenuDto as DeepPartial<Menu>)
+    const menu = this.menuRepository.create({
+      ...createMenuDto,
+      parentId: createMenuDto.parentId === -1 ? null : createMenuDto.parentId // 父ID默认为0（根菜单）
+    } as DeepPartial<Menu>)
     console.log('menu：', menu)
     let dto
     if (menu.menuType !== MenuType.Button) {
@@ -46,7 +49,7 @@ export class MenuService {
             this.createMenu({
               ...childDto,
               parentId: menu.id, // 子菜单的父ID设为当前菜单ID（创建后自动关联）
-              createBy: createMenuDto.createBy // 继承创建人
+              createBy: createMenuDto.createBy || 1 // 继承创建人
             })
           )
         )
@@ -54,8 +57,8 @@ export class MenuService {
     }
 
     // 4. 保存菜单（级联自动保存 meta 和 children）
-    const savedMenu = await this.menuRepository.save(menu)
-    return savedMenu
+    await this.menuRepository.save(menu)
+    return ResultData.success('菜单创建成功')
   }
 
   /**

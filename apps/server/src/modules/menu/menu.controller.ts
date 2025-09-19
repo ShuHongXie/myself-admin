@@ -21,7 +21,7 @@ import { Public } from '@decorator/public.decorator'
 @Controller('menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
-  @Post('create')
+  @Post()
   @Public()
   @ApiParam({ name: 'createMenuDto', type: CreateMenuDto })
   @ApiOperation({ summary: '新增菜单' })
