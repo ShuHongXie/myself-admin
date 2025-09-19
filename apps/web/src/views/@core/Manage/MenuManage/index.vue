@@ -3,7 +3,7 @@ import { SearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
 import OperationDialog from './components/OperationDialog.vue'
-import { searchProps, columns, defaultOperateItem } from './data.tsx'
+import { searchProps, columns, defaultOperateItem, MenuType, menuTypeData } from './data.tsx'
 import { createMenu, getMenuDetail, deleteMenu, updateMenu, getMenuTree } from '#/apis'
 import { cloneDeep } from '@myself/utils'
 
@@ -29,43 +29,42 @@ const handleOperate = (type: string, row?: any) => {
   if (type === 'edit') {
     currentOperateItem.value = row
   } else {
-    currentOperateItem.value = cloneDeep(defaultOperateItem)
+    currentOperateItem.value = row
+      ? cloneDeep({
+          ...defaultOperateItem,
+          parentId: row.id
+        })
+      : cloneDeep(defaultOperateItem)
   }
   console.log(currentOperateItem.value)
+
   operateType.value = type
   operateDialogVisible.value = true
 }
 
 // 确认修改/编辑
-const confirm = async (formEl: FormInstance | null) => {
-  if (!formEl) return
-  await formEl.validate((valid, fields) => {
-    if (valid) {
-      if (operateType.value === 'add') {
-        createMenu(currentOperateItem.value).then((res: any) => {
-          ElMessage.success(res.msg || '菜单创建成功')
-          operateDialogVisible.value = false
-          console.log(searchTableRef.value)
-          currentOperateItem.value = cloneDeep(defaultOperateItem)
-          searchTableRef.value?.handleSearch()
-        })
-      } else {
-        updateMenu(currentOperateItem.value.id, currentOperateItem.value).then((res: any) => {
-          ElMessage.success(res.msg || '菜单更新成功')
-          operateDialogVisible.value = false
-          currentOperateItem.value = cloneDeep(defaultOperateItem)
-          searchTableRef.value?.handleSearch()
-        })
-      }
-    } else {
-      console.log('校验出错!', fields)
-    }
-  })
+const confirm = async () => {
+  if (operateType.value === 'add') {
+    createMenu(currentOperateItem.value).then((res: any) => {
+      ElMessage.success(res.msg || '菜单创建成功')
+      operateDialogVisible.value = false
+      console.log(searchTableRef.value)
+      currentOperateItem.value = cloneDeep(defaultOperateItem)
+      searchTableRef.value?.handleSearch()
+    })
+  } else {
+    updateMenu(currentOperateItem.value.id, currentOperateItem.value).then((res: any) => {
+      ElMessage.success(res.msg || '菜单更新成功')
+      operateDialogVisible.value = false
+      currentOperateItem.value = cloneDeep(defaultOperateItem)
+      searchTableRef.value?.handleSearch()
+    })
+  }
 }
 
 // 删除菜单
 const handleDelete = (row: any) => {
-  ElMessageBox.confirm(`确认删除菜单【${row.roleName}】?`, 'Warning', {
+  ElMessageBox.confirm(`确认删除${menuTypeData[row.menuType]}【${row.name}】?`, 'Warning', {
     type: 'warning'
   }).then(() => {
     deleteMenu(row.id).then((res: any) => {
@@ -101,7 +100,12 @@ onMounted(() => {
     >
       <template #operation="scope">
         <el-space>
-          <el-link type="primary" @click="handleOperate('add', scope.row)">新增</el-link>
+          <el-link
+            type="primary"
+            v-if="scope.row.menuType !== MenuType['按钮']"
+            @click="handleOperate('add', scope.row)"
+            >新增</el-link
+          >
           <el-link type="primary" @click="handleOperate('edit', scope.row)">编辑</el-link>
           <el-link type="danger" @click="handleDelete(scope.row)">删除</el-link>
         </el-space>
@@ -115,8 +119,8 @@ onMounted(() => {
     </SearchTable>
     <OperationDialog
       v-model:visible="operateDialogVisible"
+      v-model:form="currentOperateItem"
       :type="operateType"
-      :data="currentOperateItem"
       :menu-list="menuTree"
       @confirm="confirm"
     ></OperationDialog>

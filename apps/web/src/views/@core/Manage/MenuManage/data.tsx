@@ -109,7 +109,10 @@ export const columns = ref([
     prop: 'status',
     label: '菜单状态',
     align: 'center',
-    slotName: 'status'
+    minWidth: 100,
+    render: (row: any) => (
+      <div style={{ color: row.status ? 'green' : 'red' }}>{row.status ? '启用' : '停用'}</div>
+    )
   },
 
   {
@@ -123,7 +126,7 @@ export const columns = ref([
     label: '操作',
     fixed: 'right',
     minWidth: 180,
-    align: 'center',
+    align: 'left',
     slotName: 'operation'
   }
 ])
@@ -185,7 +188,8 @@ export const defaultOperateItem = {
     icon: '',
     orderNum: '',
     title: '',
-    isCache: 0,
+    isCache: 1,
+    showInTab: 1,
     showInMenu: 1,
     showInBreadcrumb: 1
   }

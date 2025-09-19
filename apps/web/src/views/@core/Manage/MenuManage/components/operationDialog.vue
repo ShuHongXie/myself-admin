@@ -9,8 +9,7 @@ import {
 } from '../data.tsx'
 import type { FormInstance } from 'element-plus'
 
-const props = defineProps({
-  data: Object,
+defineProps({
   menuList: Array,
   type: {
     type: String,
@@ -20,24 +19,27 @@ const props = defineProps({
 
 const emit = defineEmits(['confirm'])
 const ruleFormRef = ref<FormInstance | null>(null)
-const visible = defineModel<boolean>('visible')
-const form = ref<any>(cloneDeep(defaultOperateItem))
-
-onMounted(() => {
-  if (props.data && props.type === 'edit') {
-    form.value = cloneDeep(props.data)
-  }
+const visible = defineModel<boolean>('visible', { default: false })
+const form = defineModel<MenuFormData>('form', {
+  default: () => cloneDeep(defaultOperateItem)
 })
+
+// 确认提交
+const handleSubmit = async () => {
+  if (!ruleFormRef.value) return
+  await ruleFormRef.value.validate((valid, fields) => {
+    if (valid) {
+      emit('confirm')
+    } else {
+      console.log('校验出错!', fields)
+    }
+  })
+}
 </script>
 
 <template>
   <!-- 新增编辑菜单 -->
-  <el-dialog
-    v-model="visible"
-    :title="type === 'add' ? '新增菜单' : '修改菜单'"
-    width="700"
-    destroy-on-close
-  >
+  <el-dialog v-model="visible" :title="type === 'add' ? '新增菜单' : '修改菜单'" width="700">
     <el-form ref="ruleFormRef" :rules="menuFormRules" :model="form" label-width="90px">
       <el-row :gutter="20">
         <el-col :span="24">
@@ -79,7 +81,7 @@ onMounted(() => {
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="name" label="菜单名称:">
+          <el-form-item prop="name" :label="`${menuTypeData[form.menuType]}名称:`">
             <el-input clearable v-model="form.name" />
           </el-form-item>
         </el-col>
@@ -115,7 +117,7 @@ onMounted(() => {
         <template v-if="form.menuType === MenuType['菜单']">
           <el-col :span="12">
             <el-form-item prop="title" label="页面标题:">
-              <el-input clearable v-model="form.title" />
+              <el-input clearable v-model="form.meta.title" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -152,20 +154,18 @@ onMounted(() => {
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="visible = false">取消</el-button>
-        <el-button type="primary" @click="emit('confirm', ruleFormRef)">确定</el-button>
+        <el-button type="primary" @click="handleSubmit">确定</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <style lang="scss" scoped>
-@use '@myself/ui/styles' as styles;
+@use '@myself/ui/styles' as *;
 .icon-input {
   width: 100%;
-  // display: flex;
-  // align-items: center;
-  @include styles.flex-start-center;
   gap: 10px;
+  @include flex-start-center(nowrap, 10);
   .el-link {
     min-width: 200px;
     flex: 1;

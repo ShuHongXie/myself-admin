@@ -26,11 +26,10 @@
   ],
   "include": [
     "src/**/*.ts",
-    "src/**/*.ts",
     "src/**/*.tsx",
+    "src/**/*.vue",
     "auto-imports.d.ts",
     "node_modules/@myself/ui",
-    "src/router/type.d.ts",
-    "src/**/*"
+    "src/router/type.d.ts"
   ]
 }
