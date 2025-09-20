@@ -1,10 +1,10 @@
 <script setup lang="tsx">
 import { SearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
-import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import OperationDialog from './components/OperationDialog.vue'
 import { searchProps, columns, defaultOperateItem, MenuType, menuTypeData } from './data.tsx'
-import { createMenu, getMenuDetail, deleteMenu, updateMenu, getMenuTree } from '#/apis'
+import { createMenu, deleteMenu, updateMenu, getMenuTree } from '#/apis'
 import { cloneDeep } from '@myself/utils'
 
 // 搜索表单---------------start-------------------
