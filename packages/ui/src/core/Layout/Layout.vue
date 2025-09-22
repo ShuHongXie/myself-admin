@@ -316,7 +316,7 @@ watch(
             <slot name="routerView">
               <RouterView v-slot="{ Component, route }">
                 <Transition name="fade-slide" appear mode="out-in">
-                  <KeepAlive v-if="route.meta?.keepAlive">
+                  <KeepAlive v-if="route.meta?.isCache">
                     <component :is="Component" />
                   </KeepAlive>
                   <component :is="Component" v-else />

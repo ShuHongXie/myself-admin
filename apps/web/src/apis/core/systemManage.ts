@@ -1,5 +1,12 @@
 import instance from '../instance'
 
+// 用户登录
+export const login = (data: { username: string; password: string; code: string }) =>
+  instance.post('/user/login', data)
+
+// 获取验证码
+export const getCaptcha = () => instance.get('/user/captcha')
+
 // 获取角色列表
 export const getRolesList = () => instance.get('/role/allRoles')
 
@@ -38,3 +45,6 @@ export const updateMenu = (menuId: number, data: any) => instance.put(`/menu/${m
 
 // 创建菜单
 export const createMenu = (data: any) => instance.post('/menu', data)
+
+// 获取用户按钮权限
+export const getUserButtonPermissions = () => instance.get('/menu/buttonPermissions')

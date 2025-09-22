@@ -113,50 +113,50 @@ export class MenuService {
       }))
   }
 
-  async getInfo(req): Promise<Menu[]> {
-    //user.guard中注入的解析后的JWTtoken的user
-    const { user } = req
-    //根据关联关系通过user查询user下的菜单和角色
-    const userList: User = await this.userRepository
-      .createQueryBuilder('fs_user')
-      .leftJoinAndSelect('fs_user.roles', 'fs_role')
-      .leftJoinAndSelect('fs_role.menus', 'fs_menu')
-      .where({ id: user.userId })
-      .orderBy('fs_menu.order_num', 'ASC')
-      .getOne()
+  // async getInfo(req): Promise<Menu[]> {
+  //   //user.guard中注入的解析后的JWTtoken的user
+  //   const { user } = req
+  //   //根据关联关系通过user查询user下的菜单和角色
+  //   const userList: User = await this.userRepository
+  //     .createQueryBuilder('fs_user')
+  //     .leftJoinAndSelect('fs_user.roles', 'fs_role')
+  //     .leftJoinAndSelect('fs_role.menus', 'fs_menu')
+  //     .where({ id: user.userId })
+  //     .orderBy('fs_menu.order_num', 'ASC')
+  //     .getOne()
 
-    //是否为超级管理员,是的话查询所有菜单
-    const isAdmin = userList.roles?.find((item) => item.role_name === 'admin')
-    let routers: Menu[] = []
+  //   //是否为超级管理员,是的话查询所有菜单
+  //   const isAdmin = userList.roles?.find((item) => item.role_name === 'admin')
+  //   let routers: Menu[] = []
 
-    if (isAdmin) {
-      routers = await this.menuRepository.find({
-        order: {
-          order_num: 'ASC'
-        },
-        where: {
-          status: 1
-        }
-      })
-      return convertToTree(routers)
-    }
-    interface MenuMap {
-      [key: string]: Menu
-    }
-    // console.log(userList.roles[0].menus);
+  //   if (isAdmin) {
+  //     routers = await this.menuRepository.find({
+  //       order: {
+  //         order_num: 'ASC'
+  //       },
+  //       where: {
+  //         status: 1
+  //       }
+  //     })
+  //     return convertToTree(routers)
+  //   }
+  //   interface MenuMap {
+  //     [key: string]: Menu
+  //   }
+  //   // console.log(userList.roles[0].menus);
 
-    //根据id去重
-    const menus: MenuMap = userList?.roles.reduce((mergedMenus: MenuMap, role: Role) => {
-      role.menus.forEach((menu: Menu) => {
-        mergedMenus[menu.id] = menu
-      })
-      return mergedMenus
-    }, {})
+  //   //根据id去重
+  //   const menus: MenuMap = userList?.roles.reduce((mergedMenus: MenuMap, role: Role) => {
+  //     role.menus.forEach((menu: Menu) => {
+  //       mergedMenus[menu.id] = menu
+  //     })
+  //     return mergedMenus
+  //   }, {})
 
-    routers = Object.values(menus)
+  //   routers = Object.values(menus)
 
-    return convertToTree(routers)
-  }
+  //   return convertToTree(routers)
+  // }
 
   /**
    * @description 根据ID获取菜单详情
@@ -294,5 +294,78 @@ export class MenuService {
 
     // TypeORM会根据cascade配置自动删除子菜单
     await this.menuRepository.remove(menu)
+  }
+
+  /**
+   * @description 获取用户按钮权限列表
+   * @param {number} userId 用户ID
+   * @return {Promise<string[]>} 用户拥有的按钮权限列表
+   */
+  async getUserButtonPermissions(userId: number) {
+    try {
+      // 查询用户及其角色关联的所有菜单
+      const user = await this.userRepository
+        .createQueryBuilder('user')
+        .leftJoinAndSelect('user.roles', 'role')
+        .leftJoinAndSelect('role.menus', 'menu')
+        .where('user.id = :userId', { userId })
+        .andWhere('user.status = :status', { status: 1 }) // 只查询启用的用户
+        .andWhere('role.status = :roleStatus', { roleStatus: 1 }) // 只查询启用的角色
+        .getOne()
+
+      if (!user) {
+        throw new ApiException('用户不存在或已被禁用', ApiErrorCode.COMMON_CODE)
+      }
+
+      // 检查是否为超级管理员
+      const isAdmin = user.roles?.some((role) => role.roleName === 'admin' || user.isAdmin === 1)
+
+      let buttonPermissions: string[] = []
+
+      if (isAdmin) {
+        // 超级管理员获取所有按钮权限
+        const allButtons = await this.menuRepository
+          .createQueryBuilder('menu')
+          .where('menu.menuType = :menuType', { menuType: MenuType.Button })
+          .andWhere('menu.status = :status', { status: 1 })
+          .andWhere('menu.permission IS NOT NULL')
+          .andWhere('menu.permission != :empty', { empty: '' })
+          .getMany()
+
+        buttonPermissions = allButtons
+          .map((menu) => menu.permission)
+          .filter((permission) => permission && permission.trim() !== '')
+      } else {
+        // 普通用户根据角色获取按钮权限
+        const userMenus = new Map<number, Menu>()
+
+        // 收集用户所有角色的菜单，去重
+        user.roles?.forEach((role) => {
+          role.menus?.forEach((menu) => {
+            if (
+              menu.menuType === MenuType.Button &&
+              menu.status === 1 &&
+              menu.permission &&
+              menu.permission.trim() !== ''
+            ) {
+              userMenus.set(menu.id, menu)
+            }
+          })
+        })
+
+        buttonPermissions = Array.from(userMenus.values())
+          .map((menu) => menu.permission)
+          .filter((permission) => permission && permission.trim() !== '')
+      }
+
+      // 去重并排序
+      const result = [...new Set(buttonPermissions)].sort()
+      return ResultData.success('获取按钮权限成功', result)
+    } catch (error) {
+      if (error instanceof ApiException) {
+        throw error
+      }
+      throw new ApiException('获取按钮权限失败', ApiErrorCode.FAIL)
+    }
   }
 }

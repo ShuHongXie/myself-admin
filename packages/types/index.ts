@@ -28,3 +28,12 @@ export interface OptionItem {
   label: string
   value: any
 }
+
+/**
+ * 按钮权限响应类型
+ */
+export interface ButtonPermissionsResponse {
+  code: number
+  msg: string
+  data: string[]
+}

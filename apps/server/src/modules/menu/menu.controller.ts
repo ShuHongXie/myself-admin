@@ -51,6 +51,13 @@ export class MenuController {
     return this.menuService.findAllWithButtons()
   }
 
+  @Get('/buttonPermissions')
+  @ApiOperation({ summary: '获取用户按钮权限' })
+  async getUserButtonPermissions(@Request() req) {
+    const { userId } = req.user
+    return this.menuService.getUserButtonPermissions(userId)
+  }
+
   @Get('/menusByPage')
   @ApiOperation({ summary: '分页查询菜单列表' })
   @Public()
