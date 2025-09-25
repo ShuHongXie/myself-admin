@@ -48,3 +48,6 @@ export const createMenu = (data: any) => instance.post('/menu', data)
 
 // 获取用户按钮权限
 export const getUserButtonPermissions = () => instance.get('/menu/buttonPermissions')
+
+// 获取路由(不含按钮)
+export const getRouters = () => instance.get('/menu/getRouters')

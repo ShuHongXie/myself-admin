@@ -4,4 +4,7 @@ declare module '@myself/ui/styles' {
   export default content
 }
 
+// 重新导出所有组件类型
+export * from './index'
+
 export {}

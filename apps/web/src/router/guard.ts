@@ -6,6 +6,7 @@ import { useConfigStore, useRoutesStore } from '@myself/store'
 import { generateRoutes } from './generate'
 import { matchRoutes } from './routes'
 import { toRaw } from 'vue'
+import { useInitStore } from '#/store/useInitStore'
 
 /**
  * 通用守卫配置
@@ -37,8 +38,9 @@ function setupCommonGuard(router: Router) {
  * @param router
  */
 function setupAccessGuard(router: Router) {
-  router.beforeEach((to, from) => {
+  router.beforeEach(async (to, from) => {
     // const userStore = useUserStore()
+    const initStore = useInitStore()
     const routesStore = useRoutesStore()
     const configStore = useConfigStore()
 
@@ -66,11 +68,14 @@ function setupAccessGuard(router: Router) {
     //   }
     //   return to
     // }
+    console.log('routesStore.mergeRoutes.length:', routesStore.mergeRoutes.length)
 
     if (routesStore.mergeRoutes.length) {
       return true
     }
-    const { dynamicRoutes, menuData } = generateRoutes()
+    // 加载路由表
+    await initStore.loadRouters()
+    const { dynamicRoutes, menuData } = generateRoutes(initStore.routers)
     const mergeRoutes = [...toRaw(routesStore.staticRoutes), ...dynamicRoutes, ...matchRoutes]
     mergeRoutes.forEach((routes) => {
       router.addRoute(routes)

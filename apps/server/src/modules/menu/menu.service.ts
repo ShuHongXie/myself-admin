@@ -232,6 +232,8 @@ export class MenuService {
    */
   async update(id: number, updateMenuDto: UpdateMenuDto) {
     try {
+      console.log('----更新菜单----')
+
       const existingMenu = await this.findOne(id)
       // 更新基础菜单信息
       const { meta, children, ...menuData } = updateMenuDto

@@ -21,13 +21,23 @@ const currentOperateItem = ref<MenuItem>(cloneDeep(defaultOperateItem))
 // 获取菜单树
 const loadMenuTree = () => {
   getMenuTree().then((res) => {
+    res.data.forEach((item: MenuItem) => {
+      if (!item.parentId) {
+        item.parentId = -1
+      }
+    })
     menuTree.value = [{ id: -1, name: '顶层菜单', children: res.data }]
+    console.log(menuTree.value)
   })
 }
 // 操作
 const handleOperate = (type: string, row?: any) => {
   if (type === 'edit') {
-    currentOperateItem.value = row
+    currentOperateItem.value = {
+      ...row,
+      parentId: row.parentId ? row.parentId : -1
+    }
+    console.log(currentOperateItem.value)
   } else {
     currentOperateItem.value = row
       ? cloneDeep({
@@ -54,7 +64,10 @@ const confirm = async () => {
       loadMenuTree()
     })
   } else {
-    updateMenu(currentOperateItem.value.id as number, currentOperateItem.value).then((res: any) => {
+    updateMenu(currentOperateItem.value.id as number, {
+      ...currentOperateItem.value,
+      parentId: currentOperateItem.value.parentId === -1 ? null : currentOperateItem.value.parentId
+    }).then((res: any) => {
       ElMessage.success(res.msg)
       operateDialogVisible.value = false
       currentOperateItem.value = cloneDeep(defaultOperateItem)

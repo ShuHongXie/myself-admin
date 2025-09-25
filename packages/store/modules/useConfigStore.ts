@@ -8,42 +8,48 @@ import type { MenuDataItem, TabItem } from '@myself/types'
  * @return {*}
  * @Author: xieshuhong
  */
-export const useConfigStore = defineStore('config', () => {
-  const menuData = ref<MenuDataItem[]>([]) // 动态路由
-  const tabData = ref<TabItem[]>([]) // 动态路由
-  const activeTab = ref<string>('') // 当前激活的tab
+export const useConfigStore = defineStore(
+  'config',
+  () => {
+    const menuData = ref<MenuDataItem[]>([]) // 动态路由
+    const tabData = ref<TabItem[]>([]) // 动态路由
+    const activeTab = ref<string>('') // 当前激活的tab
 
-  const setMenuData = (data: MenuDataItem[]) => {
-    menuData.value = data
-  }
-
-  const setTabData = (data: TabItem) => {
-    const index = tabData.value.findIndex((item: TabItem) => item.path === data.path)
-    if (index !== -1) {
-      tabData.value.splice(index, 1, data)
-    } else {
-      tabData.value.push(data)
+    const setMenuData = (data: MenuDataItem[]) => {
+      menuData.value = data
     }
-  }
 
-  const removeTabData = (index: number) => {
-    tabData.value.splice(index, 1)
-  }
+    const setTabData = (data: TabItem) => {
+      const index = tabData.value.findIndex((item: TabItem) => item.path === data.path)
+      if (index !== -1) {
+        tabData.value.splice(index, 1, data)
+      } else {
+        tabData.value.push(data)
+      }
+    }
 
-  const setActiveTab = (path: string) => {
-    activeTab.value = path
-  }
+    const removeTabData = (index: number) => {
+      tabData.value.splice(index, 1)
+    }
 
-  return {
-    menuData,
-    setMenuData,
-    tabData,
-    setTabData,
-    removeTabData,
-    activeTab,
-    setActiveTab
+    const setActiveTab = (path: string) => {
+      activeTab.value = path
+    }
+
+    return {
+      menuData,
+      setMenuData,
+      tabData,
+      setTabData,
+      removeTabData,
+      activeTab,
+      setActiveTab
+    }
+  },
+  {
+    persist: true
   }
-})
+)
 
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useConfigStore, import.meta.hot))

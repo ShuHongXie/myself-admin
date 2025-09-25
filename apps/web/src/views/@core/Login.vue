@@ -38,6 +38,10 @@ const handleLogin = async (formData: { username: string; password: string; code:
     ElMessage.error(error.response?.data?.msg || '登录失败')
   }
 }
+
+onMounted(async () => {
+  // 获取用户按钮权限
+})
 </script>
 
 <template>

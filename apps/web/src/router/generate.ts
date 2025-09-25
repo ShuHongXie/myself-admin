@@ -1,15 +1,21 @@
-import type { RouteMeta } from 'vue-router'
+import type { RouteMeta, RouteRecordRaw } from 'vue-router'
 import { cloneDeep } from '@myself/utils'
 import { data as routerData } from './routerData'
 import Layout from '#/views/@core/Layout.vue'
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('../views/**/*.vue')
 
-export const generateRoutes = () => {
+export const generateRoutes = (routerData: RouteRecordRaw[]) => {
+  console.log(routerData)
+
   let data = cloneDeep(routerData)
   let menuData = [] as any
   menuData = generateMenus(data, menuData).sort((a: any, b: any) => (a?.no ?? 999) - (b?.no ?? 999))
   data = formatRoutes(data)
+  console.log(routerData)
+
+  console.log(data)
+
   return {
     menuData,
     dynamicRoutes: data
