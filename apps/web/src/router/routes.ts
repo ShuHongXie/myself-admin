@@ -2,27 +2,6 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const staticRoutes: RouteRecordRaw[] = [
   {
-    component: () => import('#/views/@core/Layout.vue'),
-    meta: {
-      hideInBreadcrumb: true,
-      title: 'Root'
-    },
-    name: 'Root',
-    path: '/',
-    redirect: '/home',
-    children: [
-      {
-        name: 'Hpme',
-        path: 'home',
-        component: () => import('#/views/home.vue'),
-        meta: {
-          title: 'home页',
-          hideInBreadcrumb: true
-        }
-      }
-    ]
-  },
-  {
     component: () => import('#/views/@core/Auth.vue'),
     meta: {
       hideInTab: true,

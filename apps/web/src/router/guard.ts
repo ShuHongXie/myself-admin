@@ -4,7 +4,7 @@ import nprogress from 'nprogress'
 import { userConfig } from '@myself/utils'
 import { useConfigStore, useRoutesStore } from '@myself/store'
 import { generateRoutes } from './generate'
-import { matchRoutes } from './routes'
+import { matchRoutes, staticRoutes } from './routes'
 import { toRaw } from 'vue'
 import { useInitStore } from '#/store/useInitStore'
 
@@ -68,31 +68,44 @@ function setupAccessGuard(router: Router) {
     //   }
     //   return to
     // }
-    console.log('routesStore.mergeRoutes.length:', routesStore.mergeRoutes.length)
 
-    if (routesStore.mergeRoutes.length) {
+    if (initStore.routers.length) {
+      const { dynamicRoutes } = generateRoutes(initStore.routers)
+      const mergeRoutes = [...staticRoutes, ...dynamicRoutes, ...matchRoutes]
+      console.log(mergeRoutes)
+
+      mergeRoutes.forEach((routes: any) => {
+        router.addRoute(routes)
+      })
+
+      console.log('有路由:', router.getRoutes())
       return true
-    }
-    // 加载路由表
-    await initStore.loadRouters()
-    const { dynamicRoutes, menuData } = generateRoutes(initStore.routers)
-    const mergeRoutes = [...toRaw(routesStore.staticRoutes), ...dynamicRoutes, ...matchRoutes]
-    mergeRoutes.forEach((routes) => {
-      router.addRoute(routes)
-    })
-    routesStore.setDynamicRoutes(dynamicRoutes)
-    routesStore.setMergeRoutes(mergeRoutes)
-    configStore.setMenuData(menuData)
-    console.log('路由:', router.getRoutes())
-    console.log('菜单:', configStore.menuData)
-    const redirectPath = (from.query.redirect ??
-      (to.path === userConfig.app?.defaultHomePath
-        ? userConfig.app?.defaultHomePath
-        : to.fullPath)) as string
+    } else {
+      // 加载路由表
+      await initStore.loadRouters()
+      const { dynamicRoutes, menuData } = generateRoutes(initStore.routers)
+      const mergeRoutes = [...staticRoutes, ...dynamicRoutes, ...matchRoutes]
+      mergeRoutes.forEach((routes) => {
+        router.addRoute(routes)
+      })
+      console.log('staticRoutes:', routesStore.staticRoutes)
+      console.log('dynamicRoutes:', dynamicRoutes)
+      console.log('mergeRoutes:', mergeRoutes)
 
-    return {
-      ...router.resolve(decodeURIComponent(redirectPath)),
-      replace: true
+      // routesStore.setDynamicRoutes(dynamicRoutes)
+      // routesStore.setMergeRoutes(mergeRoutes)
+      configStore.setMenuData(menuData)
+      const redirectPath = (from.query.redirect ??
+        (to.path === userConfig.app?.defaultHomePath
+          ? userConfig.app?.defaultHomePath
+          : to.fullPath)) as string
+
+      console.log('路由:', router.getRoutes())
+      console.log('菜单:', configStore.menuData)
+      return {
+        ...router.resolve(decodeURIComponent(redirectPath)),
+        replace: true
+      }
     }
   })
 }

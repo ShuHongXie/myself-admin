@@ -36,14 +36,15 @@ export const useRoutesStore = defineStore('routes', () => {
     staticRoutes.value = data
   }
   // 设置权限列表
-  const setMergeRoutes = (data: RouteRecordRaw[]) => {
-    mergeRoutes.value = data
-  }
+  // const setMergeRoutes = (data: RouteRecordRaw[]) => {
+  //   mergeRoutes.value = data
+  //   console.log('mergeRoutes.value:', mergeRoutes.value)
+  // }
 
   return {
     setDynamicRoutes,
     setStaticRoutes,
-    setMergeRoutes,
+    // setMergeRoutes,
     dynamicRoutes,
     mergeRoutes,
     staticRoutes,

@@ -3,7 +3,6 @@ export const data: any[] = [
     component: 'Layout',
     name: 'Root',
     path: '/',
-    redirect: '/home',
     meta: {
       icon: 'ep:help',
       title: '根路径',
