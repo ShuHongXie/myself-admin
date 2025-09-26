@@ -22,6 +22,13 @@ export const staticRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    component: () => import('#/views/@core/Layout.vue'),
+    name: 'Layout',
+    path: '/',
+    meta: {},
+    children: []
+  },
+  {
     component: () => import('#/views/@core/NotFound.vue'),
     meta: {
       hideInBreadcrumb: true,
@@ -31,6 +38,16 @@ export const staticRoutes: RouteRecordRaw[] = [
     },
     name: 'FallbackNotFound',
     path: '/404'
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/404',
+    meta: {
+      hideInBreadcrumb: true,
+      hideInMenu: true,
+      hideInTab: true,
+      title: '404'
+    }
   }
 ]
 

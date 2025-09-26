@@ -17,40 +17,56 @@ export const getDeepRouterName = (router: RouteRecordRaw[], List: string[] = [])
  * @return {*}
  * @Author: xieshuhong
  */
-export const useRoutesStore = defineStore('routes', () => {
-  const dynamicRoutes = ref<RouteRecordRaw[]>([]) // 动态路由
-  const staticRoutes = ref<RouteRecordRaw[]>([]) // 静态路由
-  const mergeRoutes = ref<RouteRecordRaw[]>([]) // 合并后的路由
-  const accessStaticRouteList = computed<string[]>(() => {
-    let list = []
-    list = getDeepRouterName(unref(staticRoutes) as RouteRecordRaw[], list)
-    return list
-  }) // 默认可访问的路由名称列表
+export const useRoutesStore = defineStore(
+  'routes',
+  () => {
+    const dynamicRoutes = ref<RouteRecordRaw[]>([]) // 动态路由
+    const staticRoutes = ref<RouteRecordRaw[]>([]) // 静态路由
+    const mergeRoutes = ref<RouteRecordRaw[]>([]) // 合并后的路由
+    const accessStaticRouteList = computed<string[]>(() => {
+      let list = []
+      list = getDeepRouterName(unref(staticRoutes) as RouteRecordRaw[], list)
+      return list
+    }) // 默认可访问的路由名称列表
 
-  // 设置设置静态路由
-  const setDynamicRoutes = (data: RouteRecordRaw[]) => {
-    dynamicRoutes.value = data
-  }
-  // 设置设置静态路由
-  const setStaticRoutes = (data: RouteRecordRaw[]) => {
-    staticRoutes.value = data
-  }
-  // 设置权限列表
-  // const setMergeRoutes = (data: RouteRecordRaw[]) => {
-  //   mergeRoutes.value = data
-  //   console.log('mergeRoutes.value:', mergeRoutes.value)
-  // }
+    const isRouterInitialized = ref(false) // 是否初始化
 
-  return {
-    setDynamicRoutes,
-    setStaticRoutes,
-    // setMergeRoutes,
-    dynamicRoutes,
-    mergeRoutes,
-    staticRoutes,
-    accessStaticRouteList
+    // 设置设置静态路由
+    const setDynamicRoutes = (data: RouteRecordRaw[]) => {
+      dynamicRoutes.value = data
+    }
+    // 设置设置静态路由
+    const setStaticRoutes = (data: RouteRecordRaw[]) => {
+      staticRoutes.value = data
+    }
+    // 设置权限列表
+    // const setMergeRoutes = (data: RouteRecordRaw[]) => {
+    //   mergeRoutes.value = data
+    //   console.log('mergeRoutes.value:', mergeRoutes.value)
+    // }
+
+    const setRouterInitialized = (data: boolean) => {
+      isRouterInitialized.value = data
+    }
+
+    return {
+      setDynamicRoutes,
+      setStaticRoutes,
+      setRouterInitialized,
+      // setMergeRoutes,
+      dynamicRoutes,
+      mergeRoutes,
+      staticRoutes,
+      accessStaticRouteList,
+      isRouterInitialized
+    }
+  },
+  {
+    persist: {
+      pick: ['dynamicRoutes', 'mergeRoutes']
+    }
   }
-})
+)
 
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useRoutesStore, import.meta.hot))

@@ -38,7 +38,7 @@ function setupCommonGuard(router: Router) {
  * @param router
  */
 function setupAccessGuard(router: Router) {
-  router.beforeEach(async (to, from) => {
+  router.beforeEach(async (to, from, next) => {
     // const userStore = useUserStore()
     const initStore = useInitStore()
     const routesStore = useRoutesStore()
@@ -69,30 +69,35 @@ function setupAccessGuard(router: Router) {
     //   return to
     // }
 
-    if (initStore.routers.length) {
-      const { dynamicRoutes } = generateRoutes(initStore.routers)
-      const mergeRoutes = [...staticRoutes, ...dynamicRoutes, ...matchRoutes]
-      console.log(mergeRoutes)
+    if (routesStore.dynamicRoutes.length) {
+      if (!routesStore.isRouterInitialized) {
+        const { dynamicRoutes } = generateRoutes(initStore.routers)
+        const mergeRoutes = [...dynamicRoutes]
+        mergeRoutes.forEach((routes: any) => {
+          router.addRoute('Layout', routes)
+        })
+        routesStore.setRouterInitialized(true)
+      }
+      const targetRoute = router.getRoutes().find((route) => route.path === to.path)
+      console.log('-------')
+      console.log(targetRoute)
 
-      mergeRoutes.forEach((routes: any) => {
-        router.addRoute(routes)
-      })
-
-      console.log('有路由:', router.getRoutes())
-      return true
+      console.log('路由:', router.getRoutes(), to.path)
+      next(to)
     } else {
       // 加载路由表
       await initStore.loadRouters()
       const { dynamicRoutes, menuData } = generateRoutes(initStore.routers)
-      const mergeRoutes = [...staticRoutes, ...dynamicRoutes, ...matchRoutes]
-      mergeRoutes.forEach((routes) => {
-        router.addRoute(routes)
+      const mergeRoutes = [...dynamicRoutes]
+      dynamicRoutes.forEach((routes) => {
+        router.addRoute('Layout', routes)
       })
       console.log('staticRoutes:', routesStore.staticRoutes)
       console.log('dynamicRoutes:', dynamicRoutes)
       console.log('mergeRoutes:', mergeRoutes)
 
-      // routesStore.setDynamicRoutes(dynamicRoutes)
+      routesStore.setDynamicRoutes(dynamicRoutes)
+      routesStore.setRouterInitialized(true)
       // routesStore.setMergeRoutes(mergeRoutes)
       configStore.setMenuData(menuData)
       const redirectPath = (from.query.redirect ??
@@ -102,10 +107,10 @@ function setupAccessGuard(router: Router) {
 
       console.log('路由:', router.getRoutes())
       console.log('菜单:', configStore.menuData)
-      return {
+      next({
         ...router.resolve(decodeURIComponent(redirectPath)),
         replace: true
-      }
+      })
     }
   })
 }

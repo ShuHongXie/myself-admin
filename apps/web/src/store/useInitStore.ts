@@ -12,15 +12,16 @@ export const useInitStore = defineStore(
     const loadRouters = async () => {
       try {
         const res = await getRouters()
-        routers.value = [
-          {
-            component: 'Layout',
-            name: 'Layout',
-            path: '/',
-            meta: {},
-            children: res.data
-          }
-        ]
+        routers.value = res.data
+        // routers.value = [
+        //   {
+        //     component: 'Layout',
+        //     name: 'Layout',
+        //     path: '/',
+        //     meta: {},
+        //     children: res.data
+        //   }
+        // ]
       } catch (error) {
         console.error('加载路由失败:', error)
         throw error
