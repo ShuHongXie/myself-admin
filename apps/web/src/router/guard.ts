@@ -68,49 +68,35 @@ function setupAccessGuard(router: Router) {
     //   }
     //   return to
     // }
-
     if (routesStore.dynamicRoutes.length) {
       if (!routesStore.isRouterInitialized) {
         const { dynamicRoutes } = generateRoutes(initStore.routers)
-        const mergeRoutes = [...dynamicRoutes]
+        const mergeRoutes = [...dynamicRoutes, ...matchRoutes]
         mergeRoutes.forEach((routes: any) => {
           router.addRoute('Layout', routes)
         })
         routesStore.setRouterInitialized(true)
+        return next(to)
       }
-      const targetRoute = router.getRoutes().find((route) => route.path === to.path)
-      console.log('-------')
-      console.log(targetRoute)
 
-      console.log('路由:', router.getRoutes(), to.path)
-      next(to)
+      return next()
     } else {
       // 加载路由表
       await initStore.loadRouters()
       const { dynamicRoutes, menuData } = generateRoutes(initStore.routers)
-      const mergeRoutes = [...dynamicRoutes]
-      dynamicRoutes.forEach((routes) => {
+      const mergeRoutes = [...dynamicRoutes, ...matchRoutes]
+      mergeRoutes.forEach((routes) => {
         router.addRoute('Layout', routes)
       })
-      console.log('staticRoutes:', routesStore.staticRoutes)
-      console.log('dynamicRoutes:', dynamicRoutes)
-      console.log('mergeRoutes:', mergeRoutes)
-
       routesStore.setDynamicRoutes(dynamicRoutes)
       routesStore.setRouterInitialized(true)
-      // routesStore.setMergeRoutes(mergeRoutes)
       configStore.setMenuData(menuData)
       const redirectPath = (from.query.redirect ??
         (to.path === userConfig.app?.defaultHomePath
           ? userConfig.app?.defaultHomePath
           : to.fullPath)) as string
 
-      console.log('路由:', router.getRoutes())
-      console.log('菜单:', configStore.menuData)
-      next({
-        ...router.resolve(decodeURIComponent(redirectPath)),
-        replace: true
-      })
+      next(redirectPath)
     }
   })
 }

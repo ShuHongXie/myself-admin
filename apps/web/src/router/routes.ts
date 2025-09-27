@@ -38,22 +38,22 @@ export const staticRoutes: RouteRecordRaw[] = [
     },
     name: 'FallbackNotFound',
     path: '/404'
-  },
-  {
-    path: '/:catchAll(.*)',
-    redirect: '/404',
-    meta: {
-      hideInBreadcrumb: true,
-      hideInMenu: true,
-      hideInTab: true,
-      title: '404'
-    }
   }
+  // {
+  //   path: '/:catchAll(.*)',
+  //   redirect: '/404',
+  //   meta: {
+  //     hideInBreadcrumb: true,
+  //     hideInMenu: true,
+  //     hideInTab: true,
+  //     title: '404'
+  //   }
+  // }
 ]
 
 export const matchRoutes: RouteRecordRaw[] = [
   {
-    path: '/:path(.*)*',
+    path: '/:path(.*)',
     redirect: '/404',
     meta: {
       hideInBreadcrumb: true,

@@ -22,7 +22,6 @@ export const useRoutesStore = defineStore(
   () => {
     const dynamicRoutes = ref<RouteRecordRaw[]>([]) // 动态路由
     const staticRoutes = ref<RouteRecordRaw[]>([]) // 静态路由
-    const mergeRoutes = ref<RouteRecordRaw[]>([]) // 合并后的路由
     const accessStaticRouteList = computed<string[]>(() => {
       let list = []
       list = getDeepRouterName(unref(staticRoutes) as RouteRecordRaw[], list)
@@ -39,11 +38,6 @@ export const useRoutesStore = defineStore(
     const setStaticRoutes = (data: RouteRecordRaw[]) => {
       staticRoutes.value = data
     }
-    // 设置权限列表
-    // const setMergeRoutes = (data: RouteRecordRaw[]) => {
-    //   mergeRoutes.value = data
-    //   console.log('mergeRoutes.value:', mergeRoutes.value)
-    // }
 
     const setRouterInitialized = (data: boolean) => {
       isRouterInitialized.value = data
@@ -53,9 +47,7 @@ export const useRoutesStore = defineStore(
       setDynamicRoutes,
       setStaticRoutes,
       setRouterInitialized,
-      // setMergeRoutes,
       dynamicRoutes,
-      mergeRoutes,
       staticRoutes,
       accessStaticRouteList,
       isRouterInitialized
