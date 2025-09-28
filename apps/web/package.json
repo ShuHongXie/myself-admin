@@ -25,6 +25,7 @@
     "vue-router": "catalog:"
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "^0.84.3",
     "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "@vue/tsconfig": "catalog:",
