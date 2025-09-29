@@ -68,9 +68,15 @@ const confirm = async () => {
       loadMenuTree()
     })
   } else {
-    updateMenu(currentOperateItem.value.id as number, {
-      ...currentOperateItem.value,
-      parentId: currentOperateItem.value.parentId === -1 ? null : currentOperateItem.value.parentId
+    updateMenu({
+      path: {
+        id: currentOperateItem.value.id as number
+      },
+      body: {
+        ...currentOperateItem.value,
+        parentId:
+          currentOperateItem.value.parentId === -1 ? null : currentOperateItem.value.parentId
+      }
     }).then((res: any) => {
       ElMessage.success(res.msg)
       operateDialogVisible.value = false
