@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --mode development",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "openapi-ts": "openapi-ts"
   },
   "imports": {
     "#/*": "./src/*"
@@ -25,6 +26,7 @@
     "vue-router": "catalog:"
   },
   "devDependencies": {
+    "@hey-api/client-axios": "catalog:",
     "@hey-api/openapi-ts": "^0.84.3",
     "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",

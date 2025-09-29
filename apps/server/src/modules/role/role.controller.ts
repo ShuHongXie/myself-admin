@@ -13,7 +13,7 @@ export class RoleController {
   @ApiOperation({ summary: '创建角色' })
   @Public()
   @Post()
-  create(@Body() createRoleDto: CreateRoleDto) {
+  createRole(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.create(createRoleDto)
   }
 
@@ -27,28 +27,28 @@ export class RoleController {
   @ApiOperation({ summary: '获取所有角色列表' })
   @Public()
   @Get('allRoles')
-  getAllRoles() {
+  getRolesList() {
     return this.roleService.getAllRoles()
   }
 
   @ApiOperation({ summary: '获取单个角色信息' })
   @Public()
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  getRoleById(@Param('id') id: string) {
     return this.roleService.findOne(+id)
   }
 
   @ApiOperation({ summary: '更新角色' })
   @Public()
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
+  updateRole(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
     return this.roleService.update(+id, updateRoleDto)
   }
 
   @ApiOperation({ summary: '删除角色' })
   @Public()
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  deleteRole(@Param('id') id: string) {
     return this.roleService.remove(+id)
   }
 }

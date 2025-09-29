@@ -61,21 +61,21 @@ export class UserController {
   @Public()
   @Post()
   @ApiOperation({ summary: '新增用户' })
-  create(@Body() createUserDto: CreateUserDto) {
+  createUserByAdmin(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto)
   }
 
   @Public()
   @Put()
   @ApiOperation({ summary: '更新用户' })
-  update(@Body() createUserDto: CreateUserDto) {
+  updateUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.update(createUserDto)
   }
 
   @Public()
   @Delete(':userId')
   @ApiOperation({ summary: '删除用户' })
-  delete(@Param('userId', new ParseIntPipe()) userId: number) {
+  deleteUser(@Param('userId', new ParseIntPipe()) userId: number) {
     return this.userService.delete(userId)
   }
 

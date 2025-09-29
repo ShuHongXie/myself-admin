@@ -1,5 +1,10 @@
-import { guider } from '@myself/utils'
+import { guider, initRequestInstance } from '@myself/utils'
 import { config } from './config'
+import { client } from '#/apis/client.gen'
+
+// export default initRequestInstance({
+//   baseURL: import.meta.env.VITE_BASE_URL
+// })
 
 async function start() {
   // name用于指定项目唯一标识
@@ -7,6 +12,11 @@ async function start() {
   // const env = import.meta.env.PROD ? 'prod' : 'dev';
   // const appVersion = import.meta.env.VITE_APP_VERSION;
   // const namespace = `${import.meta.env.VITE_APP_NAMESPACE}-${appVersion}-${env}`;
+  client.setConfig({
+    axios: initRequestInstance({
+      baseURL: import.meta.env.VITE_BASE_URL
+    })
+  })
 
   // app偏好设置初始化
   await guider.initConfig({

@@ -48,7 +48,9 @@ async function bootstrap() {
     .setTitle('MySelf后台管理系统')
     .setDescription('MySelf后台管理系统API文档')
     .build()
-  const document = SwaggerModule.createDocument(app, config)
+  const document = SwaggerModule.createDocument(app, config, {
+    operationIdFactory: (controllerKey: string, methodKey: string) => methodKey
+  })
   // swagger网页访问地址：http://localhost:4000/swagger
   // swagger网页json访问地址：http://localhost:4000/swagger-json
   SwaggerModule.setup('swagger', app, document, {

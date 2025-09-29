@@ -9,6 +9,9 @@ catalogs:
     '@ctrl/tinycolor':
       specifier: ^4.1.0
       version: 4.1.0
+    '@hey-api/client-axios':
+      specifier: ^0.9.1
+      version: 0.9.1
     '@iconify/vue':
       specifier: ^5.0.0
       version: 5.0.0
@@ -362,6 +365,9 @@ importers:
         specifier: 'catalog:'
         version: 4.5.1(vue@3.5.17(typescript@5.8.3))
     devDependencies:
+      '@hey-api/client-axios':
+        specifier: 'catalog:'
+        version: 0.9.1(@hey-api/openapi-ts@0.84.3(typescript@5.8.3))(axios@1.11.0)
       '@hey-api/openapi-ts':
         specifier: ^0.84.3
         version: 0.84.3(typescript@5.8.3)
@@ -429,8 +435,6 @@ importers:
       '@myself/types':
         specifier: workspace:^
         version: link:../types
-
-  packages/styles: {}
 
   packages/types: {}
 
@@ -1174,6 +1178,13 @@ packages:
 
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
+
+  '@hey-api/client-axios@0.9.1':
+    resolution: {integrity: sha512-fvpOdnEz6tu5T2+IMNZW3g9mAZwaXavqpsvtapEZNtYxyYtQ+lQs9wJn/VPhZEvdXAXu8HPTCRpmfa0t1aRATA==}
+    deprecated: Starting with v0.73.0, this package is bundled directly inside @hey-api/openapi-ts.
+    peerDependencies:
+      '@hey-api/openapi-ts': < 2
+      axios: '>= 1.0.0 < 2'
 
   '@hey-api/codegen-core@0.2.0':
     resolution: {integrity: sha512-c7VjBy/8ed0EVLNgaeS9Xxams1Tuv/WK/b4xXH3Qr4wjzYeJUtxOcoP8YdwNLavqKP8pGiuctjX2Z1Pwc4jMgQ==}
@@ -7356,6 +7367,11 @@ snapshots:
       '@floating-ui/utils': 0.2.10
 
   '@floating-ui/utils@0.2.10': {}
+
+  '@hey-api/client-axios@0.9.1(@hey-api/openapi-ts@0.84.3(typescript@5.8.3))(axios@1.11.0)':
+    dependencies:
+      '@hey-api/openapi-ts': 0.84.3(typescript@5.8.3)
+      axios: 1.11.0
 
   '@hey-api/codegen-core@0.2.0(typescript@5.8.3)':
     dependencies:

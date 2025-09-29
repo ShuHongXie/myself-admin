@@ -55,7 +55,11 @@ const handleOperate = (type: string, row?: any) => {
 // 确认修改/编辑
 const confirm = async () => {
   if (operateType.value === 'add') {
-    createMenu(currentOperateItem.value).then((res: any) => {
+    createMenu({
+      body: currentOperateItem.value
+    }).then((res: any) => {
+      console.log(res)
+
       ElMessage.success(res.msg)
       operateDialogVisible.value = false
       console.log(searchTableRef.value)

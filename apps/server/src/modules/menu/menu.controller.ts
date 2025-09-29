@@ -21,33 +21,28 @@ import { Public } from '@decorator/public.decorator'
 @Controller('menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
+
+  @ApiOperation({ summary: '新增菜单' })
   @Post()
   @Public()
-  @ApiParam({ name: 'createMenuDto', type: CreateMenuDto })
-  @ApiOperation({ summary: '新增菜单' })
   async createMenu(
     @Body()
-    createMenuDto: CreateMenuDto | CreateBaseDto
+    createMenuDto: CreateMenuDto
   ) {
-    const menu = await this.menuService.createMenu(createMenuDto)
-    return {
-      code: 200,
-      msg: 'success',
-      data: menu
-    }
+    return this.menuService.createMenu(createMenuDto)
   }
 
   @Get('/getRouters')
   @ApiOperation({ summary: '获取所有菜单(不含按钮)' })
   @Public()
-  findAll() {
+  getRouters() {
     return this.menuService.findAll()
   }
 
   @Get('/info')
   @ApiOperation({ summary: '获取所有菜单（包含按钮）' })
   @Public()
-  find() {
+  getMenuTree() {
     return this.menuService.findAllWithButtons()
   }
 
@@ -68,7 +63,7 @@ export class MenuController {
   @Get('/:id')
   @ApiOperation({ summary: '根据ID获取菜单详情' })
   @Public()
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  async getMenuDetail(@Param('id', ParseIntPipe) id: number) {
     const menu = await this.menuService.findOne(id)
     return {
       code: 200,
@@ -80,14 +75,14 @@ export class MenuController {
   @Put('/:id')
   @ApiOperation({ summary: '更新菜单' })
   @Public()
-  async update(@Param('id', ParseIntPipe) id: number, @Body() updateMenuDto: UpdateMenuDto) {
+  async updateMenu(@Param('id', ParseIntPipe) id: number, @Body() updateMenuDto: UpdateMenuDto) {
     return this.menuService.update(id, updateMenuDto)
   }
 
   @Delete('/:id')
   @ApiOperation({ summary: '删除菜单（需要先删除子菜单）' })
   @Public()
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  async deleteMenu(@Param('id', ParseIntPipe) id: number) {
     return this.menuService.remove(id)
   }
 

@@ -33,7 +33,8 @@ export default [
       'no-undef': 'off', // 没有定义参数
       'vue/multi-word-component-names': 'off',
       'no-irregular-whitespace': 'off',
-      '@typescript-eslint/no-explicit-any': 'off'
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off'
     }
   },
   {
