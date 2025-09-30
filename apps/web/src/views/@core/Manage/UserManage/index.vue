@@ -27,15 +27,10 @@ const handleSelect = (val: any) => {
 // 基础配置----------------end-------------------
 
 // 新增编辑操作----------------start-------------------
-interface RoleItem {
-  id: number
-  roleName: string
-  // 可能还有其他属性...
-}
 
 const operateDialogVisible = ref(false)
 const operateType = ref('add') // 1 新增 2 修改
-const rolesList = ref<RoleItem[]>([])
+const rolesList = ref<GetRoleListDto[]>([])
 const ruleFormRef = ref<FormInstance | null>(null)
 const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
 const switchLoading = ref(false)

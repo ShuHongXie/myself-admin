@@ -3,7 +3,7 @@ import { RoleService } from './role.service'
 import { CreateRoleDto } from './dto/create-role.dto'
 import { UpdateRoleDto } from './dto/update-role.dto'
 import { GetRoleListDto } from './dto/getRoleList.dto'
-import { ApiOperation } from '@nestjs/swagger'
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 import { Public } from '@decorator/public.decorator'
 
 @Controller('role')
@@ -25,6 +25,11 @@ export class RoleController {
   }
 
   @ApiOperation({ summary: '获取所有角色列表' })
+  @ApiOkResponse({
+    description: '返回示例',
+    type: GetRoleListDto,
+    isArray: true
+  })
   @Public()
   @Get('allRoles')
   getRolesList() {

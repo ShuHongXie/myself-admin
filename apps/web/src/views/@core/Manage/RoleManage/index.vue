@@ -38,7 +38,7 @@ interface RoleItem {
 
 const operateDialogVisible = ref(false)
 const operateType = ref('add') // add 新增 edit 修改
-const menuTree = ref<RoleItem[]>([])
+const menuTree = ref<GetRoleListDto[]>([])
 const ruleFormRef = ref<FormInstance | null>(null)
 const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
 const switchLoading = ref(false)
