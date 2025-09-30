@@ -113,8 +113,13 @@ const handleChangeMenuProps = (key: string, value: any) => {
 const handleSwitchChange = (row: any) => {
   currentOperateItem.value = row
   switchLoading.value = true
-  updateRole(row.id, {
-    status: row.status
+  updateRole({
+    path: {
+      id: row.id
+    },
+    body: {
+      status: row.status
+    }
   })
     .then(() => {
       ElMessage.success(`角色${!row.status ? '停用' : '启用'}成功`)
@@ -152,7 +157,12 @@ const confirm = async (formEl: FormInstance | null) => {
           searchTableRef.value?.handleSearch()
         })
       } else {
-        updateRole(currentOperateItem.value.id, currentOperateItem.value).then((res: any) => {
+        updateRole({
+          path: {
+            id: currentOperateItem.value.id
+          },
+          body: currentOperateItem.value
+        }).then((res: any) => {
           ElMessage.success(res.msg || '角色更新成功')
           operateDialogVisible.value = false
           currentOperateItem.value = cloneDeep(defaultOperateItem)
@@ -286,7 +296,7 @@ onMounted(() => {
                     :key="item.id"
                     :label="item.label"
                     :value="item.value"
-                    @change="(value) => handleChangeMenuProps(item.value, value)"
+                    @change="(value: string) => handleChangeMenuProps(item.value, value)"
                   />
                 </el-checkbox-group>
                 <div class="tree-container__content">

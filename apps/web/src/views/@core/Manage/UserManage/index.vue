@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { SearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
-import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import { ElMessage, type FormInstance } from 'element-plus'
 import { searchProps, columns, formRules } from './data'
 import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis'
 import { cloneDeep } from '@myself/utils'

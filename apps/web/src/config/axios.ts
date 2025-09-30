@@ -5,8 +5,6 @@ import { initRequestInstance, type CreateAxiosDefaults } from '@myself/utils'
  * @author xieshuhong
  * @export
  * @param {CreateAxiosDefaults} [extendConfig={}]
- * @param {(config?: AxiosRequestConfig) => void} [interceptorsRequestFn=() => {}]
- * @param {(Response?: AxiosResponse) => void} [interceptorsResponseFn=() => {}]
  */
 export default function initOpenApiInstance(extendConfig: CreateAxiosDefaults = {}) {
   client.setConfig({
