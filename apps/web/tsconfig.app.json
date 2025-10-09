@@ -22,7 +22,8 @@
     "vite/client",
     "nprogress",
     "@vitejs/plugin-vue-jsx",
-    "vue/jsx-runtime"
+    "vue/jsx-runtime",
+    "./src/apis/types.gen.ts"
   ],
   "include": [
     "src/**/*.ts",
