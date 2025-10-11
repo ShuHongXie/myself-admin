@@ -343,6 +343,7 @@ export const getRolesList = <ThrowOnError extends boolean = false>(
   options?: Options<GetRolesListData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<GetRolesListResponses, unknown, ThrowOnError>({
+    responseType: 'json',
     url: '/role/allRoles',
     ...options
   })

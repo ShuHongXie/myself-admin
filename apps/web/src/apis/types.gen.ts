@@ -71,6 +71,31 @@ export type CreateRoleDto = {
   updateBy: number
 }
 
+export type GetRoleListDto = {
+  roleName: string
+  /**
+   * 角色状态，1表示启用，0表示禁用
+   */
+  status: number
+  menus: Array<string>
+  /**
+   * 创建时间筛选开始日期时间戳
+   */
+  startCreateDate?: number
+  /**
+   * 创建时间筛选结束日期时间戳
+   */
+  endCreateDate?: number
+  /**
+   * 页码
+   */
+  currentPage: number
+  /**
+   * 页面大小
+   */
+  pageSize: number
+}
+
 export type UpdateRoleDto = {
   roleName?: string
   remark?: string
@@ -384,8 +409,13 @@ export type GetRolesListData = {
 }
 
 export type GetRolesListResponses = {
-  200: unknown
+  /**
+   * 返回示例
+   */
+  200: Array<GetRoleListDto>
 }
+
+export type GetRolesListResponse = GetRolesListResponses[keyof GetRolesListResponses]
 
 export type DeleteRoleData = {
   body?: never
