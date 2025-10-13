@@ -104,7 +104,7 @@
 import { ref, computed } from 'vue'
 import { useUserStore } from '@myself/store'
 import { useButtonPermission } from '@myself/utils'
-import { getUserButtonPermissions } from '#/apis'
+import { getUserButtonPermissions } from '#/apis/sdk.gen'
 import { ElMessage } from 'element-plus'
 
 const userStore = useUserStore()

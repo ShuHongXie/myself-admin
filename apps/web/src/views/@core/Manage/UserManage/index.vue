@@ -3,7 +3,7 @@ import { SearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { searchProps, columns, formRules } from './data'
-import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis'
+import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis/sdk.gen'
 import { cloneDeep } from '@myself/utils'
 
 const defaultOperateItem = {

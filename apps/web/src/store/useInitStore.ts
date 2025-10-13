@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
-import { getRouters } from '#/apis'
+import { getRouters } from '#/apis/sdk.gen'
 import { router } from '#/router'
 
 export const useInitStore = defineStore(

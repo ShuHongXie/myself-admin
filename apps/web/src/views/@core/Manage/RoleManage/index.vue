@@ -9,7 +9,7 @@ import {
   treeSettingSelect,
   defaultOperateItem
 } from './data.tsx'
-import { createRole, updateRole, deleteRole, getMenuTree } from '#/apis'
+import { createRole, updateRole, deleteRole, getMenuTree } from '#/apis/sdk.gen'
 import { cloneDeep } from '@myself/utils'
 
 const selectColumns = ref([])
