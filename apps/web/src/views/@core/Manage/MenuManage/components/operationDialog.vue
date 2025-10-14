@@ -35,6 +35,17 @@ const handleSubmit = async () => {
     }
   })
 }
+
+// 菜单类型切换
+const changeMenuType = (val: MenuType) => {
+  if (val === MenuType['按钮']) {
+    form.value.component = ''
+    form.value.path = ''
+    form.value.meta.icon = ''
+    form.value.meta.title = ''
+    form.value.meta.orderNum = ''
+  }
+}
 </script>
 
 <template>
@@ -59,7 +70,7 @@ const handleSubmit = async () => {
         </el-col>
         <el-col :span="24">
           <el-form-item prop="password" label="菜单类型:">
-            <el-radio-group v-model="form.menuType">
+            <el-radio-group v-model="form.menuType" @change="changeMenuType">
               <el-radio :value="item.value" v-for="item in menuTypeOptions" :key="item.value">{{
                 item.label
               }}</el-radio>
@@ -69,7 +80,11 @@ const handleSubmit = async () => {
         <el-col :span="24">
           <el-form-item prop="meta.icon" label="页面图标:">
             <div class="icon-input">
-              <el-input clearable v-model="form.meta.icon" />
+              <el-input
+                :disabled="form.menuType === MenuType['按钮']"
+                clearable
+                v-model="form.meta.icon"
+              />
               <el-link
                 type="primary"
                 underline="never"
@@ -87,12 +102,20 @@ const handleSubmit = async () => {
         </el-col>
         <el-col :span="12">
           <el-form-item prop="meta.orderNum" label="排序:">
-            <el-input clearable v-model.number="form.meta.orderNum" />
+            <el-input
+              :disabled="form.menuType === MenuType['按钮']"
+              clearable
+              v-model.number="form.meta.orderNum"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="component" label="组件名称:">
-            <el-input clearable v-model="form.component" />
+            <el-input
+              :disabled="form.menuType === MenuType['按钮']"
+              clearable
+              v-model="form.component"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -102,7 +125,11 @@ const handleSubmit = async () => {
         </el-col>
         <el-col :span="24">
           <el-form-item prop="path" label="路由跳转地址:" label-width="120px">
-            <el-input clearable v-model="form.path" />
+            <el-input
+              :disabled="form.menuType === MenuType['按钮']"
+              clearable
+              v-model="form.path"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="24">
