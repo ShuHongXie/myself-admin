@@ -47,6 +47,8 @@ import type {
   RemoveWithChildrenResponses,
   UpdateMenuData,
   UpdateMenuResponses,
+  UpdatePasswordData,
+  UpdatePasswordResponses,
   UpdateRoleData,
   UpdateRoleResponses,
   UpdateUserData,
@@ -87,6 +89,22 @@ export const register = <ThrowOnError extends boolean = false>(
 ) => {
   return (options.client ?? client).post<RegisterResponses, unknown, ThrowOnError>({
     url: '/user/register',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers
+    }
+  })
+}
+
+/**
+ * 修改密码
+ */
+export const updatePassword = <ThrowOnError extends boolean = false>(
+  options: Options<UpdatePasswordData, ThrowOnError>
+) => {
+  return (options.client ?? client).put<UpdatePasswordResponses, unknown, ThrowOnError>({
+    url: '/user/updatePassword',
     ...options,
     headers: {
       'Content-Type': 'application/json',

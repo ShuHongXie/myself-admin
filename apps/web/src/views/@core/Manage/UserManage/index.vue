@@ -5,6 +5,7 @@ import { ElMessage, type FormInstance } from 'element-plus'
 import { searchProps, columns, formRules } from './data'
 import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis/sdk.gen'
 import { cloneDeep } from '@myself/utils'
+import type { GetRoleListDto } from '#/apis/types.gen'
 
 const defaultOperateItem = {
   username: '',

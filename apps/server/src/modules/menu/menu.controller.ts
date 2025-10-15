@@ -64,12 +64,7 @@ export class MenuController {
   @ApiOperation({ summary: '根据ID获取菜单详情' })
   @Public()
   async getMenuDetail(@Param('id', ParseIntPipe) id: number) {
-    const menu = await this.menuService.findOne(id)
-    return {
-      code: 200,
-      msg: 'success',
-      data: menu
-    }
+    return this.menuService.findOne(id)
   }
 
   @Put('/:id')

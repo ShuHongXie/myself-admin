@@ -35,6 +35,7 @@ const axios = initRequestInstance({
   headers: props.headers
 })
 const data = ref([])
+const loading = ref(false)
 const pagination = ref({
   currentPage: 1,
   pageSize: 20,
@@ -70,18 +71,19 @@ const handleSearch = async (reset = true) => {
     )
       ? { params }
       : params
+    loading.value = true
     const res = await axios[props.methodType as RequestMethodType](
       props.url,
       requestParams as AxiosRequestConfig
     )
     data.value = getNestedValue(res, props.responseDataField)
-    console.log(data.value)
-
     if (props.showPagination) {
       pagination.value.total = getNestedValue(res, props.responseTotalField)
     }
   } catch (error) {
     console.log(error)
+  } finally {
+    loading.value = false
   }
 }
 
@@ -125,6 +127,7 @@ const emitEventHandler = (...args: any) => {
     </Search>
     <slot name="prefix"></slot>
     <el-table
+      v-loading.lock="loading"
       @select="(selection: any, row: any) => emitEventHandler('select', selection, row)"
       @select-all="(selection: any) => emitEventHandler('select-all', selection)"
       @selection-change="(selection: any) => emitEventHandler('selection-change', selection)"

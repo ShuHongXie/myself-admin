@@ -39,6 +39,17 @@ export type CreateUserDto = {
   rolesId: Array<string>
 }
 
+export type UpdateUserPasswordDto = {
+  /**
+   * 原密码
+   */
+  oldPassword: string
+  /**
+   * 新密码
+   */
+  newPassword: string
+}
+
 export type LoginDto = {
   /**
    * 用户名
@@ -129,6 +140,17 @@ export type RegisterData = {
 
 export type RegisterResponses = {
   201: unknown
+}
+
+export type UpdatePasswordData = {
+  body: UpdateUserPasswordDto
+  path?: never
+  query?: never
+  url: '/user/updatePassword'
+}
+
+export type UpdatePasswordResponses = {
+  200: unknown
 }
 
 export type LoginData = {

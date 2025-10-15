@@ -163,7 +163,7 @@ export class MenuService {
    * @param {number} id 菜单ID
    * @return {Promise<Menu>} 菜单详情
    */
-  async findOne(id: number): Promise<Menu> {
+  async findOne(id: number): Promise<ResultData<Menu>> {
     const menu = await this.menuRepository
       .createQueryBuilder('menu')
       .leftJoinAndSelect('menu.meta', 'meta')
@@ -175,8 +175,7 @@ export class MenuService {
     if (!menu) {
       throw new ApiException('菜单不存在', ApiErrorCode.COMMON_CODE)
     }
-
-    return menu
+    return ResultData.success('获取成功', menu)
   }
 
   /**
@@ -234,7 +233,7 @@ export class MenuService {
     try {
       console.log('----更新菜单----')
 
-      const existingMenu = await this.findOne(id)
+      const { data: existingMenu } = await this.findOne(id)
       // 更新基础菜单信息
       const { meta, children, ...menuData } = updateMenuDto
       Object.assign(existingMenu, menuData)
@@ -261,7 +260,7 @@ export class MenuService {
    */
   async remove(id: number) {
     try {
-      const menu = await this.findOne(id)
+      const { data: menu } = await this.findOne(id)
       // 检查是否有子菜单
       const childrenCount = await this.menuRepository.count({
         where: { parentId: id }
