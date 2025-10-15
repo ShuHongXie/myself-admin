@@ -51,7 +51,10 @@ export enum MenuType {
   '按钮' = 3
 }
 
-export const menuTypeOptions = [
+export const menuTypeOptions: {
+  label: string
+  value: number
+}[] = [
   {
     label: '目录',
     value: 1

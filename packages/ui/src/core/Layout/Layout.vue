@@ -79,14 +79,15 @@ const handleClickTab = (path: string) => {
 watch(
   () => route.path,
   () => {
-    console.log(route)
-
     configStore.setActiveTab(route.path)
     const menuItem = findMenuItem(menuData.value, route.path)
-    configStore.setTabData({
-      ...menuItem,
-      query: route.query
-    })
+    console.log('menuItem', menuItem)
+    if (menuItem) {
+      configStore.setTabData({
+        ...menuItem,
+        query: route.query
+      })
+    }
   },
   {
     immediate: true

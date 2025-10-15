@@ -37,8 +37,9 @@ const handleSubmit = async () => {
 }
 
 // 菜单类型切换
-const changeMenuType = (val: MenuType) => {
-  if (val === MenuType['按钮']) {
+const changeMenuType = (value: string | number | boolean | undefined): void => {
+  // 添加类型检查，确保value不为undefined再进行比较
+  if (value !== undefined && (value as number) === MenuType['按钮']) {
     form.value.component = ''
     form.value.path = ''
     form.value.meta.icon = ''
