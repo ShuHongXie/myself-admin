@@ -18,6 +18,7 @@ import { CacheService } from '@modules/cache/cache.service'
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate'
 import { GetUserListDto } from './dto/getUserList.dto'
 import { paginateTransform } from '@utils/paginate'
+import { UpdateUserPasswordDto } from './dto/updateUserPassword.dto'
 
 @Injectable()
 export class UserService {
@@ -39,6 +40,29 @@ export class UserService {
 
     if (!user) throw new ApiException('用户名不存在', ApiErrorCode.USER_NOTEXIST)
     return user
+  }
+
+  //修改密码
+  async updatePassword(req: Request & { user: any }, updatePasswordDto: UpdateUserPasswordDto) {
+    const { oldPassword, newPassword } = updatePasswordDto
+    const id = req.user.sub
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          id
+        }
+      })
+      //判断输入的原密码是否正确
+      if (user?.password !== encry(oldPassword, user?.salt as string)) {
+        throw Error('原密码错误')
+      }
+      //加密新密码并更新密码
+      user.password = encry(newPassword, user.salt)
+      await this.userRepository.update(id, { password: user.password })
+      return ResultData.success('修改成功')
+    } catch (error) {
+      throw new ApiException(error.message, ApiErrorCode.FAIL)
+    }
   }
 
   async register(createUserDto: CreateUserDto) {

@@ -20,6 +20,7 @@ import { UserService } from './user.service'
 import { LoginDto } from './dto/login.dto'
 import { Public } from '@decorator/public.decorator'
 import { GetUserListDto } from './dto/getUserList.dto'
+import { UpdateUserPasswordDto } from './dto/updateUserPassword.dto'
 
 @ApiTags('用户模块')
 @Controller('user')
@@ -31,6 +32,15 @@ export class UserController {
   @ApiOperation({ summary: '账号注册' })
   register(@Body() createUserDto: CreateUserDto) {
     return this.userService.register(createUserDto)
+  }
+
+  @Put('/updatePassword')
+  @ApiOperation({ summary: '修改密码' })
+  async updatePassword(
+    @Req() req: Request & { user: any },
+    @Body() updateUserDto: UpdateUserPasswordDto
+  ) {
+    return await this.userService.updatePassword(req, updateUserDto)
   }
 
   @Post('login')
