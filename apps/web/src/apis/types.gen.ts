@@ -164,7 +164,7 @@ export type LoginResponses = {
   /**
    * 返回示例
    */
-  200: LoginDto
+  default: LoginDto
 }
 
 export type LoginResponse = LoginResponses[keyof LoginResponses]

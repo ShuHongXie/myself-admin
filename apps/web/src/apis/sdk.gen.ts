@@ -120,7 +120,6 @@ export const login = <ThrowOnError extends boolean = false>(
   options: Options<LoginData, ThrowOnError>
 ) => {
   return (options.client ?? client).post<LoginResponses, unknown, ThrowOnError>({
-    responseType: 'json',
     url: '/user/login',
     ...options,
     headers: {

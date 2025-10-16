@@ -13,7 +13,7 @@ import {
   Delete
 } from '@nestjs/common'
 import { CreateUserDto } from './dto/createUser.dto'
-import { ApiOperation, ApiTags, ApiOkResponse } from '@nestjs/swagger'
+import { ApiOperation, ApiTags, ApiOkResponse, ApiResponse } from '@nestjs/swagger'
 
 import { UserService } from './user.service'
 
@@ -45,8 +45,11 @@ export class UserController {
 
   @Post('login')
   @Public()
-  @ApiOkResponse({
+  @ApiResponse({
     description: '返回示例',
+    schema: {
+      nullable: true // 允许响应为null
+    },
     type: LoginDto
   })
   @ApiOperation({ summary: '用户登录' })
