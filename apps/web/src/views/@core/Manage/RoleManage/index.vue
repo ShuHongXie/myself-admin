@@ -149,13 +149,19 @@ const confirm = async (formEl: FormInstance | null) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       if (operateType.value === 'add') {
-        createRole(currentOperateItem.value).then((res: any) => {
-          ElMessage.success(res.msg || '角色创建成功')
-          operateDialogVisible.value = false
-          console.log(searchTableRef.value)
-          currentOperateItem.value = cloneDeep(defaultOperateItem)
-          searchTableRef.value?.handleSearch()
+        createRole({
+          body: currentOperateItem.value
         })
+          .then((res: any) => {
+            ElMessage.success(res.msg || '角色创建成功')
+            operateDialogVisible.value = false
+            console.log(searchTableRef.value)
+            currentOperateItem.value = cloneDeep(defaultOperateItem)
+            searchTableRef.value?.handleSearch()
+          })
+          .catch((err) => {
+            console.log('error:', err)
+          })
       } else {
         updateRole({
           path: {
@@ -180,7 +186,11 @@ const handleDelete = (row: any) => {
   ElMessageBox.confirm(`确认删除角色【${row.roleName}】?`, 'Warning', {
     type: 'warning'
   }).then(() => {
-    deleteRole(row.id).then((res: any) => {
+    deleteRole({
+      path: {
+        id: row.id
+      }
+    }).then((res: any) => {
       ElMessage.success(res.msg)
       searchTableRef.value?.handleSearch()
     })

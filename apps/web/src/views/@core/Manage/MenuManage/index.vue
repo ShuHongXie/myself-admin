@@ -58,6 +58,8 @@ const confirm = async () => {
     createMenu({
       body: currentOperateItem.value
     }).then((res: any) => {
+      console.log('----请求完成')
+
       console.log(res)
 
       ElMessage.success(res.msg)
@@ -92,7 +94,11 @@ const handleDelete = (row: any) => {
   ElMessageBox.confirm(`确认删除${menuTypeData[row.menuType]}【${row.name}】?`, 'Warning', {
     type: 'warning'
   }).then(() => {
-    deleteMenu(row.id).then((res: any) => {
+    deleteMenu({
+      path: {
+        id: row.id
+      }
+    }).then((res: any) => {
       ElMessage.success(res.msg)
       searchTableRef.value?.handleSearch()
     })

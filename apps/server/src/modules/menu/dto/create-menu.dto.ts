@@ -54,6 +54,7 @@ export class CreateBaseDto {
   @IsInt()
   status?: number = 1
 
+  // @IsOptional()
   @IsInt()
   createBy: number
 }

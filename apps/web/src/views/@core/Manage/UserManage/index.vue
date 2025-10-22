@@ -7,6 +7,9 @@ import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis/
 import { cloneDeep } from '@myself/utils'
 import type { GetRoleListDto } from '#/apis/types.gen'
 
+// 扩展GetRoleListDto类型，添加id字段
+type RoleListItem = GetRoleListDto & { id: number }
+
 const defaultOperateItem = {
   username: '',
   password: '',
@@ -31,7 +34,7 @@ const handleSelect = (val: any) => {
 
 const operateDialogVisible = ref(false)
 const operateType = ref('add') // 1 新增 2 修改
-const rolesList = ref<GetRoleListDto[]>([])
+const rolesList = ref<RoleListItem[]>([])
 const ruleFormRef = ref<FormInstance | null>(null)
 const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
 const switchLoading = ref(false)
@@ -40,7 +43,7 @@ const currentOperateItem = ref<any>(defaultOperateItem)
 // 获取所有角色列表
 const loadRoleList = () => {
   getRolesList().then((res) => {
-    rolesList.value = res.data
+    rolesList.value = res.data as RoleListItem[]
   })
 }
 
@@ -78,7 +81,9 @@ const confirm = async (formEl: FormInstance | null) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       if (operateType.value === 'add') {
-        createUserByAdmin(currentOperateItem.value).then((res: any) => {
+        createUserByAdmin({
+          body: currentOperateItem.value
+        }).then((res: any) => {
           ElMessage.success(res.msg || '用户创建成功')
           operateDialogVisible.value = false
           console.log(searchTableRef.value)
@@ -86,7 +91,9 @@ const confirm = async (formEl: FormInstance | null) => {
           searchTableRef.value?.handleSearch()
         })
       } else {
-        updateUser(currentOperateItem.value).then((res: any) => {
+        updateUser({
+          body: currentOperateItem.value
+        }).then((res: any) => {
           ElMessage.success(res.msg || '用户更新成功')
           operateDialogVisible.value = false
           currentOperateItem.value = cloneDeep(defaultOperateItem)
@@ -104,7 +111,9 @@ const handleDelete = (row: any) => {
   ElMessageBox.confirm(`确认删除账户【${row.username}】?`, 'Warning', {
     type: 'warning'
   }).then(() => {
-    deleteUser(row.id).then((res: any) => {
+    deleteUser({
+      path: { userId: row.id }
+    }).then((res: any) => {
       ElMessage.success(res.msg)
       searchTableRef.value?.handleSearch()
     })

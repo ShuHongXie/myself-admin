@@ -50,6 +50,7 @@ export const initRequestInstance = (
       'Content-Type': 'application/json;charset=utf-8'
     }
   })
+
   const instance = axios.create(axiosConfig)
 
   // 请求拦截器
@@ -78,11 +79,13 @@ export const initRequestInstance = (
   // 响应拦截器
   instance.interceptors.response.use(
     (response: AxiosResponse) => {
+      console.log('response:', response)
       interceptorsResponseFn(response)
       // 从pending列表移除请求
       removePendingRequest(response.config)
 
       const data = response.data as ApiResponse<any>
+      console.log(data)
 
       // 根据实际后端接口规范处理响应
       if (data.code === 200) {
@@ -98,6 +101,8 @@ export const initRequestInstance = (
       }
     },
     (error) => {
+      console.log('请求发生错误：', error)
+
       // 请求完成后从pending列表移除
       if (error.config) {
         removePendingRequest(error.config)
@@ -138,6 +143,7 @@ export const initRequestInstance = (
       } else {
         ElMessage.error('请求失败，请稍后重试')
       }
+      console.log('---错误返回')
 
       return Promise.reject(error)
     }

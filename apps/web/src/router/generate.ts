@@ -40,6 +40,8 @@ export const formatRoutes = (routes: any[]) => {
  * @returns 返回符合菜单配置的数据数组
  */
 export const generateMenus = (routes: any[], menuData: any = []) => {
+  console.log(routes, menuData)
+
   // 遍历路由配置数组
   routes.forEach((item: any) => {
     const { path, redirect, name: routeName, meta = {} as RouteMeta } = item
