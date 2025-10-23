@@ -8,7 +8,9 @@ import { initRequestInstance, type CreateAxiosDefaults } from '@myself/utils'
  */
 export default function initOpenApiInstance(extendConfig: CreateAxiosDefaults = {}) {
   client.setConfig({
-    axios: initRequestInstance(extendConfig)
+    axios: initRequestInstance(extendConfig),
+    // 设置为true，使错误能够正确抛出而不是被转换为成功的响应
+    throwOnError: true
   })
 
   console.log('client:', client)
