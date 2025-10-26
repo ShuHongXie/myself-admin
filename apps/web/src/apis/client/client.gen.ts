@@ -105,11 +105,7 @@ export const createClient = (config: Config = {}): Client => {
       }
       // @ts-expect-error
       e.error = e.response?.data ?? {}
-      return Promise.reject({
-        ...e,
-        data: undefined,
-        error: e.response?.data ?? {}
-      })
+      return e
     }
   }
 

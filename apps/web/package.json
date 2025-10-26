@@ -26,6 +26,9 @@
     "vue-router": "catalog:"
   },
   "devDependencies": {
+    "@babel/cli": "catalog:",
+    "@babel/core": "catalog:",
+    "@babel/preset-env": "catalog:",
     "@hey-api/client-axios": "catalog:",
     "@hey-api/openapi-ts": "^0.84.3",
     "@vitejs/plugin-vue": "catalog:",
