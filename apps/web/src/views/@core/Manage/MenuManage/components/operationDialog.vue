@@ -47,6 +47,13 @@ const changeMenuType = (value: string | number | boolean | undefined): void => {
     form.value.meta.orderNum = ''
   }
 }
+
+// 菜单名称同步
+const handleChangeMenuName = (value: string) => {
+  if (form.value.menuType === MenuType['菜单']) {
+    form.value.meta.title = value
+  }
+}
 </script>
 
 <template>
@@ -98,7 +105,7 @@ const changeMenuType = (value: string | number | boolean | undefined): void => {
         </el-col>
         <el-col :span="12">
           <el-form-item prop="name" :label="`${menuTypeData[form.menuType]}名称:`">
-            <el-input clearable v-model="form.name" />
+            <el-input @input="handleChangeMenuName" clearable v-model="form.name" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -145,7 +152,7 @@ const changeMenuType = (value: string | number | boolean | undefined): void => {
         <template v-if="form.menuType === MenuType['菜单']">
           <el-col :span="12">
             <el-form-item prop="title" label="页面标题:">
-              <el-input clearable v-model="form.meta.title" />
+              <el-input clearable disabled v-model="form.meta.title" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
