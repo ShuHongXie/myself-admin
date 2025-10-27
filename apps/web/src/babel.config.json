@@ -1,4 +1,8 @@
 {
+  "parserOpts": {
+    "sourceType": "module",
+    "plugins": ["typescript"] // 启用 TS 语法解析（不剥离类型）
+  },
   "presets": [
     "@babel/preset-typescript",
     [
@@ -15,5 +19,5 @@
       }
     ]
   ],
-  "plugins": ["./replace-console.js"]
+  "plugins": ["./src/babel/replace-console.ts"]
 }
