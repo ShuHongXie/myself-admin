@@ -28,7 +28,9 @@
   "devDependencies": {
     "@babel/cli": "catalog:",
     "@babel/core": "catalog:",
+    "@babel/plugin-transform-runtime": "^7.28.5",
     "@babel/preset-env": "catalog:",
+    "@babel/preset-typescript": "^7.28.5",
     "@hey-api/client-axios": "catalog:",
     "@hey-api/openapi-ts": "^0.84.3",
     "@vitejs/plugin-vue": "catalog:",

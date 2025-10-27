@@ -1,5 +1,6 @@
 {
   "presets": [
+    "@babel/preset-typescript",
     [
       "@babel/preset-env",
       {
@@ -14,5 +15,5 @@
       }
     ]
   ],
-  "plugins": ["./src/babel/replace-console.ts"]
+  "plugins": ["./replace-console.js"]
 }

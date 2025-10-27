@@ -29,7 +29,7 @@ export default [
     rules: {
       semi: ['error', 'never'], // 语句后不带分号
       'no-unused-vars': 'off', // 没有使用的参数
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'off',
       'no-undef': 'off', // 没有定义参数
       'vue/multi-word-component-names': 'off',
       'no-irregular-whitespace': 'off',

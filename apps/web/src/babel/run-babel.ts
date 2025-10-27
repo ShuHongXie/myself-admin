@@ -1,9 +1,10 @@
 import { transformFileSync } from '@babel/core'
 import replaceConsolePlugin from './replace-console.ts'
+import translateEPlugin from './translate-e.ts'
 
 // 转换目标文件
 const result = transformFileSync('./src/babel/test.ts', {
-  plugins: [replaceConsolePlugin]
+  plugins: [translateEPlugin]
 })
 
 // 输出转换后的代码
