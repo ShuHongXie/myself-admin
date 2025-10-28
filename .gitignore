@@ -9,6 +9,7 @@ node_modules/
 dist/
 **/dist/
 build/
+app/web/src/apis/
 
 # Logs
 *.log

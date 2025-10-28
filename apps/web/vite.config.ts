@@ -6,7 +6,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { resolve } from 'path'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import { tsTransformPlugin } from './src/vite-plugin/ts-transform'
+import { transformWithTypesPlugin } from './src/vite-plugin/transform-with-types'
 
 export default defineConfig({
   server: {
@@ -51,6 +51,12 @@ export default defineConfig({
       // 执行 icon name 的格式
       symbolId: 'icon-[name]'
     }),
-    tsTransformPlugin() // 添加我们的 TypeScript 转换插件
+    transformWithTypesPlugin({
+      // 配置选项
+      input: './src/apis/client/client.gen.ts',
+      output: './src/apis/client/client.gen.ts',
+      enableBuild: true,
+      enableDev: true // 启用开发时监听
+    }) // 添加我们的 TypeScript 转换插件
   ]
 })
