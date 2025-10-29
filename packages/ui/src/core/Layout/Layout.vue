@@ -71,7 +71,7 @@ const handleRemoveTab = (index: number) => {
  * @return {*}
  * @Author: xieshuhong
  */
-const handleClickTab = (path: string) => {
+const handleTabChange = (path: string) => {
   configStore.setActiveTab(path)
   router.push({ path })
 }
@@ -294,7 +294,7 @@ watch(
         </el-header>
         <!-- 历史访问页 -->
         <div class="layout-tabs">
-          <el-tabs v-model="activeTab" type="card">
+          <el-tabs @tab-change="handleTabChange" v-model="activeTab" type="card">
             <el-tab-pane
               v-for="(item, index) in tabData"
               :key="item.path"
@@ -302,7 +302,7 @@ watch(
               :name="item.path"
             >
               <template #label>
-                <div @click.stop="handleClickTab(item.path as string)" class="layout-tabs__label">
+                <div class="layout-tabs__label">
                   <Icon v-if="item.icon" :icon="item!.icon" color="#999999" />
                   <span> {{ item.name }}</span>
                   <Icon @click.stop="handleRemoveTab(index)" icon="ep:close" color="#999999" />
