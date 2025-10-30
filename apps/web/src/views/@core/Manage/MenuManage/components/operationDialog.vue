@@ -38,6 +38,7 @@ const handleSubmit = async () => {
 
 // 菜单类型切换
 const changeMenuType = (value: string | number | boolean | undefined): void => {
+  form.value.permission = ''
   // 添加类型检查，确保value不为undefined再进行比较
   if (value !== undefined && (value as number) === MenuType['按钮']) {
     form.value.component = ''
@@ -127,8 +128,16 @@ const handleChangeMenuName = (value: string) => {
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="permission" label="权限标识:">
-            <el-input clearable v-model="form.permission" />
+          <el-form-item
+            v-if="form.menuType === MenuType['按钮']"
+            prop="permission"
+            label="权限标识:"
+          >
+            <el-input
+              clearable
+              v-model="form.permission"
+              placeholder="遵循规范：模块:功能:操作，比如sys:user:add"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="24">

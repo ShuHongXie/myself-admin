@@ -19,7 +19,7 @@ export const searchProps = {
     {
       prop: 'status',
       formItemProps: {
-        label: '菜单状态'
+        label: '状态'
       },
       input: {
         type: 'select',
@@ -71,6 +71,12 @@ export const menuTypeOptions: {
 
 export const menuTypeData = transOptionsToObject(menuTypeOptions)
 
+export const menuTypeColor = {
+  1: '#626aef',
+  2: '#67c23a',
+  3: '#909399'
+} as const
+
 // 表格字段
 export const columns = ref([
   {
@@ -91,7 +97,7 @@ export const columns = ref([
     align: 'center',
     minWidth: 90,
     render: (row: any) => (
-      <ElButton type={'primary'} link>
+      <ElButton plain color={menuTypeColor[row.menuType as keyof typeof menuTypeColor]}>
         {menuTypeData[row.menuType]}
       </ElButton>
     )
@@ -101,6 +107,13 @@ export const columns = ref([
     label: '组件路径',
     align: 'center',
     minWidth: 180
+  },
+  {
+    prop: 'component',
+    label: '组件名称',
+    align: 'center',
+    minWidth: 180,
+    render: (row: any) => <div>{row.component || '-'}</div>
   },
   {
     prop: 'permission',

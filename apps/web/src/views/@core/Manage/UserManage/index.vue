@@ -52,7 +52,7 @@ const handleSwitchChange = (row: any) => {
   currentOperateItem.value = row
   switchLoading.value = true
   updateUser({
-    ...currentOperateItem.value
+    body: currentOperateItem.value
   })
     .then(() => {
       ElMessage.success(`用户${!row.status ? '停用' : '启用'}成功`)
