@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { CreateRoleDto } from './dto/create-role.dto'
-import { GetRoleListDto } from './dto/getRoleList.dto'
+import { GetRoleListDto } from './dto/get-role-list.dto'
 import { UpdateRoleDto } from './dto/update-role.dto'
 import { ApiException } from 'src/common/filter/api.exception'
 import { In, Repository, Between, MoreThanOrEqual, LessThanOrEqual } from 'typeorm'

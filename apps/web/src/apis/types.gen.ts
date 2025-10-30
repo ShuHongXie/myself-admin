@@ -65,8 +65,74 @@ export type CreateMenuDto = {
   [key: string]: unknown
 }
 
+export type MenuMetaDto = {
+  /**
+   * 标题
+   */
+  title?: string
+  /**
+   * 排序号
+   */
+  orderNum?: number
+  /**
+   * 菜单图标
+   */
+  icon?: string
+  /**
+   * 是否显示在面包屑: true-显示 false-隐藏
+   */
+  showInBreadcrumb?: boolean
+  /**
+   * 是否显示在标签栏: true-显示 false-隐藏
+   */
+  showInTab?: boolean
+  /**
+   * 是否显示在菜单栏: true-显示 false-隐藏
+   */
+  showInMenu?: boolean
+  /**
+   * 是否缓存: true-缓存 false-不缓存
+   */
+  isCache?: boolean
+}
+
 export type Menu = {
-  [key: string]: unknown
+  /**
+   * 菜单ID
+   */
+  id?: number
+  /**
+   * 菜单名称
+   */
+  name?: string
+  /**
+   * 菜单类型: 1-目录 2-菜单 3-按钮
+   */
+  menuType?: number
+  /**
+   * 菜单状态: 0-停用 1-启用
+   */
+  status?: number
+  /**
+   * 路由跳转地址
+   */
+  path?: string
+  /**
+   * 组件路径
+   */
+  component?: string
+  /**
+   * 权限标识
+   */
+  permission?: string
+  /**
+   * 父级菜单ID
+   */
+  parentId?: number
+  /**
+   * 菜单元数据
+   */
+  meta?: MenuMetaDto
 }
 
 export type UpdateMenuDto = {

@@ -2,7 +2,7 @@
 import { SearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import OperationDialog from './components/OperationDialog.vue'
+import OperationDialog from './components/operationDialog.vue'
 import { searchProps, columns, defaultOperateItem, MenuType, menuTypeData } from './data.tsx'
 import { createMenu, deleteMenu, updateMenu, getMenuTree } from '#/apis/sdk.gen'
 import { cloneDeep } from '@myself/utils'
@@ -59,10 +59,6 @@ const confirm = async () => {
     createMenu({
       body: currentOperateItem.value
     }).then((res: any) => {
-      console.log('----请求完成')
-
-      console.log(res)
-
       ElMessage.success(res.msg)
       operateDialogVisible.value = false
       console.log(searchTableRef.value)

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@
 import { RoleService } from './role.service'
 import { CreateRoleDto } from './dto/create-role.dto'
 import { UpdateRoleDto } from './dto/update-role.dto'
-import { GetRoleListDto } from './dto/getRoleList.dto'
+import { GetRoleListDto } from './dto/get-role-list.dto'
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 import { Public } from '@decorator/public.decorator'
 
