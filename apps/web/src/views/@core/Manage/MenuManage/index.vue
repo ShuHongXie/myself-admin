@@ -6,6 +6,7 @@ import OperationDialog from './components/OperationDialog.vue'
 import { searchProps, columns, defaultOperateItem, MenuType, menuTypeData } from './data.tsx'
 import { createMenu, deleteMenu, updateMenu, getMenuTree } from '#/apis/sdk.gen'
 import { cloneDeep } from '@myself/utils'
+import type { Menu } from '#/apis/types.gen.ts'
 
 // 搜索表单---------------start-------------------
 const form = ref({})
@@ -16,12 +17,12 @@ const operateDialogVisible = ref(false)
 const operateType = ref('add') // add 新增 edit 修改
 const menuTree = ref<any[]>([])
 const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
-const currentOperateItem = ref<MenuItem>(cloneDeep(defaultOperateItem))
+const currentOperateItem = ref<Menu>(cloneDeep(defaultOperateItem))
 
 // 获取菜单树
 const loadMenuTree = () => {
   getMenuTree().then((res) => {
-    res.data.forEach((item: MenuItem) => {
+    res.data?.forEach((item: Menu) => {
       if (!item.parentId) {
         item.parentId = -1
       }

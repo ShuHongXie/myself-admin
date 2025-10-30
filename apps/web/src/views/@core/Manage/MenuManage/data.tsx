@@ -1,5 +1,6 @@
 import { ElButton } from 'element-plus'
 import { transOptionsToObject } from '@myself/utils'
+import type { Menu } from '#/apis/types.gen'
 export const searchProps = {
   slots: [],
   span: 8,
@@ -192,7 +193,7 @@ export const treeSettingSelect = ref([
 ])
 
 // 默认操作对象
-export const defaultOperateItem: MenuItem = {
+export const defaultOperateItem: Menu = {
   id: '',
   name: '',
   menuType: 1,

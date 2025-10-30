@@ -65,6 +65,10 @@ export type CreateMenuDto = {
   [key: string]: unknown
 }
 
+export type Menu = {
+  [key: string]: unknown
+}
+
 export type UpdateMenuDto = {
   [key: string]: unknown
 }
@@ -292,8 +296,13 @@ export type GetMenuTreeData = {
 }
 
 export type GetMenuTreeResponses = {
-  200: unknown
+  /**
+   * 返回示例
+   */
+  200: Array<Menu>
 }
+
+export type GetMenuTreeResponse = GetMenuTreeResponses[keyof GetMenuTreeResponses]
 
 export type GetUserButtonPermissionsData = {
   body?: never

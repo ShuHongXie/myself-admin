@@ -244,6 +244,7 @@ export const getMenuTree = <ThrowOnError extends boolean = false>(
   options?: Options<GetMenuTreeData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<GetMenuTreeResponses, unknown, ThrowOnError>({
+    responseType: 'json',
     url: '/menu/info',
     ...options
   })

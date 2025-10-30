@@ -11,10 +11,11 @@ import {
   Query
 } from '@nestjs/common'
 import { MenuService } from './menu.service'
+import { Menu } from './entities/menu.entity'
 import { CreateBaseDto, CreateMenuDto } from './dto/create-menu.dto'
 import { UpdateMenuDto } from './dto/update-menu.dto'
 import { QueryMenuDto } from './dto/query-menu.dto'
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
+import { ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { Public } from '@decorator/public.decorator'
 
 @ApiTags('菜单权限模块')
@@ -41,6 +42,11 @@ export class MenuController {
 
   @Get('/info')
   @ApiOperation({ summary: '获取所有菜单（包含按钮）' })
+  @ApiOkResponse({
+    description: '返回示例',
+    type: Menu,
+    isArray: true
+  })
   @Public()
   getMenuTree() {
     return this.menuService.findAllWithButtons()
