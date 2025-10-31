@@ -28,7 +28,7 @@ export type CreateUserDto = {
   /**
    * 状态
    */
-  status?: number
+  status?: boolean
   /**
    * 密码
    */
@@ -59,6 +59,33 @@ export type LoginDto = {
    * 密码
    */
   password: string
+}
+
+export type GetUserListDto = {
+  /**
+   * 用户名
+   */
+  username: string
+  /**
+   * 用户昵称
+   */
+  nickname: string
+  /**
+   * 手机号码
+   */
+  telephone: string
+  /**
+   * 用户状态
+   */
+  status: boolean
+  /**
+   * 页码
+   */
+  currentPage: number
+  /**
+   * 页面大小
+   */
+  pageSize: number
 }
 
 export type CreateMenuDto = {
@@ -110,9 +137,9 @@ export type Menu = {
    */
   menuType?: number
   /**
-   * 菜单状态: 0-停用 1-启用
+   * 菜单状态: false-停用 true-启用
    */
-  status?: number
+  status?: boolean
   /**
    * 路由跳转地址
    */
@@ -139,6 +166,17 @@ export type Menu = {
   children?: Array<Menu>
 }
 
+export type QueryMenuDto = {
+  /**
+   * 页码
+   */
+  currentPage: number
+  /**
+   * 页面大小
+   */
+  pageSize: number
+}
+
 export type UpdateMenuDto = {
   [key: string]: unknown
 }
@@ -149,7 +187,7 @@ export type CreateRoleDto = {
   /**
    * 角色状态，1表示启用，0表示禁用
    */
-  status: number
+  status: boolean
   menuIds?: Array<string>
   roleSort: number
   createBy: number
@@ -159,9 +197,9 @@ export type CreateRoleDto = {
 export type GetRoleListDto = {
   roleName: string
   /**
-   * 角色状态，1表示启用，0表示禁用
+   * 角色状态，true表示启用，false表示禁用
    */
-  status: number
+  status: boolean
   menus: Array<string>
   /**
    * 创建时间筛选开始日期时间戳
@@ -187,7 +225,7 @@ export type UpdateRoleDto = {
   /**
    * 角色状态，1表示启用，0表示禁用
    */
-  status?: number
+  status?: boolean
   menuIds?: Array<string>
   roleSort?: number
   createBy?: number
@@ -301,39 +339,14 @@ export type DeleteUserResponses = {
 }
 
 export type ListData = {
-  body?: never
+  body: GetUserListDto
   path?: never
-  query: {
-    /**
-     * 用户名
-     */
-    username: string
-    /**
-     * 用户昵称
-     */
-    nickname: string
-    /**
-     * 手机号码
-     */
-    telephone: string
-    /**
-     * 用户状态
-     */
-    status: number
-    /**
-     * 页码
-     */
-    currentPage: number
-    /**
-     * 页面大小
-     */
-    pageSize: number
-  }
+  query?: never
   url: '/user/list'
 }
 
 export type ListResponses = {
-  200: unknown
+  201: unknown
 }
 
 export type CreateMenuData = {
@@ -386,18 +399,9 @@ export type GetUserButtonPermissionsResponses = {
 }
 
 export type FindByPageData = {
-  body?: never
+  body: QueryMenuDto
   path?: never
-  query: {
-    /**
-     * 页码
-     */
-    currentPage: number
-    /**
-     * 页面大小
-     */
-    pageSize: number
-  }
+  query?: never
   url: '/menu/menusByPage'
 }
 
@@ -469,37 +473,14 @@ export type CreateRoleResponses = {
 }
 
 export type GetRolesByPageData = {
-  body?: never
+  body: GetRoleListDto
   path?: never
-  query: {
-    roleName: string
-    /**
-     * 角色状态，1表示启用，0表示禁用
-     */
-    status: number
-    menus: Array<string>
-    /**
-     * 创建时间筛选开始日期时间戳
-     */
-    startCreateDate?: number
-    /**
-     * 创建时间筛选结束日期时间戳
-     */
-    endCreateDate?: number
-    /**
-     * 页码
-     */
-    currentPage: number
-    /**
-     * 页面大小
-     */
-    pageSize: number
-  }
+  query?: never
   url: '/role/rolesByPage'
 }
 
 export type GetRolesByPageResponses = {
-  200: unknown
+  201: unknown
 }
 
 export type GetRolesListData = {

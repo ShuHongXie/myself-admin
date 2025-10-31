@@ -287,11 +287,12 @@ export class UserService {
   }
 
   async getUserList(getUserListDto: GetUserListDto) {
+    console.log(typeof getUserListDto.status)
+
     try {
       const queryBuilder = this.userRepository
         .createQueryBuilder('user')
         .leftJoinAndSelect('user.roles', 'role')
-        .addSelect('user.status')
 
       if (getUserListDto?.username) {
         queryBuilder.andWhere('user.username LIKE :username', {
@@ -308,7 +309,9 @@ export class UserService {
           telephone: `%${getUserListDto.telephone}%`
         })
       }
-      if (isValidNumber(getUserListDto?.status)) {
+      if (getUserListDto?.status !== undefined) {
+        console.log(getUserListDto.status)
+
         queryBuilder.andWhere('user.status = :status', { status: getUserListDto.status })
       }
 
@@ -317,12 +320,12 @@ export class UserService {
         limit: getUserListDto.pageSize // 映射 pageSize -> limit
       }
       const result = await paginateTransform<User>(queryBuilder, paginationOptions)
-
       result.result = result.result.map((user) => ({
         ...user,
         rolesName: user.roles.map((role) => role.roleName),
         rolesId: user.roles.map((role) => role.id)
       }))
+
       return ResultData.success('获取用户列表成功', result)
     } catch (error) {
       throw new ApiException('系统异常', ApiErrorCode.FAIL)

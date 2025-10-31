@@ -11,10 +11,10 @@ export class GetRoleListDto {
 
   @IsOptional()
   @ApiProperty({
-    example: 1,
-    description: '角色状态，1表示启用，0表示禁用'
+    example: false,
+    description: '角色状态，true表示启用，false表示禁用'
   })
-  status: number
+  status: boolean
   @IsOptional()
   @ApiProperty({
     example: '菜单权限'

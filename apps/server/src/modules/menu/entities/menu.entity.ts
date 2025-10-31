@@ -44,7 +44,7 @@ export class Menu {
     nullable: true
   })
   path: string
-  //状态 1:启用 0:禁用
+  //状态 true:启用 false:禁用
   @Column({
     type: 'boolean',
     default: true

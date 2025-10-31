@@ -107,14 +107,14 @@ export class GetMenuTreeDto {
   menuType?: number
 
   @IsOptional()
-  @IsInt()
-  @Type(() => Number)
+  @IsBoolean()
+  @Type(() => Boolean)
   @ApiProperty({
     example: 1,
-    description: '菜单状态: 0-停用 1-启用',
+    description: '菜单状态: false-停用 true-启用',
     required: false
   })
-  status?: number
+  status?: boolean
 
   @IsOptional()
   @IsString()

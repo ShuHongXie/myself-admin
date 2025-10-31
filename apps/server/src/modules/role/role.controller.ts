@@ -19,8 +19,8 @@ export class RoleController {
 
   @ApiOperation({ summary: '获取角色分页列表' })
   @Public()
-  @Get('rolesByPage')
-  getRolesByPage(@Query() getRoleListDto: GetRoleListDto) {
+  @Post('rolesByPage')
+  getRolesByPage(@Body() getRoleListDto: GetRoleListDto) {
     return this.roleService.getRolesByPage(getRoleListDto)
   }
 

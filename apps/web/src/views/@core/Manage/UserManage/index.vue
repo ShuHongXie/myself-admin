@@ -16,7 +16,7 @@ const defaultOperateItem = {
   nickname: '',
   telephone: '',
   email: '',
-  status: 1,
+  status: true,
   rolesId: []
 }
 
@@ -149,8 +149,8 @@ onMounted(() => {
           :loading="currentOperateItem.id === scope.row.id && switchLoading"
           style="--el-switch-on-color: var(--el-color-primary)"
           inline-prompt
-          :active-value="1"
-          :inactive-value="0"
+          :active-value="true"
+          :inactive-value="false"
           active-text="启用"
           inactive-text="停用"
         />

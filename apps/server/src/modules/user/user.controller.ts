@@ -93,9 +93,9 @@ export class UserController {
   }
 
   @Public()
-  @Get('/list')
+  @Post('list')
   @ApiOperation({ summary: '获取用户列表' })
-  async list(@Query() getUserListDto: GetUserListDto) {
-    return await this.userService.getUserList(getUserListDto)
+  list(@Body() getUserListDto: GetUserListDto) {
+    return this.userService.getUserList(getUserListDto)
   }
 }

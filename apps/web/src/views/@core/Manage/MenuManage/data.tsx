@@ -33,11 +33,11 @@ export const searchProps = {
           options: [
             {
               label: '停用',
-              value: 0
+              value: false
             },
             {
               label: '启用',
-              value: 1
+              value: true
             }
           ]
         }
@@ -200,7 +200,7 @@ export const defaultOperateItem: Menu = {
   component: '',
   permission: '',
   path: '',
-  status: 1,
+  status: true,
   parentId: -1,
   meta: {
     icon: '',

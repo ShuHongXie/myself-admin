@@ -203,9 +203,13 @@ export const deleteUser = <ThrowOnError extends boolean = false>(
 export const list = <ThrowOnError extends boolean = false>(
   options: Options<ListData, ThrowOnError>
 ) => {
-  return (options.client ?? client).get<ListResponses, unknown, ThrowOnError>({
+  return (options.client ?? client).post<ListResponses, unknown, ThrowOnError>({
     url: '/user/list',
-    ...options
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers
+    }
   })
 }
 
@@ -243,7 +247,7 @@ export const getRouters = <ThrowOnError extends boolean = false>(
 export const getMenuTree = <ThrowOnError extends boolean = false>(
   options?: Options<GetMenuTreeData, ThrowOnError>
 ) => {
-  return (options?.client ?? client).get<GetMenuTreeResponses, unknown, ThrowOnError>({
+  return (options?.client ?? client).post<GetMenuTreeResponses, unknown, ThrowOnError>({
     responseType: 'json',
     url: '/menu/info',
     ...options
@@ -270,7 +274,11 @@ export const findByPage = <ThrowOnError extends boolean = false>(
 ) => {
   return (options.client ?? client).get<FindByPageResponses, unknown, ThrowOnError>({
     url: '/menu/menusByPage',
-    ...options
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers
+    }
   })
 }
 
@@ -348,9 +356,13 @@ export const createRole = <ThrowOnError extends boolean = false>(
 export const getRolesByPage = <ThrowOnError extends boolean = false>(
   options: Options<GetRolesByPageData, ThrowOnError>
 ) => {
-  return (options.client ?? client).get<GetRolesByPageResponses, unknown, ThrowOnError>({
+  return (options.client ?? client).post<GetRolesByPageResponses, unknown, ThrowOnError>({
     url: '/role/rolesByPage',
-    ...options
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers
+    }
   })
 }
 

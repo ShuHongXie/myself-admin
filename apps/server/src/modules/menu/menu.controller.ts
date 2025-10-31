@@ -40,7 +40,7 @@ export class MenuController {
     return this.menuService.findAll()
   }
 
-  @Get('/info')
+  @Post('/info')
   @ApiOperation({ summary: '获取所有菜单（包含按钮）' })
   @ApiOkResponse({
     description: '返回示例',
@@ -61,8 +61,8 @@ export class MenuController {
 
   @Get('/menusByPage')
   @ApiOperation({ summary: '分页查询菜单列表' })
-  @Public()
-  findByPage(@Query() queryMenuDto: QueryMenuDto) {
+  @Post()
+  findByPage(@Body() queryMenuDto: QueryMenuDto) {
     return this.menuService.findByPage(queryMenuDto)
   }
 

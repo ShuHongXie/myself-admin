@@ -1,6 +1,5 @@
 import type { RouteMeta, RouteRecordRaw } from 'vue-router'
 import { cloneDeep } from '@myself/utils'
-import { data as routerData } from './routerData'
 import Layout from '#/views/@core/Layout.vue'
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('../views/**/*.vue')
@@ -21,9 +20,8 @@ export const formatRoutes = (routes: any[]) => {
     if ((item.component as any) === 'Layout') {
       item.component = Layout
     } else {
-      // console.log('查找路径:', `../views${item.path}.vue`)
-      // console.log('modules中是否存在:', !!modules[`../views${item.path}.vue`])
-
+      console.log('查找路径:', `../views${item.path}.vue`)
+      console.log('modules中是否存在:', !!modules[`../views${item.path}.vue`])
       const componentPath = `../views${item.path}.vue`
       item.component = modules[componentPath]
     }

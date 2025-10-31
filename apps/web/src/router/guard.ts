@@ -72,6 +72,7 @@ function setupAccessGuard(router: Router) {
       if (!routesStore.isRouterInitialized) {
         const { dynamicRoutes } = generateRoutes(initStore.routers)
         const mergeRoutes = [...dynamicRoutes, ...matchRoutes]
+
         mergeRoutes.forEach((routes: any) => {
           router.addRoute('Layout', routes)
         })
@@ -85,6 +86,7 @@ function setupAccessGuard(router: Router) {
       await initStore.loadRouters()
       const { dynamicRoutes, menuData } = generateRoutes(initStore.routers)
       const mergeRoutes = [...dynamicRoutes, ...matchRoutes]
+      console.log(mergeRoutes)
       mergeRoutes.forEach((routes) => {
         router.addRoute('Layout', routes)
       })

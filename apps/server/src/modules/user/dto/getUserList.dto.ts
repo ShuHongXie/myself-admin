@@ -22,10 +22,10 @@ export class GetUserListDto {
   telephone: string
   @IsOptional()
   @ApiProperty({
-    example: 0,
+    example: true,
     description: '用户状态'
   })
-  status: number
+  status: boolean
   @Type(() => Number)
   @IsNumber()
   @Min(1)

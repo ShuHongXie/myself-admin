@@ -30,11 +30,11 @@ export const searchProps = {
           options: [
             {
               label: '停用',
-              value: 0
+              value: false
             },
             {
               label: '启用',
-              value: 1
+              value: true
             }
           ]
         }
@@ -136,5 +136,5 @@ export const defaultOperateItem = {
   menuIds: [],
   remark: '',
   roleSort: '',
-  status: 1
+  status: true
 }

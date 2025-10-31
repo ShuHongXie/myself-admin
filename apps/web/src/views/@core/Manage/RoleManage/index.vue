@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { SearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
-import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
+import { ElMessage, ElMessageBox, type CheckboxValueType, type FormInstance } from 'element-plus'
 import {
   searchProps,
   columns,
@@ -31,11 +31,6 @@ const paramsHandler = (params: any) => {
 // 基础配置----------------end-------------------
 
 // 新增编辑操作----------------start-------------------
-interface RoleItem {
-  id: number
-  roleName: string
-}
-
 const operateDialogVisible = ref(false)
 const operateType = ref('add') // add 新增 edit 修改
 const menuTree = ref<any>([])
@@ -231,8 +226,8 @@ onMounted(() => {
           :loading="currentOperateItem.id === scope.row.id && switchLoading"
           style="--el-switch-on-color: var(--el-color-primary)"
           inline-prompt
-          :active-value="1"
-          :inactive-value="0"
+          :active-value="true"
+          :inactive-value="false"
           active-text="启用"
           inactive-text="停用"
         />
@@ -272,8 +267,8 @@ onMounted(() => {
           <el-col :span="24">
             <el-form-item label="角色状态:">
               <el-radio-group v-model="currentOperateItem.status">
-                <el-radio :value="1">正常</el-radio>
-                <el-radio :value="0">停用</el-radio>
+                <el-radio :value="true">正常</el-radio>
+                <el-radio :value="false">停用</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -306,7 +301,7 @@ onMounted(() => {
                     :key="item.id"
                     :label="item.label"
                     :value="item.value"
-                    @change="(value: string) => handleChangeMenuProps(item.value, value)"
+                    @change="(value: CheckboxValueType) => handleChangeMenuProps(item.value, value)"
                   />
                 </el-checkbox-group>
                 <div class="tree-container__content">
