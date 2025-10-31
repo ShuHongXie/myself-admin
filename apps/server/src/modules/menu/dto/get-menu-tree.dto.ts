@@ -1,4 +1,4 @@
-import { IsOptional, IsInt, IsString, IsBoolean, ValidateNested } from 'class-validator'
+import { IsOptional, IsInt, IsString, IsBoolean, ValidateNested, IsArray } from 'class-validator'
 import { Type } from 'class-transformer'
 import { ApiProperty, ApiSchema } from '@nestjs/swagger'
 
@@ -162,4 +162,17 @@ export class GetMenuTreeDto {
     type: () => MenuMetaDto
   })
   meta?: MenuMetaDto
+
+  // 添加 children 字段
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => GetMenuTreeDto)
+  @ApiProperty({
+    description: '子菜单列表',
+    required: false,
+    type: () => GetMenuTreeDto,
+    isArray: true
+  })
+  children?: GetMenuTreeDto[]
 }

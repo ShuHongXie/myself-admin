@@ -205,7 +205,7 @@ export class RoleService {
     try {
       const roleList = await this.roleRepository.find({
         where: {
-          status: 1
+          status: true
         }
       })
       return ResultData.success('', roleList)

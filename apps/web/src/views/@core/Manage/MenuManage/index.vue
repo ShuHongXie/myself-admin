@@ -15,7 +15,7 @@ const form = ref({})
 // 新增编辑操作----------------start-------------------
 const operateDialogVisible = ref(false)
 const operateType = ref('add') // add 新增 edit 修改
-const menuTree = ref<any[]>([])
+const menuTree = ref<Menu[]>([])
 const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
 const currentOperateItem = ref<Menu>(cloneDeep(defaultOperateItem))
 

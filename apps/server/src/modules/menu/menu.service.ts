@@ -310,7 +310,7 @@ export class MenuService {
         .leftJoinAndSelect('user.roles', 'role')
         .leftJoinAndSelect('role.menus', 'menu')
         .where('user.id = :userId', { userId })
-        .andWhere('user.status = :status', { status: 1 }) // 只查询启用的用户
+        .andWhere('user.status = :status', { status: true }) // 只查询启用的用户
         .andWhere('role.status = :roleStatus', { roleStatus: 1 }) // 只查询启用的角色
         .getOne()
 
@@ -328,7 +328,7 @@ export class MenuService {
         const allButtons = await this.menuRepository
           .createQueryBuilder('menu')
           .where('menu.menuType = :menuType', { menuType: MenuType.Button })
-          .andWhere('menu.status = :status', { status: 1 })
+          .andWhere('menu.status = :status', { status: true })
           .andWhere('menu.permission IS NOT NULL')
           .andWhere('menu.permission != :empty', { empty: '' })
           .getMany()
@@ -345,7 +345,7 @@ export class MenuService {
           role.menus?.forEach((menu) => {
             if (
               menu.menuType === MenuType.Button &&
-              menu.status === 1 &&
+              menu.status &&
               menu.permission &&
               menu.permission.trim() !== ''
             ) {

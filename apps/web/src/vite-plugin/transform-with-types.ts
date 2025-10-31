@@ -81,7 +81,6 @@ export function transformWithTypesPlugin(options?: TransformWithTypesOptions): P
 
     // 初始化配置
     configResolved(config) {
-      console.log('config:', config)
       resolvedInputPath = resolve(config.root, inputPath)
       resolvedOutputPath = resolve(config.root, outputPath)
     },

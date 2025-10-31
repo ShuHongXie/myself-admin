@@ -133,6 +133,10 @@ export type Menu = {
    * 菜单元数据
    */
   meta?: MenuMetaDto
+  /**
+   * 子菜单列表
+   */
+  children?: Array<Menu>
 }
 
 export type UpdateMenuDto = {

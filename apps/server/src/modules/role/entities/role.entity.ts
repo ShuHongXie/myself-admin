@@ -24,9 +24,10 @@ export class Role {
   roleSort: number
   //角色状态 启用:1 关闭:0
   @Column({
-    default: 1
+    type: 'boolean',
+    default: true
   })
-  status: number
+  status: boolean
   //备注
   @Column({ length: '100', nullable: true })
   remark: string

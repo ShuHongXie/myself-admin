@@ -194,21 +194,21 @@ export const treeSettingSelect = ref([
 
 // 默认操作对象
 export const defaultOperateItem: Menu = {
-  id: '',
+  id: -1,
   name: '',
   menuType: 1,
   component: '',
   permission: '',
   path: '',
   status: 1,
-  parentId: null,
+  parentId: -1,
   meta: {
     icon: '',
-    orderNum: '',
+    orderNum: 0,
     title: '',
-    isCache: 1,
-    showInTab: 1,
-    showInMenu: 1,
-    showInBreadcrumb: 1
+    isCache: true,
+    showInTab: true,
+    showInMenu: true,
+    showInBreadcrumb: true
   }
 }

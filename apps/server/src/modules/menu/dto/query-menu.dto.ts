@@ -1,4 +1,4 @@
-import { IsOptional, IsInt, IsString, IsNumber, Min } from 'class-validator'
+import { IsOptional, IsInt, IsString, IsNumber, Min, IsBoolean } from 'class-validator'
 import { Type } from 'class-transformer'
 import { ApiProperty } from '@nestjs/swagger'
 
@@ -13,9 +13,8 @@ export class QueryMenuDto {
   menuType?: number
 
   @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  status?: number
+  @IsBoolean()
+  status?: boolean
 
   @IsOptional()
   @IsInt()

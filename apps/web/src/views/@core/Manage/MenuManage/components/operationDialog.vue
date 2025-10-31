@@ -8,6 +8,7 @@ import {
   MenuType
 } from '../data.tsx'
 import type { FormInstance } from 'element-plus'
+import type { Menu } from '#/apis/types.gen.ts'
 
 defineProps({
   menuList: Array,
@@ -20,7 +21,7 @@ defineProps({
 const emit = defineEmits(['confirm'])
 const ruleFormRef = ref<FormInstance | null>(null)
 const visible = defineModel<boolean>('visible', { default: false })
-const form = defineModel<MenuFormData>('form', {
+const form = defineModel<Menu>('form', {
   default: () => cloneDeep(defaultOperateItem)
 })
 
@@ -40,18 +41,20 @@ const handleSubmit = async () => {
 const changeMenuType = (value: string | number | boolean | undefined): void => {
   form.value.permission = ''
   // 添加类型检查，确保value不为undefined再进行比较
-  if (value !== undefined && (value as number) === MenuType['按钮']) {
+  if ((value as number) === MenuType['按钮']) {
     form.value.component = ''
     form.value.path = ''
-    form.value.meta.icon = ''
-    form.value.meta.title = ''
-    form.value.meta.orderNum = ''
+    if (form.value.meta) {
+      form.value.meta.icon = ''
+      form.value.meta.title = ''
+      form.value.meta.orderNum = 0
+    }
   }
 }
 
 // 菜单名称同步
 const handleChangeMenuName = (value: string) => {
-  if (form.value.menuType === MenuType['菜单']) {
+  if (form.value.menuType === MenuType['菜单'] && form.value.meta) {
     form.value.meta.title = value
   }
 }
@@ -92,7 +95,7 @@ const handleChangeMenuName = (value: string) => {
               <el-input
                 :disabled="form.menuType === MenuType['按钮']"
                 clearable
-                v-model="form.meta.icon"
+                v-model="form.meta!.icon"
               />
               <el-link
                 type="primary"
@@ -105,7 +108,7 @@ const handleChangeMenuName = (value: string) => {
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="name" :label="`${menuTypeData[form.menuType]}名称:`">
+          <el-form-item prop="name" :label="`${menuTypeData[form.menuType as number]}名称:`">
             <el-input @input="handleChangeMenuName" clearable v-model="form.name" />
           </el-form-item>
         </el-col>
@@ -114,7 +117,7 @@ const handleChangeMenuName = (value: string) => {
             <el-input
               :disabled="form.menuType === MenuType['按钮']"
               clearable
-              v-model.number="form.meta.orderNum"
+              v-model.number="form.meta!.orderNum"
             />
           </el-form-item>
         </el-col>
@@ -150,10 +153,10 @@ const handleChangeMenuName = (value: string) => {
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="`${menuTypeData[form.menuType]}状态:`">
+          <el-form-item :label="`${menuTypeData[form.menuType as number]}状态:`">
             <el-radio-group v-model="form.status">
-              <el-radio :value="1">正常</el-radio>
-              <el-radio :value="0">停用</el-radio>
+              <el-radio :value="true">正常</el-radio>
+              <el-radio :value="false">停用</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -161,14 +164,14 @@ const handleChangeMenuName = (value: string) => {
         <template v-if="form.menuType === MenuType['菜单']">
           <el-col :span="12">
             <el-form-item prop="title" label="页面标题:">
-              <el-input clearable disabled v-model="form.meta.title" />
+              <el-input clearable disabled v-model="form.meta!.title" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item prop="meta.isCache" label="是否缓存组件:" label-width="120px">
-              <el-radio-group v-model="form.meta.isCache">
-                <el-radio :value="1">是</el-radio>
-                <el-radio :value="0">否</el-radio>
+              <el-radio-group v-model="form.meta!.isCache">
+                <el-radio :value="true">是</el-radio>
+                <el-radio :value="false">否</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -178,17 +181,17 @@ const handleChangeMenuName = (value: string) => {
               label="是否显示在面包栏:"
               label-width="130px"
             >
-              <el-radio-group v-model="form.meta.showInBreadcrumb">
-                <el-radio :value="1">是</el-radio>
-                <el-radio :value="0">否</el-radio>
+              <el-radio-group v-model="form.meta!.showInBreadcrumb">
+                <el-radio :value="true">是</el-radio>
+                <el-radio :value="false">否</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item prop="meta.showInTab" label="是否显示标签栏:" label-width="120px">
-              <el-radio-group v-model="form.meta.showInTab">
-                <el-radio :value="1">是</el-radio>
-                <el-radio :value="0">否</el-radio>
+              <el-radio-group v-model="form.meta!.showInTab">
+                <el-radio :value="true">是</el-radio>
+                <el-radio :value="false">否</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>

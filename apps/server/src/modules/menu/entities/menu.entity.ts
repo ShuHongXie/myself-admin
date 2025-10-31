@@ -46,9 +46,10 @@ export class Menu {
   path: string
   //状态 1:启用 0:禁用
   @Column({
-    default: 1
+    type: 'boolean',
+    default: true
   })
-  status: number
+  status: boolean
   // 父菜单关联（多对一：多个子菜单可属于一个父菜单）
   @ManyToOne(() => Menu, (menu) => menu.children) // 反向引用 children 字段
   @JoinColumn({ name: 'parent_id' }) // 绑定到 parent_id 字段

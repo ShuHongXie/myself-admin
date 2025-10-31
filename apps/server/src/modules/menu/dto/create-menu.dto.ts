@@ -1,5 +1,5 @@
 // src/modules/menu/dto/create-menu.dto.ts
-import { IsInt, IsString, IsOptional, ValidateNested } from 'class-validator'
+import { IsInt, IsString, IsOptional, ValidateNested, IsBoolean } from 'class-validator'
 import { Type } from 'class-transformer'
 
 // 菜单元数据 DTO
@@ -51,10 +51,10 @@ export class CreateBaseDto {
   path?: string
 
   @IsOptional()
-  @IsInt()
-  status?: number = 1
+  @IsBoolean()
+  status?: boolean = true
 
-  // @IsOptional()
+  @IsOptional()
   @IsInt()
   createBy: number
 }

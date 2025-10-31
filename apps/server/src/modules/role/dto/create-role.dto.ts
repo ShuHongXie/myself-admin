@@ -16,10 +16,10 @@ export class CreateRoleDto {
 
   @IsNotEmpty({ message: '角色状态不可为空' })
   @ApiProperty({
-    example: 1,
+    example: false,
     description: '角色状态，1表示启用，0表示禁用'
   })
-  status: number
+  status: boolean
 
   @ApiProperty({
     example: [1],

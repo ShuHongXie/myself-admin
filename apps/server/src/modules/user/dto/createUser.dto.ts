@@ -50,11 +50,11 @@ export class CreateUserDto {
 
   @IsOptional()
   @ApiProperty({
-    example: '1',
+    example: true,
     description: '状态',
     required: false
   })
-  status: number
+  status: boolean
 
   @IsOptional()
   @IsNotEmpty({

@@ -33,10 +33,10 @@ export class User {
   @Column({ nullable: true })
   telephone: string //手机号
   @Column({
-    default: 1,
-    select: false
+    type: 'boolean',
+    default: true
   })
-  status: number //状态 0:禁用 1:启用
+  status: boolean //状态 false:禁用 true:启用
   @Column({ nullable: true, default: 'q5+Kdg==', select: false })
   salt: string
   @Column({ nullable: true, default: 0 })
