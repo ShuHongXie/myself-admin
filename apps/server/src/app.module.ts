@@ -13,6 +13,7 @@ import { RoleModule } from './modules/role/role.module'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { StringToNullInterceptor } from './common/interceptor/stringToNull.interceptor'
 import { LogModule } from './modules/log/log.module'
+import { OperationLogInterceptor } from '@interceptor/log.interceptor'
 @Module({
   imports: [
     // 加载环境变量配置
@@ -54,6 +55,10 @@ import { LogModule } from './modules/log/log.module'
   ],
   controllers: [AppController],
   providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: OperationLogInterceptor
+    },
     // 注册全局拦截器：处理空字符串转null
     {
       provide: APP_INTERCEPTOR,

@@ -17,6 +17,7 @@ import { QueryMenuDto } from './dto/query-menu.dto'
 import { ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { Public } from '@decorator/public.decorator'
 import { GetMenuTreeDto } from './dto/get-menu-tree.dto'
+import { LogOperationTitle } from '@decorator/operationlog.decorator'
 
 @ApiTags('菜单权限模块')
 @Controller('menu')
@@ -40,6 +41,7 @@ export class MenuController {
     return this.menuService.findAll()
   }
 
+  @LogOperationTitle('菜单查询')
   @Post('/info')
   @ApiOperation({ summary: '获取所有菜单（包含按钮）' })
   @ApiOkResponse({

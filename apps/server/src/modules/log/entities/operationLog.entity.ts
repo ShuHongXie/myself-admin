@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 //操作日志表
-@Entity('fs_operation_log')
+@Entity('operation_log')
 export class OperationLog {
   @PrimaryGeneratedColumn()
   id: number // 标记为主键，值自动生成
