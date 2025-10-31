@@ -28,6 +28,7 @@ catalog:
   dayjs: ^1.11.13
   defu: ^6.1.4
   element-plus: 2.10.4
+  express: ^5.1.0
   lodash: ^4.17.21
   lodash.clonedeep: ^4.5.0
   mysql2: ^3.14.3
@@ -52,3 +53,4 @@ catalog:
   vue-i18n: ^11.1.11
   vue-router: ^4.5.1
   vue-tsc: 2.2.12
+  xlsx: ^0.18.5

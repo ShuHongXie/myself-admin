@@ -1,4 +1,6 @@
 import { Menu } from '@modules/menu/entities/menu.entity'
+import { read, utils, write } from 'xlsx'
+import { ApiException } from '../filter/api.exception'
 
 export const convertToTree = (menuList: any[], parentId: number | null = null) => {
   const tree = [] as any
@@ -38,4 +40,59 @@ export const isValidNumber = (value: any): value is number => {
   // 转换为数字后验证（字符串数字如 "123" 会被转换）
   const num = Number(value)
   return !isNaN(num) && typeof num === 'number'
+}
+
+//数据转excel
+export function exportExcel(data: any[], mapZh: any = {}, sheetName: string = 'sheet1') {
+  const worksheet = utils.json_to_sheet([mapZh, ...data], {
+    header: Object.keys(mapZh),
+    skipHeader: true
+  })
+  // 创建一个新的工作簿
+  const workbook = utils.book_new()
+  utils.book_append_sheet(workbook, worksheet, sheetName)
+  const excelBuffer: any = write(workbook, {
+    bookType: 'xlsx',
+    type: 'buffer'
+  })
+  return excelBuffer
+}
+
+/**
+ * 导入Excel文件并将其转换为JSON格式
+ * @param file - 要导入的Excel文件
+ * @returns 包含所有工作表名称和数据的对象
+ */
+export const importExcel = (file: File & { buffer: Buffer }) => {
+  try {
+    const workbook = read(file.buffer, { type: 'buffer' })
+    const sheetNames = workbook.SheetNames
+    const sheetData = [] as any[]
+
+    sheetNames.forEach((sheetName) => {
+      const worksheet = workbook.Sheets[sheetName]
+      const sheetJson = utils.sheet_to_json(worksheet)
+      sheetData.push(...sheetJson)
+    })
+
+    return sheetData
+  } catch (error) {
+    throw new ApiException('文件解析失败,请检查格式是否正确', 20000)
+  }
+}
+
+//生成随机字符串
+export const generateRandomString = (
+  length: number,
+  charset: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+): string => {
+  let result = ''
+  const charsetLength = charset.length
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charsetLength)
+    result += charset[randomIndex]
+  }
+
+  return result
 }

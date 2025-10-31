@@ -141,7 +141,7 @@ onMounted(() => {
       <template #prefix>
         <div>
           <el-button type="primary" :icon="Plus" @click="handleOperate('add')">新增</el-button>
-          <el-button type="success" :icon="Upload">导入</el-button>
+          <!-- <el-button type="success" :icon="Upload">导入</el-button> -->
         </div>
       </template>
     </SearchTable>

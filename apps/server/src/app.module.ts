@@ -12,6 +12,7 @@ import { MenuModule } from './modules/menu/menu.module'
 import { RoleModule } from './modules/role/role.module'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { StringToNullInterceptor } from './common/interceptor/stringToNull.interceptor'
+import { LogModule } from './modules/log/log.module'
 @Module({
   imports: [
     // 加载环境变量配置
@@ -48,7 +49,8 @@ import { StringToNullInterceptor } from './common/interceptor/stringToNull.inter
     UserModule,
     CacheModule,
     MenuModule,
-    RoleModule
+    RoleModule,
+    LogModule
   ],
   controllers: [AppController],
   providers: [
