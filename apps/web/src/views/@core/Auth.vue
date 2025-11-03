@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Auth } from '@myself/ui'
+import { Auth } from '@myself/core'
 </script>
 
 <template>

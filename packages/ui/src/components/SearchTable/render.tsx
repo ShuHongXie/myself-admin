@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { JSX } from 'vue/jsx-runtime'
+import type { JSX } from 'vue/jsx-runtime'
 
 interface RenderProps {
   render: (...args: any[]) => JSX.Element

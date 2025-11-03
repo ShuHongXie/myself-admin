@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NotFound } from '@myself/ui'
+import { NotFound } from '@myself/core'
 </script>
 
 <template>

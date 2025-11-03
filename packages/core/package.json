@@ -1,43 +1,52 @@
 {
-  "name": "@myself/web",
+  "name": "@myself/core",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
-    "dev": "vite --mode development",
+    "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview",
-    "openapi-ts": "openapi-ts"
+    "preview": "vite preview"
   },
   "imports": {
     "#/*": "./src/*"
   },
+  "files": [
+    "src/"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./styles": {
+      "import": "./src/assets/scss/index.scss",
+      "default": "./src/assets/scss/index.scss"
+    }
+  },
   "dependencies": {
+    "@ctrl/tinycolor": "catalog:",
     "@iconify/vue": "catalog:",
-    "@myself/core": "workspace:^",
-    "@myself/locales": "workspace:*",
+    "@myself/locales": "workspace:^",
     "@myself/store": "workspace:^",
-    "@myself/ui": "workspace:^",
     "@myself/utils": "workspace:^",
-    "@types/nprogress": "catalog:",
-    "nprogress": "catalog:",
+    "element-plus": "catalog:",
     "pinia": "catalog:",
-    "pinia-plugin-persistedstate": "catalog:",
+    "screenfull": "catalog:",
+    "theme-colors": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
   },
   "devDependencies": {
-    "@babel/cli": "catalog:",
-    "@babel/core": "catalog:",
-    "@babel/plugin-transform-runtime": "^7.28.5",
-    "@babel/preset-env": "catalog:",
-    "@babel/preset-typescript": "^7.28.5",
-    "@hey-api/client-axios": "catalog:",
-    "@hey-api/openapi-ts": "^0.84.3",
+    "@myself/types": "workspace:^",
     "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "@vue/tsconfig": "catalog:",
-    "element-plus": "catalog:",
     "sass": "catalog:",
     "typescript": "catalog:",
     "unplugin-auto-import": "catalog:",

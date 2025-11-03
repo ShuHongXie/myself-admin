@@ -12,7 +12,7 @@ import 'virtual:svg-icons-register'
 import 'nprogress/nprogress.css'
 import 'element-plus/dist/index.css'
 import './assets/scss/global.scss'
-import '@myself/ui/styles'
+import '@myself/core/styles'
 import initOpenApiInstance from '#/config/axios'
 
 export const init = async () => {

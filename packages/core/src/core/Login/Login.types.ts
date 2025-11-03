@@ -10,4 +10,4 @@ interface RuleForm {
   code: string
 }
 
-export { LoginProps, RuleForm }
+export type { LoginProps, RuleForm }

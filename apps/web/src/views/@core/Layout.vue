@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Layout } from '@myself/ui'
+import { Layout } from '@myself/core'
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 // 样式模块声明
-declare module '@myself/ui/styles' {
+declare module '@myself/core/styles' {
   const content: any
   export default content
 }

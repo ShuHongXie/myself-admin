@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { Search } from '../Search'
-import { ref, onMounted, defineProps, defineEmits, provide } from 'vue'
+import { ref, onMounted, defineProps, defineEmits } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../Search/props'
 import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
 import Render from './render'
+
+interface Pagination {
+  currentPage: number
+  pageSize: number
+  total: number
+}
 
 const searchModel = defineModel<SearchModel>('search')
 const props = defineProps(searchTableProps)
@@ -36,7 +42,7 @@ const axios = initRequestInstance({
 })
 const data = ref([])
 const loading = ref(false)
-const pagination = ref({
+const pagination = ref<Pagination>({
   currentPage: 1,
   pageSize: 20,
   total: 100

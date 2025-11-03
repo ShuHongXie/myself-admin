@@ -208,7 +208,7 @@ const handleChangeMenuName = (value: string) => {
 </template>
 
 <style lang="scss" scoped>
-@use '@myself/ui/styles' as *;
+@use '@myself/core/styles' as *;
 .icon-input {
   width: 100%;
   gap: 10px;

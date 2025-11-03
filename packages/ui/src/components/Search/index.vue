@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, defineEmits, onUnmounted, inject } from 'vue'
+import { ref, onMounted, defineEmits, onUnmounted } from 'vue'
 import { searchProps, SearchTypeEnum, type SearchModel, type SearchProps } from './props'
 import { Icon } from '@iconify/vue'
 import type { FormInstance } from 'element-plus'
+
+defineOptions({ name: 'my-search' })
 
 const props = defineProps(searchProps)
 const options = ref<SearchProps[]>([])
