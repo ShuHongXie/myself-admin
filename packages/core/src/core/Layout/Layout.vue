@@ -81,7 +81,7 @@ watch(
   () => {
     configStore.setActiveTab(route.path)
     const menuItem = findMenuItem(menuData.value, route.path)
-    console.log('menuItem', menuItem)
+    // console.log('menuItem', menuItem)
     if (menuItem) {
       configStore.setTabData({
         ...menuItem,

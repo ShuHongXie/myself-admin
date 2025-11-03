@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { SearchTable } from '@myself/ui'
+import { MsSearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import OperationDialog from './components/operationDialog.vue'
@@ -16,7 +16,7 @@ const form = ref({})
 const operateDialogVisible = ref(false)
 const operateType = ref('add') // add 新增 edit 修改
 const menuTree = ref<Menu[]>([])
-const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
+const searchTableRef = ref<InstanceType<typeof MsSearchTable> | null>(null)
 const currentOperateItem = ref<Menu>(cloneDeep(defaultOperateItem))
 
 // 获取菜单树
@@ -111,7 +111,7 @@ onMounted(() => {
 
 <template>
   <div class="menu-manage">
-    <SearchTable
+    <MsSearchTable
       v-model:search="form"
       url="/menu/info"
       ref="searchTableRef"
@@ -144,7 +144,7 @@ onMounted(() => {
           <!-- <el-button type="success" :icon="Upload">导入</el-button> -->
         </div>
       </template>
-    </SearchTable>
+    </MsSearchTable>
     <OperationDialog
       v-model:visible="operateDialogVisible"
       v-model:form="currentOperateItem"

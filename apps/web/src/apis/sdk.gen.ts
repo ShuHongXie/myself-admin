@@ -15,8 +15,12 @@ import type {
   DeleteRoleResponses,
   DeleteUserData,
   DeleteUserResponses,
+  ExportData,
+  ExportResponses,
   FindByPageData,
   FindByPageResponses,
+  FindLogListData,
+  FindLogListResponses,
   GetCaptchaData,
   GetCaptchaResponses,
   GetHelloData,
@@ -416,5 +420,29 @@ export const updateRole = <ThrowOnError extends boolean = false>(
       'Content-Type': 'application/json',
       ...options.headers
     }
+  })
+}
+
+/**
+ * 日志管理-查询
+ */
+export const findLogList = <ThrowOnError extends boolean = false>(
+  options?: Options<FindLogListData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<FindLogListResponses, unknown, ThrowOnError>({
+    url: '/log/list',
+    ...options
+  })
+}
+
+/**
+ * 日志管理-导出
+ */
+export const export_ = <ThrowOnError extends boolean = false>(
+  options?: Options<ExportData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<ExportResponses, unknown, ThrowOnError>({
+    url: '/log/export',
+    ...options
   })
 }

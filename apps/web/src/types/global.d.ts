@@ -57,7 +57,7 @@ declare module '@vue/runtime-core' {
     // 自定义全局组件类型声明
     ElIcon: (typeof import('element-plus'))['ElIcon']
     SvgIcon: (typeof import('@myself/ui'))['SvgIcon']
-    SearchTable: (typeof import('@myself/ui'))['SearchTable']
+    MsSearchTable: (typeof import('@myself/ui'))['MsSearchTable']
     Search: (typeof import('@myself/ui'))['Search']
   }
 }
@@ -181,7 +181,7 @@ declare module '@myself/utils' {
 declare module '@myself/ui' {
   export const SvgIcon: any
   export const Search: any
-  export const SearchTable: any
+  export const MsSearchTable: any
   // 添加其他UI组件类型声明
 }
 

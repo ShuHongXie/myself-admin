@@ -2,9 +2,7 @@
 import { computed } from 'vue'
 import type { SvgIconProps, StyleComputed } from './SvgIcon.types.ts'
 
-defineOptions({
-  name: 'SvgIcon'
-})
+defineOptions({ name: 'ms-svg-icon' })
 
 const props = defineProps<SvgIconProps>()
 

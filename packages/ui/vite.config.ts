@@ -4,17 +4,20 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import dts from 'vite-plugin-dts'
+import { resolve } from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
   build: {
     //打包后文件目录
-    outDir: 'myself-ui',
+    outDir: 'build',
+    //css代码分割
+    cssCodeSplit: true,
     //压缩
     minify: false,
     rollupOptions: {
       //忽略打包vue文件
-      external: ['vue', 'element-plus'],
+      external: ['vue', 'element-plus', '@myself/utils'],
       input: ['./src/index.ts'],
       output: [
         {
@@ -24,10 +27,10 @@ export default defineConfig({
           entryFileNames: '[name].mjs',
           //让打包目录和我们目录对应
           preserveModules: true,
+          preserveModulesRoot: 'src', // 从src文件夹开始打包
           exports: 'named',
           //配置打包根目录
-          dir: './easyest/es',
-          preserveModulesRoot: 'packages/ui'
+          dir: './build/es'
         },
         {
           //打包格式
@@ -36,18 +39,23 @@ export default defineConfig({
           entryFileNames: '[name].js',
           //让打包目录和我们目录对应
           preserveModules: true,
+          preserveModulesRoot: 'src',
           exports: 'named',
           //配置打包根目录
-          dir: './easyest/lib',
-          preserveModulesRoot: 'packages/ui'
+          dir: './build/lib'
         }
       ]
     },
     lib: {
       entry: './src/index.ts',
-      name: 'easyest',
+      name: 'MsUI',
       fileName: 'easyest',
       formats: ['es', 'umd', 'cjs']
+    }
+  },
+  resolve: {
+    alias: {
+      '#': resolve(__dirname, 'src')
     }
   },
   plugins: [
@@ -58,10 +66,18 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()]
     }),
+    // dts({
+    //   entryRoot: './src/index.ts',
+    //   outDir: ['./build/es', './build/lib'],
+    //   tsconfigPath: './tsconfig.prod.json'
+    // })
     dts({
-      entryRoot: './src',
-      outDir: ['./easyest/es/src', './easyest/lib/src'],
-      tsconfigPath: './tsconfig.app.json'
+      tsconfigPath: './tsconfig.prod.json',
+      outDir: 'build/lib'
+    }),
+    dts({
+      tsconfigPath: './tsconfig.prod.json',
+      outDir: 'build/es'
     })
   ]
 })

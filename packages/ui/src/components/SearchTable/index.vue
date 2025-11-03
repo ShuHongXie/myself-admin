@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { Search } from '../Search'
+import { MsSearch } from '../Search'
 import { ref, onMounted, defineProps, defineEmits } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../Search/props'
 import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
 import Render from './render'
+
+defineOptions({ name: 'ms-search-table' })
 
 interface Pagination {
   currentPage: number
@@ -126,11 +128,11 @@ const emitEventHandler = (...args: any) => {
 
 <template>
   <div class="search-table">
-    <Search @submit="submit" @reset="reset" v-model="searchModel" v-bind="searchProps">
+    <MsSearch @submit="submit" @reset="reset" v-model="searchModel" v-bind="searchProps">
       <template :key="item.prop" #[item.prop] v-for="item in searchProps.slots">
         <slot :name="item.prop"></slot>
       </template>
-    </Search>
+    </MsSearch>
     <slot name="prefix"></slot>
     <el-table
       v-loading.lock="loading"

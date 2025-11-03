@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { SearchTable } from '@myself/ui'
+import { MsSearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox, type CheckboxValueType, type FormInstance } from 'element-plus'
 import {
@@ -35,7 +35,7 @@ const operateDialogVisible = ref(false)
 const operateType = ref('add') // add 新增 edit 修改
 const menuTree = ref<any>([])
 const ruleFormRef = ref<FormInstance | null>(null)
-const searchTableRef = ref<InstanceType<typeof SearchTable> | null>(null)
+const searchTableRef = ref<InstanceType<typeof MsSearchTable> | null>(null)
 const switchLoading = ref(false)
 const currentOperateItem = ref<any>(cloneDeep(defaultOperateItem))
 const treeRef = ref<any>()
@@ -205,7 +205,7 @@ onMounted(() => {
 
 <template>
   <div class="user-manage">
-    <SearchTable
+    <MsSearchTable
       v-model:search="form"
       url="/role/rolesByPage"
       ref="searchTableRef"
@@ -244,7 +244,7 @@ onMounted(() => {
           <!-- <el-button type="success" :icon="Upload">导入</el-button> -->
         </div>
       </template>
-    </SearchTable>
+    </MsSearchTable>
     <el-dialog
       v-model="operateDialogVisible"
       @close="currentOperateItem = {}"

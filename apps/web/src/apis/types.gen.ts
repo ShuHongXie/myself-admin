@@ -537,3 +537,41 @@ export type UpdateRoleData = {
 export type UpdateRoleResponses = {
   200: unknown
 }
+
+export type FindLogListData = {
+  body?: never
+  path?: never
+  query?: {
+    title?: string
+    username?: string
+    url?: string
+    end_time?: string
+    begin_time?: string
+    page_num?: number
+    page_size?: number
+  }
+  url: '/log/list'
+}
+
+export type FindLogListResponses = {
+  200: unknown
+}
+
+export type ExportData = {
+  body?: never
+  path?: never
+  query?: {
+    title?: string
+    username?: string
+    url?: string
+    end_time?: string
+    begin_time?: string
+    page_num?: number
+    page_size?: number
+  }
+  url: '/log/export'
+}
+
+export type ExportResponses = {
+  200: unknown
+}
