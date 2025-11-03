@@ -134,7 +134,7 @@ onMounted(() => {
   <div class="user-manage">
     <MsSearchTable
       v-model:search="form"
-      url="/user/list"
+      url="/api/user/list"
       ref="searchTableRef"
       :columns="columns"
       :search-props="searchProps"

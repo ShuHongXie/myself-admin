@@ -113,7 +113,7 @@ onMounted(() => {
   <div class="menu-manage">
     <MsSearchTable
       v-model:search="form"
-      url="/menu/info"
+      url="/api/menu/info"
       ref="searchTableRef"
       :columns="columns"
       :search-props="searchProps"

@@ -12,12 +12,12 @@ export default defineConfig({
     //打包后文件目录
     outDir: 'build',
     //css代码分割
-    cssCodeSplit: true,
+    cssCodeSplit: false,
     //压缩
     minify: false,
     rollupOptions: {
       //忽略打包vue文件
-      external: ['vue', 'element-plus', '@myself/utils'],
+      external: ['vue', 'element-plus'],
       input: ['./src/index.ts'],
       output: [
         {
@@ -66,11 +66,6 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()]
     }),
-    // dts({
-    //   entryRoot: './src/index.ts',
-    //   outDir: ['./build/es', './build/lib'],
-    //   tsconfigPath: './tsconfig.prod.json'
-    // })
     dts({
       tsconfigPath: './tsconfig.prod.json',
       outDir: 'build/lib'

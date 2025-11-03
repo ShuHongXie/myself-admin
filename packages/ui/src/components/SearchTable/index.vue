@@ -39,7 +39,7 @@ const emit = defineEmits([
 
 // 列表初始化-----------start-------------
 const axios = initRequestInstance({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: '',
   headers: props.headers
 })
 const data = ref([])

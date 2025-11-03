@@ -1,4 +1,4 @@
-// export { default as SearchTable } from './index.vue'
+// export { default as MsSearchTable } from './index.vue'
 import { withInstall } from '../../utils'
 
 import SearchTable from './index.vue'
