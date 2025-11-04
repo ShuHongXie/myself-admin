@@ -49,10 +49,16 @@ export default defineConfig({
     lib: {
       entry: './src/index.ts',
       name: 'MsUI',
-      formats: ['es', 'umd', 'cjs']
+      fileName: 'index',
+      formats: ['es', 'cjs']
     }
   },
-  css: {},
+  css: {
+    // 确保所有 CSS 都被正确处理
+    modules: {
+      localsConvention: 'camelCaseOnly'
+    }
+  },
   resolve: {
     alias: {
       '#': resolve(__dirname, 'src')
@@ -68,11 +74,11 @@ export default defineConfig({
     }),
     dts({
       tsconfigPath: './tsconfig.prod.json',
-      outDir: 'build/lib'
+      outDir: 'build/es'
     }),
     dts({
       tsconfigPath: './tsconfig.prod.json',
-      outDir: 'build/es'
+      outDir: 'build/lib'
     })
   ]
 })

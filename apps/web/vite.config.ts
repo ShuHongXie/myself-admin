@@ -8,6 +8,27 @@ import { resolve } from 'path'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { transformWithTypesPlugin } from './src/vite-plugin/transform-with-types'
 
+const MyselfUiResolver = () => {
+  console.log('MyselfUiResolver初始化')
+  return {
+    type: 'component' as const,
+    resolve: (name) => {
+      console.log('name:', name)
+      // 只处理Ms开头的组件
+      if (name.startsWith('Ms')) {
+        const pathName = name.slice(2).toLowerCase()
+        return {
+          importName: name,
+          from: '@myself/ui',
+          path: `@myself/ui/es/components/SearchTable/index.mjs`,
+          sideEffects: `@myself/ui/es/components/SearchTable/index.css`
+        }
+      }
+      return null
+    }
+  }
+}
+
 export default defineConfig({
   server: {
     port: 3000, // 指定端口号
@@ -42,7 +63,7 @@ export default defineConfig({
       imports: ['vue', 'vue-router', 'pinia']
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver(), MyselfUiResolver()],
       dts: 'src/types/components.d.ts'
     }),
     createSvgIconsPlugin({

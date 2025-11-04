@@ -1,5 +1,4 @@
 <script setup lang="tsx">
-import { MsSearchTable } from '@myself/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { searchProps, columns, formRules } from './data'
