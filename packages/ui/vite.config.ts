@@ -12,7 +12,7 @@ export default defineConfig({
     //打包后文件目录
     outDir: 'build',
     //css代码分割
-    cssCodeSplit: false,
+    cssCodeSplit: true,
     //压缩
     minify: false,
     rollupOptions: {
@@ -49,10 +49,10 @@ export default defineConfig({
     lib: {
       entry: './src/index.ts',
       name: 'MsUI',
-      fileName: 'easyest',
       formats: ['es', 'umd', 'cjs']
     }
   },
+  css: {},
   resolve: {
     alias: {
       '#': resolve(__dirname, 'src')

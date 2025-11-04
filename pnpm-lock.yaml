@@ -560,7 +560,7 @@ importers:
         version: 3.5.22(typescript@5.9.3)
     devDependencies:
       '@types/node':
-        specifier: ^24.6.0
+        specifier: ^24.10.0
         version: 24.10.0
       '@vitejs/plugin-vue':
         specifier: ^6.0.1

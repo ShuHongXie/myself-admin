@@ -10,6 +10,7 @@ dist/
 **/dist/
 build/
 app/web/src/apis/
+packages/ui/build/
 
 # Logs
 *.log
