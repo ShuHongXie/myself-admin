@@ -20,8 +20,8 @@
   "exports": {
     ".": {
       "types": "./build/es/index.d.ts",
-      "import": "./build/es/index.mjs",
-      "require": "./build/lib/index.js"
+      "import": "./build/",
+      "require": "./build/"
     },
     "./styles": {
       "import": "./src/assets/scss/index.scss",

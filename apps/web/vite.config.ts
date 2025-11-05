@@ -17,11 +17,24 @@ const MyselfUiResolver = () => {
       // 只处理Ms开头的组件
       if (name.startsWith('Ms')) {
         const pathName = name.slice(2).toLowerCase()
+        /*
         return {
           importName: name,
           from: '@myself/ui',
-          path: `@myself/ui/es/components/SearchTable/index.mjs`,
-          sideEffects: `@myself/ui/es/components/SearchTable/index.css`
+          path: `@myself/ui/build/es/components/SearchTable`,
+          sideEffects: [`@myself/ui/build/es/components/SearchTable/index.css`]
+        }
+        
+        */
+        // return {
+        //   from: '@myself/ui/build/es/components/SearchTable/index.mjs',
+        //   sideEffects: [`@myself/ui/build/es/components/SearchTable/index.css`]
+        // }apps\web\node_modules\@myself/ui/build/es/components/SearchTable
+        return {
+          importName: name,
+          from: '@myself/ui/',
+          path: `@myself/ui/build/es/components/SearchTable/index.mjs`,
+          sideEffects: [`@myself/ui/build/es/components/SearchTable/index.css`]
         }
       }
       return null
