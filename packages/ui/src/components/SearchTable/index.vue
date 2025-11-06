@@ -5,7 +5,7 @@ import { type SearchModel } from '../Search/props'
 import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
 import Render from './render'
 
-defineOptions({ name: 'ms-search-table' })
+defineOptions({ name: 'MsSearchTable' })
 
 interface Pagination {
   currentPage: number

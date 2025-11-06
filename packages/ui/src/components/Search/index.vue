@@ -4,7 +4,7 @@ import { searchProps, SearchTypeEnum, type SearchModel, type SearchProps } from 
 import { Icon } from '@iconify/vue'
 import type { FormInstance } from 'element-plus'
 
-defineOptions({ name: 'ms-search' })
+defineOptions({ name: 'MsSearch' })
 
 const props = defineProps(searchProps)
 const options = ref<SearchProps[]>([])
