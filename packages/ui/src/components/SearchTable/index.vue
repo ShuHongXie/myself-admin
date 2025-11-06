@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { MsSearch } from '../Search'
 import { ref, onMounted, defineProps, defineEmits } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../Search/props'

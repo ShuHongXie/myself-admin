@@ -1,15 +1,16 @@
-import * as components from './components/index'
+import * as components from './components'
 export * from './components'
 import type { App } from 'vue'
 
 // 导出所有组件
-export const MsUIComponents = components
+export const MsUIComponentsInstance = Object.values(components)
+export const MsUIComponentsName = Object.values(components)
 
 // 默认导出插件对象
 export default {
   install: (app: App) => {
-    for (const name in components) {
-      app.component(name, components[name as keyof typeof components])
-    }
+    MsUIComponentsInstance.forEach((component, index) => {
+      app.component(MsUIComponentsName[index] as unknown as string, component)
+    })
   }
 }

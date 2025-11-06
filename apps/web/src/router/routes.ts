@@ -27,28 +27,17 @@ export const staticRoutes: RouteRecordRaw[] = [
     path: '/',
     meta: {},
     children: []
-  },
-  {
-    component: () => import('#/views/@core/NotFound.vue'),
-    meta: {
-      hideInBreadcrumb: true,
-      hideInMenu: true,
-      hideInTab: true,
-      title: '404'
-    },
-    name: 'FallbackNotFound',
-    path: '/404'
+    // {
+    //   path: '/:catchAll(.*)',
+    //   redirect: '/404',
+    //   meta: {
+    //     hideInBreadcrumb: true,
+    //     hideInMenu: true,
+    //     hideInTab: true,
+    //     title: '404'
+    //   }
+    // }
   }
-  // {
-  //   path: '/:catchAll(.*)',
-  //   redirect: '/404',
-  //   meta: {
-  //     hideInBreadcrumb: true,
-  //     hideInMenu: true,
-  //     hideInTab: true,
-  //     title: '404'
-  //   }
-  // }
 ]
 
 export const matchRoutes: RouteRecordRaw[] = [

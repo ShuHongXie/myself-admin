@@ -7,6 +7,9 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    App: typeof import('./../App.vue')['default']
+    Auth: typeof import('./../views/@core/Auth.vue')['default']
+    ButtonPermissionDemo: typeof import('./../views/ButtonPermissionDemo.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBacktop: typeof import('element-plus/es')['ElBacktop']
     ElBadge: typeof import('element-plus/es')['ElBadge']
@@ -50,9 +53,25 @@ declare module 'vue' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
     ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
-    MsSearchTable: typeof import('@myself/ui')['default']
+    Home: typeof import('./../views/home.vue')['default']
+    Layout: typeof import('./../views/@core/Layout.vue')['default']
+    Login: typeof import('./../views/@core/Login.vue')['default']
+    MenuManage: typeof import('./../views/@core/Manage/MenuManage/index.vue')['default']
+    MsSearchTable: typeof import('@myself/ui/es/SearchTable')['MsSearchTable']
+    NestedMenu: typeof import('./../../node_modules/@myself/core/src/core/Layout/NestedMenu.vue')['default']
+    New: typeof import('./../views/new.vue')['default']
+    NotFound: typeof import('./../views/@core/NotFound.vue')['default']
+    OperationDialog: typeof import('./../views/@core/Manage/MenuManage/components/operationDialog.vue')['default']
+    Other: typeof import('./../views/other.vue')['default']
+    RoleManage: typeof import('./../views/@core/Manage/RoleManage/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Search: typeof import('./../../node_modules/@myself/ui/src/components/Search/index.vue')['default']
+    SearchTable: typeof import('./../../node_modules/@myself/ui/src/components/SearchTable/index.vue')['default']
+    SvgIcon: typeof import('./../../node_modules/@myself/ui/src/components/SvgIcon/SvgIcon.vue')['default']
+    Test: typeof import('./../views/test.vue')['default']
+    TestResolver: typeof import('./../views/test-resolver.vue')['default']
+    UserManage: typeof import('./../views/@core/Manage/UserManage/index.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

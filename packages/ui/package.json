@@ -20,14 +20,23 @@
   "exports": {
     ".": {
       "types": "./build/es/index.d.ts",
-      "import": "./build/",
+      "import": "./build/es/index.mjs",
       "require": "./build/"
     },
-    "./styles": {
-      "import": "./src/assets/scss/index.scss",
+    "./es/*": {
+      "types": "./build/es/index.d.ts",
+      "import": "./build/es/components/*/index.mjs"
+    },
+    "./styles/*": {
+      "import": "./build/es/components/*/index.css",
       "default": "./src/assets/scss/index.scss"
     }
   },
+  "sideEffects": [
+    "build/*",
+    "build/**/*.css",
+    "build/**/*.scss"
+  ],
   "dependencies": {
     "@myself/utils": "workspace:^",
     "element-plus": "catalog:",

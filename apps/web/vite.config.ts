@@ -16,25 +16,13 @@ const MyselfUiResolver = () => {
       console.log('name:', name)
       // 只处理Ms开头的组件
       if (name.startsWith('Ms')) {
-        const pathName = name.slice(2).toLowerCase()
-        /*
+        const componentName = name.slice(2)
+        console.log('componentName:', componentName)
+        console.log('css path:', `@myself/ui/es/components/${componentName}/index.css`)
         return {
-          importName: name,
-          from: '@myself/ui',
-          path: `@myself/ui/build/es/components/SearchTable`,
-          sideEffects: [`@myself/ui/build/es/components/SearchTable/index.css`]
-        }
-        
-        */
-        // return {
-        //   from: '@myself/ui/build/es/components/SearchTable/index.mjs',
-        //   sideEffects: [`@myself/ui/build/es/components/SearchTable/index.css`]
-        // }apps\web\node_modules\@myself/ui/build/es/components/SearchTable
-        return {
-          importName: name,
-          from: '@myself/ui/',
-          path: `@myself/ui/build/es/components/SearchTable/index.mjs`,
-          sideEffects: [`@myself/ui/build/es/components/SearchTable/index.css`]
+          name,
+          from: `@myself/ui/es/${componentName}`,
+          sideEffects: `@myself/ui/styles/${componentName}`
         }
       }
       return null
@@ -63,6 +51,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '#': resolve(__dirname, 'src')
+      // '@myself/ui/es': resolve(__dirname, 'node_modules/@myself/ui/es')
     }
   },
   plugins: [
