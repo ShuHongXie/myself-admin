@@ -57,6 +57,6 @@ async function buildAllLibrary(options: BuildOptions = { minify: false }): Promi
 }
 
 export const buildFullBundle = parallel(
-  withTaskName('buildFullMinified', buildAllLibrary({ minify: true })),
-  withTaskName('buildFull', buildAllLibrary())
+  withTaskName('buildFullMinified', () => buildAllLibrary({ minify: true })),
+  withTaskName('buildFull', () => buildAllLibrary())
 )

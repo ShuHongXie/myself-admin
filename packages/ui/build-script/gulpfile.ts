@@ -3,13 +3,13 @@ import { output, run, runTask, withTaskName } from './config'
 import { mkdir } from 'fs'
 
 export default series(
-  withTaskName('clean', () => run('pnpm run clean')),
-  withTaskName('createOutput', (done) => {
+  // withTaskName('clean', () => run('pnpm run clean')),
+  withTaskName('createOutput', (done: any) => {
     mkdir(output, { recursive: true }, done)
   }),
 
   parallel(
-    runTask('buildModules'),
+    // runTask('buildModules'),
     runTask('buildFullBundle')
     // runTask('generateTypesDefinitions'),
     // runTask('buildHelper'),
@@ -21,3 +21,5 @@ export default series(
 
   // parallel(copyTypesDefinitions, copyFiles)
 )
+
+export * from './tasks'
