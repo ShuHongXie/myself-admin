@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "npx ts-node --require ts-node/register node_modules/gulp/bin/gulp.js --gulpfile build-script/gulpfile.ts",
+    "build:old": "vue-tsc -b && vite build",
     "preview": "vite preview",
+    "clean": "rimraf myself",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
@@ -19,23 +21,24 @@
   ],
   "exports": {
     ".": {
-      "types": "./build/es/index.d.ts",
-      "import": "./build/es/index.mjs",
-      "require": "./build/"
+      "types": "./myself/es/index.d.ts",
+      "import": "./myself/es/index.mjs",
+      "require": "./myself/"
     },
     "./es/*": {
-      "types": "./build/es/index.d.ts",
-      "import": "./build/es/components/*/index.mjs"
+      "types": "./myself/es/index.d.ts",
+      "import": "./myself/es/components/*/index.mjs"
     },
     "./styles/*": {
-      "import": "./build/es/components/*/index.css",
+      "import": "./myself/es/components/*/index.css",
       "default": "./src/assets/scss/index.scss"
     }
   },
   "sideEffects": [
     "build/*",
     "build/**/*.css",
-    "build/**/*.scss"
+    "build/**/*.scss",
+    "@myself/utils/**/*.ts"
   ],
   "dependencies": {
     "@myself/utils": "workspace:^",
@@ -43,10 +46,18 @@
     "vue": "^3.5.22"
   },
   "devDependencies": {
+    "@types/gulp": "^4.0.18",
     "@types/node": "^24.6.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "@vue/tsconfig": "^0.8.1",
+    "chalk": "^5.6.2",
+    "child_process": "^1.0.2",
+    "consola": "^3.4.2",
+    "esbuild": "^0.25.12",
+    "gulp": "^5.0.1",
+    "rollup": "^4.52.5",
+    "rollup-plugin-esbuild": "^6.2.1",
     "sass": "catalog:",
     "typescript": "~5.9.3",
     "unplugin-auto-import": "catalog:",

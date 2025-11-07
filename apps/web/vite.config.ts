@@ -18,7 +18,6 @@ const MyselfUiResolver = () => {
       if (name.startsWith('Ms')) {
         const componentName = name.slice(2)
         console.log('componentName:', componentName)
-        console.log('css path:', `@myself/ui/es/components/${componentName}/index.css`)
         return {
           name,
           from: `@myself/ui/es/${componentName}`,
@@ -67,6 +66,8 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver(), MyselfUiResolver()],
       dts: 'src/types/components.d.ts'
+      // dirs: ['./node_modules/@myself/ui/build/es'],
+      // deep: true
     }),
     createSvgIconsPlugin({
       // 要缓存的图标文件夹

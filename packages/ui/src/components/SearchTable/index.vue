@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import MsSearch from '../Search/index.vue'
 import { ref, onMounted, defineProps, defineEmits } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../Search/props'
@@ -205,28 +206,7 @@ const emitEventHandler = (...args: any) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-@use '../../assets/scss/mixin.scss' as *;
-.search-table {
-  height: 100%;
-  @include flex-col-start-start;
-  :deep(.el-table) {
-    border-radius: 8px 8px 0 0;
-    th {
-      background-color: #f3f3f3;
-    }
-  }
-  &__content {
-    width: 100%;
-    margin-top: 10px;
-    flex: 1;
-  }
-  &__pagination {
-    width: 100%;
-    @include flex-end-center;
-    .el-pagination {
-      @include flex-end-center;
-    }
-  }
-}
+<style lang="scss">
+@use '../Search/index.scss' as *;
+@use './index.scss' as *;
 </style>

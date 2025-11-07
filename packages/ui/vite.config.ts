@@ -6,18 +6,26 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
 
+const outDir = 'myself'
+
 // https://vite.dev/config/
 export default defineConfig({
   build: {
     //打包后文件目录
-    outDir: 'build',
+    outDir,
     //css代码分割
     cssCodeSplit: true,
     //压缩
     minify: false,
     rollupOptions: {
       //忽略打包vue文件
-      external: ['vue', 'element-plus'],
+      external: [
+        'vue',
+        'element-plus',
+        'unplugin-vue-components',
+        'unplugin-auto-import',
+        '@myself/utils'
+      ],
       input: ['./src/index.ts'],
       output: [
         {
@@ -30,7 +38,7 @@ export default defineConfig({
           preserveModulesRoot: 'src', // 从src文件夹开始打包
           exports: 'named',
           //配置打包根目录
-          dir: './build/es'
+          dir: `./${outDir}/es`
         },
         {
           //打包格式
@@ -42,13 +50,13 @@ export default defineConfig({
           preserveModulesRoot: 'src',
           exports: 'named',
           //配置打包根目录
-          dir: './build/lib'
+          dir: `./${outDir}/lib`
         }
       ]
     },
     lib: {
       entry: './src/index.ts',
-      name: 'MsUI',
+      name: outDir,
       fileName: 'index',
       formats: ['es', 'cjs']
     }
@@ -61,7 +69,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '#': resolve(__dirname, 'src')
+      '#': resolve(__dirname, 'src'),
+      myself: resolve(__dirname, 'src/components')
     }
   },
   plugins: [

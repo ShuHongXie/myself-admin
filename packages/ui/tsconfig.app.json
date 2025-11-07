@@ -17,5 +17,5 @@
     "noUncheckedSideEffectImports": true
   },
   "types": ["element-plus/global", "vite/client", "@vitejs/plugin-vue-jsx", "vue/jsx-runtime"],
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "build-script/gulpfile.ts"]
 }
