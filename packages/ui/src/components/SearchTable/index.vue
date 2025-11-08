@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MsSearch from '../Search/index.vue'
-import { ref, onMounted, defineProps, defineEmits } from 'vue'
+import { ref, onMounted, defineProps } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../Search/props'
 import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
@@ -206,7 +206,7 @@ const emitEventHandler = (...args: any) => {
   </div>
 </template>
 
-<style lang="scss">
+<!-- <style lang="scss">
 @use '../Search/index.scss' as *;
 @use './index.scss' as *;
-</style>
+</style> -->

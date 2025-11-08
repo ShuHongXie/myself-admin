@@ -6,10 +6,14 @@ import {
   output as outputDirectory,
   formatBundleFilename,
   writeBundles,
-  withTaskName
+  withTaskName,
+  libraryName
 } from '../config'
 import vue from '@vitejs/plugin-vue'
 import esbuild from 'rollup-plugin-esbuild'
+import nodeResolve from '@rollup/plugin-node-resolve' // 解析 node_modules
+import commonjs from '@rollup/plugin-commonjs' // 转换 CJS 为 ESM
+import nodePolyfills from 'rollup-plugin-polyfill-node'
 
 interface BuildOptions {
   minify: boolean
@@ -21,11 +25,22 @@ async function buildAllLibrary(options: BuildOptions = { minify: false }): Promi
     input: resolve(root, 'index.ts'),
     external: ['vue', 'element-plus'],
     plugins: [
-      vue(),
+      vue({
+        css: false
+      }),
       esbuild({
         minify,
         jsxFactory: 'h' // 可选：自定义 JSX 工厂函数（如 Vue 的 h）
-      })
+      }),
+      // 1. 解析 node_modules 中的依赖（包括 @iconify/vue）
+      nodeResolve({
+        preferBuiltins: true,
+        browser: true, // 针对浏览器环境解析
+        extensions: ['.vue', '.js', '.ts'] // 支持的文件后缀
+      }),
+      // 2. 转换 CommonJS 模块为 ES 模块（处理依赖中的 CJS 格式）
+      commonjs(),
+      nodePolyfills()
     ]
   }
   let bundle
@@ -33,17 +48,21 @@ async function buildAllLibrary(options: BuildOptions = { minify: false }): Promi
     bundle = await rollup(config)
     const outputOptionsList: OutputOptions[] = [
       {
+        name: libraryName,
         format: 'umd',
         file: resolve(outputDirectory, 'dist', formatBundleFilename('index.full', minify, 'js')),
         globals: {
           vue: 'Vue'
         },
-        sourcemap: minify
+        sourcemap: minify,
+        exports: 'named'
       },
       {
-        format: 'esm',
+        name: libraryName,
+        format: 'cjs',
         file: resolve(outputDirectory, 'dist', formatBundleFilename('index.full', minify, 'mjs')),
-        sourcemap: minify
+        sourcemap: minify,
+        exports: 'named'
       }
     ]
     await writeBundles(bundle, outputOptionsList)

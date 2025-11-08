@@ -20,7 +20,7 @@ export function writeBundles(bundle: RollupBuild, options: OutputOptions[]) {
 export const withTaskName = (name: string, fn: any) => Object.assign(fn, { displayName: name })
 
 export const runTask = (name: string) =>
-  withTaskName(`${name}`, () => run(`pnpm run build ${name}`, root))
+  withTaskName(`shellTask:${name}`, () => run(`pnpm run build ${name}`, root))
 
 export const run = async (command: string, cwd: string = root) =>
   new Promise<void>((resolve, reject) => {
@@ -42,7 +42,7 @@ export const run = async (command: string, cwd: string = root) =>
     })
 
     app.on('error', (error) => {
-      console.log('errorxxx:', error)
+      console.log('错误:', error)
       process.removeListener('exit', onProcessExit)
       reject(error)
     })

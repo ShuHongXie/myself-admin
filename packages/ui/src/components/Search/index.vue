@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, defineEmits, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { searchProps, SearchTypeEnum, type SearchModel, type SearchProps } from './props'
 import { Icon } from '@iconify/vue'
 import type { FormInstance } from 'element-plus'
@@ -167,6 +167,6 @@ defineExpose({})
   </div>
 </template>
 
-<style lang="scss">
+<!-- <style lang="scss">
 @use './index.scss' as *;
-</style>
+</style> -->
