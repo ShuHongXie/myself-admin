@@ -568,9 +568,18 @@ importers:
       '@rollup/plugin-node-resolve':
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.52.5)
+      '@types/fs-extra':
+        specifier: ^11.0.4
+        version: 11.0.4
       '@types/gulp':
         specifier: ^4.0.18
         version: 4.0.18
+      '@types/gulp-rename':
+        specifier: ^2.0.7
+        version: 2.0.7
+      '@types/gulp-sass':
+        specifier: ^6.0.0
+        version: 6.0.0
       '@types/node':
         specifier: ^24.6.0
         version: 24.10.0
@@ -598,6 +607,9 @@ importers:
       esbuild:
         specifier: ^0.25.12
         version: 0.25.12
+      fs-extra:
+        specifier: ^11.3.2
+        version: 11.3.2
       gulp:
         specifier: ^5.0.1
         version: 5.0.1
@@ -628,6 +640,9 @@ importers:
       sucrase:
         specifier: ^3.35.0
         version: 3.35.0
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@24.10.0)(typescript@5.9.3)
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
@@ -2838,6 +2853,9 @@ packages:
   '@rushstack/ts-command-line@5.1.3':
     resolution: {integrity: sha512-Kdv0k/BnnxIYFlMVC1IxrIS0oGQd4T4b7vKfx52Y2+wk2WZSDFIvedr7JrhenzSlm3ou5KwtoTGTGd5nbODRug==}
 
+  '@sass/types@1.93.2':
+    resolution: {integrity: sha512-0FDMVY7eR7jGCQRBKh/VhvC0a6eh8lpufe03h2Bi48B/PrnKTpKNg/ZOHKVOHx/5Ux5bmsZA+iE2DaOQKi2DRg==}
+
   '@scarf/scarf@1.4.0':
     resolution: {integrity: sha512-xxeapPiUXdZAE3che6f3xogoJPeZgig6omHEy1rIY5WVsB3H2BHNnZH+gHG6x91SCWyQCzWGsuL2Hh3ClO5/qQ==}
 
@@ -2951,8 +2969,17 @@ packages:
   '@types/express@5.0.3':
     resolution: {integrity: sha512-wGA0NX93b19/dZC1J18tKWVIYWyyF2ZjT9vin/NRu0qzzvfVzWjs04iq2rQ3H65vCTQYlRqs3YHfY7zjdV+9Kw==}
 
+  '@types/fs-extra@11.0.4':
+    resolution: {integrity: sha512-yTbItCNreRooED33qjunPthRcSjERP1r4MqCZc7wv0u2sUkzTFp45tgUfS5+r7FrZPdmCCNflLhVSP/o+SemsQ==}
+
   '@types/glob-stream@8.0.3':
     resolution: {integrity: sha512-vctgrT9AH/GK3TRaIbRUU0TZn12GBU4kzelZdPyJp1Sc8L/6Wrq21UrtN4+x4saqTg6COUIUtFV6JSYcVln/EQ==}
+
+  '@types/gulp-rename@2.0.7':
+    resolution: {integrity: sha512-W1xIGdui1w4AB1ylt/b8jrpV1MTNfeKmMFfJXsN/NOtSHjRg2w4Wp9H96J+Ld9tZenTtU0u5LatpGFJvOBN5EA==}
+
+  '@types/gulp-sass@6.0.0':
+    resolution: {integrity: sha512-i+aa3mmC7Xoi5Al8zsFGKtYnk7AulMvQeluO3CRiRvqvYg1eyra6xerfxobXjmHGlJsWnNx71OTQa3yH33FH4w==}
 
   '@types/gulp@4.0.18':
     resolution: {integrity: sha512-IqkYa4sXkwH2uwqO2aXYOoAisJpLX13BPaS6lmEAoG4BbgOay3qqGQFsT9LMSSQVMQlEKU7wTUW0sPV46V0olw==}
@@ -2977,6 +3004,9 @@ packages:
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+
+  '@types/jsonfile@6.1.4':
+    resolution: {integrity: sha512-D5qGUYwjvnNNextdU59/+fI+spnwtTFmyQP0h+PfIOSkNfpU6AOICUOkm4i0OnSk+NyjdPJrxCDro0sJsWlRpQ==}
 
   '@types/jsonwebtoken@9.0.7':
     resolution: {integrity: sha512-ugo316mmTYBl2g81zDFnZ7cfxlut3o+/EQdaP7J8QN2kY6lJ22hmQYCK5EHcJHbrW+dkCGSCPgbG8JtYj6qSrg==}
@@ -11114,6 +11144,8 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
+  '@sass/types@1.93.2': {}
+
   '@scarf/scarf@1.4.0': {}
 
   '@shikijs/core@3.14.0':
@@ -11258,11 +11290,26 @@ snapshots:
       '@types/express-serve-static-core': 5.0.7
       '@types/serve-static': 1.15.8
 
+  '@types/fs-extra@11.0.4':
+    dependencies:
+      '@types/jsonfile': 6.1.4
+      '@types/node': 24.10.0
+
   '@types/glob-stream@8.0.3':
     dependencies:
       '@types/node': 24.10.0
       '@types/picomatch': 4.0.2
       '@types/streamx': 2.9.5
+
+  '@types/gulp-rename@2.0.7':
+    dependencies:
+      '@types/node': 24.10.0
+      '@types/vinyl': 2.0.12
+
+  '@types/gulp-sass@6.0.0':
+    dependencies:
+      '@sass/types': 1.93.2
+      '@types/node': 24.10.0
 
   '@types/gulp@4.0.18':
     dependencies:
@@ -11293,6 +11340,10 @@ snapshots:
       pretty-format: 30.0.5
 
   '@types/json-schema@7.0.15': {}
+
+  '@types/jsonfile@6.1.4':
+    dependencies:
+      '@types/node': 24.10.0
 
   '@types/jsonwebtoken@9.0.7':
     dependencies:
@@ -17139,6 +17190,24 @@ snapshots:
       diff: 4.0.2
       make-error: 1.3.6
       typescript: 5.8.3
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+
+  ts-node@10.9.2(@types/node@24.10.0)(typescript@5.9.3):
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.11
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.4
+      '@types/node': 24.10.0
+      acorn: 8.15.0
+      acorn-walk: 8.3.4
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.9.3
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 

@@ -1,4 +1,4 @@
-@use '../../assets/scss/mixin.scss' as *;
+@use './mixins/mixin.scss' as *;
 .search {
   width: 100%;
   &-content {

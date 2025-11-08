@@ -7,7 +7,6 @@ import consola from 'consola'
 export const libraryName = 'myself'
 export const root = resolve(__dirname, '../src')
 export const output = resolve(__dirname, `../${libraryName}`)
-console.log(output, __dirname)
 
 export function formatBundleFilename(name: string, minify: boolean, ext: string) {
   return `${name}${minify ? '.min' : ''}.${ext}`

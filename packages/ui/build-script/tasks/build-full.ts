@@ -25,9 +25,7 @@ async function buildAllLibrary(options: BuildOptions = { minify: false }): Promi
     input: resolve(root, 'index.ts'),
     external: ['vue', 'element-plus'],
     plugins: [
-      vue({
-        css: false
-      }),
+      vue(),
       esbuild({
         minify,
         jsxFactory: 'h' // 可选：自定义 JSX 工厂函数（如 Vue 的 h）

@@ -1,20 +1,14 @@
 import { series, dest, parallel } from 'gulp'
-import { output, run, runTask, withTaskName } from './config'
-import { mkdir } from 'fs'
-import { resolve } from 'path'
-
-// export const copyFullStyle = async () => {
-//   await mkdir(resolve(epOutput, 'dist'), { recursive: true })
-//   await copyFile(
-//     resolve(epOutput, 'theme-chalk/index.css'),
-//     resolve(epOutput, 'dist/index.css')
-//   )
-// }
+import { removeSync, mkdirsSync } from 'fs-extra'
+import { output, run, root, runTask, withTaskName } from './config'
+import { copyFile, mkdir } from 'fs'
 
 export default series(
-  // withTaskName('clean', () => run('pnpm run clean')),
-  withTaskName('createOutput', (done: any) => {
-    mkdir(output, { recursive: true }, done)
+  withTaskName('clean', async () => {
+    await removeSync(output)
+  }),
+  withTaskName('createOutput', async () => {
+    await mkdirsSync(output)
   }),
 
   parallel(
@@ -22,10 +16,7 @@ export default series(
     runTask('buildFullBundle'),
     // runTask('generateTypesDefinitions'),
     // runTask('buildHelper'),
-    series(
-      withTaskName('buildThemeChalk', () => run('pnpm run -C packages/theme-chalk build')),
-      copyFullStyle
-    )
+    runTask('buildFullStyle')
   )
 
   // parallel(copyTypesDefinitions, copyFiles)
