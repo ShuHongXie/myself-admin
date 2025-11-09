@@ -24,7 +24,9 @@
     "pinia": "catalog:",
     "pinia-plugin-persistedstate": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "element-plus": "catalog:",
+    "@element-plus/icons-vue": "catalog:"
   },
   "devDependencies": {
     "@babel/cli": "catalog:",
@@ -37,7 +39,6 @@
     "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "@vue/tsconfig": "catalog:",
-    "element-plus": "catalog:",
     "sass": "catalog:",
     "typescript": "catalog:",
     "unplugin-auto-import": "catalog:",

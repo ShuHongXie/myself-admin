@@ -64,7 +64,8 @@ export default defineConfig({
       imports: ['vue', 'vue-router', 'pinia']
     }),
     Components({
-      resolvers: [ElementPlusResolver(), MyselfUiResolver()],
+      // resolvers: [ElementPlusResolver(), MyselfUiResolver()],
+      resolvers: [ElementPlusResolver()],
       dts: 'src/types/components.d.ts'
       // dirs: ['./node_modules/@myself/ui/build/es'],
       // deep: true

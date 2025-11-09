@@ -47,7 +47,7 @@ async function buildAllLibrary(options: BuildOptions = { minify: false }): Promi
     const outputOptionsList: OutputOptions[] = [
       {
         name: libraryName,
-        format: 'umd',
+        format: 'cjs',
         file: resolve(outputDirectory, 'dist', formatBundleFilename('index.full', minify, 'js')),
         globals: {
           vue: 'Vue'
@@ -57,7 +57,7 @@ async function buildAllLibrary(options: BuildOptions = { minify: false }): Promi
       },
       {
         name: libraryName,
-        format: 'cjs',
+        format: 'es',
         file: resolve(outputDirectory, 'dist', formatBundleFilename('index.full', minify, 'mjs')),
         sourcemap: minify,
         exports: 'named'

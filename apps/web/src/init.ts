@@ -14,6 +14,7 @@ import 'element-plus/dist/index.css'
 import './assets/scss/global.scss'
 import '@myself/core/styles'
 import initOpenApiInstance from '#/config/axios'
+import Myself from '@myself/ui'
 
 export const init = async () => {
   NProgress.configure({ showSpinner: false })
@@ -29,6 +30,8 @@ export const init = async () => {
   initPersistStores(app)
   // 国际化注册
   await initI18n(app)
+
+  app.use(Myself)
 
   // 动态标题
   const title = useTitle()
