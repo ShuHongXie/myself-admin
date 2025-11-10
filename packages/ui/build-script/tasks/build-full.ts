@@ -23,7 +23,7 @@ async function buildAllLibrary(options: BuildOptions = { minify: false }): Promi
   const { minify } = options
   const config = {
     input: resolve(root, 'index.ts'),
-    external: ['vue', 'element-plus'],
+    external: ['vue', 'element-plus', 'axios'], // 添加 axios 到外部依赖
     plugins: [
       vue(),
       esbuild({
@@ -37,8 +37,8 @@ async function buildAllLibrary(options: BuildOptions = { minify: false }): Promi
         extensions: ['.vue', '.js', '.ts'] // 支持的文件后缀
       }),
       // 2. 转换 CommonJS 模块为 ES 模块（处理依赖中的 CJS 格式）
-      commonjs(),
-      nodePolyfills()
+      commonjs()
+      // 移除 nodePolyfills()
     ]
   }
   let bundle

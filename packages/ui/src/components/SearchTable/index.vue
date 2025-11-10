@@ -4,7 +4,7 @@ import { ref, onMounted, defineProps } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../Search/props'
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
-// import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
+import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
 import Render from './render'
 
 defineOptions({ name: 'MsSearchTable' })
@@ -39,10 +39,10 @@ const emit = defineEmits([
 ])
 
 // 列表初始化-----------start-------------
-// const axios = initRequestInstance({
-//   baseURL: '',
-//   headers: props.headers
-// })
+const axios = initRequestInstance({
+  baseURL: '',
+  headers: props.headers
+})
 const data = ref([])
 const loading = ref(false)
 const pagination = ref<Pagination>({
@@ -81,14 +81,14 @@ const handleSearch = async (reset = true) => {
       ? { params }
       : params
     loading.value = true
-    // const res = await axios[props.methodType as RequestMethodType](
-    //   props.url,
-    //   requestParams as AxiosRequestConfig
-    // )
-    // data.value = getNestedValue(res, props.responseDataField)
-    // if (props.showPagination) {
-    //   pagination.value.total = getNestedValue(res, props.responseTotalField)
-    // }
+    const res = await axios[props.methodType as RequestMethodType](
+      props.url,
+      requestParams as AxiosRequestConfig
+    )
+    data.value = getNestedValue(res, props.responseDataField)
+    if (props.showPagination) {
+      pagination.value.total = getNestedValue(res, props.responseTotalField)
+    }
   } catch (error) {
     console.log(error)
   } finally {

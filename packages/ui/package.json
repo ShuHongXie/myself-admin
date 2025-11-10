@@ -24,8 +24,8 @@
   "exports": {
     ".": {
       "types": "./myself/es/index.d.ts",
-      "import": "./myself/dist/index.full.min.mjs",
-      "require": "./myself/"
+      "import": "./myself/dist/index.full.mjs",
+      "require": "./myself/dist/index.full.mjs"
     },
     "./es/*": {
       "types": "./myself/es/index.d.ts",
