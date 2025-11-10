@@ -1,12 +1,13 @@
 import glob from 'fast-glob'
-import { resolve } from 'path'
+import { join, resolve } from 'path'
 import { rollup, type OutputOptions } from 'rollup'
-import { output, libraryName, writeBundles, root, withTaskName } from '../config'
+import { output, libraryName, writeBundles, root, withTaskName, cwd } from '../config'
 import vue from '@vitejs/plugin-vue'
 import esbuild from 'rollup-plugin-esbuild'
 import nodeResolve from '@rollup/plugin-node-resolve' // 解析 node_modules
 import commonjs from '@rollup/plugin-commonjs' // 转换 CJS 为 ESM
 import type { BuildOptions, BuildInfo, Module } from './types'
+import dts from 'vite-plugin-dts'
 import { series, type TaskFunction } from 'gulp'
 
 const outputConfig: Record<Module, BuildInfo> = {
@@ -56,15 +57,30 @@ const plugins = [
     browser: true, // 针对浏览器环境解析
     extensions: ['.vue', '.mjs', '.js', '.ts'] // 支持的文件后缀
   }),
-  commonjs()
+  commonjs(),
+  dts({
+    tsconfigPath: resolve(cwd, '../tsconfig.app.json'),
+    outDir: `${output}/es`
+  }),
+  dts({
+    tsconfigPath: resolve(cwd, '../tsconfig.app.json'),
+    outDir: `${output}/lib`
+  })
 ]
 
 async function buildModulesComponents() {
-  const input = await glob(['src/**/*.{js,ts,vue}', '!src/style/(index|css).{js,ts,vue}'], {
-    cwd: resolve(__dirname, '../'),
-    absolute: true,
-    onlyFiles: true
-  })
+  console.log('path:', root)
+
+  const input = await glob(
+    ['components/**/*.{js,ts,vue}', '!components/**/style/(index|css).{js,ts,vue}'],
+    {
+      cwd: root,
+      absolute: true,
+      onlyFiles: true
+    }
+  )
+  console.log('input:', input)
+
   const config = {
     input,
     plugins,
@@ -108,7 +124,7 @@ async function buildModulesStyles() {
         dir: resolve(config.output.path, 'components'),
         exports: module === 'cjs' ? 'named' : undefined,
         preserveModules: true,
-        preserveModulesRoot: root,
+        preserveModulesRoot: join(root, 'components'),
         sourcemap: true,
         entryFileNames: `[name].${config.ext}`
       }
@@ -119,6 +135,6 @@ async function buildModulesStyles() {
 }
 
 export const buildModules: TaskFunction = series(
-  withTaskName('buildModulesComponents', buildModulesComponents),
-  withTaskName('buildModulesStyles', buildModulesStyles)
+  withTaskName('buildModulesComponents', buildModulesComponents)
+  // withTaskName('buildModulesStyles', buildModulesStyles)
 )
