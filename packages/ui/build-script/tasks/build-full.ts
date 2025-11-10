@@ -14,10 +14,7 @@ import esbuild from 'rollup-plugin-esbuild'
 import nodeResolve from '@rollup/plugin-node-resolve' // 解析 node_modules
 import commonjs from '@rollup/plugin-commonjs' // 转换 CJS 为 ESM
 import nodePolyfills from 'rollup-plugin-polyfill-node'
-
-interface BuildOptions {
-  minify: boolean
-}
+import type { BuildOptions } from './types'
 
 async function buildAllLibrary(options: BuildOptions = { minify: false }): Promise<void> {
   const { minify } = options
@@ -34,9 +31,8 @@ async function buildAllLibrary(options: BuildOptions = { minify: false }): Promi
       nodeResolve({
         preferBuiltins: true,
         browser: true, // 针对浏览器环境解析
-        extensions: ['.vue', '.js', '.ts'] // 支持的文件后缀
+        extensions: ['.vue', '.mjs', '.js', '.ts'] // 支持的文件后缀
       }),
-      // 2. 转换 CommonJS 模块为 ES 模块（处理依赖中的 CJS 格式）
       commonjs()
       // 移除 nodePolyfills()
     ]

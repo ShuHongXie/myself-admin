@@ -2,7 +2,7 @@ import axios, { type AxiosRequestConfig, type AxiosResponse, type CreateAxiosDef
 import { ElMessage } from 'element-plus'
 import { merge } from '../func'
 
-// export * from 'axios'
+export * from 'axios'
 
 /**
  * 后端统一响应格式

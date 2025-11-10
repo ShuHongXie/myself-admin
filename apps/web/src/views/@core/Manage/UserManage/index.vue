@@ -167,7 +167,7 @@ onMounted(() => {
       </template>
     </MsSearchTable>
     <!-- 新增编辑用户 -->
-    <!-- <el-dialog
+    <el-dialog
       v-model="operateDialogVisible"
       @close="currentOperateItem = {}"
       :title="operateType === 'add' ? '新增用户' : '修改用户'"
@@ -239,7 +239,7 @@ onMounted(() => {
           <el-button type="primary" @click="confirm(ruleFormRef)">确定</el-button>
         </div>
       </template>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
