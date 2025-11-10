@@ -3,7 +3,8 @@ import MsSearch from '../Search/index.vue'
 import { ref, onMounted, defineProps } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../Search/props'
-import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
+import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
+// import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
 import Render from './render'
 
 defineOptions({ name: 'MsSearchTable' })
@@ -38,10 +39,10 @@ const emit = defineEmits([
 ])
 
 // 列表初始化-----------start-------------
-const axios = initRequestInstance({
-  baseURL: '',
-  headers: props.headers
-})
+// const axios = initRequestInstance({
+//   baseURL: '',
+//   headers: props.headers
+// })
 const data = ref([])
 const loading = ref(false)
 const pagination = ref<Pagination>({
@@ -80,14 +81,14 @@ const handleSearch = async (reset = true) => {
       ? { params }
       : params
     loading.value = true
-    const res = await axios[props.methodType as RequestMethodType](
-      props.url,
-      requestParams as AxiosRequestConfig
-    )
-    data.value = getNestedValue(res, props.responseDataField)
-    if (props.showPagination) {
-      pagination.value.total = getNestedValue(res, props.responseTotalField)
-    }
+    // const res = await axios[props.methodType as RequestMethodType](
+    //   props.url,
+    //   requestParams as AxiosRequestConfig
+    // )
+    // data.value = getNestedValue(res, props.responseDataField)
+    // if (props.showPagination) {
+    //   pagination.value.total = getNestedValue(res, props.responseTotalField)
+    // }
   } catch (error) {
     console.log(error)
   } finally {
@@ -128,6 +129,7 @@ const emitEventHandler = (...args: any) => {
 
 <template>
   <div class="search-table">
+    <!-- -->
     <MsSearch @submit="submit" @reset="reset" v-model="searchModel" v-bind="searchProps">
       <template :key="item.prop" #[item.prop] v-for="item in searchProps.slots">
         <slot :name="item.prop"></slot>
@@ -185,7 +187,6 @@ const emitEventHandler = (...args: any) => {
             :index="scope.$index"
             :row="scope.row"
           ></slot>
-          <!-- 渲染函数 -->
           <Render v-if="item.render" :scope="scope" :render="item.render" />
         </template>
       </el-table-column>

@@ -1,9 +1,9 @@
 {
   "files": [],
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
-  "compilerOptions": {
-    "esModuleInterop": true,
-    "allowImportingTsExtensions": true,
-    "moduleResolution": "bundler"
-  }
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+  // "compilerOptions": {
+  //   "esModuleInterop": true,
+  //   "allowImportingTsExtensions": true,
+  //   "moduleResolution": "bundler"
+  // }
 }

@@ -3,6 +3,16 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { searchProps, SearchTypeEnum, type SearchModel, type SearchProps } from './props'
 import { Icon } from '@iconify/vue'
 import type { FormInstance } from 'element-plus'
+import {
+  ElRow,
+  ElCol,
+  ElSelect,
+  ElOption,
+  ElInput,
+  ElDatePicker,
+  ElButton,
+  ElForm
+} from 'element-plus'
 
 defineOptions({ name: 'MsSearch' })
 

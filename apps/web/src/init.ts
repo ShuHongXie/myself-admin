@@ -10,9 +10,9 @@ import NProgress from 'nprogress'
 
 import 'virtual:svg-icons-register'
 import 'nprogress/nprogress.css'
-import 'element-plus/dist/index.css'
 import './assets/scss/global.scss'
-import '@myself/core/styles'
+import '@myself/ui/styles'
+import 'element-plus/dist/index.css'
 import initOpenApiInstance from '#/config/axios'
 import Myself from '@myself/ui'
 
