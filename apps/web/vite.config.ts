@@ -8,20 +8,24 @@ import { resolve } from 'path'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { transformWithTypesPlugin } from './src/vite-plugin/transform-with-types'
 
+export function kebabCase(key: string) {
+  const result = key.replace(/([A-Z])/g, ' $1').trim()
+  return result.split(' ').join('-').toLowerCase()
+}
+
 const MyselfUiResolver = () => {
   console.log('MyselfUiResolver初始化')
   return {
     type: 'component' as const,
     resolve: (name) => {
-      console.log('name:', name)
       // 只处理Ms开头的组件
       if (name.startsWith('Ms')) {
-        const componentName = name.slice(2)
+        const componentName = kebabCase(name.slice(2))
         console.log('componentName:', componentName)
         return {
           name,
           from: `@myself/ui/es/${componentName}`,
-          sideEffects: `@myself/ui/styles/${componentName}`
+          sideEffects: `@myself/ui/theme-chalk/ms-${componentName}`
         }
       }
       return null
@@ -64,8 +68,8 @@ export default defineConfig({
       imports: ['vue', 'vue-router', 'pinia']
     }),
     Components({
-      // resolvers: [ElementPlusResolver(), MyselfUiResolver()],
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver(), MyselfUiResolver()],
+      // resolvers: [ElementPlusResolver()],
       dts: 'src/types/components.d.ts'
       // dirs: ['./node_modules/@myself/ui/build/es'],
       // deep: true

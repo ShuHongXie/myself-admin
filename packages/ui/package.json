@@ -1,7 +1,6 @@
 {
   "name": "@myself/ui",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "vite",
     "tasks": "gulp -f build-script/gulpfile.ts --tasks",
@@ -19,13 +18,14 @@
     "#/*": "./src/*"
   },
   "files": [
-    "src/"
+    "myself/",
+    "README.md"
   ],
   "exports": {
     ".": {
       "types": "./myself/es/index.d.ts",
-      "import": "./myself/dist/index.full.mjs",
-      "require": "./myself/dist/index.full.mjs"
+      "import": "./myself/dist/index.full.min.mjs",
+      "require": "./myself/dist/index.full.min.mjs"
     },
     "./es/*": {
       "types": "./myself/es/index.d.ts",
@@ -33,7 +33,15 @@
     },
     "./styles": {
       "import": "./myself/dist/index.css",
-      "default": "./src/assets/scss/index.scss"
+      "default": "./myself/dist/index.css"
+    },
+    "./theme-chalk/*": {
+      "import": "./myself/theme-chalk/*.css",
+      "default": "./myself/theme-chalk/*.css"
+    },
+    "./components/*": {
+      "import": "./myself/es/components/*",
+      "default": "./myself/es/components/*"
     }
   },
   "sideEffects": [
@@ -71,7 +79,6 @@
     "gulp-sass": "^6.0.1",
     "postcss": "^8.5.6",
     "rollup": "^4.52.5",
-    "rollup-plugin-dts": "^6.2.3",
     "rollup-plugin-esbuild": "^6.2.1",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "sass": "catalog:",

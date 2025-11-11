@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import MsSearch from '../Search/index.vue'
+import MsSearch from '../search/index.vue'
 import { ref, onMounted, defineProps } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
-import { type SearchModel } from '../Search/props'
+import { type SearchModel } from '../search/props'
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
 import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
 import Render from './render'

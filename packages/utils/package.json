@@ -1,18 +1,22 @@
 {
   "name": "@myself/utils",
-  "private": true,
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.0.1",
+  "main": "dist/index.js",
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
-      "types": "./index.ts",
-      "default": "./index.ts"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
     "./request": {
-      "default": "./request/axios.d.ts",
-      "types": "./request/index.ts"
+      "default": "./dist/request/index.js",
+      "types": "./dist/request/index.d.ts"
     }
   },
   "author": "",

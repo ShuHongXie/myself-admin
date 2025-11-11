@@ -12,11 +12,11 @@ export default series(
   }),
 
   parallel(
-    runTask('buildModules')
-    // runTask('buildFullBundle'),
+    runTask('buildModules'),
+    runTask('buildFullBundle'),
     // runTask('generateTypesDefinitions'),
     // runTask('buildHelper'),
-    // runTask('buildFullStyle')
+    runTask('buildFullStyle')
   )
 
   // parallel(copyTypesDefinitions, copyFiles)

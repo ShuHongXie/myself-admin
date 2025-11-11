@@ -59,11 +59,11 @@ const plugins = [
   }),
   commonjs(),
   dts({
-    tsconfigPath: resolve(cwd, '../tsconfig.app.json'),
+    tsconfigPath: resolve(cwd, '../tsconfig.dts.json'),
     outDir: `${output}/es`
   }),
   dts({
-    tsconfigPath: resolve(cwd, '../tsconfig.app.json'),
+    tsconfigPath: resolve(cwd, '../tsconfig.dts.json'),
     outDir: `${output}/lib`
   })
 ]
@@ -79,12 +79,10 @@ async function buildModulesComponents() {
       onlyFiles: true
     }
   )
-  console.log('input:', input)
-
   const config = {
     input,
     plugins,
-    external: ['vue', 'element-plus', 'axios'],
+    external: ['vue', 'element-plus', 'axios', 'defu', '@iconify/vue'],
     treeshake: { moduleSideEffects: false }
   }
   const bundle = await rollup(config)
@@ -96,7 +94,7 @@ async function buildModulesComponents() {
         exports: module === 'cjs' ? 'named' : undefined,
         preserveModules: true,
         preserveModulesRoot: root,
-        sourcemap: true,
+        sourcemap: false,
         entryFileNames: `[name].${config.ext}`
       }
     }
@@ -105,34 +103,34 @@ async function buildModulesComponents() {
   await writeBundles(bundle, outputOptionsList)
 }
 
-async function buildModulesStyles() {
-  const input = await glob('**/style/(index|css).{js,ts,vue}', {
-    cwd: root,
-    absolute: true,
-    onlyFiles: true
-  })
-  const bundle = await rollup({
-    input,
-    plugins,
-    treeshake: false
-  })
+// async function buildModulesStyles() {
+//   const input = await glob('**/style/(index|css).{js,ts,vue}', {
+//     cwd: root,
+//     absolute: true,
+//     onlyFiles: true
+//   })
+//   const bundle = await rollup({
+//     input,
+//     plugins,
+//     treeshake: false
+//   })
 
-  const outputOptionsList: OutputOptions[] = Object.entries(outputConfig).map(
-    ([module, config]) => {
-      return {
-        format: config.format,
-        dir: resolve(config.output.path, 'components'),
-        exports: module === 'cjs' ? 'named' : undefined,
-        preserveModules: true,
-        preserveModulesRoot: join(root, 'components'),
-        sourcemap: true,
-        entryFileNames: `[name].${config.ext}`
-      }
-    }
-  )
+//   const outputOptionsList: OutputOptions[] = Object.entries(outputConfig).map(
+//     ([module, config]) => {
+//       return {
+//         format: config.format,
+//         dir: resolve(config.output.path, 'components'),
+//         exports: module === 'cjs' ? 'named' : undefined,
+//         preserveModules: true,
+//         preserveModulesRoot: join(root, 'components'),
+//         sourcemap: true,
+//         entryFileNames: `[name].${config.ext}`
+//       }
+//     }
+//   )
 
-  await writeBundles(bundle, outputOptionsList)
-}
+//   await writeBundles(bundle, outputOptionsList)
+// }
 
 export const buildModules: TaskFunction = series(
   withTaskName('buildModulesComponents', buildModulesComponents)

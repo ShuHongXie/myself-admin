@@ -98,9 +98,6 @@ function buildStyle() {
 }
 
 export const buildFullStyle = series(
-  // buildStyle,
-  // copyFullStyle,
-  // copyThemeChalkBundle
   withTaskName('buildFullStyle', buildStyle),
   withTaskName('copyFullStyle', copyFullStyle),
   withTaskName('copyThemeChalkBundle', copyThemeChalkBundle)

@@ -1,0 +1,19 @@
+@use './mixins/mixin.scss' as *;
+.search {
+  width: 100%;
+  &-content {
+    @include flex-between-start;
+    .el-form-item {
+      margin-bottom: 6px;
+    }
+    &__left {
+      flex: 1;
+    }
+    &__right {
+      margin-left: 12px;
+    }
+  }
+  &-collapse {
+    margin-bottom: 10px;
+  }
+}

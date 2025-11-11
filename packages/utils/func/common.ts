@@ -119,3 +119,15 @@ export function getNestedValue(obj: any, path: string, defaultValue?: any) {
     return current[key] !== undefined ? current[key] : defaultValue
   }, obj)
 }
+
+/**
+ * @description 将驼峰命名法转换为连字符命名法
+ * @author xieshuhong
+ * @export
+ * @param {string} key
+ * @return {*}
+ */
+export function kebabCase(key: string) {
+  const result = key.replace(/([A-Z])/g, ' $1').trim()
+  return result.split(' ').join('-').toLowerCase()
+}

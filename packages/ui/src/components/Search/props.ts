@@ -1,3 +1,5 @@
+import type { PropType } from 'vue'
+
 export enum SearchTypeEnum {
   ITEM = 1,
   SLOT = 2
@@ -53,7 +55,7 @@ export const searchProps = {
   },
   // '' | 'large' | 'default' | 'small'
   size: {
-    type: String,
+    type: String as PropType<'' | 'large' | 'default' | 'small'>,
     default: 'default'
   },
   gutter: {

@@ -1,3 +1,2 @@
-// export * from './SvgIcon'
-export * from './Search'
-export * from './SearchTable'
+export * from './search'
+export * from './search-table'

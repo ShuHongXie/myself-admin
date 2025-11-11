@@ -1,0 +1,11 @@
+{
+  "version": "v1",
+  "packages": {
+    "@myself/utils": {
+      "signature": "09001568be4e662bf238e50413ab63f4"
+    },
+    "@myself/ui": {
+      "signature": "be216b62f53fa8ab47300226e245a301"
+    }
+  }
+}
