@@ -19,7 +19,8 @@
     "build": "pnpm --filter=@minilo/* run build",
     "clear": "rimraf 'packages/*/{lib,node_modules}' && rimraf node_modules",
     "changeset": "changeset",
-    "version-packages": "changeset version"
+    "version-packages": "changeset version",
+    "release": "changeset publish --registry=https://registry.npmjs.com/ --access=public"
   },
   "lint-staged": {
     "*.{js,ts,tsx,vue}": [
@@ -34,7 +35,7 @@
   },
   "author": {
     "name": "xieshuhong",
-    "url": "https://github.com/ShuHongXie/myself-admin"
+    "url": "https://github.com/ShuHongXie/minilo"
   },
   "license": "ISC",
   "devDependencies": {
