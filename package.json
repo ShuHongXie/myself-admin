@@ -5,7 +5,7 @@
   "main": "index.js",
   "packageManager": "pnpm@10.13.1",
   "scripts": {
-    "build": "turbo run build",
+    "build:old": "turbo run build",
     "dev:web": "pnpm --filter @myself/web dev",
     "gen": "pnpm --filter @myself/web openapi-ts",
     "dev:server": "pnpm --filter @myself/server start:dev",
@@ -15,7 +15,11 @@
     "prepare": "husky install",
     "format": "prettier --write \"**/*.{ts,js,vue}\"",
     "lint:lint-staged": "lint-staged",
-    "cz": "cz"
+    "cz": "cz",
+    "build": "pnpm --filter=@myself/* run build",
+    "clear": "rimraf 'packages/*/{lib,node_modules}' && rimraf node_modules",
+    "changeset": "changeset",
+    "version-packages": "changeset version"
   },
   "lint-staged": {
     "*.{js,ts,tsx,vue}": [
