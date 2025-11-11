@@ -56,9 +56,9 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     // 自定义全局组件类型声明
     ElIcon: (typeof import('element-plus'))['ElIcon']
-    SvgIcon: (typeof import('@myself/ui'))['SvgIcon']
-    MsSearchTable: (typeof import('@myself/ui'))['MsSearchTable']
-    Search: (typeof import('@myself/ui'))['Search']
+    SvgIcon: (typeof import('@minilo/ui'))['SvgIcon']
+    MsSearchTable: (typeof import('@minilo/ui'))['MsSearchTable']
+    Search: (typeof import('@minilo/ui'))['Search']
   }
 }
 
@@ -170,7 +170,7 @@ declare module 'nprogress' {
 }
 
 // 自定义包模块声明
-declare module '@myself/utils' {
+declare module '@minilo/utils' {
   export function cloneDeep<T>(obj: T): T
   export function transOptionsToObject(
     options: Array<{ label: string; value: any }>
@@ -178,21 +178,21 @@ declare module '@myself/utils' {
   // 添加其他工具函数类型声明
 }
 
-declare module '@myself/ui' {
+declare module '@minilo/ui' {
   export const SvgIcon: any
   export const Search: any
   export const MsSearchTable: any
   // 添加其他UI组件类型声明
 }
 
-declare module '@myself/store' {
+declare module '@minilo/store' {
   export function useUserStore(): any
   export function useRoutesStore(): any
   export function useConfigStore(): any
   // 添加其他store类型声明
 }
 
-declare module '@myself/locales' {
+declare module '@minilo/locales' {
   export const setupI18n: (app: any) => void
   export const t: (key: string) => string
   // 添加其他国际化相关类型声明

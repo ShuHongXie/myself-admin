@@ -1,4 +1,4 @@
-import type { MenuDataItem, BreadcrumbItem, OptionItem } from '@myself/types'
+import type { MenuDataItem, BreadcrumbItem, OptionItem } from '@minilo/types'
 
 /**
  * @description 判断url是否是http或https

@@ -1,5 +1,5 @@
 import { ElButton } from 'element-plus'
-import { transOptionsToObject } from '@myself/utils'
+import { transOptionsToObject } from '@minilo/utils'
 import type { Menu } from '#/apis/types.gen'
 export const searchProps = {
   slots: [],

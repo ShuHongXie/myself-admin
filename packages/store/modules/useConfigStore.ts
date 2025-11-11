@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { ref } from 'vue'
 
-import type { MenuDataItem, TabItem } from '@myself/types'
+import type { MenuDataItem, TabItem } from '@minilo/types'
 
 /**
  * @description: 全局数据配置

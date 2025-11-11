@@ -30,7 +30,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "auto-imports.d.ts",
-    "node_modules/@myself/ui",
+    "node_modules/@minilo/ui",
     "src/router/type.d.ts",
     "run-babel.ts"
   ]

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Layout } from '@myself/core'
+import { Layout } from '@minilo/core'
 </script>
 
 <template>

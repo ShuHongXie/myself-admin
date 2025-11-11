@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { computed, watch } from 'vue'
-import { guider, userConfig, isHttp, findMenuItem } from '@myself/utils'
+import { guider, userConfig, isHttp, findMenuItem } from '@minilo/utils'
 import { useRoute, useRouter } from 'vue-router'
-import { SUPPORT_LANGUAGES, findLevelRoutes } from '@myself/utils'
-import { useConfigStore } from '@myself/store'
-import { $t, loadLocaleMessages } from '@myself/locales'
+import { SUPPORT_LANGUAGES, findLevelRoutes } from '@minilo/utils'
+import { useConfigStore } from '@minilo/store'
+import { $t, loadLocaleMessages } from '@minilo/locales'
 
 import screenfull from 'screenfull'
 import NestedMenu from './NestedMenu.vue'
 import { Icon } from '@iconify/vue'
 
-import type { LanguagesType } from '@myself/locales'
+import type { LanguagesType } from '@minilo/locales'
 
 const configStore = useConfigStore()
 const { menuData, tabData, activeTab } = storeToRefs(configStore)

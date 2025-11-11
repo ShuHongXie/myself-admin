@@ -1,5 +1,5 @@
 // 样式模块声明
-declare module '@myself/core/styles' {
+declare module '@minilo/core/styles' {
   const content: any
   export default content
 }

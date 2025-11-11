@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NotFound } from '@myself/core'
+import { NotFound } from '@minilo/core'
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 {
-  "name": "@myself/store",
+  "name": "@minilo/store",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -27,6 +27,6 @@
     "vue-router": "catalog:"
   },
   "devDependencies": {
-    "@myself/types": "workspace:^"
+    "@minilo/types": "workspace:^"
   }
 }

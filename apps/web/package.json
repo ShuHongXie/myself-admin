@@ -1,5 +1,5 @@
 {
-  "name": "@myself/web",
+  "name": "@minilo/web",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "@iconify/vue": "catalog:",
-    "@myself/core": "workspace:^",
-    "@myself/locales": "workspace:*",
-    "@myself/store": "workspace:^",
-    "@myself/ui": "file:.yalc/@myself/ui",
-    "@myself/utils": "file:.yalc/@myself/utils",
+    "@minilo/core": "workspace:^",
+    "@minilo/locales": "workspace:*",
+    "@minilo/store": "workspace:^",
+    "@minilo/ui": "file:.yalc/@minilo/ui",
+    "@minilo/utils": "file:.yalc/@minilo/utils",
     "@types/nprogress": "catalog:",
     "nprogress": "catalog:",
     "pinia": "catalog:",

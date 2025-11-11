@@ -102,8 +102,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useUserStore } from '@myself/store'
-import { useButtonPermission } from '@myself/utils'
+import { useUserStore } from '@minilo/store'
+import { useButtonPermission } from '@minilo/utils'
 import { getUserButtonPermissions } from '#/apis/sdk.gen'
 import { ElMessage } from 'element-plus'
 

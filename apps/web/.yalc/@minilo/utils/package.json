@@ -1,5 +1,5 @@
 {
-  "name": "@myself/utils",
+  "name": "@minilo/utils",
   "version": "0.0.1",
   "main": "dist/index.js",
   "type": "module",
@@ -32,5 +32,5 @@
     "theme-colors": "catalog:",
     "vue": "catalog:"
   },
-  "yalcSig": "09001568be4e662bf238e50413ab63f4"
+  "yalcSig": "edd5fba70e1633961b649fa24190622d"
 }

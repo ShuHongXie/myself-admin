@@ -1,5 +1,5 @@
 {
-  "name": "@myself/ui",
+  "name": "@minilo/ui",
   "version": "0.0.1",
   "scripts": {
     "dev": "vite",
@@ -48,12 +48,12 @@
     "build/*",
     "build/**/*.css",
     "build/**/*.scss",
-    "@myself/utils/**/*.ts"
+    "@minilo/utils/**/*.ts"
   ],
   "dependencies": {
     "@iconify/vue": "catalog:",
     "element-plus": "catalog:",
     "vue": "^3.5.22"
   },
-  "yalcSig": "be216b62f53fa8ab47300226e245a301"
+  "yalcSig": "cf62c29644879e16e09ecf7d6ec09065"
 }

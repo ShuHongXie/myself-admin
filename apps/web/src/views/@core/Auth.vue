@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Auth } from '@myself/core'
+import { Auth } from '@minilo/core'
 </script>
 
 <template>

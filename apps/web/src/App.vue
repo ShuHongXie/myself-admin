@@ -1,9 +1,9 @@
 <script setup lang="tsx">
 import { computed } from 'vue'
 import { RouterView } from 'vue-router'
-import { useInitGlobalStyle } from '@myself/utils'
-import { i18n } from '@myself/locales'
-import { useRoutesStore } from '@myself/store'
+import { useInitGlobalStyle } from '@minilo/utils'
+import { i18n } from '@minilo/locales'
+import { useRoutesStore } from '@minilo/store'
 import { staticRoutes } from '#/router/routes'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import en from 'element-plus/dist/locale/en.mjs'

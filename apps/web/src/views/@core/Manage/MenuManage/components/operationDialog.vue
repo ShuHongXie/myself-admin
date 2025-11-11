@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cloneDeep } from '@myself/utils'
+import { cloneDeep } from '@minilo/utils'
 import {
   menuFormRules,
   menuTypeOptions,
@@ -208,7 +208,7 @@ const handleChangeMenuName = (value: string) => {
 </template>
 
 <style lang="scss" scoped>
-@use '@myself/core/styles' as *;
+@use '@minilo/core/styles' as *;
 .icon-input {
   width: 100%;
   gap: 10px;

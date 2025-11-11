@@ -1,1 +1,1 @@
-// import '@myself/ui/theme-chalk/search.css'
+// import '@minilo/ui/theme-chalk/search.css'

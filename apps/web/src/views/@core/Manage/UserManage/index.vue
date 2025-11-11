@@ -3,7 +3,7 @@ import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { searchProps, columns, formRules } from './data'
 import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis/sdk.gen'
-import { cloneDeep } from '@myself/utils'
+import { cloneDeep } from '@minilo/utils'
 import type { GetRoleListDto } from '#/apis/types.gen'
 
 // 扩展GetRoleListDto类型，添加id字段

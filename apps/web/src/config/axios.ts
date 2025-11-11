@@ -1,5 +1,5 @@
 import { client } from '#/apis/client.gen'
-import { initRequestInstance, type CreateAxiosDefaults } from '@myself/utils'
+import { initRequestInstance, type CreateAxiosDefaults } from '@minilo/utils'
 /**
  * @description 自定义初始化openapi-ts实例
  * @author xieshuhong

@@ -1,2 +1,2 @@
-// import '@myself/ui/theme-chalk/search-table.css'
-// import '@myself/ui/components/search/style/css'
+// import '@minilo/ui/theme-chalk/search-table.css'
+// import '@minilo/ui/components/search/style/css'

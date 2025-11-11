@@ -1,4 +1,4 @@
-import { guider } from '@myself/utils'
+import { guider } from '@minilo/utils'
 import { config } from './config'
 
 // export default initRequestInstance({

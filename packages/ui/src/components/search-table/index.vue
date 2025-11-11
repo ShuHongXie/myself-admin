@@ -4,7 +4,7 @@ import { ref, onMounted, defineProps } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../search/props'
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
-import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@myself/utils'
+import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@minilo/utils'
 import Render from './render'
 
 defineOptions({ name: 'MsSearchTable' })

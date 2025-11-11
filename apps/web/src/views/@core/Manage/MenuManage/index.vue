@@ -1,11 +1,11 @@
 <script setup lang="tsx">
-import { MsSearchTable } from '@myself/ui'
+import { MsSearchTable } from '@minilo/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import OperationDialog from './components/operationDialog.vue'
 import { searchProps, columns, defaultOperateItem, MenuType, menuTypeData } from './data.tsx'
 import { createMenu, deleteMenu, updateMenu, getMenuTree } from '#/apis/sdk.gen'
-import { cloneDeep } from '@myself/utils'
+import { cloneDeep } from '@minilo/utils'
 import type { Menu } from '#/apis/types.gen.ts'
 
 // 搜索表单---------------start-------------------

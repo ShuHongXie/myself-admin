@@ -1,5 +1,5 @@
 {
-  "name": "@myself/core",
+  "name": "@minilo/core",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -32,9 +32,9 @@
   "dependencies": {
     "@ctrl/tinycolor": "catalog:",
     "@iconify/vue": "catalog:",
-    "@myself/locales": "workspace:^",
-    "@myself/store": "workspace:^",
-    "@myself/utils": "workspace:^",
+    "@minilo/locales": "workspace:^",
+    "@minilo/store": "workspace:^",
+    "@minilo/utils": "workspace:^",
     "element-plus": "catalog:",
     "pinia": "catalog:",
     "screenfull": "catalog:",
@@ -43,7 +43,7 @@
     "vue-router": "catalog:"
   },
   "devDependencies": {
-    "@myself/types": "workspace:^",
+    "@minilo/types": "workspace:^",
     "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "@vue/tsconfig": "catalog:",

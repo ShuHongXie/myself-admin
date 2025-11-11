@@ -1,4 +1,4 @@
-import type { Config } from '@myself/utils'
+import type { Config } from '@minilo/utils'
 export const config: Config = {
   theme: {
     colorPrimary: '#954df5'

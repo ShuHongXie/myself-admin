@@ -24,8 +24,8 @@ const MyselfUiResolver = () => {
         console.log('componentName:', componentName)
         return {
           name,
-          from: `@myself/ui/es/${componentName}`,
-          sideEffects: `@myself/ui/theme-chalk/ms-${componentName}`
+          from: `@minilo/ui/es/${componentName}`,
+          sideEffects: `@minilo/ui/theme-chalk/ms-${componentName}`
         }
       }
       return null
@@ -47,14 +47,14 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        // additionalData: `@use "@myself/core/styles" as *;`
+        // additionalData: `@use "@minilo/core/styles" as *;`
       }
     }
   },
   resolve: {
     alias: {
       '#': resolve(__dirname, 'src')
-      // '@myself/ui/es': resolve(__dirname, 'node_modules/@myself/ui/es')
+      // '@minilo/ui/es': resolve(__dirname, 'node_modules/@minilo/ui/es')
     }
   },
   plugins: [
@@ -71,7 +71,7 @@ export default defineConfig({
       resolvers: [ElementPlusResolver(), MyselfUiResolver()],
       // resolvers: [ElementPlusResolver()],
       dts: 'src/types/components.d.ts'
-      // dirs: ['./node_modules/@myself/ui/build/es'],
+      // dirs: ['./node_modules/@minilo/ui/build/es'],
       // deep: true
     }),
     createSvgIconsPlugin({

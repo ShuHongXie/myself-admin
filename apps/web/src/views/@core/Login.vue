@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Login } from '@myself/core'
+import { Login } from '@minilo/core'
 import { login, getUserButtonPermissions } from '#/apis/sdk.gen'
-import { useUserStore } from '@myself/store'
+import { useUserStore } from '@minilo/store'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 

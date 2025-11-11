@@ -46,7 +46,7 @@ declare module 'vue' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
     ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
-    MsSearchTable: typeof import('@myself/ui/es/search-table')['MsSearchTable']
+    MsSearchTable: typeof import('@minilo/ui/es/search-table')['MsSearchTable']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

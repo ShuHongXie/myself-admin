@@ -24,7 +24,7 @@ export default defineConfig({
         'element-plus',
         'unplugin-vue-components',
         'unplugin-auto-import',
-        '@myself/utils'
+        '@minilo/utils'
       ],
       input: ['./src/index.ts'],
       output: [

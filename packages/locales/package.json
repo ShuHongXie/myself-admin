@@ -1,8 +1,9 @@
 {
-  "name": "@myself/locales",
+  "name": "@minilo/locales",
   "version": "1.0.1",
   "main": "index.ts",
   "type": "module",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,5 +1,5 @@
 {
-  "name": "@myself/utils",
+  "name": "@minilo/utils",
   "version": "0.0.1",
   "main": "dist/index.js",
   "type": "module",
@@ -33,7 +33,7 @@
     "vue": "catalog:"
   },
   "devDependencies": {
-    "@myself/types": "workspace:^",
+    "@minilo/types": "workspace:^",
     "@types/lodash.clonedeep": "catalog:"
   }
 }

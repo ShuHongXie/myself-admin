@@ -1,5 +1,5 @@
 import type { RouteMeta, RouteRecordRaw } from 'vue-router'
-import { cloneDeep } from '@myself/utils'
+import { cloneDeep } from '@minilo/utils'
 import Layout from '#/views/@core/Layout.vue'
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('../views/**/*.vue')

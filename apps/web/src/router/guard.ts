@@ -1,8 +1,8 @@
 import type { Router } from 'vue-router'
 
 import nprogress from 'nprogress'
-import { userConfig } from '@myself/utils'
-import { useConfigStore, useRoutesStore } from '@myself/store'
+import { userConfig } from '@minilo/utils'
+import { useConfigStore, useRoutesStore } from '@minilo/store'
 import { generateRoutes } from './generate'
 import { matchRoutes, staticRoutes } from './routes'
 import { toRaw } from 'vue'
