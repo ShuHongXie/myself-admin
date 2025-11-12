@@ -2,8 +2,8 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'MySelf-UI',
-  description: 'MySelf-UI组件库',
+  title: 'Minilo-UI',
+  description: 'Minilo-UI组件库',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [

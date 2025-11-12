@@ -45,8 +45,8 @@ async function bootstrap() {
   app.enableCors()
   // 集成swagger文档
   const config = new DocumentBuilder()
-    .setTitle('MySelf后台管理系统')
-    .setDescription('MySelf后台管理系统API文档')
+    .setTitle('Minilo后台管理系统')
+    .setDescription('Minilo后台管理系统API文档')
     .build()
   const document = SwaggerModule.createDocument(app, config, {
     operationIdFactory: (controllerKey: string, methodKey: string) => methodKey

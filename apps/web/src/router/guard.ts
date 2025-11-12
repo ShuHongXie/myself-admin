@@ -4,8 +4,7 @@ import nprogress from 'nprogress'
 import { userConfig } from '@minilo/utils'
 import { useConfigStore, useRoutesStore } from '@minilo/store'
 import { generateRoutes } from './generate'
-import { matchRoutes, staticRoutes } from './routes'
-import { toRaw } from 'vue'
+import { matchRoutes } from './routes'
 import { useInitStore } from '#/store/useInitStore'
 
 /**
@@ -38,68 +37,54 @@ function setupCommonGuard(router: Router) {
  * @param router
  */
 function setupAccessGuard(router: Router) {
+  // 使用闭包变量确保只初始化一次
+  let initializing = false
+
   router.beforeEach(async (to, from, next) => {
-    // const userStore = useUserStore()
     const initStore = useInitStore()
     const routesStore = useRoutesStore()
     const configStore = useConfigStore()
 
-    // 默认可进入的路由，需要屏蔽掉404
-    // if (routesStore.accessStaticRouteList.includes(to.path)) {
-    //   if (!userStore.tokenInfo?.accessToken && to.path === LOGIN_PATH) {
-    //     return decodeURIComponent(to.query.redirect as string) || userConfig.app?.defaultHomePath
-    //   }
-    //   return true
-    // }
+    // 如果正在初始化，直接放行
+    if (initializing) {
+      return next()
+    }
 
-    // 未登录时统一跳转登录
-    // if (!userStore.tokenInfo?.accessToken) {
-    //   if (to.fullPath !== LOGIN_PATH) {
-    //     return {
-    //       path: LOGIN_PATH,
-    //       // 如不需要，直接删除 query
-    //       query:
-    //         to.fullPath === userConfig.app?.defaultHomePath
-    //           ? {}
-    //           : { redirect: encodeURIComponent(to.fullPath) },
-    //       // 携带当前跳转的页面，登录后重新跳转该页面
-    //       replace: true
-    //     }
-    //   }
-    //   return to
-    // }
-    if (routesStore.dynamicRoutes.length) {
-      if (!routesStore.isRouterInitialized) {
-        const { dynamicRoutes } = generateRoutes(initStore.routers)
+    // 检查是否已经初始化过路由
+    if (!routesStore.isRouterInitialized) {
+      initializing = true
+      // 加载路由表
+      try {
+        // 只有当路由数据为空时才重新加载
+        if (!initStore.routers || initStore.routers.length === 0) {
+          await initStore.loadRouters()
+        }
+
+        const { dynamicRoutes, menuData } = generateRoutes(initStore.routers)
         const mergeRoutes = [...dynamicRoutes, ...matchRoutes]
 
-        mergeRoutes.forEach((routes: any) => {
+        // 添加动态路由
+        mergeRoutes.forEach((routes) => {
           router.addRoute('Layout', routes)
         })
+
+        // 设置路由状态
+        routesStore.setDynamicRoutes(dynamicRoutes)
         routesStore.setRouterInitialized(true)
-        return next(to)
+        configStore.setMenuData(menuData)
+
+        // 使用 replace: true 避免重复触发路由守卫
+        initializing = false
+        return next({ ...to, replace: true })
+      } catch (error) {
+        console.error('加载路由失败:', error)
+        initializing = false
+        return next(false)
       }
-
-      return next()
-    } else {
-      // 加载路由表
-      await initStore.loadRouters()
-      const { dynamicRoutes, menuData } = generateRoutes(initStore.routers)
-      const mergeRoutes = [...dynamicRoutes, ...matchRoutes]
-      console.log(mergeRoutes)
-      mergeRoutes.forEach((routes) => {
-        router.addRoute('Layout', routes)
-      })
-      routesStore.setDynamicRoutes(dynamicRoutes)
-      routesStore.setRouterInitialized(true)
-      configStore.setMenuData(menuData)
-      const redirectPath = (from.query.redirect ??
-        (to.path === userConfig.app?.defaultHomePath
-          ? userConfig.app?.defaultHomePath
-          : to.fullPath)) as string
-
-      next(redirectPath)
     }
+
+    // 如果已经初始化过路由，直接放行
+    next()
   })
 }
 

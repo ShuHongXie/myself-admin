@@ -21,7 +21,6 @@ const MyselfUiResolver = () => {
       // 只处理Ms开头的组件
       if (name.startsWith('Ms')) {
         const componentName = kebabCase(name.slice(2))
-        console.log('componentName:', componentName)
         return {
           name,
           from: `@minilo/ui/es/${componentName}`,
