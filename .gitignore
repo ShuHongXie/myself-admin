@@ -10,7 +10,8 @@ dist/
 **/dist/
 build/
 app/web/src/apis/
-packages/ui/minilo/**
+packages/ui/minilo/
+packages/**/
 
 # Logs
 *.log
@@ -28,6 +29,7 @@ pids
 # Coverage directory used by tools like istanbul
 coverage/
 *.lcov
+
 
 # ESLint cache
 .eslintcache
@@ -56,3 +58,5 @@ Thumbs.db
 *.tmp
 *.temp
 
+# Yalc files
+**/.yalc/

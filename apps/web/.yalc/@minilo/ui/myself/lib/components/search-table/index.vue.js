@@ -1,9 +1,7 @@
-'use strict';
+'use strict'
 
-Object.defineProperty(exports, '__esModule', { value: true });
+Object.defineProperty(exports, '__esModule', { value: true })
 
-var index_vue_vue_type_script_setup_true_lang = require('./index.vue2.js');
+var index_vue_vue_type_script_setup_true_lang = require('./index.vue2.js')
 
-
-
-exports.default = index_vue_vue_type_script_setup_true_lang.default;
+exports.default = index_vue_vue_type_script_setup_true_lang.default

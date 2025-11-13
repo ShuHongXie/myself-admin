@@ -1,32 +1,32 @@
-'use strict';
+'use strict'
 
 var RequestMethodType = /* @__PURE__ */ ((RequestMethodType2) => {
-  RequestMethodType2["GET"] = "get";
-  RequestMethodType2["POST"] = "post";
-  RequestMethodType2["PUT"] = "put";
-  RequestMethodType2["DELETE"] = "delete";
-  return RequestMethodType2;
-})(RequestMethodType || {});
+  RequestMethodType2['GET'] = 'get'
+  RequestMethodType2['POST'] = 'post'
+  RequestMethodType2['PUT'] = 'put'
+  RequestMethodType2['DELETE'] = 'delete'
+  return RequestMethodType2
+})(RequestMethodType || {})
 const searchTableProps = {
   // 请求方式
   methodType: {
     type: String,
-    default: "post"
+    default: 'post'
   },
   // 请求地址
   url: {
     type: String,
-    default: ""
+    default: ''
   },
   // 返回结果列表访问字段
   responseDataField: {
     type: String,
-    default: "data.result"
+    default: 'data.result'
   },
   // 返回结果总数访问字段
   responseTotalField: {
     type: String,
-    default: "data.total"
+    default: 'data.total'
   },
   // 请求头
   headers: {
@@ -51,8 +51,7 @@ const searchTableProps = {
   // Search组件配置
   searchProps: {
     type: Object,
-    default: () => {
-    }
+    default: () => {}
   },
   // el-table组件配置
   tableProps: {
@@ -66,7 +65,7 @@ const searchTableProps = {
     type: Array,
     default: () => []
   }
-};
+}
 
-exports.RequestMethodType = RequestMethodType;
-exports.searchTableProps = searchTableProps;
+exports.RequestMethodType = RequestMethodType
+exports.searchTableProps = searchTableProps

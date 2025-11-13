@@ -34,11 +34,22 @@ export default [
       'vue/multi-word-component-names': 'off',
       'no-irregular-whitespace': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off'
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-unsafe-function-type': 'off',
+      '@typescript-eslint/no-require-imports': 'off'
     }
   },
   {
-    ignores: ['node_modules/', 'apps/**/dist', '*.md', '.eslintcache'] // 忽略目录
+    ignores: [
+      'node_modules/',
+      'apps/**/dist',
+      '*.md',
+      '.eslintcache',
+      'packages/ui/minilo/**/*',
+      'apps/web/.yalc/**/*',
+      '**/.yalc/**/*'
+    ] // 忽略目录
   },
   // prettier融合配置
   eslintConfigPrettier,

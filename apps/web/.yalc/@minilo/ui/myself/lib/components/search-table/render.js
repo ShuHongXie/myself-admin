@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
-Object.defineProperty(exports, '__esModule', { value: true });
+Object.defineProperty(exports, '__esModule', { value: true })
 
-var vue = require('vue');
+var vue = require('vue')
 
 const Render = vue.defineComponent({
   props: {
@@ -11,13 +11,12 @@ const Render = vue.defineComponent({
     },
     scope: {
       type: Object,
-      default: () => {
-      }
+      default: () => {}
     }
   },
   setup(props) {
-    return () => props.render(props.scope.row, props.scope.$index);
+    return () => props.render(props.scope.row, props.scope.$index)
   }
-});
+})
 
-exports.default = Render;
+exports.default = Render

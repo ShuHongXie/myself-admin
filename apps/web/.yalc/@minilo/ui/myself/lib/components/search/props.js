@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
 var SearchTypeEnum = /* @__PURE__ */ ((SearchTypeEnum2) => {
-  SearchTypeEnum2[SearchTypeEnum2["ITEM"] = 1] = "ITEM";
-  SearchTypeEnum2[SearchTypeEnum2["SLOT"] = 2] = "SLOT";
-  return SearchTypeEnum2;
-})(SearchTypeEnum || {});
+  SearchTypeEnum2[(SearchTypeEnum2['ITEM'] = 1)] = 'ITEM'
+  SearchTypeEnum2[(SearchTypeEnum2['SLOT'] = 2)] = 'SLOT'
+  return SearchTypeEnum2
+})(SearchTypeEnum || {})
 const searchProps = {
   inline: {
     type: Boolean,
@@ -16,17 +16,17 @@ const searchProps = {
   },
   labelWidth: {
     type: [String, Number],
-    default: ""
+    default: ''
   },
   // 'left' | 'right' | 'top'
   labelPosition: {
     type: String,
-    default: "top"
+    default: 'top'
   },
   // '' | 'large' | 'default' | 'small'
   size: {
     type: String,
-    default: "default"
+    default: 'default'
   },
   gutter: {
     type: [String, Number],
@@ -38,11 +38,11 @@ const searchProps = {
   },
   submitBtnText: {
     type: String,
-    default: "\u67E5\u8BE2"
+    default: '\u67E5\u8BE2'
   },
   resetBtnText: {
     type: String,
-    default: "\u91CD\u7F6E"
+    default: '\u91CD\u7F6E'
   },
   slots: {
     type: Array,
@@ -52,7 +52,7 @@ const searchProps = {
     type: Array,
     default: () => []
   }
-};
+}
 
-exports.SearchTypeEnum = SearchTypeEnum;
-exports.searchProps = searchProps;
+exports.SearchTypeEnum = SearchTypeEnum
+exports.searchProps = searchProps
