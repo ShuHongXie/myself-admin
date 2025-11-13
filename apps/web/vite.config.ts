@@ -13,8 +13,8 @@ export function kebabCase(key: string) {
   return result.split(' ').join('-').toLowerCase()
 }
 
-const MyselfUiResolver = () => {
-  console.log('MyselfUiResolver初始化')
+const MiniloUiResolver = () => {
+  console.log('MiniloUiResolver初始化')
   return {
     type: 'component' as const,
     resolve: (name) => {
@@ -67,7 +67,7 @@ export default defineConfig({
       imports: ['vue', 'vue-router', 'pinia']
     }),
     Components({
-      resolvers: [ElementPlusResolver(), MyselfUiResolver()],
+      resolvers: [ElementPlusResolver(), MiniloUiResolver()],
       // resolvers: [ElementPlusResolver()],
       dts: 'src/types/components.d.ts'
       // dirs: ['./node_modules/@minilo/ui/build/es'],

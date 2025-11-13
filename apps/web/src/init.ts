@@ -15,7 +15,7 @@ import '@minilo/core/styles'
 import '@minilo/ui/styles'
 import 'element-plus/dist/index.css'
 import initOpenApiInstance from '#/config/axios'
-// import Myself from '@minilo/ui'
+// import Minilo from '@minilo/ui'
 
 export const init = async () => {
   NProgress.configure({ showSpinner: false })
@@ -32,7 +32,7 @@ export const init = async () => {
   // 国际化注册
   await initI18n(app)
 
-  // app.use(Myself)
+  // app.use(Minilo)
 
   // 动态标题
   const title = useTitle()

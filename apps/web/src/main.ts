@@ -14,7 +14,7 @@ async function start() {
 
   // app偏好设置初始化
   await guider.initConfig({
-    namespace: 'myself',
+    namespace: 'minilo',
     config
   })
 

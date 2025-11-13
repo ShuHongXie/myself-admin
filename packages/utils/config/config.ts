@@ -12,7 +12,7 @@ export const config: Config = {
   },
   app: {
     locale: 'zh-CN',
-    name: 'Myself Admin',
+    name: 'Minilo Admin',
     logo: '',
     defaultHomePath: '/'
   },

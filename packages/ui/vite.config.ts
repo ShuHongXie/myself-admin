@@ -6,7 +6,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
 
-const outDir = 'myself'
+const outDir = 'minilo'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -70,7 +70,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '#': resolve(__dirname, 'src'),
-      myself: resolve(__dirname, 'src/components')
+      minilo: resolve(__dirname, 'src/components')
     }
   },
   plugins: [

@@ -4,7 +4,7 @@ import { spawn } from 'child_process'
 import chalk from 'chalk'
 import consola from 'consola'
 
-export const libraryName = 'myself'
+export const libraryName = 'minilo'
 export const root = resolve(__dirname, '../src')
 export const output = resolve(__dirname, `../${libraryName}`)
 export const cwd = process.cwd()

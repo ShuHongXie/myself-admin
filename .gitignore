@@ -10,7 +10,7 @@ dist/
 **/dist/
 build/
 app/web/src/apis/
-packages/ui/myself/**
+packages/ui/minilo/**
 
 # Logs
 *.log
