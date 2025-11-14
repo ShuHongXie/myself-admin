@@ -73,6 +73,13 @@ function setupAccessGuard(router: Router) {
         routesStore.setRouterInitialized(true)
         configStore.setMenuData(menuData)
 
+        // 检查是否需要跳转到默认路由地址
+        // 如果当前路径是根路径'/'，则跳转到配置的默认首页路径
+        if (to.path === '/' && userConfig.app?.defaultHomePath) {
+          initializing = false
+          return next({ path: userConfig.app.defaultHomePath, replace: true })
+        }
+
         // 使用 replace: true 避免重复触发路由守卫
         initializing = false
         return next({ ...to, replace: true })

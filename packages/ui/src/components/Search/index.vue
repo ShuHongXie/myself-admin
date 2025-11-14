@@ -113,7 +113,7 @@ defineExpose({})
           <el-row :gutter="gutter">
             <template v-for="(item, index) in options" :key="item.prop">
               <el-col
-                v-show="!isCollapse ? index <= rowItemCount : true"
+                v-show="!isCollapse ? true : index <= 24 / span - 1"
                 :span="span"
                 v-bind="item.colProps"
               >
@@ -169,10 +169,10 @@ defineExpose({})
           </el-form-item>
         </div>
       </div>
-      <el-row class="search-collapse" v-if="options.length > rowItemCount">
+      <el-row class="search-collapse">
         <el-link type="primary" underline="never" @click="isCollapse = !isCollapse">
-          {{ isCollapse ? '收起' : '展开' }}更多筛选条件
-          <Icon :icon="isCollapse ? 'ep:arrow-up' : 'ep:arrow-down'" />
+          {{ isCollapse ? '展开' : '收起' }}更多筛选条件
+          <Icon :icon="isCollapse ? 'ep:arrow-down' : 'ep:arrow-up'" />
         </el-link>
       </el-row>
     </el-form>

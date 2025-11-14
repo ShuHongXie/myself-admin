@@ -5,6 +5,7 @@ import { searchProps, columns, formRules } from './data'
 import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis/sdk.gen'
 import { cloneDeep } from '@minilo/utils'
 import type { GetRoleListDto } from '#/apis/types.gen'
+import type { MsSearchTable } from '@minilo/ui'
 
 // 扩展GetRoleListDto类型，添加id字段
 type RoleListItem = GetRoleListDto & { id: number }

@@ -1,11 +1,11 @@
 {
   "version": "v1",
   "packages": {
-    "@minilo/utils": {
-      "signature": "edd5fba70e1633961b649fa24190622d"
-    },
     "@minilo/ui": {
-      "signature": "cf62c29644879e16e09ecf7d6ec09065"
+      "signature": "dc38deac709c24b48b961840c3767728"
+    },
+    "@minilo/utils": {
+      "signature": "69f427cec6e412e6aa75dc9925e507d4"
     }
   }
 }

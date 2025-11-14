@@ -50,7 +50,7 @@ export const searchProps = {
   },
   // 'left' | 'right' | 'top'
   labelPosition: {
-    type: String,
+    type: String as PropType<'left' | 'right' | 'top'>,
     default: 'top'
   },
   // '' | 'large' | 'default' | 'small'
@@ -59,7 +59,7 @@ export const searchProps = {
     default: 'default'
   },
   gutter: {
-    type: [String, Number],
+    type: [Number],
     default: 10
   },
   span: {

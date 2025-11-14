@@ -1,7 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import testSearch from './preview/testSearch.vue'
+</script>
 
 <template>
-  <div></div>
+  <div>
+    <testSearch></testSearch>
+  </div>
 </template>
 
 <style scoped>

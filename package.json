@@ -1,7 +1,7 @@
 {
   "name": "admin",
   "version": "1.0.0",
-  "description": "后台管理系统",
+  "description": "基础模板",
   "main": "index.js",
   "packageManager": "pnpm@10.13.1",
   "scripts": {

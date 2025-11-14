@@ -1,5 +1,4 @@
 <script setup lang="tsx">
-import { MsSearchTable } from '@minilo/ui'
 import { Plus, Upload } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox, type CheckboxValueType, type FormInstance } from 'element-plus'
 import {
@@ -11,6 +10,7 @@ import {
 } from './data.tsx'
 import { createRole, updateRole, deleteRole, getMenuTree } from '#/apis/sdk.gen'
 import { cloneDeep } from '@minilo/utils'
+import type { MsSearchTable } from '@minilo/ui'
 
 const selectColumns = ref([])
 

@@ -4,6 +4,7 @@ export const config: Config = {
     colorPrimary: '#954df5'
   },
   app: {
-    defaultHomePath: '/home'
+    defaultHomePath: '/home',
+    name: 'Minilo'
   }
 }

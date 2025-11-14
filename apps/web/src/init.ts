@@ -10,10 +10,11 @@ import NProgress from 'nprogress'
 
 import 'virtual:svg-icons-register'
 import 'nprogress/nprogress.css'
+import 'element-plus/dist/index.css'
 import './assets/scss/global.scss'
 import '@minilo/core/styles'
 // import '@minilo/ui/theme-'
-import 'element-plus/dist/index.css'
+
 import initOpenApiInstance from '#/config/axios'
 // import Minilo from '@minilo/ui'
 
@@ -31,8 +32,6 @@ export const init = async () => {
   initPersistStores(app)
   // 国际化注册
   await initI18n(app)
-
-  // app.use(Minilo)
 
   // 动态标题
   const title = useTitle()
