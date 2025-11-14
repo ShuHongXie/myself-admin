@@ -34,7 +34,6 @@ class Guider {
   public updateConfig(config?: Partial<Config>) {
     const cacheState: Config = merge({}, config, markRaw(this.state))
     Object.assign(this.state, cacheState)
-    console.log('new state: ', this.state)
     updateCSSVariables(this.state)
     this.saveConfig(this.state)
   }
@@ -46,7 +45,7 @@ class Guider {
 
   // 加载配置
   private loadConfig() {
-    return this.cache?.getItem<Config>(STORAGE_KEY) || defaultConfig
+    return this.cache?.getItem<Config>(STORAGE_KEY)
   }
 
   // 获取配置

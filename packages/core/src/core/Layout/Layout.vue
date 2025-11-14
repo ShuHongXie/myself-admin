@@ -181,7 +181,7 @@ watch(
                 src="../../assets/images/png/logo.png"
                 alt=""
               />
-              <span v-if="!userConfig.sidebar?.collapse">MY&nbsp;ADMIN</span>
+              <span v-if="!userConfig.sidebar?.collapse">{{ userConfig.app?.name }}</span>
             </div>
           </slot>
         </div>

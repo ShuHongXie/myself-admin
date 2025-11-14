@@ -4,7 +4,7 @@ import { convertToHsl, TinyColor } from '../func'
 
 function executeUpdateCSSVariables(
   variables: { [key: string]: string },
-  id = '__myself-styles__'
+  id = '__minilo-styles__'
 ): void {
   // 获取或创建内联样式表元素
   const styleElement = document.querySelector(`#${id}`) || document.createElement('style')
