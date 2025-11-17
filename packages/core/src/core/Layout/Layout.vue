@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+import { storeToRefs, type StoreGeneric } from 'pinia'
 import { computed, watch } from 'vue'
 import { guider, userConfig, isHttp, findMenuItem } from '@minilo/utils'
 import { useRoute, useRouter } from 'vue-router'
@@ -14,7 +14,7 @@ import { Icon } from '@iconify/vue'
 import type { LanguagesType } from '@minilo/locales'
 
 const configStore = useConfigStore()
-const { menuData, tabData, activeTab } = storeToRefs(configStore)
+const { menuData, tabData, activeTab } = storeToRefs(configStore as StoreGeneric)
 const route = useRoute()
 const router = useRouter()
 
