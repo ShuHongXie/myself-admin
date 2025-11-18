@@ -20,7 +20,7 @@ async function buildAllLibrary(options: BuildOptions = { minify: false }): Promi
   const { minify } = options
   const config = {
     input: resolve(root, 'index.ts'),
-    external: ['vue', 'element-plus', 'axios'], // 添加 axios 到外部依赖
+    external: ['vue', 'element-plus', 'axios', 'echarts'], // 添加 axios 到外部依赖
     plugins: [
       vue(),
       esbuild({

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MsSearch from '../search/index.vue'
+import MlSearch from '../search/index.vue'
 import { ref, onMounted, defineProps } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../search/props'
@@ -7,7 +7,7 @@ import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
 import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@minilo/utils'
 import Render from './render'
 
-defineOptions({ name: 'MsSearchTable' })
+defineOptions({ name: 'MlSearchTable' })
 
 interface Pagination {
   currentPage: number
@@ -130,11 +130,11 @@ const emitEventHandler = (...args: any) => {
 <template>
   <div class="search-table">
     <!-- -->
-    <MsSearch @submit="submit" @reset="reset" v-model="searchModel" v-bind="searchProps">
+    <MlSearch @submit="submit" @reset="reset" v-model="searchModel" v-bind="searchProps">
       <template :key="item.prop" #[item.prop] v-for="item in searchProps.slots">
         <slot :name="item.prop"></slot>
       </template>
-    </MsSearch>
+    </MlSearch>
     <slot name="prefix"></slot>
     <el-table
       v-loading.lock="loading"
@@ -206,8 +206,3 @@ const emitEventHandler = (...args: any) => {
     <slot name="suffix"></slot>
   </div>
 </template>
-
-<!-- <style lang="scss">
-@use '../Search/index.scss' as *;
-@use './index.scss' as *;
-</style> -->

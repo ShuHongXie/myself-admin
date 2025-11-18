@@ -1,6 +1,6 @@
 import { withInstall } from '../../utils'
-// export { default as MsSearch } from './index.vue'
+// export { default as MlSearch } from './index.vue'
 
-import Search from './index.vue'
-export const MsSearch = withInstall(Search)
-export default MsSearch
+import Search from '../search/index.vue'
+export const MlSearch = withInstall(Search)
+export default MlSearch

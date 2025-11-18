@@ -1,3 +1,11 @@
+@mixin bem($block) {
+  $block-selector: #{$library-prefix}#{$block};
+
+  #{$block-selector} {
+    @content; // 插入用户编写的样式（支持嵌套元素和修饰符）
+  }
+}
+
 @mixin flex(
   $display: flex,
   // 显示类型：flex 或 inline-flex

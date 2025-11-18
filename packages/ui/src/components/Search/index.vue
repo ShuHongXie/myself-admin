@@ -15,8 +15,9 @@ import {
   ElFormItem,
   ElLink
 } from 'element-plus'
+import { bem } from '../../utils'
 
-defineOptions({ name: 'MsSearch' })
+defineOptions({ name: 'MlSearch' })
 
 const props = defineProps(searchProps)
 const options = ref<SearchProps[]>([])
@@ -99,7 +100,7 @@ defineExpose({})
 </script>
 
 <template>
-  <div class="search">
+  <div :class="bem('search')">
     <el-form
       :size="size"
       :label-position="labelPosition"
@@ -108,8 +109,8 @@ defineExpose({})
       :label-width="labelWidth"
       ref="searchFormRef"
     >
-      <div class="search-content">
-        <div class="search-content__left">
+      <div :class="bem('search', 'content')">
+        <div :class="bem('search', 'content__left')">
           <el-row :gutter="gutter">
             <template v-for="(item, index) in options" :key="item.prop">
               <el-col
@@ -158,7 +159,7 @@ defineExpose({})
             </template>
           </el-row>
         </div>
-        <div class="search-content__right">
+        <div :class="bem('search', 'content__right')">
           <el-form-item label="操作">
             <el-button type="primary" :size="size" :loading="false" @click.stop="handleSubmit">
               {{ submitBtnText }}
@@ -169,7 +170,7 @@ defineExpose({})
           </el-form-item>
         </div>
       </div>
-      <el-row class="search-collapse">
+      <el-row :class="bem('search', 'collapse')">
         <el-link type="primary" underline="never" @click="isCollapse = !isCollapse">
           {{ isCollapse ? '展开' : '收起' }}更多筛选条件
           <Icon :icon="isCollapse ? 'ep:arrow-down' : 'ep:arrow-up'" />

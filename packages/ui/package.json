@@ -71,6 +71,7 @@
     "child_process": "^1.0.2",
     "consola": "^3.4.2",
     "cssnano": "^7.1.2",
+    "echarts": "^6.0.0",
     "esbuild": "^0.25.12",
     "fs-extra": "^11.3.2",
     "gulp": "^5.0.1",

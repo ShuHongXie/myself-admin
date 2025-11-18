@@ -82,7 +82,7 @@ async function buildModulesComponents() {
   const config = {
     input,
     plugins,
-    external: ['vue', 'element-plus', 'axios', 'defu', '@iconify/vue'],
+    external: ['vue', 'element-plus', 'axios', 'defu', '@iconify/vue', 'echarts'],
     treeshake: { moduleSideEffects: false }
   }
   const bundle = await rollup(config)
