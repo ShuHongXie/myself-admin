@@ -47,6 +47,7 @@ export default [
       '*.md',
       '.eslintcache',
       'packages/ui/minilo/**/*',
+      'packages/ui/docs/**/*',
       'apps/web/.yalc/**/*',
       '**/.yalc/**/*'
     ] // 忽略目录

@@ -20,7 +20,10 @@
     "clear": "rimraf 'packages/*/{lib,node_modules}' && rimraf node_modules",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "changeset publish --registry=https://registry.npmjs.com/ --access=public"
+    "release": "changeset publish --registry=https://registry.npmjs.com/ --access=public",
+    "docs:dev": "pnpm --filter @minilo/ui docs:dev",
+    "docs:build": "pnpm --filter @minilo/ui docs:build",
+    "docs:preview": "pnpm --filter @minilo/ui docs:preview"
   },
   "lint-staged": {
     "*.{js,ts,tsx,vue}": [

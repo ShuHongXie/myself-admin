@@ -15,8 +15,8 @@ export default defineConfig({
       {
         text: 'Examples',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: '指南', link: '/markdown-examples' },
+          { text: '预览组件', link: '/api-examples' }
         ]
       }
     ],
