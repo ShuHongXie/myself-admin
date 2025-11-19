@@ -10,7 +10,7 @@ import rename from 'gulp-rename'
 import consola from 'consola'
 import postcss from 'postcss'
 import cssnano from 'cssnano'
-import { output, root, withTaskName } from '../config'
+import { output, root, withTaskName, libraryNameMin } from '../config'
 
 const distFolder = join(output, '/theme-chalk')
 
@@ -90,7 +90,7 @@ function buildStyle() {
     .pipe(
       rename((path: { basename: string }) => {
         if (!withoutMsPrefixFile.test(path.basename)) {
-          path.basename = `ms-${path.basename}`
+          path.basename = `${libraryNameMin}-${path.basename}`
         }
       })
     )

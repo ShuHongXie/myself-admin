@@ -1,6 +1,7 @@
 @use './mixins/mixin.scss' as *;
 @use './search.scss' as *;
-.search-table {
+
+@include bem('search-table') {
   height: 100%;
   @include flex-col-start-start;
   :deep(.el-table) {
@@ -22,3 +23,25 @@
     }
   }
 }
+// .search-table {
+//   height: 100%;
+//   @include flex-col-start-start;
+//   :deep(.el-table) {
+//     border-radius: 8px 8px 0 0;
+//     th {
+//       background-color: #f3f3f3;
+//     }
+//   }
+//   &__content {
+//     width: 100%;
+//     margin-top: 10px;
+//     flex: 1;
+//   }
+//   &__pagination {
+//     width: 100%;
+//     @include flex-end-center;
+//     .el-pagination {
+//       @include flex-end-center;
+//     }
+//   }
+// }

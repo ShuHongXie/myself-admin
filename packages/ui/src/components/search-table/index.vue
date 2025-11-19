@@ -6,6 +6,7 @@ import { type SearchModel } from '../search/props'
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
 import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@minilo/utils'
 import Render from './render'
+import { bem } from '../../utils'
 
 defineOptions({ name: 'MlSearchTable' })
 
@@ -128,7 +129,7 @@ const emitEventHandler = (...args: any) => {
 </script>
 
 <template>
-  <div class="search-table">
+  <div :class="bem('search-table')">
     <!-- -->
     <MlSearch @submit="submit" @reset="reset" v-model="searchModel" v-bind="searchProps">
       <template :key="item.prop" #[item.prop] v-for="item in searchProps.slots">
@@ -174,7 +175,7 @@ const emitEventHandler = (...args: any) => {
           emitEventHandler('header-dragend', newWidth, oldWidth, column, event)
       "
       @expand-change="(row: any, expanded: any) => emitEventHandler('expand-change', row, expanded)"
-      class="search-table__content"
+      :class="bem('search-table', 'content')"
       v-bind="tableProps"
       :border="true"
       :data="data"
@@ -191,7 +192,7 @@ const emitEventHandler = (...args: any) => {
         </template>
       </el-table-column>
     </el-table>
-    <div class="search-table__pagination">
+    <div :class="bem('search-table', 'pagination')">
       <el-pagination
         @change="handleSearch(false)"
         style="margin-top: 10px"

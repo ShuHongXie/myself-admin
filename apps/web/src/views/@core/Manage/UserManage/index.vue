@@ -5,7 +5,7 @@ import { searchProps, columns, formRules } from './data'
 import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis/sdk.gen'
 import { cloneDeep } from '@minilo/utils'
 import type { GetRoleListDto } from '#/apis/types.gen'
-import type { MsSearchTable } from '@minilo/ui'
+import type { MlSearchTable } from '@minilo/ui'
 
 // 扩展GetRoleListDto类型，添加id字段
 type RoleListItem = GetRoleListDto & { id: number }
@@ -36,7 +36,7 @@ const operateDialogVisible = ref(false)
 const operateType = ref('add') // 1 新增 2 修改
 const rolesList = ref<RoleListItem[]>([])
 const ruleFormRef = ref<FormInstance | null>(null)
-const searchTableRef = ref<InstanceType<typeof MsSearchTable> | null>(null)
+const searchTableRef = ref<InstanceType<typeof MlSearchTable> | null>(null)
 const switchLoading = ref(false)
 const currentOperateItem = ref<any>(defaultOperateItem)
 
@@ -132,7 +132,7 @@ onMounted(() => {
 
 <template>
   <div class="user-manage">
-    <MsSearchTable
+    <MlSearchTable
       v-model:search="form"
       url="/api/user/list"
       ref="searchTableRef"
@@ -166,7 +166,7 @@ onMounted(() => {
           <el-button type="primary" :icon="Plus" @click="handleOperate('add')">新增</el-button>
         </div>
       </template>
-    </MsSearchTable>
+    </MlSearchTable>
     <!-- 新增编辑用户 -->
     <el-dialog
       v-model="operateDialogVisible"

@@ -4,6 +4,7 @@ import { initI18n } from '@minilo/locales'
 import { initPersistStores } from '@minilo/store/init'
 import { useTitle } from '@minilo/utils'
 import { ElLoading } from 'element-plus'
+import * as echarts from 'echarts' // 引入echarts
 
 import App from './App.vue'
 import NProgress from 'nprogress'
@@ -39,6 +40,9 @@ export const init = async () => {
     const pageTitle = router.currentRoute.value.meta.title as string
     title.value = pageTitle
   })
+
+  // echarts使用
+  app.config.globalProperties.$echarts = echarts // 全局使用
 
   app.mount('#app')
 }

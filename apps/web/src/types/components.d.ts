@@ -46,6 +46,8 @@ declare module 'vue' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
     ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
+    MlChart: typeof import('@minilo/ui/es/chart')['MlChart']
+    MlSearchTable: typeof import('@minilo/ui/es/search-table')['MlSearchTable']
     MsSearchTable: typeof import('@minilo/ui/es/search-table')['MsSearchTable']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -19,12 +19,12 @@ const MiniloUiResolver = () => {
     type: 'component' as const,
     resolve: (name) => {
       // 只处理Ms开头的组件
-      if (name.startsWith('Ms')) {
+      if (name.startsWith('Ml')) {
         const componentName = kebabCase(name.slice(2))
         return {
           name,
           from: `@minilo/ui/es/${componentName}`,
-          sideEffects: `@minilo/ui/theme-chalk/ms-${componentName}`
+          sideEffects: `@minilo/ui/theme-chalk/ml-${componentName}`
         }
       }
       return null

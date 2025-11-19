@@ -6,7 +6,7 @@ import { searchProps, columns, defaultOperateItem, MenuType, menuTypeData } from
 import { createMenu, deleteMenu, updateMenu, getMenuTree } from '#/apis/sdk.gen'
 import { cloneDeep } from '@minilo/utils'
 import type { Menu } from '#/apis/types.gen.ts'
-import type { MsSearchTable } from '@minilo/ui'
+import type { MlSearchTable } from '@minilo/ui'
 
 // 搜索表单---------------start-------------------
 const form = ref({})
@@ -16,7 +16,7 @@ const form = ref({})
 const operateDialogVisible = ref(false)
 const operateType = ref('add') // add 新增 edit 修改
 const menuTree = ref<Menu[]>([])
-const searchTableRef = ref<InstanceType<typeof MsSearchTable> | null>(null)
+const searchTableRef = ref<InstanceType<typeof MlSearchTable> | null>(null)
 const currentOperateItem = ref<Menu>(cloneDeep(defaultOperateItem))
 
 // 获取菜单树
@@ -111,7 +111,7 @@ onMounted(() => {
 
 <template>
   <div class="menu-manage">
-    <MsSearchTable
+    <MlSearchTable
       v-model:search="form"
       url="/api/menu/info"
       ref="searchTableRef"
@@ -143,7 +143,7 @@ onMounted(() => {
           <el-button type="primary" :icon="Plus" @click="handleOperate('add')">新增</el-button>
         </div>
       </template>
-    </MsSearchTable>
+    </MlSearchTable>
     <OperationDialog
       v-model:visible="operateDialogVisible"
       v-model:form="currentOperateItem"

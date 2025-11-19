@@ -1,8 +1,10 @@
+@use '../default/variable.scss' as *;
+
 @mixin bem($block) {
-  $block-selector: #{$library-prefix}#{$block};
+  $block-selector: '.#{$library-prefix}#{$block}';
 
   #{$block-selector} {
-    @content; // 插入用户编写的样式（支持嵌套元素和修饰符）
+    @content;
   }
 }
 

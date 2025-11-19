@@ -1,7 +1,8 @@
 @use './mixins/mixin.scss' as *;
-.search {
+
+@include bem('search') {
   width: 100%;
-  &-content {
+  &__content {
     @include flex-between-start;
     .el-form-item {
       margin-bottom: 6px;
@@ -13,7 +14,7 @@
       margin-left: 12px;
     }
   }
-  &-collapse {
+  &__collapse {
     margin-bottom: 10px;
   }
 }

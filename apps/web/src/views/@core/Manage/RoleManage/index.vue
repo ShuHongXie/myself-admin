@@ -10,7 +10,7 @@ import {
 } from './data.tsx'
 import { createRole, updateRole, deleteRole, getMenuTree } from '#/apis/sdk.gen'
 import { cloneDeep } from '@minilo/utils'
-import type { MsSearchTable } from '@minilo/ui'
+import type { MlSearchTable } from '@minilo/ui'
 
 const selectColumns = ref([])
 
@@ -35,7 +35,7 @@ const operateDialogVisible = ref(false)
 const operateType = ref('add') // add 新增 edit 修改
 const menuTree = ref<any>([])
 const ruleFormRef = ref<FormInstance | null>(null)
-const searchTableRef = ref<InstanceType<typeof MsSearchTable> | null>(null)
+const searchTableRef = ref<InstanceType<typeof MlSearchTable> | null>(null)
 const switchLoading = ref(false)
 const currentOperateItem = ref<any>(cloneDeep(defaultOperateItem))
 const treeRef = ref<any>()
@@ -205,7 +205,7 @@ onMounted(() => {
 
 <template>
   <div class="user-manage">
-    <MsSearchTable
+    <MlSearchTable
       v-model:search="form"
       url="/api/role/rolesByPage"
       ref="searchTableRef"
@@ -243,7 +243,7 @@ onMounted(() => {
           <el-button type="primary" :icon="Plus" @click="handleOperate('add')">新增</el-button>
         </div>
       </template>
-    </MsSearchTable>
+    </MlSearchTable>
     <el-dialog
       v-model="operateDialogVisible"
       @close="currentOperateItem = {}"
