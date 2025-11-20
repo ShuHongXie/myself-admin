@@ -11,7 +11,6 @@ dist/
 build/
 app/web/src/apis/
 packages/ui/minilo/
-packages/**/
 
 # Logs
 *.log

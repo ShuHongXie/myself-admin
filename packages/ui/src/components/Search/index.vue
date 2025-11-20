@@ -157,9 +157,19 @@ defineExpose({})
                 </el-form-item>
               </el-col>
             </template>
+            <el-col :span="span" v-if="options.length < 24 / span - 1">
+              <el-form-item label="操作">
+                <el-button type="primary" :size="size" :loading="false" @click.stop="handleSubmit">
+                  {{ submitBtnText }}
+                </el-button>
+                <el-button :loading="false" @click.stop="handleReset">
+                  {{ resetBtnText }}
+                </el-button>
+              </el-form-item>
+            </el-col>
           </el-row>
         </div>
-        <div :class="bem('search', 'content__right')">
+        <div :class="bem('search', 'content__right')" v-if="options.length >= 24 / span - 1">
           <el-form-item label="操作">
             <el-button type="primary" :size="size" :loading="false" @click.stop="handleSubmit">
               {{ submitBtnText }}
@@ -170,7 +180,7 @@ defineExpose({})
           </el-form-item>
         </div>
       </div>
-      <el-row :class="bem('search', 'collapse')">
+      <el-row :class="bem('search', 'collapse')" v-if="options.length > 24 / span">
         <el-link type="primary" underline="never" @click="isCollapse = !isCollapse">
           {{ isCollapse ? '展开' : '收起' }}更多筛选条件
           <Icon :icon="isCollapse ? 'ep:arrow-down' : 'ep:arrow-up'" />

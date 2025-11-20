@@ -16,6 +16,12 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "types": ["element-plus/global", "vite/client", "@vitejs/plugin-vue-jsx", "vue/jsx-runtime"],
+  "types": [
+    "element-plus/global",
+    "vitepress",
+    "vite/client",
+    "@vitejs/plugin-vue-jsx",
+    "vue/jsx-runtime"
+  ],
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
 }
