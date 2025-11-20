@@ -22,37 +22,13 @@ defineOptions({ name: 'MlSearch' })
 const props = defineProps(searchProps)
 const options = ref<SearchProps[]>([])
 const searchFormRef = ref<FormInstance>()
+const isCollapse = ref(false)
 
 // model定义
 const searchModel = defineModel<SearchModel>()
 
 // 组件 emits 类型定义
 const emit = defineEmits(['submit', 'reset'])
-
-// 视口监听-----------start-------------
-const windowWidth = ref(window.innerWidth)
-const isCollapse = ref(false)
-const rowItemCount = ref(0)
-
-/**
- * @description: 视口监听
- * @return {*}
- * @Author: xieshuhong
- */
-const handleResize = () => {
-  windowWidth.value = window.innerWidth
-  rowItemCount.value = windowWidth.value >= 1900 ? 4 : windowWidth.value >= 1200 ? 3 : 2
-}
-
-onMounted(() => {
-  handleResize()
-  window.addEventListener('resize', handleResize)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
-})
-// 视口监听-----------end-------------
 
 // 操作-----------start-------------
 /**
@@ -157,7 +133,8 @@ defineExpose({})
                 </el-form-item>
               </el-col>
             </template>
-            <el-col :span="span" v-if="options.length < 24 / span - 1">
+            <!-- {{ options.length }} 切割 {{ 24 / span - 1 }} -->
+            <el-col :span="span" v-if="options.length <= 24 / span - 1">
               <el-form-item label="操作">
                 <el-button type="primary" :size="size" :loading="false" @click.stop="handleSubmit">
                   {{ submitBtnText }}
@@ -169,7 +146,7 @@ defineExpose({})
             </el-col>
           </el-row>
         </div>
-        <div :class="bem('search', 'content__right')" v-if="options.length >= 24 / span - 1">
+        <div :class="bem('search', 'content__right')" v-if="options.length > 24 / span - 1">
           <el-form-item label="操作">
             <el-button type="primary" :size="size" :loading="false" @click.stop="handleSubmit">
               {{ submitBtnText }}

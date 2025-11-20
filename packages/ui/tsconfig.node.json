@@ -4,7 +4,8 @@
     "target": "ES2023",
     "lib": ["ES2023"],
     "module": "ESNext",
-    "types": ["node"],
+    "moduleResolution": "bundler",
+    "types": ["node", "vitepress"],
     "skipLibCheck": true,
 
     /* Bundler mode */
