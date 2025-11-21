@@ -92,11 +92,28 @@ function setupAccessGuard(router: Router) {
     }
 
     // 检查是否已经初始化过路由
+    // 注意：页面刷新后 isRouterInitialized 会重置为 false，但 dynamicRoutes 会被持久化
     if (!routesStore.isRouterInitialized) {
       initializing = true
-      // 加载路由表
       try {
-        // 只有当路由数据为空时才重新加载
+        // 如果存在持久化的动态路由，直接使用它们重新注册
+        if (routesStore.dynamicRoutes && routesStore.dynamicRoutes.length > 0) {
+          const mergeRoutes = [...routesStore.dynamicRoutes, ...matchRoutes]
+
+          // 重新添加动态路由到 router 实例
+          mergeRoutes.forEach((routes) => {
+            router.addRoute('Layout', routes)
+          })
+
+          // 标记路由已初始化（menuData 已经被 configStore 持久化，无需重新设置）
+          routesStore.setRouterInitialized(true)
+
+          // 使用 replace: true 避免重复触发路由守卫
+          initializing = false
+          return next({ ...to, replace: true })
+        }
+
+        // 如果没有持久化的路由数据，则从服务器加载
         if (!initStore.routers || initStore.routers.length === 0) {
           await initStore.loadRouters()
         }

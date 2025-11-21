@@ -55,7 +55,7 @@ export const useRoutesStore = defineStore(
   },
   {
     persist: {
-      pick: ['dynamicRoutes', 'mergeRoutes', 'isRouterInitialized']
+      pick: ['dynamicRoutes', 'mergeRoutes']
     }
   }
 )
