@@ -50,9 +50,18 @@ const columns = [
   {
     label: '操作',
     slotName: 'actions',
+    width: 150,
     fixed: 'right'
   }
 ]
+
+const handleAdd = () => {
+  ElMessage.success('点击新增用户')
+}
+
+const handleBatchDelete = () => {
+  ElMessage.warning('点击批量删除')
+}
 
 const handleEdit = (row) => {
   ElMessage.success(`编辑用户: ${row.name}`)
@@ -66,30 +75,23 @@ const handleDelete = (row) => {
 let mockServer
 if (typeof window !== 'undefined') {
   onMounted(async () => {
-    // 动态导入 axios-mock-adapter
     try {
       const MockAdapter = (await import('axios-mock-adapter')).default
       const axios = (await import('axios')).default
 
       mockServer = new MockAdapter(axios, { delayResponse: 500 })
 
-      // 模拟用户列表 API
-      mockServer.onPost('/api/mock/users').reply((config) => {
+      mockServer.onPost('/api/mock/users-slot').reply((config) => {
         const params = JSON.parse(config.data || '{}')
-        console.log('请求参数:', params)
 
         let users = [
           { id: 1, name: '张三', email: 'zhangsan@example.com', status: 1 },
           { id: 2, name: '李四', email: 'lisi@example.com', status: 0 },
           { id: 3, name: '王五', email: 'wangwu@example.com', status: 1 },
           { id: 4, name: '赵六', email: 'zhaoliu@example.com', status: 1 },
-          { id: 5, name: '孙七', email: 'sunqi@example.com', status: 0 },
-          { id: 6, name: '周八', email: 'zhouba@example.com', status: 1 },
-          { id: 7, name: '吴九', email: 'wujiu@example.com', status: 0 },
-          { id: 8, name: '郑十', email: 'zhengshi@example.com', status: 1 }
+          { id: 5, name: '孙七', email: 'sunqi@example.com', status: 0 }
         ]
 
-        // 根据搜索条件过滤
         if (params.name) {
           users = users.filter((u) => u.name.includes(params.name))
         }
@@ -97,7 +99,6 @@ if (typeof window !== 'undefined') {
           users = users.filter((u) => u.status === params.status)
         }
 
-        // 分页
         const pageSize = params.pageSize || 20
         const currentPage = params.currentPage || 1
         const start = (currentPage - 1) * pageSize
@@ -117,7 +118,7 @@ if (typeof window !== 'undefined') {
         ]
       })
     } catch (error) {
-      console.warn('Mock adapter 加载失败，组件可能无法正常工作', error)
+      console.warn('Mock adapter 加载失败', error)
     }
   })
 }
@@ -126,11 +127,18 @@ if (typeof window !== 'undefined') {
 <template>
   <ml-search-table
     v-model:search="searchModel"
-    url="/api/mock/users"
+    url="/api/mock/users-slot"
     method-type="post"
     :search-props="searchConfig"
     :columns="columns"
   >
+    <template #prefix>
+      <div style="margin-bottom: 10px">
+        <el-button type="primary" @click="handleAdd">新增用户</el-button>
+        <el-button type="danger" @click="handleBatchDelete">批量删除</el-button>
+      </div>
+    </template>
+
     <template #status="{ row }">
       <el-tag :type="row.status === 1 ? 'success' : 'danger'">
         {{ row.status === 1 ? '启用' : '禁用' }}
@@ -140,6 +148,14 @@ if (typeof window !== 'undefined') {
     <template #actions="{ row }">
       <el-button type="primary" size="small" @click="handleEdit(row)"> 编辑 </el-button>
       <el-button type="danger" size="small" @click="handleDelete(row)"> 删除 </el-button>
+    </template>
+
+    <template #suffix>
+      <div style="margin-top: 10px; padding: 10px; background: #f5f7fa; border-radius: 4px">
+        <p style="margin: 0; color: #606266; font-size: 14px">
+          💡 提示：这里是表格后置插槽内容，可以放置统计信息、说明文字等
+        </p>
+      </div>
     </template>
   </ml-search-table>
 </template>

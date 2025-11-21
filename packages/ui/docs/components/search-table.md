@@ -4,6 +4,8 @@
 
 <script setup>
 import BasicDemo from '../.vitepress/demos/search-table/basic.vue'
+import RenderDemo from '../.vitepress/demos/search-table/render.vue'
+import SlotDemo from '../.vitepress/demos/search-table/slot.vue'
 </script>
 
 ## 基础用法
@@ -77,60 +79,73 @@ const columns = [
 
 ## 自定义列渲染
 
-### 使用插槽
+### 使用 render 函数
+
+::: tip 提示
+使用 render 函数可以灵活自定义列的渲染内容，支持复杂的交互逻辑。
+:::
+
+<RenderDemo />
+
+::: details 查看代码
 
 ```vue
 <template>
   <ml-search-table
     v-model:search="searchModel"
-    url="/api/user/list"
+    url="/api/mock/users-render"
+    method-type="post"
     :search-props="searchConfig"
     :columns="columns"
-  >
-    <template #status="{ row, index }">
-      <el-tag :type="row.status === 1 ? 'success' : 'danger'">
-        {{ row.status === 1 ? '启用' : '禁用' }}
-      </el-tag>
-    </template>
-
-    <template #actions="{ row }">
-      <el-button type="primary" size="small" @click="handleEdit(row)"> 编辑 </el-button>
-      <el-button type="danger" size="small" @click="handleDelete(row)"> 删除 </el-button>
-    </template>
-  </ml-search-table>
+  />
 </template>
 
 <script setup>
-const columns = [
-  { prop: 'id', label: 'ID' },
-  { prop: 'name', label: '用户名' },
-  { prop: 'status', label: '状态', slotName: 'status' },
-  { label: '操作', slotName: 'actions', width: 200 }
-]
+import { ref, h } from 'vue'
+import { ElTag, ElButton, ElMessage } from 'element-plus'
 
-const handleEdit = (row) => {
-  console.log('编辑:', row)
+const searchModel = ref({
+  name: '',
+  status: ''
+})
+
+const searchConfig = {
+  item: [
+    {
+      prop: 'name',
+      input: {
+        type: 'input',
+        props: { placeholder: '请输入用户名' }
+      },
+      formItemProps: { label: '用户名' }
+    },
+    {
+      prop: 'status',
+      input: {
+        type: 'select',
+        props: {
+          placeholder: '请选择状态',
+          options: [
+            { label: '启用', value: 1 },
+            { label: '禁用', value: 0 }
+          ],
+          labelKey: 'label',
+          valueKey: 'value'
+        }
+      },
+      formItemProps: { label: '状态' }
+    }
+  ]
 }
 
-const handleDelete = (row) => {
-  console.log('删除:', row)
-}
-</script>
-```
-
-### 使用 render 函数
-
-```vue
-<script setup>
-import { h } from 'vue'
-import { ElTag } from 'element-plus'
-
 const columns = [
-  { prop: 'id', label: 'ID' },
-  { prop: 'name', label: '用户名' },
+  { prop: 'id', label: 'ID', width: 80 },
+  { prop: 'name', label: '用户名', width: 120 },
+  { prop: 'email', label: '邮箱', minWidth: 200 },
   {
     prop: 'status',
     label: '状态',
+    width: 100,
     render: (row) => {
       return h(
         ElTag,
@@ -140,10 +155,67 @@ const columns = [
         () => (row.status === 1 ? '启用' : '禁用')
       )
     }
+  },
+  {
+    prop: 'score',
+    label: '评分',
+    width: 120,
+    render: (row) => {
+      const score = row.score || 0
+      const color = score >= 80 ? '#67C23A' : score >= 60 ? '#E6A23C' : '#F56C6C'
+      return h(
+        'span',
+        {
+          style: {
+            color,
+            fontWeight: 'bold'
+          }
+        },
+        `${score} 分`
+      )
+    }
+  },
+  {
+    label: '操作',
+    width: 150,
+    fixed: 'right',
+    render: (row) => {
+      return h('div', [
+        h(
+          ElButton,
+          {
+            type: 'primary',
+            size: 'small',
+            onClick: () => handleEdit(row)
+          },
+          () => '编辑'
+        ),
+        h(
+          ElButton,
+          {
+            type: 'danger',
+            size: 'small',
+            onClick: () => handleDelete(row),
+            style: { marginLeft: '8px' }
+          },
+          () => '删除'
+        )
+      ])
+    }
   }
 ]
+
+const handleEdit = (row) => {
+  ElMessage.success(`编辑用户: ${row.name}`)
+}
+
+const handleDelete = (row) => {
+  ElMessage.warning(`删除用户: ${row.name}`)
+}
 </script>
 ```
+
+:::
 
 ## 自定义请求参数
 
@@ -240,29 +312,124 @@ const handleParams = (params) => {
 
 ## 表格前后插槽
 
+使用 `prefix` 和 `suffix` 插槽可以在表格前后添加自定义内容。
+
+<SlotDemo />
+
+::: details 查看代码
+
 ```vue
 <template>
   <ml-search-table
     v-model:search="searchModel"
-    url="/api/user/list"
+    url="/api/mock/users-slot"
+    method-type="post"
     :search-props="searchConfig"
     :columns="columns"
   >
     <template #prefix>
-      <div style="margin-bottom: 10px;">
-        <el-button type="primary" @click="handleAdd">新增</el-button>
+      <div style="margin-bottom: 10px">
+        <el-button type="primary" @click="handleAdd">新增用户</el-button>
         <el-button type="danger" @click="handleBatchDelete">批量删除</el-button>
       </div>
     </template>
 
+    <template #status="{ row }">
+      <el-tag :type="row.status === 1 ? 'success' : 'danger'">
+        {{ row.status === 1 ? '启用' : '禁用' }}
+      </el-tag>
+    </template>
+
+    <template #actions="{ row }">
+      <el-button type="primary" size="small" @click="handleEdit(row)"> 编辑 </el-button>
+      <el-button type="danger" size="small" @click="handleDelete(row)"> 删除 </el-button>
+    </template>
+
     <template #suffix>
-      <div style="margin-top: 10px;">
-        <p>提示信息</p>
+      <div style="margin-top: 10px; padding: 10px; background: #f5f7fa; border-radius: 4px">
+        <p style="margin: 0; color: #606266; font-size: 14px">
+          💡 提示：这里是表格后置插槽内容，可以放置统计信息、说明文字等
+        </p>
       </div>
     </template>
   </ml-search-table>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
+
+const searchModel = ref({
+  name: '',
+  status: ''
+})
+
+const searchConfig = {
+  item: [
+    {
+      prop: 'name',
+      input: {
+        type: 'input',
+        props: { placeholder: '请输入用户名' }
+      },
+      formItemProps: { label: '用户名' }
+    },
+    {
+      prop: 'status',
+      input: {
+        type: 'select',
+        props: {
+          placeholder: '请选择状态',
+          options: [
+            { label: '启用', value: 1 },
+            { label: '禁用', value: 0 }
+          ],
+          labelKey: 'label',
+          valueKey: 'value'
+        }
+      },
+      formItemProps: { label: '状态' }
+    }
+  ]
+}
+
+const columns = [
+  { prop: 'id', label: 'ID', width: 80 },
+  { prop: 'name', label: '用户名', width: 120 },
+  { prop: 'email', label: '邮箱', width: 200 },
+  {
+    prop: 'status',
+    label: '状态',
+    width: 100,
+    slotName: 'status'
+  },
+  {
+    label: '操作',
+    slotName: 'actions',
+    width: 150,
+    fixed: 'right'
+  }
+]
+
+const handleAdd = () => {
+  ElMessage.success('点击新增用户')
+}
+
+const handleBatchDelete = () => {
+  ElMessage.warning('点击批量删除')
+}
+
+const handleEdit = (row) => {
+  ElMessage.success(`编辑用户: ${row.name}`)
+}
+
+const handleDelete = (row) => {
+  ElMessage.warning(`删除用户: ${row.name}`)
+}
+</script>
 ```
+
+:::
 
 ## 监听表格事件
 
