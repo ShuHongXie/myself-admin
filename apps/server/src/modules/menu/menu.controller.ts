@@ -26,7 +26,6 @@ export class MenuController {
 
   @ApiOperation({ summary: '新增菜单' })
   @Post()
-  @Public()
   async createMenu(
     @Body()
     createMenuDto: CreateMenuDto
@@ -36,7 +35,6 @@ export class MenuController {
 
   @Get('/getRouters')
   @ApiOperation({ summary: '获取所有菜单(不含按钮)' })
-  @Public()
   getRouters() {
     return this.menuService.findAll()
   }
@@ -49,7 +47,6 @@ export class MenuController {
     type: GetMenuTreeDto,
     isArray: true
   })
-  @Public()
   getMenuTree() {
     return this.menuService.findAllWithButtons()
   }
@@ -70,28 +67,24 @@ export class MenuController {
 
   @Get('/:id')
   @ApiOperation({ summary: '根据ID获取菜单详情' })
-  @Public()
   async getMenuDetail(@Param('id', ParseIntPipe) id: number) {
     return this.menuService.findOne(id)
   }
 
   @Put('/:id')
   @ApiOperation({ summary: '更新菜单' })
-  @Public()
   async updateMenu(@Param('id', ParseIntPipe) id: number, @Body() updateMenuDto: UpdateMenuDto) {
     return this.menuService.update(id, updateMenuDto)
   }
 
   @Delete('/:id')
   @ApiOperation({ summary: '删除菜单（需要先删除子菜单）' })
-  @Public()
   async deleteMenu(@Param('id', ParseIntPipe) id: number) {
     return this.menuService.remove(id)
   }
 
   @Delete('/:id/cascade')
   @ApiOperation({ summary: '级联删除菜单及其所有子菜单' })
-  @Public()
   async removeWithChildren(@Param('id', ParseIntPipe) id: number) {
     await this.menuService.removeWithChildren(id)
     return {

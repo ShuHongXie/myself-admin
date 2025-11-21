@@ -5,8 +5,11 @@ import OperationDialog from './components/operationDialog.vue'
 import { searchProps, columns, defaultOperateItem, MenuType, menuTypeData } from './data.tsx'
 import { createMenu, deleteMenu, updateMenu, getMenuTree } from '#/apis/sdk.gen'
 import { cloneDeep } from '@minilo/utils'
+import { useUserStore } from '@minilo/store'
 import type { Menu } from '#/apis/types.gen.ts'
 import type { MlSearchTable } from '@minilo/ui'
+
+const userStore = useUserStore()
 
 // 搜索表单---------------start-------------------
 const form = ref({})
@@ -114,6 +117,7 @@ onMounted(() => {
     <MlSearchTable
       v-model:search="form"
       url="/api/menu/info"
+      :headers="{ Authorization: `Bearer ${userStore.token}` }"
       ref="searchTableRef"
       :columns="columns"
       :search-props="searchProps"

@@ -6,11 +6,6 @@ interface UserInfo {
   avatar?: string
   username?: string
 }
-
-interface TokenInfo {
-  [key: string]: any
-}
-
 /**
  * @description: 用户信息(token)和权限状态管理
  * @return {*}
@@ -22,7 +17,7 @@ export const useUserStore = defineStore(
     const userInfo = ref<UserInfo>({})
     const permissionList = ref<string[]>([])
     const buttonPermissions = ref<string[]>([])
-    const tokenInfo = ref<TokenInfo>(null)
+    const token = ref('')
 
     // 设置用户信息
     const setUserInfo = (data: Partial<UserInfo>) => {
@@ -37,8 +32,8 @@ export const useUserStore = defineStore(
       buttonPermissions.value = data
     }
     // 设置token信息
-    const setTokenInfo = (data: Partial<TokenInfo>) => {
-      tokenInfo.value = data
+    const setToken = (data: string) => {
+      token.value = data
     }
     // 检查是否具有按钮权限
     const hasButtonPermission = (permission: string): boolean => {
@@ -49,8 +44,8 @@ export const useUserStore = defineStore(
       userInfo,
       permissionList,
       buttonPermissions,
-      tokenInfo,
-      setTokenInfo,
+      token,
+      setToken,
       setUserInfo,
       setPermissionList,
       setButtonPermissions,

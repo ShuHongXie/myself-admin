@@ -2,10 +2,13 @@ import type { Router } from 'vue-router'
 
 import nprogress from 'nprogress'
 import { userConfig } from '@minilo/utils'
-import { useConfigStore, useRoutesStore } from '@minilo/store'
+import { useConfigStore, useRoutesStore, useUserStore } from '@minilo/store'
 import { generateRoutes } from './generate'
 import { matchRoutes } from './routes'
 import { useInitStore } from '#/store/useInitStore'
+
+// 白名单路由（无需登录即可访问）
+const WHITE_LIST = ['/auth/login', '/auth/register', '/404']
 
 /**
  * 通用守卫配置
@@ -33,7 +36,7 @@ function setupCommonGuard(router: Router) {
 }
 
 /**
- * 权限访问守卫配置
+ * 权限访问守卫配置（包含登录认证和动态路由加载）
  * @param router
  */
 function setupAccessGuard(router: Router) {
@@ -41,9 +44,47 @@ function setupAccessGuard(router: Router) {
   let initializing = false
 
   router.beforeEach(async (to, from, next) => {
+    const userStore = useUserStore()
     const initStore = useInitStore()
     const routesStore = useRoutesStore()
     const configStore = useConfigStore()
+
+    // 检查是否已登录
+    const token = userStore.token
+    const isAuthenticated = !!token
+
+    // 目标路由是否在白名单中
+    const isInWhiteList = WHITE_LIST.includes(to.path)
+
+    // ========== 登录认证检查 ==========
+    if (!isAuthenticated) {
+      // 未登录
+      if (isInWhiteList) {
+        // 白名单路由直接放行
+        return next()
+      } else {
+        // 非白名单路由，重定向到登录页
+        return next({
+          path: '/auth/login',
+          query: {
+            // 使用 encodeURIComponent 编码 redirect 参数
+            redirect: encodeURIComponent(to.fullPath)
+          },
+          replace: true
+        })
+      }
+    } else {
+      // 已登录用户访问登录页，重定向到首页
+      if (to.path === '/auth/login') {
+        return next({ path: userConfig.app?.defaultHomePath || '/', replace: true })
+      }
+    }
+
+    // ========== 动态路由加载 ==========
+    // 如果未登录，直接放行（白名单已在上面处理）
+    if (!isAuthenticated) {
+      return next()
+    }
 
     // 如果正在初始化，直接放行
     if (initializing) {
@@ -102,7 +143,7 @@ function setupAccessGuard(router: Router) {
 function createRouterGuard(router: Router) {
   /** 通用 */
   setupCommonGuard(router)
-  /** 权限访问 */
+  /** 权限访问（包含登录认证） */
   setupAccessGuard(router)
 }
 

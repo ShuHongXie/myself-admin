@@ -64,35 +64,30 @@ export class UserController {
     return this.userService.getCaptcha()
   }
 
-  @Public()
   @Get('getInfo')
   @ApiOperation({ summary: '获取用户信息' })
   async getInfo(@Request() req) {
     return await this.userService.getInfo(req)
   }
 
-  @Public()
   @Post()
   @ApiOperation({ summary: '新增用户' })
   createUserByAdmin(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto)
   }
 
-  @Public()
   @Put()
   @ApiOperation({ summary: '更新用户' })
   updateUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.update(createUserDto)
   }
 
-  @Public()
   @Delete(':userId')
   @ApiOperation({ summary: '删除用户' })
   deleteUser(@Param('userId', new ParseIntPipe()) userId: number) {
     return this.userService.delete(userId)
   }
 
-  @Public()
   @Post('list')
   @ApiOperation({ summary: '获取用户列表' })
   list(@Body() getUserListDto: GetUserListDto) {

@@ -59,6 +59,14 @@ export type LoginDto = {
    * 密码
    */
   password: string
+  /**
+   * 验证码ID
+   */
+  captchaId?: string
+  /**
+   * 验证码
+   */
+  captcha?: string
 }
 
 export type GetUserListDto = {

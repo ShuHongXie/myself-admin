@@ -23,15 +23,29 @@ import { RouterView } from 'vue-router'
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
   &-wrap {
     position: relative;
     z-index: 2;
-    width: 50%;
+    width: 100%;
     max-width: 500px;
+    min-width: 320px;
     padding: 2rem;
     border-radius: 1.5rem;
     background-color: #fff;
     box-shadow: 0 6px 16px 0px rgb(255 38 5 / 6%) !important;
+    // 响应式设计
+    @media (min-width: 768px) {
+      width: 500px;
+    }
+    @media (max-width: 767px) {
+      padding: 1.5rem;
+      max-width: 400px;
+    }
+    @media (max-width: 480px) {
+      padding: 1rem;
+      min-width: 280px;
+    }
   }
 }
 </style>

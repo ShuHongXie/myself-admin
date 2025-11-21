@@ -4,6 +4,7 @@ import { ElMessage, type FormInstance } from 'element-plus'
 import { searchProps, columns, formRules } from './data'
 import { getRolesList, createUserByAdmin, updateUser, deleteUser } from '#/apis/sdk.gen'
 import { cloneDeep } from '@minilo/utils'
+import { useUserStore } from '@minilo/store'
 import type { GetRoleListDto } from '#/apis/types.gen'
 import type { MlSearchTable } from '@minilo/ui'
 
@@ -21,8 +22,8 @@ const defaultOperateItem = {
 }
 
 const selectColumns = ref([])
-
 const form = ref({})
+const userStore = useUserStore()
 
 // 基础配置----------------start-------------------
 const handleSelect = (val: any) => {
@@ -135,6 +136,7 @@ onMounted(() => {
     <MlSearchTable
       v-model:search="form"
       url="/api/user/list"
+      :headers="{ Authorization: `Bearer ${userStore.token}` }"
       ref="searchTableRef"
       :columns="columns"
       :search-props="searchProps"

@@ -10,11 +10,12 @@ import {
 } from './data.tsx'
 import { createRole, updateRole, deleteRole, getMenuTree } from '#/apis/sdk.gen'
 import { cloneDeep } from '@minilo/utils'
+import { useUserStore } from '@minilo/store'
 import type { MlSearchTable } from '@minilo/ui'
 
 const selectColumns = ref([])
-
 const form = ref({})
+const userStore = useUserStore()
 
 // 基础配置----------------start-------------------
 
@@ -208,6 +209,7 @@ onMounted(() => {
     <MlSearchTable
       v-model:search="form"
       url="/api/role/rolesByPage"
+      :headers="{ Authorization: `Bearer ${userStore.token}` }"
       ref="searchTableRef"
       :columns="columns"
       :search-props="searchProps"

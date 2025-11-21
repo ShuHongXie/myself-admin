@@ -33,7 +33,18 @@ export class UserService {
 
   async findOne(username: string) {
     const user = await this.userRepository.findOne({
-      where: { username }
+      where: { username },
+      select: [
+        'id',
+        'username',
+        'password',
+        'salt',
+        'status',
+        'nickname',
+        'email',
+        'telephone',
+        'isAdmin'
+      ]
     })
 
     if (!user) throw new ApiException('用户名不存在', ApiErrorCode.USER_NOTEXIST)
@@ -220,38 +231,59 @@ export class UserService {
   }
 
   async login(loginDto: LoginDto) {
-    const { username, password } = loginDto
+    const { username, password, captchaId, captcha } = loginDto
+    // 验证码校验（可选）
+    if (captchaId && captcha) {
+      const cachedCaptcha = await this.cacheService.get(`captcha_${captchaId}`)
+      if (!cachedCaptcha) {
+        throw new ApiException('验证码已过期', ApiErrorCode.FAIL)
+      }
+      if (cachedCaptcha !== captcha.toLowerCase()) {
+        throw new ApiException('验证码错误', ApiErrorCode.FAIL)
+      }
+      // 验证成功后删除验证码，防止重复使用
+      await this.cacheService.del(`captcha_${captchaId}`)
+    }
     const user = await this.findOne(username)
+    // 验证密码
     if (user.password !== encry(password, user.salt)) {
       throw new ApiException('密码错误', ApiErrorCode.PASSWORD_ERR)
     }
-    const payload = { username: user.username, userId: user.id }
+    // 检查用户状态
+    if (user.status === false) {
+      throw new ApiException('用户已被禁用，请联系管理员', ApiErrorCode.FAIL)
+    }
+    // 生成 JWT token
+    const payload = { username: user.username, sub: user.id, userId: user.id }
     const token = await this.jwtService.signAsync(payload)
-    return ResultData.success('登录成功', token)
+    return ResultData.success('登录成功', { token })
   }
 
   getCaptcha() {
     const { id, captcha } = generateCaptcha()
+    // 将验证码文本存入 Redis，有效期 5 分钟
+    this.cacheService.set(`captcha_${id}`, captcha.text.toLowerCase(), 300)
     return ResultData.success('', { id, img: captcha.data })
   }
 
   async getInfo(req) {
-    //user.guard中注入的解析后的JWTtoken的user
-    // const { user } = req
-    const user = {
-      userId: 1,
-      username: 'admin'
+    // 从请求中获取用户信息（由 AuthGuard 注入）
+    const { userId } = req.user
+    if (!userId) {
+      throw new ApiException('用户未登录', ApiErrorCode.FAIL)
     }
     const userInfo = await this.userRepository.findOne({
-      where: { id: user.userId }
+      where: { id: userId }
     })
-    if (!userInfo) throw new ApiException('用户不存在', ApiErrorCode.USER_NOTEXIST)
-    //根据关联关系通过user查询user下的菜单和角色
+    if (!userInfo) {
+      throw new ApiException('用户不存在', ApiErrorCode.USER_NOTEXIST)
+    }
+    // 根据关联关系通过 user 查询 user 下的菜单和角色
     const userList: User | null = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.roles', 'role')
       .leftJoinAndSelect('role.menus', 'menu')
-      .where({ id: user.userId })
+      .where({ id: userId })
       .getOne()
 
     const isAdmin = userInfo.isAdmin
@@ -274,7 +306,8 @@ export class UserService {
         }
       }
 
-      await this.cacheService.set(`${user.userId}_permissions`, permissions, 7200)
+      // 缓存用户权限，2小时过期
+      await this.cacheService.set(`${userId}_permissions`, permissions, 7200)
       return ResultData.success('获取用户信息成功', {
         permissions: permissions,
         userInfo

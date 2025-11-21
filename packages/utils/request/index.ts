@@ -59,13 +59,6 @@ export const initRequestInstance = (
       interceptorsRequestFn(config)
       // 添加请求到pending列表，处理重复请求
       addPendingRequest(config)
-
-      // 添加认证token（根据实际情况修改）
-      const token = localStorage.getItem('token')
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`
-      }
-
       // 可以在这里添加其他请求处理逻辑，如请求加载动画等
 
       return config

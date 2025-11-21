@@ -22,6 +22,8 @@ import initOpenApiInstance from '#/config/axios'
 export const init = async () => {
   NProgress.configure({ showSpinner: false })
   const app = createApp(App)
+  // 状态管理注册
+  initPersistStores(app)
   // axios实例注册
   initOpenApiInstance({
     baseURL: import.meta.env.VITE_BASE_URL
@@ -29,8 +31,6 @@ export const init = async () => {
   app.directive('loading', ElLoading.directive)
   // 路由注册
   app.use(router)
-  // 状态管理注册
-  initPersistStores(app)
   // 国际化注册
   await initI18n(app)
 
