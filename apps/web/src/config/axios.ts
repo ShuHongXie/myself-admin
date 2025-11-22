@@ -24,6 +24,4 @@ export default function initOpenApiInstance(extendConfig: CreateAxiosDefaults = 
     // 设置为true，使错误能够正确抛出而不是被转换为成功的响应
     throwOnError: true
   })
-
-  console.log('client:', client)
 }

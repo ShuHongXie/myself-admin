@@ -9,6 +9,7 @@ export const generateRoutes = (routerData: RouteRecordRaw[]) => {
   let menuData = [] as any
   menuData = generateMenus(data, menuData).sort((a: any, b: any) => (a?.no ?? 999) - (b?.no ?? 999))
   data = formatRoutes(data)
+  console.log('generateRoutes dynamicRoutes:', data)
   return {
     menuData,
     dynamicRoutes: data
@@ -20,12 +21,13 @@ export const formatRoutes = (routes: any[]) => {
     if ((item.component as any) === 'Layout') {
       item.component = Layout
     } else {
-      // console.log('查找路径:', `../views${item.path}.vue`)
-      // console.log('modules中是否存在:', !!modules[`../views${item.path}.vue`])
+      console.log('查找路径:', `../views${item.path}.vue`)
+      console.log('modules中是否存在:', !!modules[`../views${item.path}.vue`])
       const componentPath = `../views${item.path}.vue`
       item.component = modules[componentPath]
+      console.log(item.component)
     }
-    if (item.children) {
+    if (item.children && item.children.length) {
       formatRoutes(item.children)
     }
   })

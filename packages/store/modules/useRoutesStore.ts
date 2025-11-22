@@ -52,12 +52,9 @@ export const useRoutesStore = defineStore(
       accessStaticRouteList,
       isRouterInitialized
     }
-  },
-  {
-    persist: {
-      pick: ['dynamicRoutes', 'mergeRoutes']
-    }
   }
+  // 不持久化路由数据，因为 component 对象无法被 JSON 序列化
+  // 每次刷新页面都会重新生成路由
 )
 
 if (import.meta.hot) {
