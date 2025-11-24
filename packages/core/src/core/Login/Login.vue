@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormInstance, FormRules } from 'element-plus'
 import type { LoginProps, RuleForm, LoginExpose } from './Login.types'
-import { reactive, ref, computed, watch } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 
 const props = withDefaults(defineProps<LoginProps>(), {
@@ -85,16 +85,6 @@ const handleRefreshCaptcha = () => {
   emit('refreshCaptcha')
 }
 
-// 监听加载状态，清除验证码输入
-watch(
-  () => props.loading,
-  (newVal, oldVal) => {
-    if (!newVal && oldVal && props.showCaptcha) {
-      formData.code = ''
-    }
-  }
-)
-
 // 暴露方法给父组件
 defineExpose<LoginExpose>({
   resetForm,
@@ -140,6 +130,7 @@ defineExpose<LoginExpose>({
               :placeholder="props.captchaPlaceholder"
               v-model="formData.code"
               class="login-captcha-input"
+              @keyup.enter="handleLogin(loginFormRef)"
             />
             <div
               v-if="props.captchaImage"
@@ -197,7 +188,7 @@ defineExpose<LoginExpose>({
       width: 120px;
       height: 40px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: var(--el-border-radius-base);
       overflow: hidden;
       border: 1px solid var(--el-border-color);
       transition: all 0.3s;
