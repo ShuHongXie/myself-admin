@@ -43,10 +43,17 @@ export const useRoutesStore = defineStore(
       isRouterInitialized.value = data
     }
 
+    // 重置路由状态
+    const resetRoutes = () => {
+      dynamicRoutes.value = []
+      isRouterInitialized.value = false
+    }
+
     return {
       setDynamicRoutes,
       setStaticRoutes,
       setRouterInitialized,
+      resetRoutes,
       dynamicRoutes,
       staticRoutes,
       accessStaticRouteList,

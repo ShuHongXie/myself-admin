@@ -36,6 +36,13 @@ export const useConfigStore = defineStore(
       activeTab.value = path
     }
 
+    // 重置配置状态
+    const resetConfig = () => {
+      menuData.value = []
+      tabData.value = []
+      activeTab.value = ''
+    }
+
     return {
       menuData,
       setMenuData,
@@ -43,7 +50,8 @@ export const useConfigStore = defineStore(
       setTabData,
       removeTabData,
       activeTab,
-      setActiveTab
+      setActiveTab,
+      resetConfig
     }
   },
   {

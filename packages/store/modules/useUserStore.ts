@@ -40,6 +40,14 @@ export const useUserStore = defineStore(
       return buttonPermissions.value.includes(permission)
     }
 
+    // 登出 - 清除所有用户信息
+    const logout = () => {
+      userInfo.value = {}
+      permissionList.value = []
+      buttonPermissions.value = []
+      token.value = ''
+    }
+
     return {
       userInfo,
       permissionList,
@@ -49,7 +57,8 @@ export const useUserStore = defineStore(
       setUserInfo,
       setPermissionList,
       setButtonPermissions,
-      hasButtonPermission
+      hasButtonPermission,
+      logout
     }
   },
   {

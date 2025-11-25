@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs, type StoreGeneric } from 'pinia'
-import { computed, watch } from 'vue'
+import { computed, watch, defineEmits } from 'vue'
 import { guider, userConfig, isHttp, findMenuItem } from '@minilo/utils'
 import { useRoute, useRouter } from 'vue-router'
 import { SUPPORT_LANGUAGES, findLevelRoutes } from '@minilo/utils'
@@ -17,6 +17,11 @@ const configStore = useConfigStore()
 const { menuData, tabData, activeTab } = storeToRefs(configStore as StoreGeneric)
 const route = useRoute()
 const router = useRouter()
+
+// 定义 emit
+const emit = defineEmits<{
+  logout: []
+}>()
 
 // 侧边栏相关逻辑-----------start---------------
 
@@ -144,6 +149,18 @@ const handleSwitchLanguage = async (value: string | undefined) => {
       locale
     }
   })
+}
+
+/**
+ * @description: 用户菜单命令处理
+ * @param {*} command
+ * @return {*}
+ * @Author: xieshuhong
+ */
+const handleUserCommand = (command: string) => {
+  if (command === 'logout') {
+    emit('logout')
+  }
 }
 
 /**
@@ -275,7 +292,7 @@ watch(
                 </el-popover>
               </div>
               <!-- 用户头像 -->
-              <el-dropdown trigger="click">
+              <el-dropdown trigger="click" @command="handleUserCommand">
                 <div class="header-user">
                   <img
                     class="header-user__avatar"
@@ -285,7 +302,7 @@ watch(
                 </div>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item>{{ $t('common.logout') }}</el-dropdown-item>
+                    <el-dropdown-item command="logout">{{ $t('common.logout') }}</el-dropdown-item>
                   </el-dropdown-menu></template
                 >
               </el-dropdown>

@@ -109,6 +109,36 @@ const options = ref({
   ]
 })
 
+const searchProps1 = ref({
+  slots: [],
+  item: [
+    {
+      prop: 'nickname',
+      formItemProps: {
+        label: '用户昵称'
+      },
+      input: {
+        type: 'input',
+        props: {
+          placeholder: '请输入用户昵称'
+        }
+      }
+    },
+    {
+      prop: 'username',
+      formItemProps: {
+        label: '登录ID'
+      },
+      input: {
+        type: 'input',
+        props: {
+          placeholder: '请输入登录ID'
+        }
+      }
+    }
+  ]
+})
+
 onMounted(() => {})
 </script>
 
@@ -119,6 +149,7 @@ onMounted(() => {})
     </div>
     <MlSearch v-bind="searchProps" v-model="form"></MlSearch>
     <MlSearchTable v-model:search="form" :search-props="searchProps" />
+    <MlSearchTable v-model:search="form" :search-props="searchProps1" />
   </div>
 </template>
 

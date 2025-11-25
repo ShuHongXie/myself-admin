@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { getRouters } from '#/apis/sdk.gen'
-import { router } from '#/router'
 
 export const useInitStore = defineStore(
   'init',
@@ -12,23 +11,19 @@ export const useInitStore = defineStore(
     const loadRouters = async () => {
       try {
         const res = await getRouters()
-        routers.value = res.data
-        // routers.value = [
-        //   {
-        //     component: 'Layout',
-        //     name: 'Layout',
-        //     path: '/',
-        //     meta: {},
-        //     children: res.data
-        //   }
-        // ]
+        routers.value = res.data as RouteRecordRaw[]
       } catch (error) {
         console.error('加载路由失败:', error)
         throw error
       }
     }
 
-    return { routers, loadRouters }
+    // 重置路由数据
+    const resetRouters = () => {
+      routers.value = []
+    }
+
+    return { routers, loadRouters, resetRouters }
   },
   {
     persist: true
