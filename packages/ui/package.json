@@ -1,6 +1,7 @@
 {
   "name": "@minilo/ui",
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "tasks": "gulp -f build-script/gulpfile.ts --tasks",

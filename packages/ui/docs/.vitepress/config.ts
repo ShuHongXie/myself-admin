@@ -47,7 +47,8 @@ export default defineConfig({
         items: [
           { text: 'MlChart 图表', link: '/components/chart' },
           { text: 'MlSearch 搜索', link: '/components/search' },
-          { text: 'MlSearchTable 搜索表格', link: '/components/search-table' }
+          { text: 'MlSearchTable 搜索表格', link: '/components/search-table' },
+          { text: 'MsDetail 详情', link: '/components/detail' }
         ]
       },
       {
@@ -59,6 +60,6 @@ export default defineConfig({
       }
     ],
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }]
+    socialLinks: [{ icon: 'github', link: 'https://github.com/ShuHongXie/minilo' }]
   }
 })
