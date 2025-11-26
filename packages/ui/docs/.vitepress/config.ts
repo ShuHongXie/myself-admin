@@ -48,7 +48,8 @@ export default defineConfig({
           { text: 'MlChart 图表', link: '/components/chart' },
           { text: 'MlSearch 搜索', link: '/components/search' },
           { text: 'MlSearchTable 搜索表格', link: '/components/search-table' },
-          { text: 'MsDetail 详情', link: '/components/detail' }
+          { text: 'MsDetail 详情', link: '/components/detail' },
+          { text: 'MlButton 按钮', link: '/components/button' }
         ]
       },
       {

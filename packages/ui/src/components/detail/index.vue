@@ -7,7 +7,7 @@ import type { MsDetailProps } from './type'
 import { bem } from '../../utils'
 
 defineOptions({
-  name: 'MsDetail'
+  name: 'MlDetail'
 })
 
 withDefaults(defineProps<MsDetailProps>(), {
