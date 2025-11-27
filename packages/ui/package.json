@@ -28,6 +28,11 @@
       "import": "./minilo/dist/index.full.min.mjs",
       "require": "./minilo/dist/index.full.min.mjs"
     },
+    "./resolver": {
+      "types": "./minilo/resolver/resolver/index.d.ts",
+      "import": "./minilo/resolver/resolver/index.mjs",
+      "require": "./minilo/resolver/resolver/index.js"
+    },
     "./es/*": {
       "types": "./minilo/es/index.d.ts",
       "import": "./minilo/es/components/*/index.mjs"

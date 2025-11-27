@@ -14,6 +14,7 @@ export default series(
   parallel(
     runTask('buildModules'),
     runTask('buildFullBundle'),
+    runTask('buildResolver'),
     // runTask('generateTypesDefinitions'),
     // runTask('buildHelper'),
     runTask('buildFullStyle')

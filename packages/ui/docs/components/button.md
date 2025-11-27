@@ -55,14 +55,14 @@ const handleClick = () => {
         防抖按钮（点击次数：{{ clickCount }}）
       </ml-button>
     </div>
-    
+
     <div class="demo-section">
       <p>自定义防抖时间（500ms）：</p>
       <ml-button type="success" :time="500" @click="handleCustomClick">
         500ms防抖（点击次数：{{ customCount }}）
       </ml-button>
     </div>
-    
+
     <div class="demo-section">
       <p>禁用防抖：每次点击都会触发</p>
       <ml-button type="warning" :is-debounce="false" @click="handleNoDebounceClick">
@@ -110,26 +110,15 @@ const handleNoDebounceClick = () => {
 ```vue
 <template>
   <div>
-    <ml-button 
-      type="primary" 
-      tip="这是一个提示信息" 
-      @click="handleClick"
-    >
-      悬停查看提示
-    </ml-button>
-    
-    <ml-button 
-      type="success" 
-      tip="提示在右侧显示" 
-      placement="right"
-      @click="handleClick"
-    >
+    <ml-button type="primary" tip="这是一个提示信息" @click="handleClick"> 悬停查看提示 </ml-button>
+
+    <ml-button type="success" tip="提示在右侧显示" placement="right" @click="handleClick">
       右侧提示
     </ml-button>
-    
-    <ml-button 
-      type="warning" 
-      tip="这是一个很长的提示信息，用来演示提示框的换行效果" 
+
+    <ml-button
+      type="warning"
+      tip="这是一个很长的提示信息，用来演示提示框的换行效果"
       placement="top"
       :tip-props="{ effect: 'dark' }"
       @click="handleClick"
@@ -152,13 +141,13 @@ const handleClick = () => {
 
 ## Props
 
-| 参数        | 说明                                      | 类型                   | 可选值                                         | 默认值  |
-| ----------- | ----------------------------------------- | ---------------------- | ---------------------------------------------- | ------- |
-| time        | 防抖时间（毫秒）                          | `number`               | —                                              | `1000`  |
-| tip         | 提示信息                                  | `string`               | —                                              | `''`    |
-| placement   | 提示信息显示位置                          | `string`               | `top`/`bottom`/`left`/`right` 等               | `'top'` |
-| tipProps    | el-tooltip 的其他属性                     | `Record<string, any>`  | —                                              | `{}`    |
-| isDebounce  | 是否启用防抖                              | `boolean`              | —                                              | `true`  |
+| 参数       | 说明                  | 类型                  | 可选值                           | 默认值  |
+| ---------- | --------------------- | --------------------- | -------------------------------- | ------- |
+| time       | 防抖时间（毫秒）      | `number`              | —                                | `1000`  |
+| tip        | 提示信息              | `string`              | —                                | `''`    |
+| placement  | 提示信息显示位置      | `string`              | `top`/`bottom`/`left`/`right` 等 | `'top'` |
+| tipProps   | el-tooltip 的其他属性 | `Record<string, any>` | —                                | `{}`    |
+| isDebounce | 是否启用防抖          | `boolean`             | —                                | `true`  |
 
 组件继承 `el-button` 的所有属性，如 `type`、`size`、`plain`、`round`、`circle`、`loading`、`disabled` 等。
 
@@ -170,9 +159,9 @@ const handleClick = () => {
 
 ## Slots
 
-| 插槽名  | 说明           |
-| ------- | -------------- |
-| default | 按钮内容       |
+| 插槽名  | 说明     |
+| ------- | -------- |
+| default | 按钮内容 |
 
 ## 使用场景
 
