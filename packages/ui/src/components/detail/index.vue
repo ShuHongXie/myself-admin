@@ -3,14 +3,14 @@ import { ElDescriptions, ElDescriptionsItem } from 'element-plus'
 import RenderTooltip from './renderTooltip.vue'
 import RenderLabel from './renderLabel.vue'
 import { Warning } from '@element-plus/icons-vue'
-import type { MsDetailProps } from './type'
+import type { MlDetailProps } from './type'
 import { bem } from '../../utils'
 
 defineOptions({
   name: 'MlDetail'
 })
 
-withDefaults(defineProps<MsDetailProps>(), {
+withDefaults(defineProps<MlDetailProps>(), {
   descColumn: 4,
   dataList: () => ({}),
   listTypeInfo: () => ({}),

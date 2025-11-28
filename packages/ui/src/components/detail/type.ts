@@ -18,7 +18,7 @@ export interface DescItem {
   fieldName?: string
 }
 
-export interface MsDetailProps {
+export interface MlDetailProps {
   descColumn?: number
   dataList?: Record<string, any>
   listTypeInfo?: Record<string, any>

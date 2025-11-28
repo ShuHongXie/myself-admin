@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import testSearch from './preview/testSearch.vue'
+import virtualList from './components/virtual-list/index.vue'
 </script>
 
 <template>
   <div>
-    <testSearch></testSearch>
+    <!-- <testSearch></testSearch> -->
+    <virtualList></virtualList>
   </div>
 </template>
 

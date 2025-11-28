@@ -1,4 +1,4 @@
-# MsDetail 详情组件
+# MlDetail 详情组件
 
 详情展示组件，基于 `el-descriptions` 二次封装。
 
