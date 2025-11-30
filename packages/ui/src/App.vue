@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import testSearch from './preview/testSearch.vue'
 import virtualList from './components/virtual-list/index.vue'
+import virtualListPagination from './components/virtual-list/pagination.vue'
 
 // 创建自定义数据源示例
 const customDataList = ref<any[]>([])
@@ -13,12 +14,19 @@ const generateCustomData = (count: number) => {
 
   for (let i = 0; i < count; i++) {
     const typeIndex = Math.floor(Math.random() * types.length)
+    // 随机生成不同长度的内容，产生不同高度
+    const contentLength = Math.floor(Math.random() * 5) + 1
+    const content = Array(contentLength)
+      .fill(0)
+      .map((_, idx) => `这是第 ${i} 条数据的第 ${idx + 1} 行内容`)
+      .join('，')
+
     result.push({
       id: i,
       type: types[typeIndex],
       status: statuses[typeIndex],
       title: `任务项 #${i}`,
-      content: `这是第 ${i} 条数据的详细内容描述`,
+      content,
       time: new Date().toLocaleString()
     })
   }
@@ -36,17 +44,24 @@ customDataList.value = generateCustomData(2000)
     <div class="demo-section">
       <h2>虚拟列表示例</h2>
 
-      <!-- 示例1: 默认使用（4000条测试数据） -->
+      <!-- 示例1: 分页加载虚拟列表 -->
       <div class="example-box">
-        <h3>示例1：默认虚拟列表（4000条数据）</h3>
+        <h3>示例1：分页加载虚拟列表（模拟1000条数据）</h3>
+        <p class="desc">滚动到底部自动加载下一页，每页10条数据</p>
+        <virtualListPagination :height="600" :item-height="60" :page-size="50" />
+      </div>
+
+      <!-- 示例2: 默认使用（4000条测试数据） -->
+      <div class="example-box">
+        <h3>示例2：默认虚拟列表（4000条数据）</h3>
         <p class="desc">不传任何参数，默认生成4000条测试数据</p>
         <virtualList></virtualList>
       </div>
 
-      <!-- 示例2: 自定义数据源和样式 -->
+      <!-- 示例3: 不定高度虚拟列表 -->
       <div class="example-box">
-        <h3>示例2：自定义数据源（2000条数据）</h3>
-        <p class="desc">传入自定义数据，使用 slot 自定义列表项样式</p>
+        <h3>示例3：不定高度虚拟列表（2000条数据）</h3>
+        <p class="desc">每个列表项有不同的内容长度，高度自适应</p>
         <virtualList :data-source="customDataList" :height="600" :item-height="100">
           <template #default="{ item }">
             <div class="custom-item">
@@ -172,7 +187,8 @@ customDataList.value = generateCustomData(2000)
   margin: 0;
   color: #606266;
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.8;
+  word-break: break-all;
 }
 
 .item-footer {

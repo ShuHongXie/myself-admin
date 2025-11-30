@@ -28,9 +28,12 @@ const SCROLL_VIEW_HEIGHT = computed(() => props.height)
 /** @name 列表项高度 */
 const ITEM_HEIGHT = computed(() => props.itemHeight)
 /** @name 预加载数量 */
-const PRE_LOAD_COUNT = computed(
-  () => props.preLoadCount || Math.ceil(SCROLL_VIEW_HEIGHT.value / ITEM_HEIGHT.value)
-)
+const PRE_LOAD_COUNT = computed(() => {
+  // 如果用户指定了预加载数量，使用用户指定的值
+  if (props.preLoadCount) return props.preLoadCount
+  // 否则，使用可视区域能容纳数量的2倍作为缓冲，避免快速滚动时白屏
+  return Math.ceil(SCROLL_VIEW_HEIGHT.value / ITEM_HEIGHT.value) * 2
+})
 
 /** 容器 Ref */
 const containerRef = ref<HTMLElement | null>(null)
@@ -100,8 +103,7 @@ const calculateRange = () => {
 /**
  * onScroll 事件回调
  */
-const onContainerScroll = (event: Event) => {
-  event.preventDefault()
+const onContainerScroll = () => {
   calculateRange()
 }
 
