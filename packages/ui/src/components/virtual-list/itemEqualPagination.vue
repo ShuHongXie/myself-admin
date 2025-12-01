@@ -8,8 +8,8 @@ defineOptions({
 interface Props {
   /** 容器高度，默认 500px */
   height?: number
-  /** 列表项高度，默认 50px */
-  itemHeight?: number
+  /** 列表项预估高度，默认 50px（用于首次渲染） */
+  estimatedItemHeight?: number
   /** 预加载数量（上下各预加载几个） */
   preLoadCount?: number
   /** 距离底部多少像素时触发加载 */
@@ -22,10 +22,18 @@ interface Props {
   finished?: boolean
 }
 
+// 位置信息接口
+interface PositionInfo {
+  index: number
+  top: number
+  bottom: number
+  height: number
+}
+
 const props = withDefaults(defineProps<Props>(), {
   height: 500,
-  itemHeight: 50,
-  preLoadCount: 0,
+  estimatedItemHeight: 50,
+  preLoadCount: 5,
   threshold: 200,
   dataSource: () => [],
   loading: false,
@@ -38,26 +46,19 @@ const emit = defineEmits<{
 
 /** @name 页面容器高度 */
 const SCROLL_VIEW_HEIGHT = computed(() => props.height)
-/** @name 列表项高度 */
-const ITEM_HEIGHT = computed(() => props.itemHeight)
+/** @name 预估列表项高度 */
+const ESTIMATED_ITEM_HEIGHT = computed(() => props.estimatedItemHeight)
 /** @name 预加载数量 */
-const PRE_LOAD_COUNT = computed(() => {
-  if (props.preLoadCount) return props.preLoadCount
-  console.log(
-    SCROLL_VIEW_HEIGHT.value,
-    ITEM_HEIGHT.value,
-    Math.ceil(SCROLL_VIEW_HEIGHT.value / ITEM_HEIGHT.value)
-  )
-  // Math.ceil(SCROLL_VIEW_HEIGHT.value / ITEM_HEIGHT.value)
-  return 0
-})
+const PRE_LOAD_COUNT = computed(() => props.preLoadCount)
 
 /** 容器 Ref */
 const containerRef = ref<HTMLElement | null>(null)
+/** 位置缓存 - 每个元素的位置信息 */
+const positions = ref<PositionInfo[]>([])
 /** 显示范围 */
 const showRange = ref({
   start: 0,
-  end: PRE_LOAD_COUNT.value
+  end: 10
 })
 /** requestAnimationFrame ID */
 let rafId: number | null = null
@@ -65,16 +66,37 @@ let rafId: number | null = null
 let isRafPending = false
 
 /**
- * scrollView 整体高度
+ * 初始化位置信息
+ */
+const initPositions = () => {
+  const data = props.dataSource
+  positions.value = data.map((_, index) => ({
+    index,
+    height: ESTIMATED_ITEM_HEIGHT.value,
+    top: index * ESTIMATED_ITEM_HEIGHT.value,
+    bottom: (index + 1) * ESTIMATED_ITEM_HEIGHT.value
+  }))
+}
+
+/**
+ * scrollView 整体高度（根据实际位置计算）
  */
 const scrollViewHeight = computed(() => {
-  return props.dataSource.length * ITEM_HEIGHT.value
+  const len = positions.value.length
+  const lastPos = positions.value[len - 1]
+  if (len > 0 && lastPos) {
+    return lastPos.bottom
+  }
+  return 0
 })
 
 /**
  * 滚动条偏移量（使用 transform 实现，性能更好）
  */
-const scrollViewOffset = computed(() => showRange.value.start * ITEM_HEIGHT.value)
+const scrollViewOffset = computed(() => {
+  const start = showRange.value.start
+  return start > 0 && positions.value[start] ? positions.value[start].top : 0
+})
 
 /**
  * 当前 scrollView 展示列表
@@ -87,20 +109,104 @@ const currentViewList = computed(() => {
 })
 
 /**
+ * 二分查找：根据滚动位置找到起始索引
+ */
+const getStartIndex = (scrollTop: number): number => {
+  let start = 0
+  let end = positions.value.length - 1
+  let mid = 0
+
+  while (start <= end) {
+    mid = Math.floor((start + end) / 2)
+    const midPos = positions.value[mid]
+    if (!midPos) break
+
+    const midBottom = midPos.bottom
+    const midTop = midPos.top
+
+    if (midTop <= scrollTop && midBottom > scrollTop) {
+      return mid
+    } else if (midTop > scrollTop) {
+      end = mid - 1
+    } else {
+      start = mid + 1
+    }
+  }
+  return 0
+}
+
+/**
+ * 更新位置缓存（在渲染后测量实际高度）
+ */
+const updatePositions = () => {
+  const nodes = containerRef.value?.querySelectorAll('.virtual-list-item')
+  if (!nodes || nodes.length === 0) return
+
+  nodes.forEach((node) => {
+    const rect = node.getBoundingClientRect()
+    const height = rect.height
+    const index = parseInt((node as HTMLElement).dataset.index || '0')
+    const pos = positions.value[index]
+    if (!pos) return
+
+    const oldHeight = pos.height || 0
+
+    // 如果高度变化，更新缓存
+    if (oldHeight !== height) {
+      const diff = height - oldHeight
+      pos.height = height
+      pos.bottom = pos.top + height
+
+      // 更新后续元素的位置
+      for (let i = index + 1; i < positions.value.length; i++) {
+        const currentPos = positions.value[i]
+        const prevPos = positions.value[i - 1]
+        if (currentPos && prevPos) {
+          currentPos.top = prevPos.bottom
+          currentPos.bottom = currentPos.top + currentPos.height
+        }
+      }
+    }
+  })
+}
+
+/**
  * 计算元素范围
  */
 const calculateRange = () => {
   const element = containerRef.value
-  if (element) {
-    const offset: number = Math.floor(element.scrollTop / ITEM_HEIGHT.value)
-    const viewItemSize: number = Math.ceil(element.clientHeight / ITEM_HEIGHT.value)
-    const startSize: number = offset - PRE_LOAD_COUNT.value
-    const endSize: number = viewItemSize + offset + PRE_LOAD_COUNT.value
+  if (!element || positions.value.length === 0) return
 
-    showRange.value = {
-      start: startSize < 0 ? 0 : startSize,
-      end: endSize > props.dataSource.length ? props.dataSource.length : endSize
+  const scrollTop = element.scrollTop
+  const clientHeight = element.clientHeight
+
+  // 使用二分查找找到起始索引
+  const start = getStartIndex(scrollTop)
+  // 计算结束索引
+  let end = start
+  let totalHeight = 0
+  const targetHeight = clientHeight + PRE_LOAD_COUNT.value * ESTIMATED_ITEM_HEIGHT.value
+
+  for (let i = start; i < positions.value.length; i++) {
+    const pos = positions.value[i]
+    if (!pos) break
+    totalHeight += pos.height
+    if (totalHeight >= targetHeight) {
+      end = i + 1
+      break
     }
+    end = i + 1
+  }
+
+  // 限制最多渲染 10 个元素
+  const maxVisibleItems = 10
+  if (end - start > maxVisibleItems) {
+    end = start + maxVisibleItems
+  }
+
+  showRange.value = {
+    start: Math.max(0, start - PRE_LOAD_COUNT.value),
+    end: Math.min(positions.value.length, end + PRE_LOAD_COUNT.value)
   }
 }
 
@@ -135,23 +241,52 @@ const onContainerScroll = () => {
   isRafPending = true
 
   rafId = requestAnimationFrame(() => {
+    updatePositions()
     calculateRange()
     checkLoadMore()
     isRafPending = false
   })
 }
 
-// 监听数据变化，重新计算范围
+// 监听数据变化，重新初始化位置
 watch(
   () => props.dataSource.length,
-  () => {
-    calculateRange()
-  }
+  (newLen, oldLen = 0) => {
+    if (newLen !== oldLen) {
+      // 只初始化新增的数据项
+      if (newLen > oldLen) {
+        for (let i = oldLen; i < newLen; i++) {
+          const lastPos = positions.value[i - 1]
+          positions.value.push({
+            index: i,
+            height: ESTIMATED_ITEM_HEIGHT.value,
+            top: lastPos ? lastPos.bottom : 0,
+            bottom: (lastPos ? lastPos.bottom : 0) + ESTIMATED_ITEM_HEIGHT.value
+          })
+        }
+      } else {
+        // 数据减少，移除多余的位置信息
+        positions.value = positions.value.slice(0, newLen)
+      }
+
+      // 下一帧更新高度和计算范围
+      requestAnimationFrame(() => {
+        updatePositions()
+        calculateRange()
+      })
+    }
+  },
+  { immediate: true }
 )
 
 onMounted(() => {
-  // 初始计算范围
-  calculateRange()
+  // 初始化位置信息
+  initPositions()
+  // 等待 DOM 渲染完成后更新实际高度
+  requestAnimationFrame(() => {
+    updatePositions()
+    calculateRange()
+  })
 })
 
 // 组件卸载时清理 RAF
@@ -189,9 +324,7 @@ onUnmounted(() => {
             v-for="item in currentViewList"
             :key="item.index"
             class="virtual-list-item"
-            :style="{
-              height: ITEM_HEIGHT + 'px'
-            }"
+            :data-index="item.index"
           >
             <slot :item="item.data" :index="item.index">
               <!-- 默认内容 -->
