@@ -48,7 +48,7 @@ customDataList.value = generateCustomData(2000)
       <div class="example-box">
         <h3>示例1：分页加载虚拟列表（模拟1000条数据）</h3>
         <p class="desc">滚动到底部自动加载下一页，每页10条数据</p>
-        <virtualListPagination :height="600" :item-height="60" :page-size="50" />
+        <virtualListPagination :height="600" :item-height="60" :page-size="30" />
       </div>
 
       <!-- 示例2: 默认使用（4000条测试数据） -->

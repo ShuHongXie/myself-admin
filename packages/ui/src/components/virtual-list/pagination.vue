@@ -37,7 +37,13 @@ const ITEM_HEIGHT = computed(() => props.itemHeight)
 /** @name 预加载数量 */
 const PRE_LOAD_COUNT = computed(() => {
   if (props.preLoadCount) return props.preLoadCount
-  return Math.ceil(SCROLL_VIEW_HEIGHT.value / ITEM_HEIGHT.value) * 2
+  console.log(
+    SCROLL_VIEW_HEIGHT.value,
+    ITEM_HEIGHT.value,
+    Math.ceil(SCROLL_VIEW_HEIGHT.value / ITEM_HEIGHT.value)
+  )
+  // Math.ceil(SCROLL_VIEW_HEIGHT.value / ITEM_HEIGHT.value)
+  return 0
 })
 
 /** 容器 Ref */
@@ -122,6 +128,8 @@ const scrollViewOffset = computed(() => showRange.value.start * ITEM_HEIGHT.valu
  * 当前 scrollView 展示列表
  */
 const currentViewList = computed(() => {
+  console.log(showRange.value.start, showRange.value.end)
+
   return sourceData.value.slice(showRange.value.start, showRange.value.end).map((el, index) => ({
     data: el,
     index: showRange.value.start + index
@@ -138,7 +146,10 @@ const calculateRange = () => {
     const viewItemSize: number = Math.ceil(element.clientHeight / ITEM_HEIGHT.value)
     const startSize: number = offset - PRE_LOAD_COUNT.value
     const endSize: number = viewItemSize + offset + PRE_LOAD_COUNT.value
-
+    console.log('offset:', offset)
+    console.log('viewItemSize:', viewItemSize)
+    console.log('startSize:', startSize)
+    console.log('endSize:', endSize)
     showRange.value = {
       start: startSize < 0 ? 0 : startSize,
       end: endSize > sourceData.value.length ? sourceData.value.length : endSize
@@ -213,6 +224,7 @@ onUnmounted(() => {
 
 <template>
   <div class="virtual-list-pagination">
+    {{ currentViewList.length }}
     <div
       class="virtual-list-container"
       ref="containerRef"
