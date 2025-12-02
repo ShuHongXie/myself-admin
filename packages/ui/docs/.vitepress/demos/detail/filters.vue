@@ -1,5 +1,5 @@
 <template>
-  <ms-detail :desc-data="descData" :data-list="dataList" :list-type-info="listTypeInfo" />
+  <ml-detail :desc-data="descData" :data-list="dataList" :list-type-info="listTypeInfo" />
 </template>
 
 <script setup>

@@ -40,7 +40,10 @@ export default defineConfig({
     sidebar: [
       {
         text: '开始',
-        items: [{ text: '组件总览', link: '/guide/' }]
+        items: [
+          { text: '快速开始', link: '/guide/getting-started' },
+          { text: '组件总览', link: '/guide/' }
+        ]
       },
       {
         text: '组件',
@@ -49,7 +52,8 @@ export default defineConfig({
           { text: 'MlSearch 搜索', link: '/components/search' },
           { text: 'MlSearchTable 搜索表格', link: '/components/search-table' },
           { text: 'MlDetail 详情', link: '/components/detail' },
-          { text: 'MlButton 按钮', link: '/components/button' }
+          { text: 'MlButton 按钮', link: '/components/button' },
+          { text: 'MlVirtualList 虚拟列表', link: '/components/virtual-list' }
         ]
       },
       {

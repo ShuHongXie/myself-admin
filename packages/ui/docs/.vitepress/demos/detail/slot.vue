@@ -1,11 +1,11 @@
 <template>
-  <ms-detail :desc-data="descData" :data-list="dataList">
+  <ml-detail :desc-data="descData" :data-list="dataList">
     <template #statusSlot>
       <el-tag :type="dataList.status === '1' ? 'success' : 'danger'">
         {{ dataList.status === '1' ? '启用' : '禁用' }}
       </el-tag>
     </template>
-  </ms-detail>
+  </ml-detail>
 </template>
 
 <script setup>

@@ -7,6 +7,8 @@ import BasicDemo from '../.vitepress/demos/detail/basic.vue'
 import FiltersDemo from '../.vitepress/demos/detail/filters.vue'
 import SlotDemo from '../.vitepress/demos/detail/slot.vue'
 import TooltipDemo from '../.vitepress/demos/detail/tooltip.vue'
+import ColumnDemo from '../.vitepress/demos/detail/column.vue'
+import LabelRenderDemo from '../.vitepress/demos/detail/label-render.vue'
 </script>
 
 ## 基础用法
@@ -17,7 +19,7 @@ import TooltipDemo from '../.vitepress/demos/detail/tooltip.vue'
 
 ```vue
 <template>
-  <ms-detail :desc-data="descData" :data-list="dataList" />
+  <ml-detail :desc-data="descData" :data-list="dataList" />
 </template>
 
 <script setup>
@@ -76,7 +78,7 @@ const descData = [
 
 ```vue
 <template>
-  <ms-detail :desc-data="descData" :data-list="dataList" :list-type-info="listTypeInfo" />
+  <ml-detail :desc-data="descData" :data-list="dataList" :list-type-info="listTypeInfo" />
 </template>
 
 <script setup>
@@ -135,13 +137,13 @@ const descData = [
 
 ```vue
 <template>
-  <ms-detail :desc-data="descData" :data-list="dataList">
+  <ml-detail :desc-data="descData" :data-list="dataList">
     <template #statusSlot>
       <el-tag :type="dataList.status === '1' ? 'success' : 'danger'">
         {{ dataList.status === '1' ? '启用' : '禁用' }}
       </el-tag>
     </template>
-  </ms-detail>
+  </ml-detail>
 </template>
 
 <script setup>
@@ -182,7 +184,7 @@ const descData = [
 
 ```vue
 <template>
-  <ms-detail :desc-data="descData" :data-list="dataList" />
+  <ml-detail :desc-data="descData" :data-list="dataList" />
 </template>
 
 <script setup>
@@ -216,9 +218,13 @@ const descData = [
 
 通过 `labelRender` 函数自定义标签渲染。
 
+<LabelRenderDemo />
+
+::: details 查看代码
+
 ```vue
 <template>
-  <ms-detail :desc-data="descData" :data-list="dataList" />
+  <ml-detail :desc-data="descData" :data-list="dataList" />
 </template>
 
 <script setup>
@@ -248,25 +254,43 @@ const descData = [
 </script>
 ```
 
+:::
+
 ## 多列布局
 
 通过 `descColumn` 属性设置每行显示的列数。
 
+<ColumnDemo />
+
+::: details 查看代码
+
 ```vue
 <template>
-  <ms-detail :desc-column="3" :desc-data="descData" :data-list="dataList" />
+  <ml-detail :desc-column="3" :desc-data="descData" :data-list="dataList" />
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
+const dataList = ref({
+  field1: '값1',
+  field2: '값2',
+  field3: '값3',
+  field4: '这是一个跨两列的内容값',
+  field5: '값5'
+})
+
 const descData = [
-  { label: '字段1', value: '值1' },
-  { label: '字段2', value: '值2' },
-  { label: '字段3', value: '值3' },
-  { label: '字段4', value: '值4', span: 2 },
-  { label: '字段5', value: '值5' }
+  { label: '字段1', value: dataList.value.field1 },
+  { label: '字段2', value: dataList.value.field2 },
+  { label: '字段3', value: dataList.value.field3 },
+  { label: '字段4', value: dataList.value.field4, span: 2 },
+  { label: '字段5', value: dataList.value.field5 }
 ]
 </script>
 ```
+
+:::
 
 ## Props
 

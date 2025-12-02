@@ -493,7 +493,7 @@ onUnmounted(() => {
       </div>
 
       <!-- 加载状态提示（在容器内部） -->
-      <div :class="bem('virtual-list', 'loading-tip')">
+      <div v-if="props.loading" :class="bem('virtual-list', 'loading-tip')">
         <slot name="loading">
           <span class="loading-spinner"></span>
           <span>加载中...</span>
@@ -501,7 +501,7 @@ onUnmounted(() => {
       </div>
 
       <!-- 加载完成提示 -->
-      <div :class="bem('virtual-list', 'finished-tip')">
+      <div v-if="props.finished && !props.loading" :class="bem('virtual-list', 'finished-tip')">
         <slot name="finished">已加载全部数据</slot>
       </div>
     </div>

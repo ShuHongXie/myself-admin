@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MlSearch from '../search/index.vue'
-import { ref, onMounted, defineProps } from 'vue'
+import { ref, onMounted, defineProps, useAttrs, defineEmits } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../search/props'
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
@@ -8,7 +8,10 @@ import { getNestedValue, type AxiosRequestConfig, initRequestInstance } from '@m
 import Render from './render'
 import { bem } from '../../utils'
 
-defineOptions({ name: 'MlSearchTable' })
+defineOptions({
+  name: 'MlSearchTable',
+  inheritAttrs: false
+})
 
 interface Pagination {
   currentPage: number
@@ -18,26 +21,8 @@ interface Pagination {
 
 const searchModel = defineModel<SearchModel>('search')
 const props = defineProps(searchTableProps)
-const emit = defineEmits([
-  'select',
-  'select-all',
-  'selection-change',
-  'reset',
-  'cell-mouse-enter',
-  'cell-mouse-leave',
-  'cell-click',
-  'cell-dblclick',
-  'row-click',
-  'row-contextmenu',
-  'row-dblclick',
-  'header-click',
-  'header-contextmenu',
-  'sort-change',
-  'filter-change',
-  'current-change',
-  'header-dragend',
-  'expand-change'
-])
+const attrs = useAttrs()
+const emit = defineEmits(['reset'])
 
 // 列表初始化-----------start-------------
 const axios = initRequestInstance({
@@ -116,21 +101,19 @@ defineExpose({
 
 // 其他逻辑初始化-----------start-------------
 
-/**
- * @description: 事件传递处理函数
- * @param {array} args
- * @return {*}
- * @Author: xieshuhong
- */
-const emitEventHandler = (...args: any) => {
-  emit(args[0], ...args.slice(1))
-}
+// 过滤出 el-table 的事件监听器
+const tableListeners = Object.keys(attrs).reduce((listeners: Record<string, any>, key) => {
+  if (key.startsWith('on')) {
+    listeners[key] = attrs[key]
+  }
+  return listeners
+}, {})
+
 // 其他逻辑初始化-----------end-------------
 </script>
 
 <template>
   <div :class="bem('search-table')">
-    <!-- -->
     <MlSearch @submit="submit" @reset="reset" v-model="searchModel" v-bind="searchProps">
       <template :key="item.prop" #[item.prop] v-for="item in searchProps.slots">
         <slot :name="item.prop"></slot>
@@ -139,42 +122,7 @@ const emitEventHandler = (...args: any) => {
     <slot name="prefix"></slot>
     <el-table
       v-loading.lock="loading"
-      @select="(selection: any, row: any) => emitEventHandler('select', selection, row)"
-      @select-all="(selection: any) => emitEventHandler('select-all', selection)"
-      @selection-change="(selection: any) => emitEventHandler('selection-change', selection)"
-      @cell-mouse-enter="
-        (row: any, column: any, cell: any, event: any) =>
-          emitEventHandler('cell-mouse-enter', row, column, cell, event)
-      "
-      @cell-mouse-leave="
-        (row: any, column: any, cell: any, event: any) =>
-          emitEventHandler('cell-mouse-leave', row, column, cell, event)
-      "
-      @cell-click="
-        (row: any, column: any, cell: any, event: any) =>
-          emitEventHandler('cell-click', row, column, cell, event)
-      "
-      @cell-dblclick="
-        (row: any, column: any, cell: any, event: any) =>
-          emitEventHandler('cell-dblclick', row, column, cell, event)
-      "
-      @row-click="
-        (row: any, event: any, column: any) => emitEventHandler('row-click', row, event, column)
-      "
-      @row-dblclick="(row: any, event: any) => emitEventHandler('row-dblclick', row, event)"
-      @row-contextmenu="(row: any, event: any) => emitEventHandler('row-contextmenu', row, event)"
-      @header-click="(column: any, event: any) => emitEventHandler('header-click', column, event)"
-      @sort-change="(args: any) => emitEventHandler('sort-change', args)"
-      @filter-change="(filters: any) => emitEventHandler('filter-change', filters)"
-      @current-change="
-        (currentRow: any, oldCurrentRow: any) =>
-          emitEventHandler('current-change', currentRow, oldCurrentRow)
-      "
-      @header-dragend="
-        (newWidth: any, oldWidth: any, column: any, event: any) =>
-          emitEventHandler('header-dragend', newWidth, oldWidth, column, event)
-      "
-      @expand-change="(row: any, expanded: any) => emitEventHandler('expand-change', row, expanded)"
+      v-on="tableListeners"
       :class="bem('search-table', 'content')"
       v-bind="tableProps"
       :border="true"
