@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import testSearch from './preview/testSearch.vue'
 import virtualList from './components/virtual-list/index.vue'
-import virtualListPagination from './components/virtual-list/pagination.vue'
-import itemEqualPagination from './components/virtual-list/itemEqualPagination.vue'
+// import virtualListPagination from './components/virtual-list/pagination.vue'
+import itemEqualPagination from './components/virtual-list/index.vue'
 
 // 分页加载相关状态
 const paginationDataSource = ref<any[]>([])
@@ -97,6 +97,7 @@ const loadUnequalData = async () => {
       id: index,
       title: `不等高数据项 #${index}`,
       content,
+      expanded: false, // 添加展开/折叠状态
       time: new Date().toLocaleString()
     }
   }).filter(Boolean)
@@ -106,6 +107,14 @@ const loadUnequalData = async () => {
 
   if (endIndex >= unequalTotalCount) {
     unequalFinished.value = true
+  }
+}
+
+// 切换展开/折叠状态
+const toggleExpand = (index: number) => {
+  const item = unequalDataSource.value[index]
+  if (item) {
+    item.expanded = !item.expanded
   }
 }
 
@@ -143,6 +152,25 @@ const generateCustomData = (count: number) => {
 
 // 初始化 2000 条自定义数据
 customDataList.value = generateCustomData(2000)
+
+// 无分页模式数据源
+const noPaginationData = ref<any[]>([])
+
+// 生成无分页数据
+const generateNoPaginationData = () => {
+  const data = []
+  for (let i = 0; i < 100; i++) {
+    data.push({
+      id: i,
+      title: `无分页数据项 #${i}`,
+      content: `这是第 ${i} 条数据，无需分页加载`,
+      time: new Date().toLocaleString()
+    })
+  }
+  return data
+}
+
+noPaginationData.value = generateNoPaginationData()
 </script>
 
 <template>
@@ -156,35 +184,62 @@ customDataList.value = generateCustomData(2000)
       <div class="example-box">
         <h3>示例1：分页加载虚拟列表 - 等高（模拟1000条数据）</h3>
         <p class="desc">滚动到底部自动加载下一页，每页{{ pageSize }}条数据，最多渲染10个DOM</p>
-        <virtualListPagination
+        <!-- <virtualListPagination
           :height="600"
           :item-height="60"
           :data-source="paginationDataSource"
           :loading="paginationLoading"
           :finished="paginationFinished"
           @load-more="loadMoreData"
-        />
+        /> -->
       </div>
 
-      <!-- 示例1.5: 分页加载虚拟列表（不等高） -->
+      <!-- 示例1.5: 分页加载虚拟列表（不定高） -->
       <div class="example-box">
-        <h3>示例1.5：分页加载虚拟列表 - 不等高（模拟500条数据）</h3>
+        <h3>示例1.5：分页加载虚拟列表 - 不定高（模拟500条数据）</h3>
         <p class="desc">
-          支持不等高列表项，自动计算实际高度，每页{{ unequalPageSize }}条数据，最多渲染10个DOM
+          支持不等高列表项，自动计算实际高度，每页{{ unequalPageSize }}条数据，最多渲染10个DOM。
+          <strong>点击列表项可展开/折叠，测试 ResizeObserver 动态监听高度变化。</strong>
         </p>
         <itemEqualPagination
           :height="600"
+          :item-equal="false"
           :estimated-item-height="150"
           :data-source="unequalDataSource"
           :loading="unequalLoading"
           :finished="unequalFinished"
           @load-more="loadUnequalData"
         >
-          <template #default="{ item }">
-            <div class="unequal-item">
-              <div class="unequal-item-title">{{ item.title }}</div>
-              <div class="unequal-item-content">{{ item.content }}</div>
+          <template #default="{ item, index }">
+            <div class="unequal-item" @click="toggleExpand(index)">
+              <div class="unequal-item-title">
+                {{ item.title }}
+                <span class="expand-icon">{{ item.expanded ? '▼' : '▶' }}</span>
+              </div>
+              <div v-show="item.expanded" class="unequal-item-content">{{ item.content }}</div>
               <div class="unequal-item-footer">{{ item.time }}</div>
+            </div>
+          </template>
+          <template #loading>
+            <div style="color: #409eff; font-size: 16px">
+              <i class="el-icon-loading"></i> 自定义加载中...
+            </div>
+          </template>
+          <template #finished>
+            <div style="color: #67c23a; font-size: 14px">✓ 全部加载完成</div>
+          </template>
+        </itemEqualPagination>
+      </div>
+
+      <!-- 示例1.6: 无分页虚拟列表 -->
+      <div class="example-box">
+        <h3>示例1.6：无分页虚拟列表（100条固定数据）</h3>
+        <p class="desc">无需分页加载，直接传入全部数据。不传 loading 和 finished 参数即可。</p>
+        <itemEqualPagination :height="600" :item-height="60" :data-source="noPaginationData">
+          <template #default="{ item }">
+            <div style="padding: 15px; border-bottom: 1px solid #eee">
+              <div style="font-weight: bold; margin-bottom: 5px">{{ item.title }}</div>
+              <div style="color: #999; font-size: 12px">{{ item.content }}</div>
             </div>
           </template>
         </itemEqualPagination>
@@ -223,7 +278,8 @@ customDataList.value = generateCustomData(2000)
   </div>
 </template>
 
-<style scoped>
+<style lang="scss">
+@import './style/index.scss';
 .app-container {
   padding: 20px;
   max-width: 1200px;
@@ -365,6 +421,15 @@ customDataList.value = generateCustomData(2000)
   font-size: 18px;
   color: #303133;
   margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.expand-icon {
+  font-size: 14px;
+  color: #909399;
+  transition: transform 0.3s;
 }
 
 .unequal-item-content {

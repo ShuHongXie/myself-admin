@@ -1,7 +1,11 @@
 @forward './mixins/mixin.scss';
-
+// 混合方法和全局样式
 @use './mixins/mixin.scss' as *;
 @use './default/variable.scss' as *;
+// 组件样式
 @use './search.scss';
 @use './search-table.scss';
 @use './chart.scss';
+@use './detail.scss';
+@use './button.scss';
+@use './virtual-list.scss';
