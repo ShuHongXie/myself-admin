@@ -55,13 +55,6 @@ export default defineConfig({
           { text: 'MlButton 按钮', link: '/components/button' },
           { text: 'MlVirtualList 虚拟列表', link: '/components/virtual-list' }
         ]
-      },
-      {
-        text: '示例',
-        items: [
-          { text: 'Markdown示例', link: '/markdown-examples' },
-          { text: 'API示例', link: '/api-examples' }
-        ]
       }
     ],
 

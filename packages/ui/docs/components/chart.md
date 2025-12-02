@@ -5,7 +5,41 @@
 <script setup>
 import BasicDemo from '../.vitepress/demos/chart/basic.vue'
 import EmptyDemo from '../.vitepress/demos/chart/empty.vue'
+import CustomEmptyDemo from '../.vitepress/demos/chart/custom-empty.vue'
 </script>
+
+## 安装依赖
+
+MlChart 组件依赖 ECharts 库，使用前需要先安装：
+
+```bash
+pnpm add echarts
+# 或
+npm install echarts
+# 或
+yarn add echarts
+```
+
+## 全局配置
+
+在使用 MlChart 组件之前，需要在项目入口文件（如 `main.ts`）中全局注册 ECharts：
+
+```typescript
+import { createApp } from 'vue'
+import * as echarts from 'echarts'
+import App from './App.vue'
+
+const app = createApp(App)
+
+// 将 echarts 挂载到全局属性
+app.config.globalProperties.$echarts = echarts
+
+app.mount('#app')
+```
+
+::: tip 提示
+如果使用了自动按需引入（unplugin-vue-components），也需要在 `main.ts` 中进行上述配置。
+:::
 
 ## 基础用法
 
@@ -14,7 +48,7 @@ import EmptyDemo from '../.vitepress/demos/chart/empty.vue'
 ::: details 查看代码
 
 ```vue
-<script setup>
+<script>
 import { ref } from 'vue'
 
 const chartOptions = ref({
@@ -47,11 +81,15 @@ const chartOptions = ref({
 
 通过 `theme` 属性设置图表主题。
 
+::: details 查看代码
+
 ```vue
 <template>
   <ml-chart :options="chartOptions" theme="dark" />
 </template>
 ```
+
+:::
 
 ## 空状态
 
@@ -62,7 +100,7 @@ const chartOptions = ref({
 ::: details 查看代码
 
 ```vue
-<script setup>
+<script>
 import { ref } from 'vue'
 
 const chartOptions = ref({
@@ -116,6 +154,8 @@ const isEmpty = ref(false)
 
 :::
 
+::: details 查看代码
+
 ```vue
 <template>
   <ml-chart
@@ -126,46 +166,78 @@ const isEmpty = ref(false)
 </template>
 ```
 
+:::
+
 也可以使用函数判断空状态：
+
+::: details 查看代码
 
 ```vue
 <template>
   <ml-chart :options="chartOptions" :is-empty="checkEmpty" />
 </template>
 
-<script setup>
+<script>
 const checkEmpty = (options) => {
   return !options.series || options.series.length === 0
 }
 </script>
 ```
 
+:::
+
 ## 自定义空状态
 
 使用 `empty` 插槽自定义空状态内容。
+
+<CustomEmptyDemo />
+
+::: details 查看代码
 
 ```vue
 <template>
   <ml-chart :options="chartOptions" :is-empty="true">
     <template #empty>
-      <div class="custom-empty">
-        <p>自定义空状态内容</p>
+      <div class="custom-empty" style="text-align: center; padding: 40px;">
+        <div style="font-size: 48px; margin-bottom: 16px;">📊</div>
+        <p style="font-size: 16px; color: #666;">暂无数据</p>
+        <p style="font-size: 14px; color: #999; margin-top: 8px;">请选择日期范围查看数据</p>
       </div>
     </template>
   </ml-chart>
 </template>
+
+<script>
+import { ref } from 'vue'
+
+const chartOptions = ref({
+  title: {
+    text: '销售数据统计'
+  },
+  xAxis: {
+    type: 'category',
+    data: []
+  },
+  yAxis: {},
+  series: []
+})
+</script>
 ```
+
+:::
 
 ## 获取图表实例
 
 通过 `@chart` 事件获取 ECharts 实例，进行更多高级操作。
+
+::: details 查看代码
 
 ```vue
 <template>
   <ml-chart :options="chartOptions" @chart="onChartReady" />
 </template>
 
-<script setup>
+<script>
 const onChartReady = (chartInstance) => {
   console.log('图表实例:', chartInstance)
   // 可以使用 chartInstance 调用 ECharts 的各种方法
@@ -173,16 +245,20 @@ const onChartReady = (chartInstance) => {
 </script>
 ```
 
+:::
+
 ## 监听图表事件
 
 组件支持 ECharts 的所有事件，通过 `on` 前缀监听。
+
+::: details 查看代码
 
 ```vue
 <template>
   <ml-chart :options="chartOptions" @click="handleClick" @mouseover="handleMouseOver" />
 </template>
 
-<script setup>
+<script>
 const handleClick = (params) => {
   console.log('点击了图表:', params)
 }
@@ -192,6 +268,8 @@ const handleMouseOver = (params) => {
 }
 </script>
 ```
+
+:::
 
 ## Props
 

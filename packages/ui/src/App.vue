@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import testSearch from './preview/testSearch.vue'
 import virtualList from './components/virtual-list/index.vue'
-// import virtualListPagination from './components/virtual-list/pagination.vue'
 import itemEqualPagination from './components/virtual-list/index.vue'
 
 // 分页加载相关状态
@@ -174,12 +173,113 @@ noPaginationData.value = generateNoPaginationData()
 </script>
 
 <template>
-  <div class="app-container"></div>
+  <div class="app-container">
+    <!-- <testSearch></testSearch> -->
+
+    <div class="demo-section">
+      <h2>虚拟列表示例</h2>
+
+      <!-- 示例1: 分页加载虚拟列表（等高） -->
+      <div class="example-box">
+        <h3>示例1：分页加载虚拟列表 - 等高（模拟1000条数据）</h3>
+        <p class="desc">滚动到底部自动加载下一页，每页{{ pageSize }}条数据，最多渲染10个DOM</p>
+        <!-- <virtualListPagination
+          :height="600"
+          :item-height="60"
+          :data-source="paginationDataSource"
+          :loading="paginationLoading"
+          :finished="paginationFinished"
+          @load-more="loadMoreData"
+        /> -->
+      </div>
+
+      <!-- 示例1.5: 分页加载虚拟列表（不定高） -->
+      <div class="example-box">
+        <h3>示例1.5：分页加载虚拟列表 - 不定高（模拟500条数据）</h3>
+        <p class="desc">
+          支持不等高列表项，自动计算实际高度，每页{{ unequalPageSize }}条数据，最多渲染10个DOM。
+          <strong>点击列表项可展开/折叠，测试 ResizeObserver 动态监听高度变化。</strong>
+        </p>
+        <itemEqualPagination
+          :height="600"
+          :item-equal="false"
+          :estimated-item-height="150"
+          :data-source="unequalDataSource"
+          :loading="unequalLoading"
+          :finished="unequalFinished"
+          @load-more="loadUnequalData"
+        >
+          <template #default="{ item, index }">
+            <div class="unequal-item" @click="toggleExpand(index)">
+              <div class="unequal-item-title">
+                {{ item.title }}
+                <span class="expand-icon">{{ item.expanded ? '▼' : '▶' }}</span>
+              </div>
+              <div v-show="item.expanded" class="unequal-item-content">{{ item.content }}</div>
+              <div class="unequal-item-footer">{{ item.time }}</div>
+            </div>
+          </template>
+          <template #loading>
+            <div style="color: #409eff; font-size: 16px">
+              <i class="el-icon-loading"></i> 自定义加载中...
+            </div>
+          </template>
+          <template #finished>
+            <div style="color: #67c23a; font-size: 14px">✓ 全部加载完成</div>
+          </template>
+        </itemEqualPagination>
+      </div>
+
+      <!-- 示例1.6: 无分页虚拟列表 -->
+      <div class="example-box">
+        <h3>示例1.6：无分页虚拟列表（100条固定数据）</h3>
+        <p class="desc">无需分页加载，直接传入全部数据。不传 loading 和 finished 参数即可。</p>
+        <itemEqualPagination :height="600" :item-height="60" :data-source="noPaginationData">
+          <template #default="{ item }">
+            <div style="padding: 15px; border-bottom: 1px solid #eee">
+              <div style="font-weight: bold; margin-bottom: 5px">{{ item.title }}</div>
+              <div style="color: #999; font-size: 12px">{{ item.content }}</div>
+            </div>
+          </template>
+        </itemEqualPagination>
+      </div>
+
+      <!-- 示例2: 默认使用（4000条测试数据） -->
+      <div class="example-box">
+        <h3>示例2：默认虚拟列表（4000条数据）</h3>
+        <p class="desc">不传任何参数，默认生成4000条测试数据</p>
+        <virtualList></virtualList>
+      </div>
+
+      <!-- 示例3: 不定高度虚拟列表 -->
+      <div class="example-box">
+        <h3>示例3：不定高度虚拟列表（2000条数据）</h3>
+        <p class="desc">每个列表项有不同的内容长度，高度自适应</p>
+        <virtualList :data-source="customDataList" :height="600" :item-height="100">
+          <template #default="{ item }">
+            <div class="custom-item">
+              <div class="item-header">
+                <span class="item-title">{{ item.title }}</span>
+                <span :class="['status-badge', item.type]">{{ item.status }}</span>
+              </div>
+              <div class="item-body">
+                <p>{{ item.content }}</p>
+              </div>
+              <div class="item-footer">
+                <span class="item-time">{{ item.time }}</span>
+                <span class="item-id">ID: {{ item.id }}</span>
+              </div>
+            </div>
+          </template>
+        </virtualList>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss">
 @import './style/index.scss';
-.app-container {
+S .app-container {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;

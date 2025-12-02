@@ -55,8 +55,7 @@ const loadMoreData = async () => {
     return {
       id: index,
       title: `数据项 #${index}`,
-      content: `这是第 ${index} 条数据的详细内容`,
-      time: new Date().toLocaleString()
+      content: `这是第 ${index} 条数据的详细内容`
     }
   }).filter(Boolean)
 
@@ -143,8 +142,7 @@ const loadMoreData = async () => {
       id: index,
       title: `不等高数据项 #${index}`,
       content,
-      expanded: false,
-      time: new Date().toLocaleString()
+      expanded: false
     }
   }).filter(Boolean)
 
@@ -209,8 +207,7 @@ const generateData = () => {
     data.push({
       id: i,
       title: `数据项 #${i}`,
-      content: `这是第 ${i} 条数据，无需分页加载`,
-      time: new Date().toLocaleString()
+      content: `这是第 ${i} 条数据，无需分页加载`
     })
   }
   return data
@@ -256,8 +253,7 @@ const generateData = () => {
     data.push({
       id: i,
       title: `不等高数据项 #${i}`,
-      content,
-      time: new Date().toLocaleString()
+      content
     })
   }
   return data
@@ -325,6 +321,7 @@ const dataSource = ref(generateData())
 | finished            | 是否已加载完所有数据（不传表示无分页模式） | `boolean` | —      | `undefined` |
 | preLoadCount        | 预加载数量（上下各预加载几个）             | `number`  | —      | `5`         |
 | threshold           | 距离底部多少像素时触发加载                 | `number`  | —      | `200`       |
+| maxVisibleItems     | 最多渲染的元素个数（不定高模式推荐配置）   | `number`  | —      | `15`        |
 
 ## Events
 
@@ -344,7 +341,7 @@ const dataSource = ref(generateData())
 
 ### 性能优化
 
-- **虚拟滚动**：最多只渲染 10 个 DOM 节点，无论数据量多大
+- **虚拟滚动**：最多渲染 DOM 节点数量可配置（不定高模式默认 15 个），无论数据量多大
 - **RAF 优化**：使用 requestAnimationFrame 优化滚动性能
 - **防抖处理**：ResizeObserver 配合 16ms 防抖，避免频繁更新
 
@@ -380,3 +377,13 @@ const dataSource = ref(generateData())
 ### 动态高度监听
 
 不定高模式下，组件会自动监听列表项的高度变化（如展开/折叠），无需手动干预。使用 ResizeObserver API 实现，配合防抖机制保证性能。
+
+### 最多渲染元素个数（maxVisibleItems）
+
+- **定义**：控制虚拟列表一次最多渲染的 DOM 节点个数
+- **作用**：在不定高模式下，需要渲染足够的高度来填满容器，不然会有空白
+- **调整**：如果不定高模式出现空白区域，可以增加这个值
+- **推荐值**：
+  - 定高模式：`10` 或更少（因为高度固定，计算准确）
+  - 不定高模式：`15-20`（根据实际列表项高度调整）
+  - 列表项高度波动大：增加到 `20-25`

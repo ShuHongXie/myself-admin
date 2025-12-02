@@ -8,8 +8,7 @@ const generateData = () => {
     data.push({
       id: i,
       title: `数据项 #${i}`,
-      content: `这是第 ${i} 条数据，无需分页加载`,
-      time: new Date().toLocaleString()
+      content: `这是第 ${i} 条数据，无需分页加载`
     })
   }
   return data
@@ -24,7 +23,6 @@ const dataSource = ref(generateData())
       <div style="padding: 15px; border-bottom: 1px solid #eee; background: #fff">
         <div style="font-weight: bold; margin-bottom: 5px; color: #303133">{{ item.title }}</div>
         <div style="color: #909399; font-size: 12px">{{ item.content }}</div>
-        <div style="color: #c0c4cc; font-size: 12px; margin-top: 5px">{{ item.time }}</div>
       </div>
     </template>
   </ml-virtual-list>

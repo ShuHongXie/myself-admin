@@ -13,8 +13,7 @@ const generateData = () => {
     data.push({
       id: i,
       title: `不等高数据项 #${i}`,
-      content,
-      time: new Date().toLocaleString()
+      content
     })
   }
   return data
@@ -38,7 +37,6 @@ const dataSource = ref(generateData())
         <div style="font-size: 14px; color: #606266; line-height: 1.8; margin-bottom: 10px">
           {{ item.content }}
         </div>
-        <div style="font-size: 12px; color: #909399; text-align: right">{{ item.time }}</div>
       </div>
     </template>
   </ml-virtual-list>

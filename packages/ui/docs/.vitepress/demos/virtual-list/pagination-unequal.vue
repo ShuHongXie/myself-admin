@@ -40,8 +40,7 @@ const loadMoreData = async () => {
       id: index,
       title: `不等高数据项 #${index}`,
       content,
-      expanded: false,
-      time: new Date().toLocaleString()
+      expanded: false
     }
   }).filter(Boolean)
 
@@ -107,7 +106,6 @@ loadMoreData()
         >
           {{ item.content }}
         </div>
-        <div style="font-size: 12px; color: #909399; text-align: right">{{ item.time }}</div>
       </div>
     </template>
     <template #loading>

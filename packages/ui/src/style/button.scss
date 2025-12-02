@@ -2,7 +2,6 @@
 
 @include bem('button') {
   &__tip {
-    padding: 0;
     height: auto;
     &:hover,
     &:focus {

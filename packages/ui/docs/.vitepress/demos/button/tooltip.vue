@@ -31,5 +31,6 @@ const handleClick = () => {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
 }
 </style>
