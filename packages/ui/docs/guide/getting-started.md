@@ -142,6 +142,7 @@ import '@minilo/ui/theme-chalk/ml-chart'
 - `<ml-chart />` → `MlChart`
 - `<ml-search />` → `MlSearch`
 - `<ml-detail />` → `MlDetail`
+- `<ml-button />` → `MlButton`
 - `<ml-search-table />` → `MlSearchTable`
 - `<ml-virtual-list />` → `MlVirtualList`
 
