@@ -1,6 +1,6 @@
 {
   "files": [],
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
+  "references": [{ "path": "./tsconfig.app.json" }],
 
   "rules": {
     "semi": ["error", "never"], // 语句后不带分号

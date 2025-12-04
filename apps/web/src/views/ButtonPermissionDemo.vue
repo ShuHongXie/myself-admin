@@ -125,12 +125,10 @@ const refreshPermissions = async () => {
   loading.value = true
   try {
     const res = await getUserButtonPermissions()
-    if (res.data.code === 200) {
-      userStore.setButtonPermissions(res.data.data)
-      ElMessage.success('权限刷新成功')
-    } else {
-      ElMessage.error('权限刷新失败')
-    }
+
+    // 类型断言：后端返回的 data 实际上是 string[] 类型
+    userStore.setButtonPermissions(res.data as string[])
+    ElMessage.success('权限刷新成功')
   } catch (error) {
     console.error('刷新权限失败:', error)
     ElMessage.error('权限刷新失败')

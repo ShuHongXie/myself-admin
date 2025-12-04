@@ -178,19 +178,12 @@ declare module '@minilo/utils' {
   // 添加其他工具函数类型声明
 }
 
-declare module '@minilo/ui' {
-  export const SvgIcon: any
-  export const Search: any
-  export const MsSearchTable: any
-  // 添加其他UI组件类型声明
-}
-
-declare module '@minilo/store' {
-  export function useUserStore(): any
-  export function useRoutesStore(): any
-  export function useConfigStore(): any
-  // 添加其他store类型声明
-}
+// declare module '@minilo/ui' {
+//   export const SvgIcon: any
+//   export const Search: any
+//   export const MsSearchTable: any
+//   // 添加其他UI组件类型声明
+// }
 
 declare module '@minilo/locales' {
   export const setupI18n: (app: any) => void

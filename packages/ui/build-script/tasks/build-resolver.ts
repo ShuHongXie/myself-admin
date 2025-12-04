@@ -29,7 +29,11 @@ const plugins = [
   commonjs(),
   dts({
     tsconfigPath: resolve(cwd, '../tsconfig.dts.json'),
-    outDir: `${output}/resolver`
+    outDir: `${output}/es`
+  }),
+  dts({
+    tsconfigPath: resolve(cwd, '../tsconfig.dts.json'),
+    outDir: `${output}/lib`
   })
 ]
 
@@ -58,7 +62,7 @@ async function buildResolverESM() {
 
   const outputOptions: OutputOptions = {
     format: 'esm',
-    dir: resolve(output, 'resolver'),
+    dir: resolve(output, 'es'),
     exports: undefined,
     preserveModules: true,
     preserveModulesRoot: root,
@@ -95,7 +99,7 @@ async function buildResolverCJS() {
 
   const outputOptions: OutputOptions = {
     format: 'cjs',
-    dir: resolve(output, 'resolver'),
+    dir: resolve(output, 'lib'),
     exports: 'named',
     preserveModules: true,
     preserveModulesRoot: root,

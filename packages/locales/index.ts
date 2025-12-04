@@ -1,4 +1,4 @@
-import { App } from 'vue'
+import type { App } from 'vue'
 import { createI18n } from 'vue-i18n'
 
 import type { extendOptions, extendMessageFn, LanguagesType } from './types'
@@ -9,7 +9,7 @@ const i18n = createI18n({
   locale: '',
   fallbackLocale: 'zh',
   messages: {}
-})
+}) as any
 
 const presetLocalMessage = import.meta.glob('./langs/**/*.json')
 

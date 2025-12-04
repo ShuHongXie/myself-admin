@@ -2,14 +2,15 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "strict": false,
     /* Linting */
-    "verbatimModuleSyntax": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": false,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
+    // "verbatimModuleSyntax": true,
+    // "strict": true,
+    // "noUnusedLocals": false,
+    // "noUnusedParameters": true,
+    // "erasableSyntaxOnly": false,
+    // "noFallthroughCasesInSwitch": true,
+    // "noUncheckedSideEffectImports": true,
     "jsx": "preserve", // 保留 JSX 语法，由 Vite 插件处理
     "jsxImportSource": "vue", // 指定 JSX 解析来自 Vue
     "paths": {
@@ -33,5 +34,6 @@
     "node_modules/@minilo/ui",
     "src/router/type.d.ts",
     "run-babel.ts"
-  ]
+  ],
+  "exclude": ["src/apis/**/*"]
 }

@@ -7,4 +7,4 @@ type LanguagesType = 'en-US' | 'zh-CN'
 
 type extendMessageFn = (lang: LanguagesType) => Promise<Record<string, string> | undefined>
 
-export { extendOptions, extendMessageFn, LanguagesType }
+export type { extendOptions, extendMessageFn, LanguagesType }

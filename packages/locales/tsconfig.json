@@ -4,6 +4,7 @@
     "rootDir": "",
     "module": "ESNext",
     "moduleResolution": "node",
+    "verbatimModuleSyntax": false,
     "target": "esnext", // 至少 es2020，支持 Node.js 的 ESM 特性
     "types": ["vite/client"]
   },

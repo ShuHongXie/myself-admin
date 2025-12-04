@@ -1,12 +1,12 @@
 import glob from 'fast-glob'
-import { join, resolve } from 'path'
+import { resolve } from 'path'
 import { rollup, type OutputOptions } from 'rollup'
 import { output, libraryName, writeBundles, root, withTaskName, cwd } from '../config'
 import vue from '@vitejs/plugin-vue'
 import esbuild from 'rollup-plugin-esbuild'
 import nodeResolve from '@rollup/plugin-node-resolve' // 解析 node_modules
 import commonjs from '@rollup/plugin-commonjs' // 转换 CJS 为 ESM
-import type { BuildOptions, BuildInfo, Module } from './types'
+import type { BuildInfo, Module } from './types'
 import dts from 'vite-plugin-dts'
 import { series, type TaskFunction } from 'gulp'
 
