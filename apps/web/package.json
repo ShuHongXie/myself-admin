@@ -7,7 +7,8 @@
     "dev": "vite --mode development",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "openapi-ts": "openapi-ts"
+    "openapi-ts": "openapi-ts",
+    "analyze": "vite-bundle-visualizer"
   },
   "imports": {
     "#/*": "./src/*"
@@ -45,6 +46,8 @@
     "unplugin-auto-import": "catalog:",
     "unplugin-vue-components": "catalog:",
     "vite": "catalog:",
+    "vite-bundle-analyzer": "^1.2.3",
+    "vite-plugin-cdn-import": "^1.0.1",
     "vite-plugin-svg-icons": "catalog:",
     "vue-tsc": "catalog:"
   }

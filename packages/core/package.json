@@ -54,5 +54,8 @@
     "vite": "catalog:",
     "vite-plugin-svg-icons": "catalog:",
     "vue-tsc": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.17"
   }
 }

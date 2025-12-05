@@ -54,20 +54,25 @@ async function buildResolverESM() {
   const config = {
     input,
     plugins,
-    external: ['vue', 'element-plus', /\.\.\/utils/],
-    treeshake: { moduleSideEffects: false }
+    external: ['vue', 'element-plus'],
+    treeshake: { moduleSideEffects: false },
+    // 内联打包 utils 依赖
+    onwarn: (warning, warn) => {
+      // 忽略 'use client' 警告
+      if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return
+      warn(warning)
+    }
   }
 
   const bundle = await rollup(config)
 
   const outputOptions: OutputOptions = {
     format: 'esm',
-    dir: resolve(output, 'es'),
+    dir: resolve(output, 'es/resolver'),
     exports: undefined,
-    preserveModules: true,
-    preserveModulesRoot: root,
+    preserveModules: false, // 不保留模块结构，内联打包 utils
     sourcemap: false,
-    entryFileNames: '[name].mjs'
+    entryFileNames: 'index.mjs'
   }
 
   await writeBundles(bundle, [outputOptions])
@@ -91,20 +96,25 @@ async function buildResolverCJS() {
   const config = {
     input,
     plugins,
-    external: ['vue', 'element-plus', /\.\.\/utils/],
-    treeshake: { moduleSideEffects: false }
+    external: ['vue', 'element-plus'],
+    treeshake: { moduleSideEffects: false },
+    // 内联打包 utils 依赖
+    onwarn: (warning, warn) => {
+      // 忽略 'use client' 警告
+      if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return
+      warn(warning)
+    }
   }
 
   const bundle = await rollup(config)
 
   const outputOptions: OutputOptions = {
     format: 'cjs',
-    dir: resolve(output, 'lib'),
+    dir: resolve(output, 'lib/resolver'),
     exports: 'named',
-    preserveModules: true,
-    preserveModulesRoot: root,
+    preserveModules: false, // 不保留模块结构，内联打包 utils
     sourcemap: false,
-    entryFileNames: '[name].js'
+    entryFileNames: 'index.js'
   }
 
   await writeBundles(bundle, [outputOptions])

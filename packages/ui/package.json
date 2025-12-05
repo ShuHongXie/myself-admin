@@ -29,9 +29,9 @@
       "require": "./minilo/dist/index.full.min.mjs"
     },
     "./resolver": {
-      "types": "./minilo/resolver/resolver/index.d.ts",
-      "import": "./minilo/resolver/resolver/index.mjs",
-      "require": "./minilo/resolver/resolver/index.js"
+      "types": "./minilo/es/resolver/index.d.ts",
+      "import": "./minilo/es/resolver/index.mjs",
+      "require": "./minilo/es/resolver/index.js"
     },
     "./es/*": {
       "types": "./minilo/es/index.d.ts",
@@ -100,5 +100,8 @@
     "vite-plugin-dts": "^4.5.4",
     "vitepress": "2.0.0-alpha.12",
     "vue-tsc": "^3.1.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.17"
   }
 }

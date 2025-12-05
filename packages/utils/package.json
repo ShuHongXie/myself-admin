@@ -35,5 +35,8 @@
   "devDependencies": {
     "@minilo/types": "workspace:^",
     "@types/lodash.clonedeep": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.17"
   }
 }

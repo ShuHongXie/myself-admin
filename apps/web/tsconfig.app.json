@@ -28,12 +28,12 @@
   ],
   "include": [
     "src/**/*.ts",
+    "!src/apis/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "auto-imports.d.ts",
     "node_modules/@minilo/ui",
     "src/router/type.d.ts",
     "run-babel.ts"
-  ],
-  "exclude": ["src/apis/**/*"]
+  ]
 }

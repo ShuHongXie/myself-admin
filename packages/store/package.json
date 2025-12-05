@@ -28,5 +28,9 @@
   },
   "devDependencies": {
     "@minilo/types": "workspace:^"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.17",
+    "pinia": "3.0.3"
   }
 }

@@ -1,4 +1,4 @@
-import { createPinia } from 'pinia'
+import { createPinia } from './index'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import type { App } from 'vue'
 

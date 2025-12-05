@@ -127,13 +127,11 @@ defineExpose({})
                       v-if="item.input.type === 'date-picker'"
                       v-model="searchModel![item.prop]"
                       v-bind="item.input.props"
-                      value-format="x"
                     />
                   </template>
                 </el-form-item>
               </el-col>
             </template>
-            <!-- {{ options.length }} 切割 {{ 24 / span - 1 }} -->
             <el-col :span="span" v-if="options.length <= 24 / span - 1">
               <el-form-item label="操作">
                 <el-button type="primary" :size="size" :loading="false" @click.stop="handleSubmit">

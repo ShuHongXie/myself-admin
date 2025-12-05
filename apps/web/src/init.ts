@@ -9,7 +9,7 @@ import * as echarts from 'echarts' // 引入echarts
 import App from './App.vue'
 import NProgress from 'nprogress'
 
-import 'virtual:svg-icons-register'
+// import 'virtual:svg-icons-register'
 import 'nprogress/nprogress.css'
 import 'element-plus/dist/index.css'
 import './assets/scss/global.scss'

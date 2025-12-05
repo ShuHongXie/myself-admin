@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore } from '@minilo/store'
 import { ref } from 'vue'
 
 export const useAuthStore = defineStore(

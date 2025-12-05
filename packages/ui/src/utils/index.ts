@@ -2,6 +2,10 @@ import type { App, Component } from 'vue'
 
 // 全局组件库前缀
 export const libraryNamePrefix = 'ml'
+// 全局组件库前缀大写开头
+export const libraryNamePrefixUpperCase = 'Ml'
+// 全局组件库名称
+export const libraryName = 'minilo'
 
 /**
  * @description 组件注册函数

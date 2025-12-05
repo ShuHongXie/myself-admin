@@ -8,6 +8,7 @@
     "build:old": "turbo run build",
     "dev:web": "pnpm --filter @minilo/web dev",
     "gen": "pnpm --filter @minilo/web openapi-ts",
+    "analyze": "pnpm --filter @minilo/web analyze",
     "dev:server": "pnpm --filter @minilo/server start:dev",
     "dev:ui": "pnpm --filter @minilo/ui dev",
     "build:ui": "pnpm --filter @minilo/ui build",

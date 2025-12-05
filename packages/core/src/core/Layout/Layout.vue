@@ -195,7 +195,7 @@ watch(
             <div class="layout-logo__content">
               <img
                 style="width: 32px; height: 32px"
-                src="../../assets/images/png/logo.png"
+                src="../../assets/images/webp/logo.webp"
                 alt=""
               />
               <span v-if="!userConfig.sidebar?.collapse">{{ userConfig.app?.name }}</span>
