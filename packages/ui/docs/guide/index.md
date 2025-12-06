@@ -22,6 +22,7 @@ Minilo-UI 是基于 Element Plus 二次封装的 Vue3 组件库，提供了一�
 
 - **[MlSearch 搜索组件](/components/search)** - 响应式搜索表单组件，支持多种输入类型、自适应布局、展开收起等功能。
 - **[MlButton 按钮组件](/components/button)** - 基于 el-button 封装的按钮组件，提供统一的按钮样式和行为。
+- **[MlNumberRangeInput 数值范围输入框](/components/number-range-input)** - 基于 el-input 封装的数值范围输入组件，支持最小值和最大值输入，适用于价格区间、年龄范围等场景。
 
 ### 数据组件
 

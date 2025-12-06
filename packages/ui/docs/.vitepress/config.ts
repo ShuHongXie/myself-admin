@@ -53,7 +53,8 @@ export default defineConfig({
           { text: 'MlSearchTable 搜索表格', link: '/components/search-table' },
           { text: 'MlDetail 详情', link: '/components/detail' },
           { text: 'MlButton 按钮', link: '/components/button' },
-          { text: 'MlVirtualList 虚拟列表', link: '/components/virtual-list' }
+          { text: 'MlVirtualList 虚拟列表', link: '/components/virtual-list' },
+          { text: 'MlNumberRangeInput 数值范围输入框', link: '/components/number-range-input' }
         ]
       }
     ],
