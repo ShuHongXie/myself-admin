@@ -56,6 +56,10 @@ export default defineConfig({
           { text: 'MlVirtualList 虚拟列表', link: '/components/virtual-list' },
           { text: 'MlNumberRangeInput 数值范围输入框', link: '/components/number-range-input' }
         ]
+      },
+      {
+        text: '@minilo/utils 工具库',
+        items: [{ text: 'Request 请求工具', link: '/utils/request' }]
       }
     ],
 
