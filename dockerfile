@@ -1,13 +1,13 @@
 # 构建阶段
-FROM node:18-alpine as build-stage
-WORKDIR /app
+FROM node:20-alpine as build-stage
+WORKDIR /web-test
 # 定义构建参数（默认值为prod，防止参数缺失）
 ARG BUILD_ENV=prod
 # 复制依赖文件
 COPY package*.json ./
 RUN npm install --registry=https://registry.npmmirror.com
 # 复制所有代码
-COPY . .
+COPY ./apps/web/
 # 根据构建参数执行不同打包命令
 RUN if [ "$BUILD_ENV" = "test" ]; then npm run build:test; else npm run build:prod; fi
 

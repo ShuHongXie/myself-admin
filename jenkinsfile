@@ -1,0 +1,74 @@
+pipeline {
+    agent any
+    // 1. 手动触发时，允许选择分支和环境（自动触发时用默认值）
+    parameters {
+        string(
+            name: 'MANUAL_BRANCH',
+            defaultValue: env.BRANCH_NAME ?: 'main',
+            description: '手动触发时指定分支（如 test/main，自动触发时忽略）'
+        )
+        choice(
+            name: 'MANUAL_ENV',
+            choices: ['test', 'prod'],
+            description: '手动触发时指定环境（自动触发时按分支判断）'
+        )
+        booleanParam(
+            name: 'FORCE_DEPLOY',
+            defaultValue: true,
+            description: '是否强制部署（即使无新提交，默认true）'
+        )
+    }
+    // 2. 环境变量：区分「自动触发」和「手动触发」
+    environment {
+        // 判断是否是手动触发（Jenkins内置变量：BUILD_CAUSE为MANUAL时表示手动触发）
+        IS_MANUAL = "${env.BUILD_CAUSE == 'MANUAL' ? 'true' : 'false'}"
+        // 最终部署的分支：手动触发用指定分支，自动触发用触发分支
+        TARGET_BRANCH = "${IS_MANUAL == 'true' ? params.MANUAL_BRANCH : env.BRANCH_NAME}"
+        // 最终部署的环境：手动触发用指定环境，自动触发按分支判断
+        TARGET_ENV = "${IS_MANUAL == 'true' ? params.MANUAL_ENV : (env.BRANCH_NAME == 'test' ? 'test' : 'prod')}"
+        // 端口隔离：测试8081，正式8080
+        TARGET_PORT = "${TARGET_ENV == 'test' ? '8081' : '8080'}"
+    }
+    tools {
+        nodejs "node18"
+    }
+    stages {
+        stage('拉取指定分支代码') {
+            steps {
+                echo "===== 开始拉取分支：${TARGET_BRANCH} ====="
+                // 拉取指定分支的最新代码（强制拉取，无视缓存）
+                checkout scm: [
+                    $class: 'GitSCM',
+                    branches: [[name: "*/${TARGET_BRANCH}"]],
+                    userRemoteConfigs: [[url: env.GIT_URL, credentialsId: '你的Git凭证ID']]
+                ], poll: false
+                // 确保工作区干净（删除旧的dist/node_modules，避免缓存干扰）
+                sh "rm -rf dist node_modules"
+            }
+        }
+
+        stage('构建并部署') {
+            when {
+                expression { params.FORCE_DEPLOY == true }
+            }
+            steps {
+                echo "===== 部署${TARGET_ENV}环境（分支：${TARGET_BRANCH}，端口：${TARGET_PORT}） ====="
+                // 传递参数给docker-compose
+                sh "BUILD_ENV=${TARGET_ENV} PORT=${TARGET_PORT} docker-compose down || true"
+                sh "BUILD_ENV=${TARGET_ENV} PORT=${TARGET_PORT} docker-compose up -d --build"
+                sh "docker system prune -f"
+            }
+        }
+    }
+    post {
+        success {
+            echo "✅ ${TARGET_ENV}环境部署成功！"
+            echo "访问地址：http://服务器IP:${TARGET_PORT}"
+            echo "部署分支：${TARGET_BRANCH}"
+            echo "触发方式：${IS_MANUAL == 'true' ? '手动触发' : '自动触发（分支提交）'}"
+        }
+        failure {
+            echo "❌ ${TARGET_ENV}环境部署失败！"
+        }
+    }
+}
