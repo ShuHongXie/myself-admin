@@ -7,5 +7,11 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": []
+  "ignore": [
+    "@minilo/core",
+    "@minilo/store",
+    "@minilo/locales",
+    "@minilo/server",
+    "@minilo/web"
+  ]
 }
