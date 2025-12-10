@@ -7,7 +7,7 @@ ARG BUILD_ENV=prod
 COPY package*.json ./
 RUN npm install --registry=https://registry.npmmirror.com
 # 复制所有代码
-COPY ./apps/web/
+COPY ./apps/web/ ./
 # 根据构建参数执行不同打包命令
 RUN if [ "$BUILD_ENV" = "test" ]; then npm run build:test; else npm run build:prod; fi
 
