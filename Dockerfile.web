@@ -1,4 +1,4 @@
-# 构建阶段（web子包专属）
+# 构建阶段（web子包专属，适配WORKSPACE=minilo）
 FROM node:20-alpine as build-stage
 RUN set -e
 # 配置pnpm
@@ -8,22 +8,25 @@ WORKDIR /app
 # 仅保留构建环境参数（test/prod）
 ARG BUILD_ENV=prod
 
-# 复制workspace核心文件（根目录配置）
+# 新增：提前创建镜像内的apps/web目录（避免COPY时目录不存在）
+RUN mkdir -p ./apps/web/
+
+# 复制workspace核心文件（关键：BUILD_CONTEXT是minilo，根配置在WORKSPACE下，无需../）
 COPY pnpm-workspace.yaml ./
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 
-# 复制web子包的依赖文件
-COPY minilo/apps/web/package*.json ./minilo/apps/web/
+# 修复：删除minilo/前缀（因为BUILD_CONTEXT已经是minilo）
+COPY apps/web/package*.json ./apps/web/
 
-# 仅安装web子包的依赖
-RUN pnpm install --filter=minilo/apps/web --frozen-lockfile --registry=https://registry.npmmirror.com --no-cache
+# 仅安装web子包的依赖（关键：过滤路径同步删除minilo/前缀）
+RUN pnpm install --filter=apps/web --frozen-lockfile --registry=https://registry.npmmirror.com --no-cache
 
-# 复制web子包代码
-COPY minilo/apps/web/ ./minilo/apps/web/
+# 修复：复制web子包代码（删除minilo/前缀）
+COPY apps/web/ ./apps/web/
 
-# 进入web子包目录执行打包
-WORKDIR /app/minilo/apps/web
+# 进入web子包目录执行打包（路径同步修改）
+WORKDIR /app/apps/web
 RUN echo "当前构建web子包环境: ${BUILD_ENV}"
 RUN if [ "${BUILD_ENV}" = "test" ]; then \
         pnpm run build:test; \
@@ -34,8 +37,8 @@ RUN if [ "${BUILD_ENV}" = "test" ]; then \
 # 运行阶段（nginx，web专属）
 FROM nginx:alpine as production-stage
 ARG BUILD_ENV=prod
-# 复制web打包产物
-COPY --from=build-stage /app/minilo/apps/web/dist /usr/share/nginx/html
+# 修复：镜像内产物路径改为/app/apps/web/dist（同步上面的WORKDIR）
+COPY --from=build-stage /app/apps/web/dist /usr/share/nginx/html
 # 复制对应环境的nginx配置（可选：按环境区分）
 COPY nginx-${BUILD_ENV}.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
