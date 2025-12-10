@@ -30,3 +30,4 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 # 启动nginx（保持前台运行）
 CMD ["nginx", "-g", "daemon off;"]
+#
