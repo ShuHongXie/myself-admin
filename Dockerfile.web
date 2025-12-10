@@ -19,6 +19,14 @@ COPY pnpm-lock.yaml ./
 # 修复：删除minilo/前缀（因为BUILD_CONTEXT已经是minilo）
 COPY apps/web/package*.json ./apps/web/
 
+# 【新增调试命令】查看pnpm-workspace.yaml内容 + 目录结构 + 尝试本地匹配
+RUN echo "=== 查看pnpm-workspace.yaml配置 ===" && \
+    cat /app/pnpm-workspace.yaml && \
+    echo "=== 查看/app目录结构 ===" && \
+    ls -la /app && \
+    echo "=== 尝试匹配apps/web子包 ===" && \
+    pnpm ls --filter=apps/web || true
+
 # 仅安装web子包的依赖（关键修复点👇）
 # 1. --filter=apps/web...：安装web子包及其所有依赖链
 # 2. --prod=false：强制安装devDependencies（包含vite）
