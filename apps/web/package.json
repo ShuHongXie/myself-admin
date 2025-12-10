@@ -50,5 +50,10 @@
     "vite-plugin-cdn-import": "^1.0.1",
     "vite-plugin-svg-icons": "catalog:",
     "vue-tsc": "catalog:"
+  },
+  "packageManager": "pnpm@10.13.1",
+  "overrides": {
+    "@minilo/ui": "workspace:*",
+    "@minilo/utils": "workspace:*"
   }
 }
