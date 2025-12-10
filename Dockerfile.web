@@ -1,63 +1,47 @@
 # 构建阶段（web子包专属，适配WORKSPACE=minilo）
 FROM node:20-alpine as build-stage
-RUN set -e  # 遇到错误立即退出，避免构建静默失败
-# 配置pnpm（alpine镜像需确保corepack可用）
+RUN set -e
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
-# 仅保留构建环境参数（test/prod）
 ARG BUILD_ENV=prod
 
-# 新增：提前创建镜像内的apps/web目录（避免COPY时目录不存在）
-RUN mkdir -p ./apps/web/
-
-# 复制workspace核心文件（关键：BUILD_CONTEXT是minilo，根配置在WORKSPACE下，无需../）
+# 复制workspace核心文件
 COPY pnpm-workspace.yaml ./
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 
-# 修复：删除minilo/前缀（因为BUILD_CONTEXT已经是minilo）
+# 复制所有子包的 package.json（包括 apps 和 packages）
 COPY apps/web/package*.json ./apps/web/
+# 【关键修复】复制所有 packages 的 package.json，因为 web 依赖它们
+COPY packages/*/package*.json ./packages/
 
-# 【新增调试命令】查看pnpm-workspace.yaml内容 + 目录结构 + 尝试本地匹配
-RUN echo "=== 查看pnpm-workspace.yaml配置 ===" && \
-    cat /app/pnpm-workspace.yaml && \
-    echo "=== 查看/app目录结构 ===" && \
-    ls -la /app && \
-    echo "=== 尝试匹配apps/web子包 ===" && \
-    pnpm ls --filter=apps/web || true
-
-# 仅安装web子包的依赖（关键修复点👇）
-# 1. --filter=apps/web...：安装web子包及其所有依赖链
-# 2. --prod=false：强制安装devDependencies（包含vite）
-# 3. 保留原有参数：锁文件、国内源、不缓存
+# 安装 web 及其依赖链（包括 packages/* 中的内部依赖）
 RUN pnpm install \
-  --filter=apps/web... \
+  --filter=@minilo/web... \
   --frozen-lockfile \
   --registry=https://registry.npmmirror.com \
   --no-cache \
   --prod=false
 
-# 修复：复制web子包代码（删除minilo/前缀）
+# 复制源代码
 COPY apps/web/ ./apps/web/
+# 【关键修复】复制所有 packages 源码
+COPY packages/ ./packages/
 
-# 进入web子包目录执行打包（路径同步修改）
+# 进入web子包目录执行打包
 WORKDIR /app/apps/web
 RUN echo "当前构建web子包环境: ${BUILD_ENV}"
-# 修复：确保pnpm run调用局部vite，避免路径问题
 RUN if [ "${BUILD_ENV}" = "test" ]; then \
         pnpm run build:test; \
     else \
         pnpm run build:prod; \
     fi
 
-# 运行阶段（nginx，web专属）
+# 运行阶段（nginx）
 FROM nginx:alpine as production-stage
 ARG BUILD_ENV=prod
-# 修复：镜像内产物路径改为/app/apps/web/dist（同步上面的WORKDIR）
 COPY --from=build-stage /app/apps/web/dist /usr/share/nginx/html
-# 复制对应环境的nginx配置（可选：按环境区分）
-# 注意：需确保宿主机有nginx-test.conf/nginx-prod.conf文件，否则会报错
 COPY nginx-${BUILD_ENV}.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
