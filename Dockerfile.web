@@ -14,12 +14,10 @@ COPY pnpm-lock.yaml ./
 # 复制所有子包的 package.json（包括 apps 和 packages）
 COPY apps/web/package*.json ./apps/web/
 # 【关键修复】复制所有 packages 的 package.json，因为 web 依赖它们
-COPY packages/core/package*.json ./packages/core/
-COPY packages/locales/package*.json ./packages/locales/
-COPY packages/store/package*.json ./packages/store/
-COPY packages/types/package*.json ./packages/types/
-COPY packages/ui/package*.json ./packages/ui/
-COPY packages/utils/package*.json ./packages/utils/
+COPY packages/core/ ./packages/core/
+COPY packages/locales/ ./packages/locales/
+COPY packages/store/ ./packages/store/
+COPY packages/types/ ./packages/types/
 
 # 安装 web 及其依赖链（包括 packages/* 中的内部依赖）
 RUN pnpm install \
