@@ -70,3 +70,16 @@ systemctl restart docker
 docker compose up/down -d [容器名]
 
 ```
+
+```yml
+# 容器操作
+docker ps | grep [容器名] # 查看容器
+docker exec -it web-test /bin/sh # 进入容器
+docker logs -f [容器名] # 查看容器日志
+docker stop [容器名] # 停止容器
+docker start [容器名] # 启动容器
+docker restart [容器名] # 重启容器
+docker rm [容器名] # 删除容器
+docker rmi [镜像名] # 删除镜像
+docker exec -it [容器名] /bin/sh # 进入容器命令行
+```

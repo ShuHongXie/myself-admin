@@ -72,5 +72,11 @@
   },
   "dependencies": {
     "axios": "catalog:"
+  },
+  "pnpm": {
+    "overrides": {
+      "@minilo/ui": "^0.0.2",
+      "@minilo/utils": "^0.0.2"
+    }
   }
 }

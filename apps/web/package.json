@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite --mode development",
     "build": "vue-tsc -b && vite build",
+    "build:test": "vite build --mode test",
+    "build:prod": "vite build --mode production",
     "preview": "vite preview",
     "openapi-ts": "openapi-ts",
     "analyze": "vite-bundle-visualizer"
@@ -19,8 +21,8 @@
     "@minilo/core": "workspace:^",
     "@minilo/locales": "workspace:*",
     "@minilo/store": "workspace:^",
-    "@minilo/ui": "workspace:^",
-    "@minilo/utils": "workspace:^",
+    "@minilo/ui": "^0.0.2",
+    "@minilo/utils": "^0.0.2",
     "@types/nprogress": "catalog:",
     "echarts": "^6.0.0",
     "element-plus": "catalog:",
@@ -28,6 +30,7 @@
     "pinia": "catalog:",
     "pinia-plugin-persistedstate": "catalog:",
     "vue": "catalog:",
+    "vue-i18n": "catalog:",
     "vue-router": "catalog:"
   },
   "devDependencies": {
@@ -53,7 +56,7 @@
   },
   "packageManager": "pnpm@10.13.1",
   "overrides": {
-    "@minilo/ui": "workspace:*",
-    "@minilo/utils": "workspace:*"
+    "@minilo/ui": "^0.0.2",
+    "@minilo/utils": "^0.0.2"
   }
 }

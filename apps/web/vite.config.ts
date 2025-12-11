@@ -11,7 +11,7 @@ import { MiniloUiResolver } from '@minilo/ui/resolver'
 import cdn from 'vite-plugin-cdn-import'
 import { analyzer } from 'vite-bundle-analyzer'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   build: {
     // minify: 'terser'
     // terserOptions: {
@@ -52,6 +52,7 @@ export default defineConfig({
     alias: {
       '#': resolve(__dirname, 'src')
     }
+    // dedupe: ['vue', 'pinia', 'vue-router', 'pinia-plugin-persistedstate', 'vue-i18n']
   },
   plugins: [
     vue(),
@@ -82,7 +83,7 @@ export default defineConfig({
       enableBuild: true,
       enableDev: true // 启用开发时监听
     }),
-    analyzer(),
+    mode === 'development' && analyzer(),
     cdn({
       modules: [
         {
@@ -93,4 +94,4 @@ export default defineConfig({
       ]
     })
   ]
-})
+}))
