@@ -70,3 +70,8 @@ systemctl restart docker
 docker compose up/down -d [容器名]
 
 ```
+
+```yml
+# 容器操作
+docker ps | grep [容器名] # 查看容器
+```
