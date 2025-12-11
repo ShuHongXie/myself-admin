@@ -151,6 +151,10 @@ catalogs:
       specifier: ^0.18.5
       version: 0.18.5
 
+overrides:
+  '@minilo/ui': ^0.0.2
+  '@minilo/utils': ^0.0.2
+
 importers:
 
   .:
@@ -477,8 +481,8 @@ importers:
         specifier: workspace:^
         version: link:../store
       '@minilo/utils':
-        specifier: workspace:^
-        version: link:../utils
+        specifier: ^0.0.2
+        version: 0.0.2(vue@3.5.17(typescript@5.8.3))
       element-plus:
         specifier: 'catalog:'
         version: 2.10.4(vue@3.5.17(typescript@5.8.3))
@@ -578,8 +582,8 @@ importers:
         version: 3.5.22(typescript@5.9.3)
     devDependencies:
       '@minilo/utils':
-        specifier: workspace:^
-        version: link:../utils
+        specifier: ^0.0.2
+        version: 0.0.2(vue@3.5.22(typescript@5.9.3))
       '@rollup/plugin-commonjs':
         specifier: ^29.0.0
         version: 29.0.0(rollup@4.52.5)
@@ -10816,6 +10820,20 @@ snapshots:
       lodash.clonedeep: 4.5.0
       theme-colors: 0.1.0
       vue: 3.5.17(typescript@5.8.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - debug
+
+  '@minilo/utils@0.0.2(vue@3.5.22(typescript@5.9.3))':
+    dependencies:
+      '@ctrl/tinycolor': 4.1.0
+      '@vueuse/core': 13.6.0(vue@3.5.22(typescript@5.9.3))
+      axios: 1.13.2
+      defu: 6.1.4
+      element-plus: 2.10.4(vue@3.5.22(typescript@5.9.3))
+      lodash.clonedeep: 4.5.0
+      theme-colors: 0.1.0
+      vue: 3.5.22(typescript@5.9.3)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - debug
