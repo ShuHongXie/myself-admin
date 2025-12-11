@@ -18,9 +18,11 @@ COPY packages/*/package*.json ./packages/
 
 # 安装 web 及其依赖链（包括 packages/* 中的内部依赖）
 RUN pnpm install \
-  --filter=!@minilo/ui \
-  --filter=!@minilo/utils \
-  --filter=!@minilo/server \
+  --filter=@minilo/web... \
+  --filter=@minilo/core... \
+  --filter=@minilo/store... \
+  --filter=@minilo/locales... \
+  --filter=@minilo/types... \
   --frozen-lockfile \
   --registry=https://registry.npmmirror.com \
   --no-cache \
