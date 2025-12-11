@@ -1,74 +1,107 @@
-pipeline {
-    agent any
-    // 1. 手动触发时，允许选择分支和环境（自动触发时用默认值）
-    parameters {
-        string(
-            name: 'MANUAL_BRANCH',
-            defaultValue: env.BRANCH_NAME ?: 'main',
-            description: '手动触发时指定分支（如 test/main，自动触发时忽略）'
-        )
-        choice(
-            name: 'MANUAL_ENV',
-            choices: ['test', 'prod'],
-            description: '手动触发时指定环境（自动触发时按分支判断）'
-        )
-        booleanParam(
-            name: 'FORCE_DEPLOY',
-            defaultValue: true,
-            description: '是否强制部署（即使无新提交，默认true）'
-        )
-    }
-    // 2. 环境变量：区分「自动触发」和「手动触发」
-    environment {
-        // 判断是否是手动触发（Jenkins内置变量：BUILD_CAUSE为MANUAL时表示手动触发）
-        IS_MANUAL = "${env.BUILD_CAUSE == 'MANUAL' ? 'true' : 'false'}"
-        // 最终部署的分支：手动触发用指定分支，自动触发用触发分支
-        TARGET_BRANCH = "${IS_MANUAL == 'true' ? params.MANUAL_BRANCH : env.BRANCH_NAME}"
-        // 最终部署的环境：手动触发用指定环境，自动触发按分支判断
-        TARGET_ENV = "${IS_MANUAL == 'true' ? params.MANUAL_ENV : (env.BRANCH_NAME == 'test' ? 'test' : 'prod')}"
-        // 端口隔离：测试8081，正式8080
-        TARGET_PORT = "${TARGET_ENV == 'test' ? '8081' : '8080'}"
-    }
-    tools {
-        nodejs "node18"
-    }
-    stages {
-        stage('拉取指定分支代码') {
-            steps {
-                echo "===== 开始拉取分支：${TARGET_BRANCH} ====="
-                // 拉取指定分支的最新代码（强制拉取，无视缓存）
-                checkout scm: [
-                    $class: 'GitSCM',
-                    branches: [[name: "*/${TARGET_BRANCH}"]],
-                    userRemoteConfigs: [[url: env.GIT_URL, credentialsId: '你的Git凭证ID']]
-                ], poll: false
-                // 确保工作区干净（删除旧的dist/node_modules，避免缓存干扰）
-                sh "rm -rf dist node_modules"
-            }
-        }
+#!/bin/bash
+# ====================== 核心配置 & 工具函数（必须放在最前面）======================
+# 调整set -e，增加pipefail兼容，且放在函数定义后避免提前终止
+# set -eo pipefail  
+# 确保能找到 docker 命令
 
-        stage('构建并部署') {
-            when {
-                expression { params.FORCE_DEPLOY == true }
-            }
-            steps {
-                echo "===== 部署${TARGET_ENV}环境（分支：${TARGET_BRANCH}，端口：${TARGET_PORT}） ====="
-                // 传递参数给docker-compose
-                sh "BUILD_ENV=${TARGET_ENV} PORT=${TARGET_PORT} docker-compose down || true"
-                sh "BUILD_ENV=${TARGET_ENV} PORT=${TARGET_PORT} docker-compose up -d --build"
-                sh "docker system prune -f"
-            }
-        }
-    }
-    post {
-        success {
-            echo "✅ ${TARGET_ENV}环境部署成功！"
-            echo "访问地址：http://服务器IP:${TARGET_PORT}"
-            echo "部署分支：${TARGET_BRANCH}"
-            echo "触发方式：${IS_MANUAL == 'true' ? '手动触发' : '自动触发（分支提交）'}"
-        }
-        failure {
-            echo "❌ ${TARGET_ENV}环境部署失败！"
-        }
-    }
-}
+COMPOSE_CMD="docker compose"
+
+# 工具函数（必须最先定义，避免调用时找不到）
+log_info() { echo -e "\033[32m[INFO] $(date +'%Y-%m-%d %H:%M:%S'): $1\033[0m"; }
+log_error() { echo -e "\033[31m[ERROR] $(date +'%Y-%m-%d %H:%M:%S'): $1\033[0m"; exit 1; }
+
+# ====================== 1. 环境信息输出 ======================
+log_info "当前npm版本：$(npm -v)"
+log_info "当前Node.js版本：$(node -v)"
+log_info "当前WORKSPACE路径：${WORKSPACE}"  # 修复：删除中文分号
+BRANCH_NAME=$BRANCH
+echo "当前构建分支名称：$BRANCH_NAME"
+BRANCH_ID="${BRANCH_NAME##*/}"
+
+# 严格匹配分支规则 + 固定端口映射（核心修改点）
+case "${BRANCH_ID}" in
+    "web-test")
+        APP_NAME="web"
+        BUILD_ENV="test"
+        SERVICE_PORT="8081"  # web-test固定8081
+        ;;
+    "web-prod")
+        APP_NAME="web"
+        BUILD_ENV="prod"
+        SERVICE_PORT="8082"  # web-prod固定8082
+        ;;
+    "server-test")
+        APP_NAME="server"
+        BUILD_ENV="test"
+        SERVICE_PORT="8083"  # server-test固定8083
+        ;;
+    "server-prod")
+        APP_NAME="server"
+        BUILD_ENV="prod"
+        SERVICE_PORT="8084"  # server-prod固定8084
+        ;;
+    *)
+        log_error "分支名不符合规则！仅支持：web-test/web-prod/server-test/server-prod"
+        ;;
+esac
+
+# ====================== 2. 核心配置 ======================
+REGISTRY_PREFIX=""
+IMAGE_TAG="${BRANCH_NAME#*/}"  # 提取分支标识（如*/web-test→web-test）
+BUILD_NAME="${IMAGE_TAG%-*}" # 提取服务表示，比如web-test提取文本
+COMPOSE_FILE="/data/ci-cd/docker-compose.yml"  # 唯一的compose文件
+
+# ====================== 3. 解析分支信息 ======================
+IMAGE_NAME="${REGISTRY_PREFIX}${BRANCH_ID}"
+log_info "当前分支：${BRANCH_NAME} → 分支标识：${BRANCH_ID}"
+log_info "镜像名：${IMAGE_NAME}"
+
+# 匹配对应的Dockerfile（适配拆分后的文件）
+DOCKERFILE_PATH="${WORKSPACE}/Dockerfile.${APP_NAME}"
+if [ ! -f "${DOCKERFILE_PATH}" ]; then
+    log_error "Dockerfile不存在：${DOCKERFILE_PATH}（需创建Dockerfile.web/Dockerfile.server）"
+fi
+
+# ====================== 4. 清理旧资源 ======================
+# 停止旧服务（加调试，输出执行的完整命令）
+log_info "执行停止服务命令：docker compose -f ${COMPOSE_FILE} --profile ${BRANCH_ID} down"
+${COMPOSE_CMD} -f "${COMPOSE_FILE}" --profile "${BRANCH_ID}" down || log_info "停止旧服务失败（可能服务未启动）"
+
+# 删除旧镜像（加调试）
+log_info "执行删除镜像命令：docker rmi -f ${IMAGE_NAME}"
+docker rmi -f "${IMAGE_NAME}" || log_info "旧镜像${IMAGE_NAME}不存在，无需删除"
+
+# ====================== 5. 构建镜像 ======================
+log_info "构建镜像：${IMAGE_NAME}"
+docker build \
+  --build-arg BUILD_ENV="${BUILD_ENV}" \
+  --build-arg BUILD_NAME="${BUILD_NAME}" \
+  -t "${IMAGE_NAME}" \
+  -f "${DOCKERFILE_PATH}" \
+  "${WORKSPACE}" || log_error "镜像构建失败！"
+
+# ====================== 6. 启动当前分支对应的服务 ======================
+log_info "启动${BRANCH_ID}分支服务（通过profile筛选）..."
+# 复用已检测的COMPOSE_CMD，避免重复判断
+${COMPOSE_CMD} -f "${COMPOSE_FILE}" --profile "${BRANCH_ID}" up -d --force-recreate || log_error "compose启动失败！"
+
+# ====================== 7. 验证服务状态 ======================
+log_info "验证${BRANCH_ID}分支服务状态..."
+sleep 3
+
+# 容器名统一规则：分支标识（如web-test）
+CONTAINER_NAME="${BRANCH_ID}"
+# 检查容器是否运行
+if docker ps --filter "name=${CONTAINER_NAME}" --format "{{.Status}}" | grep -q "Up"; then
+    log_info "✅ ${BRANCH_ID}服务启动成功！容器名：${CONTAINER_NAME} | 绑定端口：${SERVICE_PORT}"
+    # 验证端口是否监听
+    if nc -z 127.0.0.1 "${SERVICE_PORT}"; then
+        log_info "✅ 端口${SERVICE_PORT}已监听，服务可用！"
+    else
+        log_warn "⚠️ 容器启动成功，但端口${SERVICE_PORT}未监听（可能服务内部未启动）"
+    fi
+else
+    log_error "❌ ${BRANCH_ID}服务启动失败！容器日志：$(docker logs --tail 100 ${CONTAINER_NAME} 2>&1)"
+fi
+
+log_info "✅ 分支【${BRANCH_ID}】镜像构建+部署全流程完成！"
