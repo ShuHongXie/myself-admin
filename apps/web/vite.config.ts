@@ -30,6 +30,9 @@ export default defineConfig({
     //     }
     //   }
     // }
+    rollupOptions: {
+      external: ['pinia-plugin-persistedstate']
+    }
   },
   server: {
     port: 3000, // 指定端口号

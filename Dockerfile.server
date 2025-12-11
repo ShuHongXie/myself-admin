@@ -30,7 +30,9 @@ COPY minilo/apps/server/package*.json ./minilo/apps/server/
 # 2. --prod=false：强制安装devDependencies（如ts-node、nodemon等启动依赖）
 # 3. 保留原有参数：锁文件、国内源、不缓存
 RUN pnpm install \
-  --filter=minilo/apps/server... \
+  --filter=!@minilo/ui \
+  --filter=!@minilo/utils \
+  --filter=!@minilo/web \
   --frozen-lockfile \
   --registry=https://registry.npmmirror.com \
   --no-cache \
