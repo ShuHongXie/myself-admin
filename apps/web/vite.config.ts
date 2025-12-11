@@ -30,9 +30,6 @@ export default defineConfig(({ mode }) => ({
     //     }
     //   }
     // }
-    rollupOptions: {
-      external: ['pinia-plugin-persistedstate']
-    }
   },
   server: {
     port: 3000, // 指定端口号
@@ -55,6 +52,7 @@ export default defineConfig(({ mode }) => ({
     alias: {
       '#': resolve(__dirname, 'src')
     }
+    // dedupe: ['vue', 'pinia', 'vue-router', 'pinia-plugin-persistedstate', 'vue-i18n']
   },
   plugins: [
     vue(),
