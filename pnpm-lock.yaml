@@ -371,11 +371,11 @@ importers:
         specifier: workspace:^
         version: link:../../packages/store
       '@minilo/ui':
-        specifier: workspace:^
-        version: link:../../packages/ui
+        specifier: ^0.0.2
+        version: 0.0.2(vue@3.5.17(typescript@5.8.3))
       '@minilo/utils':
-        specifier: workspace:^
-        version: link:../../packages/utils
+        specifier: ^0.0.2
+        version: 0.0.2(vue@3.5.17(typescript@5.8.3))
       '@types/nprogress':
         specifier: 'catalog:'
         version: 0.2.3
@@ -2297,6 +2297,16 @@ packages:
 
   '@microsoft/tsdoc@0.15.1':
     resolution: {integrity: sha512-4aErSrCR/On/e5G2hDP0wjooqDdauzEbIq8hIkIe5pXV0rtWJZvdCEKL0ykZxex+IxIwBp0eGeV48hQN07dXtw==}
+
+  '@minilo/ui@0.0.2':
+    resolution: {integrity: sha512-cG60/NReCq8kRrtqIKJie5mdD8HfBg8CUEL0jOaPN5lLdorrRDbHK9BKmr6Rdd0suHsUIrfHfUz/T+wu+JRpIA==}
+    peerDependencies:
+      vue: ^3.5.17
+
+  '@minilo/utils@0.0.2':
+    resolution: {integrity: sha512-1+tb7MW4xu5dMV2EcBA310KWCkKY5hN5x5wUtQvnKneVA9BqJhwB4wtz5/NoC2oXAZyiu7ovn3OZSswvqIgu1w==}
+    peerDependencies:
+      vue: ^3.5.17
 
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
@@ -10785,6 +10795,28 @@ snapshots:
 
   '@microsoft/tsdoc@0.15.1': {}
 
+  '@minilo/ui@0.0.2(vue@3.5.17(typescript@5.8.3))':
+    dependencies:
+      '@iconify/vue': 5.0.0(vue@3.5.17(typescript@5.8.3))
+      element-plus: 2.10.4(vue@3.5.17(typescript@5.8.3))
+      vue: 3.5.17(typescript@5.8.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+
+  '@minilo/utils@0.0.2(vue@3.5.17(typescript@5.8.3))':
+    dependencies:
+      '@ctrl/tinycolor': 4.1.0
+      '@vueuse/core': 13.6.0(vue@3.5.17(typescript@5.8.3))
+      axios: 1.13.2
+      defu: 6.1.4
+      element-plus: 2.10.4(vue@3.5.17(typescript@5.8.3))
+      lodash.clonedeep: 4.5.0
+      theme-colors: 0.1.0
+      vue: 3.5.17(typescript@5.8.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - debug
+
   '@napi-rs/wasm-runtime@0.2.12':
     dependencies:
       '@emnapi/core': 1.4.5
@@ -12025,6 +12057,13 @@ snapshots:
       typescript: 5.9.3
       vue: 3.5.22(typescript@5.9.3)
 
+  '@vueuse/core@13.6.0(vue@3.5.17(typescript@5.8.3))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 13.6.0
+      '@vueuse/shared': 13.6.0(vue@3.5.17(typescript@5.8.3))
+      vue: 3.5.17(typescript@5.8.3)
+
   '@vueuse/core@13.6.0(vue@3.5.17(typescript@5.9.3))':
     dependencies:
       '@types/web-bluetooth': 0.0.21
@@ -12100,6 +12139,10 @@ snapshots:
   '@vueuse/metadata@13.9.0': {}
 
   '@vueuse/metadata@9.13.0': {}
+
+  '@vueuse/shared@13.6.0(vue@3.5.17(typescript@5.8.3))':
+    dependencies:
+      vue: 3.5.17(typescript@5.8.3)
 
   '@vueuse/shared@13.6.0(vue@3.5.17(typescript@5.9.3))':
     dependencies:
