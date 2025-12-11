@@ -139,7 +139,7 @@ catalogs:
       specifier: ^3.5.17
       version: 3.5.17
     vue-i18n:
-      specifier: ^11.1.11
+      specifier: 11.1.11
       version: 11.1.11
     vue-router:
       specifier: ^4.5.1
@@ -397,6 +397,9 @@ importers:
       vue:
         specifier: 'catalog:'
         version: 3.5.17(typescript@5.8.3)
+      vue-i18n:
+        specifier: 'catalog:'
+        version: 11.1.11(vue@3.5.17(typescript@5.8.3))
       vue-router:
         specifier: 'catalog:'
         version: 4.5.1(vue@3.5.17(typescript@5.8.3))
@@ -18048,6 +18051,13 @@ snapshots:
       semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
+
+  vue-i18n@11.1.11(vue@3.5.17(typescript@5.8.3)):
+    dependencies:
+      '@intlify/core-base': 11.1.11
+      '@intlify/shared': 11.1.11
+      '@vue/devtools-api': 6.6.4
+      vue: 3.5.17(typescript@5.8.3)
 
   vue-i18n@11.1.11(vue@3.5.22(typescript@5.9.3)):
     dependencies:
