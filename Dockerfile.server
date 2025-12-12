@@ -1,16 +1,16 @@
 # 阶段1：编译TS（基于monorepo根目录，进入server子包编译）
 FROM node:20-alpine as build-stage
 # 容器内monorepo根目录
-WORKDIR /app  
+WORKDIR /app
 
 # 1. 安装pnpm（适配monorepo包管理）
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # 2. 复制monorepo核心文件（缓存依赖）
 # 根目录配置
-COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./  
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 # server子包依赖
-COPY apps/server/package.json ./apps/server/             
+COPY apps/server/package.json ./apps/server/
 
 # 3. 安装monorepo所有依赖（包含开发依赖，用于编译TS）
 RUN pnpm config set ignore-build-scripts true && \
@@ -21,7 +21,7 @@ COPY apps/server/ ./apps/server/
 
 # 5. 进入server子包目录，接收BUILD_ENV并执行对应构建脚本
 # 切换到server子包
-WORKDIR /app/apps/server 
+WORKDIR /app/apps/server
 ARG BUILD_ENV=prod
 RUN echo "当前构建环境：${BUILD_ENV}"
 # 执行server子包的build:test/build:prod脚本
@@ -33,7 +33,7 @@ RUN if [ "${BUILD_ENV}" = "test" ]; then \
 
 # 阶段2：生产运行（精简镜像，仅保留server子包运行依赖）
 FROM node:20-alpine as production-stage
-WORKDIR /app  
+WORKDIR /app
 
 # 1. 安装pnpm（仅用于安装生产依赖）
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -49,12 +49,12 @@ RUN pnpm install --frozen-lockfile --prod --ignore-scripts --registry=https://re
 COPY --from=build-stage /app/apps/server/dist ./apps/server/dist
 
 # 5. 复制server子包的.env文件，设置运行时NODE_ENV
-WORKDIR /app/apps/server  
+WORKDIR /app/apps/server
 ARG BUILD_ENV=prod
 # ========== 新增：打印当前目录下的所有文件（排查.env文件是否存在） ==========
 RUN echo "===== 当前目录(/app/apps/server)下的文件列表 =====" && ls -la ./
 COPY apps/server/.env.test apps/server/.env.production ./
-ENV NODE_ENV=${BUILD_ENV}  
+ENV NODE_ENV=${BUILD_ENV}
 
 # 6. 动态EXPOSE对应端口（test=8083，prod=8084）
 RUN if [ "${BUILD_ENV}" = "test" ]; then \
@@ -65,4 +65,8 @@ RUN if [ "${BUILD_ENV}" = "test" ]; then \
 EXPOSE ${EXPOSE_PORT}
 
 # 7. 启动server子包的生产服务
-CMD ["node", "dist/main.js"]
+CMD if [ "${NODE_ENV}" = "test" ]; then \
+        pnpm run start:test;  \
+    else \
+        pnpm run start:prod;  \
+    fi
