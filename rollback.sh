@@ -135,8 +135,8 @@ if [ ! -f "${DOCKERFILE_PATH}" ]; then
 fi
 
 # ====================== 脚本入口（部署/回滚分开触发）======================
-ACTION="${1:-deploy}"  # 默认部署，传rollback则回滚
-ROLLBACK_VERSION="${2:-}"
+ACTION="${ACTION:-deploy}"  # 从Jenkins参数取，默认deploy
+ROLLBACK_VERSION="${ROLLBACK_VERSION:-}"  # 从Jenkins参数取，默认空
 
 case "${ACTION}" in
     "deploy")
