@@ -5,6 +5,7 @@ import { HttpExceptionFilter } from './common/filter/httpException.filter'
 import { TransformInterceptor } from './common/interceptor/transform.interceptor'
 import { BadRequestException, ValidationPipe } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { Logger } from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -12,6 +13,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService)
   // 从环境变量获取端口，默认使用 3000
   const port = configService.get<number>('PORT', 3000)
+  const host = configService.get<string>('HOST', '0.0.0.0')
   // 注册全局过滤器
   app.useGlobalFilters(new HttpExceptionFilter())
   // 注册全局拦截器
@@ -58,6 +60,9 @@ async function bootstrap() {
   })
 
   await app.listen(port)
-  console.log(`应用运行在: http://localhost:${port}`)
+  Logger.log(
+    `🚀 服务运行在: http://${host === '0.0.0.0' ? 'localhost' : host}:${port}`,
+    'Bootstrap'
+  )
 }
 bootstrap()

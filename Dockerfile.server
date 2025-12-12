@@ -1,60 +1,63 @@
-# 构建/运行阶段（server子包专属，适配minilo目录结构）
-FROM node:20-alpine as production-stage
-RUN set -e  # 遇到错误立即退出，避免静默失败
+# 阶段1：编译TS（基于monorepo根目录，进入server子包编译）
+FROM node:20-alpine as build-stage
+WORKDIR /app  # 容器内monorepo根目录
 
-# 【新增】安全配置：创建非root用户运行服务（避免root权限风险）
-RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001 -G nodejs
-
-# 配置pnpm（alpine镜像需确保corepack可用）
+# 1. 安装pnpm（适配monorepo包管理）
 RUN corepack enable && corepack prepare pnpm@latest --activate
-WORKDIR /app
 
-# 仅保留构建/运行环境参数（test/prod）
+# 2. 复制monorepo核心文件（缓存依赖）
+# 根目录配置
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./  
+# server子包依赖
+COPY apps/server/package.json ./apps/server/             
+
+# 3. 安装monorepo所有依赖（包含开发依赖，用于编译TS）
+RUN pnpm install --frozen-lockfile --registry=https://registry.npmmirror.com
+
+# 4. 复制所有源码（monorepo根目录下的apps/packages）
+COPY . .
+
+# 5. 进入server子包目录，接收BUILD_ENV并执行对应构建脚本
+WORKDIR /app/apps/server  # 切换到server子包
 ARG BUILD_ENV=prod
-# 【新增】导出环境变量，确保启动脚本能读取到BUILD_ENV
-ENV BUILD_ENV=${BUILD_ENV}
+RUN echo "当前构建环境：${BUILD_ENV}"
+# 执行server子包的build:test/build:prod脚本
+RUN if [ "${BUILD_ENV}" = "test" ]; then \
+        pnpm run build:test;  # 对应apps/server/package.json的build:test
+    else \
+        pnpm run build:prod;  # 对应apps/server/package.json的build:prod
+    fi
 
-# 【新增】提前创建目标目录（避免COPY时目录不存在报错）
-RUN mkdir -p ./minilo/apps/server/
+# 阶段2：生产运行（精简镜像，仅保留server子包运行依赖）
+FROM node:20-alpine as production-stage
+WORKDIR /app  # 容器内monorepo根目录
 
-# 复制workspace核心文件（monorepo必备）
-COPY pnpm-workspace.yaml ./
-COPY package.json ./
-COPY pnpm-lock.yaml ./
+# 1. 安装pnpm（仅用于安装生产依赖）
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# 复制server子包的依赖文件
-COPY minilo/apps/server/package*.json ./minilo/apps/server/
+# 2. 复制依赖文件（仅根目录+server子包）
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
+COPY apps/server/package.json ./apps/server/
 
-# 仅安装server子包的依赖（【关键修复】）
-# 1. --filter=minilo/apps/server...：安装子包及其所有依赖链
-# 2. --prod=false：强制安装devDependencies（如ts-node、nodemon等启动依赖）
-# 3. 保留原有参数：锁文件、国内源、不缓存
-RUN pnpm install \
-  --filter=!@minilo/ui \
-  --filter=!@minilo/utils \
-  --filter=!@minilo/web \
-  --frozen-lockfile \
-  --registry=https://registry.npmmirror.com \
-  --no-cache \
-  --prod=false && \
-  # 【新增】清理pnpm缓存，减小镜像体积
-  pnpm store prune
+# 3. 仅安装生产依赖（减小镜像体积）
+RUN pnpm install --frozen-lockfile --prod --registry=https://registry.npmmirror.com
 
-# 复制server子包代码
-COPY minilo/apps/server/ ./minilo/apps/server/
+# 4. 从构建阶段复制编译后的server子包dist目录
+COPY --from=build-stage /app/apps/server/dist ./apps/server/dist
 
-# 【新增】修改目录权限，让非root用户可访问
-RUN chown -R nodejs:nodejs /app
+# 5. 复制server子包的.env文件，设置运行时NODE_ENV
+WORKDIR /app/apps/server  # 切换到server子包
+ARG BUILD_ENV=prod
+COPY .env.test .env.production ./  # 复制server子包的.env文件
+ENV NODE_ENV=${BUILD_ENV}  # 让ConfigModule加载对应.env
 
-# 切换到非root用户
-USER nodejs
+# 6. 动态EXPOSE对应端口（test=8083，prod=8084）
+RUN if [ "${BUILD_ENV}" = "test" ]; then \
+        export EXPOSE_PORT=8083; \
+    else \
+        export EXPOSE_PORT=8084; \
+    fi
+EXPOSE ${EXPOSE_PORT}
 
-# 进入server子包目录，执行启动命令
-WORKDIR /app/minilo/apps/server
-RUN echo "当前运行server子包环境: ${BUILD_ENV}"
-
-# 暴露server端口（根据你的实际端口调整，比如3000）
-EXPOSE 3000
-
-# 【修复】改用exec形式的CMD，确保容器能接收停止信号，且命令更稳定
-CMD ["sh", "-c", "if [ \"${BUILD_ENV}\" = \"test\" ]; then pnpm run start:test; else pnpm run start:prod; fi"]
+# 7. 启动server子包的生产服务
+CMD ["node", "dist/main.js"]

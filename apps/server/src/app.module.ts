@@ -19,7 +19,7 @@ import { OperationLogInterceptor } from '@interceptor/log.interceptor'
     // 加载环境变量配置
     ConfigModule.forRoot({
       isGlobal: true, // 使配置模块全局可用
-      envFilePath: '.env' // 指定环境变量文件路径
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`
     }),
     // mysql链接
     TypeOrmModule.forRoot({
