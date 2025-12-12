@@ -1,6 +1,7 @@
 # 阶段1：编译TS（基于monorepo根目录，进入server子包编译）
 FROM node:20-alpine as build-stage
-WORKDIR /app  # 容器内monorepo根目录
+# 容器内monorepo根目录
+WORKDIR /app  
 
 # 1. 安装pnpm（适配monorepo包管理）
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -18,7 +19,8 @@ RUN pnpm install --frozen-lockfile --registry=https://registry.npmmirror.com
 COPY . .
 
 # 5. 进入server子包目录，接收BUILD_ENV并执行对应构建脚本
-WORKDIR /app/apps/server  # 切换到server子包
+# 切换到server子包
+WORKDIR /app/apps/server 
 ARG BUILD_ENV=prod
 RUN echo "当前构建环境：${BUILD_ENV}"
 # 执行server子包的build:test/build:prod脚本
