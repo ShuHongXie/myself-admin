@@ -13,7 +13,8 @@ COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY apps/server/package.json ./apps/server/             
 
 # 3. 安装monorepo所有依赖（包含开发依赖，用于编译TS）
-RUN pnpm install --frozen-lockfile --registry=https://registry.npmmirror.com
+RUN pnpm config set ignore-build-scripts true && \
+    pnpm install --frozen-lockfile --registry=https://registry.npmmirror.com
 
 # 4. 复制所有源码（monorepo根目录下的apps/packages）
 COPY . .
@@ -42,7 +43,7 @@ COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY apps/server/package.json ./apps/server/
 
 # 3. 仅安装生产依赖（减小镜像体积）
-RUN pnpm install --frozen-lockfile --prod --registry=https://registry.npmmirror.com
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts --registry=https://registry.npmmirror.com
 
 # 4. 从构建阶段复制编译后的server子包dist目录
 COPY --from=build-stage /app/apps/server/dist ./apps/server/dist
