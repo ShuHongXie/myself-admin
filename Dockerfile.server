@@ -23,9 +23,9 @@ ARG BUILD_ENV=prod
 RUN echo "当前构建环境：${BUILD_ENV}"
 # 执行server子包的build:test/build:prod脚本
 RUN if [ "${BUILD_ENV}" = "test" ]; then \
-        pnpm run build:test;  
+        pnpm run build:test;  \
     else \
-        pnpm run build:prod;  
+        pnpm run build:prod;  \
     fi
 
 # 阶段2：生产运行（精简镜像，仅保留server子包运行依赖）
