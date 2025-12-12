@@ -22,17 +22,20 @@ import { OperationLogInterceptor } from '@interceptor/log.interceptor'
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`
     }),
     // mysql链接
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306, // 端口号
-      username: 'root', // 用户名
-      password: '123456', // 密码
-      database: 'admin', //数据库名
-      entities: ['**/*.entity.js'], //数据库对应的Entity
-      autoLoadEntities: true,
-      synchronize: true, //是否自动同步实体文件,生产环境建议关闭
-      namingStrategy: new SnakeNamingStrategy() // 应用自定义命名策略
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('MYSQL_HOST'),
+        port: 3306, // 端口号
+        username: 'root', // 用户名
+        password: '123456', // 密码
+        database: configService.get<string>('MYSQL_DATABASE'),
+        entities: ['**/*.entity.js'], //数据库对应的Entity
+        autoLoadEntities: true,
+        synchronize: true, //是否自动同步实体文件,生产环境建议关闭
+        namingStrategy: new SnakeNamingStrategy() // 应用自定义命名策略
+      })
     }),
     JwtModule.registerAsync({
       global: true,
