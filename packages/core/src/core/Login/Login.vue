@@ -5,7 +5,7 @@ import { reactive, ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 
 const props = withDefaults(defineProps<LoginProps>(), {
-  title: '欢迎回来',
+  title: '欢迎你回来',
   subtitle: '请输入您的帐户信息以开始管理您的项目',
   submitText: '登录',
   errorMessage: '输入验证出错!',
