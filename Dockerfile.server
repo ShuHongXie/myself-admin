@@ -16,8 +16,8 @@ COPY apps/server/package.json ./apps/server/
 RUN pnpm config set ignore-build-scripts true && \
     pnpm install --frozen-lockfile --registry=https://registry.npmmirror.com
 
-# 4. 复制所有源码（monorepo根目录下的apps/packages）
-COPY . .
+# 4. 仅复制server子包源码（无packages，无web，只复制apps/server）
+COPY apps/server/ ./apps/server/
 
 # 5. 进入server子包目录，接收BUILD_ENV并执行对应构建脚本
 # 切换到server子包
@@ -51,6 +51,8 @@ COPY --from=build-stage /app/apps/server/dist ./apps/server/dist
 # 5. 复制server子包的.env文件，设置运行时NODE_ENV
 WORKDIR /app/apps/server  
 ARG BUILD_ENV=prod
+# ========== 新增：打印当前目录下的所有文件（排查.env文件是否存在） ==========
+RUN echo "===== 当前目录(/app/apps/server)下的文件列表 =====" && ls -la ./
 COPY .env.test .env.production ./
 ENV NODE_ENV=${BUILD_ENV}  
 
