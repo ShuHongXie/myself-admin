@@ -14,8 +14,8 @@ import { ConfigService } from '@nestjs/config'
       async useFactory(configService: ConfigService) {
         const client = createClient({
           socket: {
-            host: configService.get('RD_HOST'),
-            port: configService.get('RD_PORT')
+            host: configService.get<string>('RD_HOST'),
+            port: configService.get<number>('RD_PORT')
           }
         })
         await client.connect()

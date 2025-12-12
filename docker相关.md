@@ -81,5 +81,8 @@ docker start [容器名] # 启动容器
 docker restart [容器名] # 重启容器
 docker rm [容器名] # 删除容器
 docker rmi [镜像名] # 删除镜像
-docker exec -it [容器名] /bin/sh # 进入容器命令行
+docker exec -it [容器名] /bin/bash # 进入容器命令行，以bash
+docker compose --profile base down redis
+docker compose --profile base up redis
+docker logs --tail 100 [容器名] # 查看容器日志最后100行
 ```
