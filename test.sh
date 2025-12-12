@@ -1,7 +1,7 @@
 #!/bin/bash
 # ====================== 核心配置（无 latest 标签）======================
-set -eo pipefail
-set -u
+# set -eo pipefail
+# set -u
 
 COMPOSE_CMD="docker compose"
 
@@ -73,6 +73,9 @@ rollback_service() {
 }
 
 # ====================== 环境解析（保留原有逻辑）======================
+log_info "当前npm版本：$(npm -v)"
+log_info "当前Node.js版本：$(node -v)"
+log_info "当前WORKSPACE路径：${WORKSPACE}"  # 修复：删除中文分号
 # 分支解析（兼容 WEBHOOK_BRANCH/BRANCH）
 if [ -n "$WEBHOOK_BRANCH" ]; then
   BRANCH_NAME="$WEBHOOK_BRANCH"
@@ -110,12 +113,11 @@ case "${BRANCH_ID}" in
 esac
 
 # 镜像配置（无 latest 标签，仅版本号）
-REGISTRY_PREFIX=""
 IMAGE_TAG="${BRANCH_NAME#*/}"
 BUILD_NAME="${IMAGE_TAG%-*}"
 COMPOSE_FILE="/data/ci-cd/docker-compose.yml"  # 你的 Compose 路径
 BUILD_ID="${BUILD_NUMBER:-$(date +%Y%m%d%H%M%S)}"  # 版本号（Jenkins构建号/时间戳）
-IMAGE_NAME="${REGISTRY_PREFIX}${BRANCH_ID}"  # 如 web-test/web-prod
+IMAGE_NAME="${BRANCH_ID}"  # 如 web-test/web-prod
 IMAGE_WITH_VERSION="${IMAGE_NAME}:${BUILD_ID}"  # 带版本号的镜像名（如 web-test:123）
 ROLLBACK_RECORD="/var/ci-cd/rollback-${BRANCH_ID}.log"  # 版本记录文件
 
@@ -154,7 +156,7 @@ case "${ACTION}" in
         docker build \
           --build-arg BUILD_ENV="${BUILD_ENV}" \
           --build-arg BUILD_NAME="${BUILD_NAME}" \
-          -t "${IMAGE_WITH_VERSION}" \  # 仅打版本号标签
+          -t "${IMAGE_WITH_VERSION}" \
           -f "${DOCKERFILE_PATH}" \
           "${WORKSPACE}" || log_error "镜像构建失败！"
 
