@@ -17,6 +17,29 @@ check_port() {
     timeout 5 bash -c "echo > /dev/tcp/${host}/${port}" 2>/dev/null && return 0 || return 1
 }
 
+# ====================== 强制拉取分支最新代码 ======================
+pull_latest_code() {
+    log_info "====================== 拉取分支最新代码 ====================="
+    # 切换到工作区根目录
+    cd "${WORKSPACE:-.}" || log_error "工作区目录不存在：${WORKSPACE}"
+    
+    # 初始化git（首次构建可能无.git目录）
+    if [ ! -d .git ]; then
+        log_warn "工作区无.git目录，初始化git仓库并关联远程"
+        git init
+        git remote add origin https://github.com/ShuHongXie/minilo || log_warn "远程仓库已关联，忽略"
+    fi
+
+    # 强制拉取最新代码（覆盖本地缓存）
+    git fetch origin --force || log_error "git fetch失败！"
+    git checkout "${BRANCH_NAME:-}" || log_error "切换分支${BRANCH_NAME}失败！"
+    git pull origin "${BRANCH_NAME:-}" --force || log_error "git pull最新代码失败！"
+
+    # 验证最新提交
+    log_info "✅ 拉取最新代码完成，当前分支最新提交："
+    git log -1 --pretty=format:"%H %s"
+}
+
 # ====================== 回滚核心函数（无 latest 标签）======================
 rollback_service() {
     local branch_id="${BRANCH_ID}"
@@ -84,6 +107,9 @@ else
 fi
 BRANCH_ID="${BRANCH_NAME##*/}"
 log_info "当前分支：${BRANCH_NAME} → ${BRANCH_ID}"
+
+pull_latest_code
+
 
 # 分支+端口映射（完全保留你的逻辑）
 case "${BRANCH_ID}" in
