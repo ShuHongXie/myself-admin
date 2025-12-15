@@ -1,15 +1,13 @@
 <template>
   <div class="demo-tree-select">
-    <div class="demo-section">
-      <h4>搜索功能</h4>
-      <ml-tree-select
-        :tree-data="treeData"
-        :show-search="true"
-        placeholder="搜索节点..."
-        @confirm="handleConfirm"
-        @cancel="handleCancel"
-      />
-    </div>
+    <ml-tree-select
+      :tree-data="treeData"
+      show-search
+      placeholder="输入关键词进行搜索"
+      @confirm="handleConfirm"
+      @cancel="handleCancel"
+      @input="handleInput"
+    />
   </div>
 </template>
 
@@ -19,29 +17,29 @@ import { ElMessage } from 'element-plus'
 const treeData = [
   {
     id: '1',
-    label: '用户管理',
+    label: '产品部',
     children: [
       {
         id: '1-1',
-        label: '用户列表',
+        label: '产品经理',
         children: [
           {
             id: '1-1-1',
-            label: '用户详情'
+            label: '张三'
           },
           {
             id: '1-1-2',
-            label: '用户编辑'
+            label: '李四'
           }
         ]
       },
       {
         id: '1-2',
-        label: '角色管理',
+        label: '设计师',
         children: [
           {
             id: '1-2-1',
-            label: '角色列表'
+            label: '王五'
           }
         ]
       }
@@ -49,48 +47,47 @@ const treeData = [
   },
   {
     id: '2',
-    label: '权限管理',
+    label: '技术部',
     children: [
       {
         id: '2-1',
-        label: '权限配置'
+        label: '前端开发',
+        children: [
+          {
+            id: '2-1-1',
+            label: '赵六'
+          }
+        ]
       },
       {
         id: '2-2',
-        label: '菜单管理'
+        label: '后端开发',
+        children: [
+          {
+            id: '2-2-1',
+            label: '钱七'
+          }
+        ]
       }
     ]
-  },
-  {
-    id: '3',
-    label: '系统设置'
   }
 ]
 
 const handleConfirm = (selectedData) => {
-  ElMessage.success(`选择了: ${selectedData.label}`)
+  ElMessage.success(`已选择: ${selectedData.label}`)
 }
 
 const handleCancel = () => {
-  ElMessage.info('已取消选择')
+  ElMessage.info('已取消')
+}
+
+const handleInput = (value) => {
+  console.log('搜索关键词:', value)
 }
 </script>
 
 <style scoped>
 .demo-tree-select {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-
-.demo-section {
-  flex: 1;
-  min-width: 300px;
-}
-
-.demo-section h4 {
-  margin-bottom: 12px;
-  font-size: 14px;
-  font-weight: 600;
+  padding: 20px;
 }
 </style>

@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<TreeSelectProps<T>>(), {
 const emit = defineEmits<{
   confirm: [selectedData: T | T[]] // 确认选择事件
   cancel: [] // 取消事件
+  input: [value: string] // 搜索输入事件
 }>()
 
 // 内部状态
@@ -148,7 +149,28 @@ const handleCancel = () => {
 defineExpose<TreeSelectExpose>({
   reset,
   getSelectedData,
-  getSelectedKeys
+  getSelectedKeys,
+  // el-tree 方法透传
+  getCheckedNodes: () => treeRef.value?.getCheckedNodes() || [],
+  getCheckedKeys: () => treeRef.value?.getCheckedKeys() || [],
+  getHalfCheckedNodes: () => treeRef.value?.getHalfCheckedNodes() || [],
+  getHalfCheckedKeys: () => treeRef.value?.getHalfCheckedKeys() || [],
+  getCurrentKey: () => treeRef.value?.getCurrentKey() ?? undefined,
+  getCurrentNode: () => treeRef.value?.getCurrentNode(),
+  setCheckedKeys: (keys: any[]) => treeRef.value?.setCheckedKeys(keys),
+  setCheckedNodes: (nodes: any[]) => treeRef.value?.setCheckedNodes(nodes),
+  setCurrentKey: (key: string | number | undefined) => treeRef.value?.setCurrentKey(key),
+  setCurrentNode: (node: any) => treeRef.value?.setCurrentNode(node),
+  getNode: (key: string | number) => treeRef.value?.getNode(key),
+  filter: (value: string) => treeRef.value?.filter(value),
+  updateKeyChildren: (key: string | number, children: any[]) =>
+    treeRef.value?.updateKeyChildren(key, children),
+  remove: (node: any) => treeRef.value?.remove(node),
+  append: (data: any, parentNode?: any) => treeRef.value?.append(data, parentNode),
+  insertBefore: (data: any, refNode: any) => treeRef.value?.insertBefore(data, refNode),
+  insertAfter: (data: any, refNode: any) => treeRef.value?.insertAfter(data, refNode),
+  //
+  input: (value: string) => emit('input', value)
 })
 </script>
 
@@ -162,7 +184,7 @@ defineExpose<TreeSelectExpose>({
       clearable
       :prefix-icon="Search"
       :class="bem('tree-select', 'search')"
-      @input="handleSearch"
+      @input="(value: string) => emit('input', value)"
     />
 
     <!-- 树形选择 -->
@@ -177,6 +199,8 @@ defineExpose<TreeSelectExpose>({
         :node-key="nodeKey"
         @check-change="handleCheckChange"
         @node-click="handleNodeClick"
+        v-bind="$attrs"
+        v-on="$attrs"
       />
     </div>
 

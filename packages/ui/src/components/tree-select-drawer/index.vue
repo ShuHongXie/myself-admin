@@ -30,6 +30,7 @@ const props = withDefaults(defineProps<TreeSelectDrawerProps<T>>(), {
 const emit = defineEmits<{
   confirm: [selectedData: T | T[]] // 确认选择事件
   close: [] // 抽屉关闭事件
+  input: [value: string] // 搜索输入事件
 }>()
 
 // 获取透传属性
@@ -95,6 +96,13 @@ const handleConfirm = (selectedData: T | T[]) => {
 const handleCancel = () => {
   visible.value = false
 }
+
+// 暴露方法
+defineExpose<{
+  input: (value: string) => void
+}>({
+  input: (value: string) => emit('input', value)
+})
 </script>
 
 <template>
@@ -109,6 +117,7 @@ const handleCancel = () => {
       ref="treeSelectRef"
       :tree-data="treeData"
       v-bind="treeSelectAttrs"
+      v-on="$attrs"
       @confirm="handleConfirm"
       @cancel="handleCancel"
     />

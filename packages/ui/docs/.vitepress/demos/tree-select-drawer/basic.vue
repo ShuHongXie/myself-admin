@@ -6,9 +6,7 @@
       v-model="drawerVisible"
       title="选择部门"
       :tree-data="treeData"
-      :default-selected-keys="['1-1']"
       @confirm="handleConfirm"
-      @close="handleClose"
     />
   </div>
 </template>
@@ -22,69 +20,38 @@ const drawerVisible = ref(false)
 const treeData = [
   {
     id: '1',
-    label: '公司总部',
+    label: '一级节点 1',
     children: [
       {
         id: '1-1',
-        label: '研发中心',
+        label: '二级节点 1-1',
         children: [
           {
             id: '1-1-1',
-            label: '前端开发'
-          },
-          {
-            id: '1-1-2',
-            label: '后端开发'
-          },
-          {
-            id: '1-1-3',
-            label: '测试部'
+            label: '三级节点 1-1-1'
           }
         ]
       },
       {
         id: '1-2',
-        label: '产品中心',
-        children: [
-          {
-            id: '1-2-1',
-            label: '产品设计'
-          },
-          {
-            id: '1-2-2',
-            label: '用户运营'
-          }
-        ]
-      },
-      {
-        id: '1-3',
-        label: '市场中心'
+        label: '二级节点 1-2'
       }
     ]
   },
   {
     id: '2',
-    label: '分公司',
+    label: '一级节点 2',
     children: [
       {
         id: '2-1',
-        label: '销售部'
-      },
-      {
-        id: '2-2',
-        label: '市场部'
+        label: '二级节点 2-1'
       }
     ]
   }
 ]
 
 const handleConfirm = (selectedData) => {
-  ElMessage.success(`选择了: ${selectedData.label}`)
-  drawerVisible.value = false
-}
-
-const handleClose = () => {
-  ElMessage.info('抽屉已关闭')
+  ElMessage.success(`已选择: ${selectedData.label}`)
 }
 </script>
 

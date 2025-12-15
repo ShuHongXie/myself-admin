@@ -4,11 +4,9 @@
 
     <ml-tree-select-dialog
       v-model="dialogVisible"
-      title="选择组织结构"
+      title="选择部门"
       :tree-data="treeData"
-      :default-selected-keys="['1-1']"
       @confirm="handleConfirm"
-      @close="handleClose"
     />
   </div>
 </template>
@@ -22,53 +20,38 @@ const dialogVisible = ref(false)
 const treeData = [
   {
     id: '1',
-    label: '总公司',
+    label: '一级节点 1',
     children: [
       {
         id: '1-1',
-        label: '技术部',
+        label: '二级节点 1-1',
         children: [
           {
             id: '1-1-1',
-            label: '前端组'
-          },
-          {
-            id: '1-1-2',
-            label: '后端组'
+            label: '三级节点 1-1-1'
           }
         ]
       },
       {
         id: '1-2',
-        label: '市场部',
-        children: [
-          {
-            id: '1-2-1',
-            label: '策划组'
-          }
-        ]
+        label: '二级节点 1-2'
       }
     ]
   },
   {
     id: '2',
-    label: '分公司',
+    label: '一级节点 2',
     children: [
       {
         id: '2-1',
-        label: '销售部'
+        label: '二级节点 2-1'
       }
     ]
   }
 ]
 
 const handleConfirm = (selectedData) => {
-  ElMessage.success(`选择了: ${selectedData.label}`)
-  dialogVisible.value = false
-}
-
-const handleClose = () => {
-  ElMessage.info('对话框已关闭')
+  ElMessage.success(`已选择: ${selectedData.label}`)
 }
 </script>
 

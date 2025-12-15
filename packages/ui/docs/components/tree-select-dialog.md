@@ -5,6 +5,7 @@
 <script setup>
 import BasicDemo from '../.vitepress/demos/tree-select-dialog/basic.vue'
 import MultipleDemo from '../.vitepress/demos/tree-select-dialog/multiple.vue'
+import EventsDemo from '../.vitepress/demos/tree-select-dialog/events.vue'
 </script>
 
 ## 基础用法
@@ -13,144 +14,99 @@ import MultipleDemo from '../.vitepress/demos/tree-select-dialog/multiple.vue'
 
 <BasicDemo />
 
-::: details 查看代码
-
-```vue
-<template>
-  <div>
-    <el-button type="primary" @click="dialogVisible = true">打开树形选择对话框</el-button>
-
-    <ml-tree-select-dialog
-      v-model="dialogVisible"
-      title="选择组织结构"
-      :tree-data="treeData"
-      :default-selected-keys="['1-1']"
-      @confirm="handleConfirm"
-      @close="handleClose"
-    />
-  </div>
-</template>
-
-<script setup>
-import { ref } from 'vue'
-import { ElMessage } from 'element-plus'
-
-const dialogVisible = ref(false)
-
-const treeData = [
-  {
-    id: '1',
-    label: '总公司',
-    children: [
-      {
-        id: '1-1',
-        label: '技术部'
-      }
-    ]
-  }
-]
-
-const handleConfirm = (selectedData) => {
-  ElMessage.success(`选择了: ${selectedData.label}`)
-  dialogVisible.value = false
-}
-
-const handleClose = () => {
-  ElMessage.info('对话框已关闭')
-}
-</script>
-```
-
-:::
-
 ## 多选对话框
 
 通过 `multiple` 属性支持多选功能。
 
 <MultipleDemo />
 
-::: details 查看代码
+## 事件透传示例
 
-```vue
-<template>
-  <div>
-    <el-button type="success" @click="dialogVisible = true">多选对话框</el-button>
+所有 el-tree 的事件都会自动透传，可以直接在父组件中监听。
 
-    <ml-tree-select-dialog
-      v-model="dialogVisible"
-      title="选择权限"
-      :tree-data="treeData"
-      :multiple="true"
-      :default-selected-keys="['1-1', '2-1']"
-      @confirm="handleConfirm"
-      @close="handleClose"
-    />
-  </div>
-</template>
+<EventsDemo />
 
-<script setup>
-import { ref } from 'vue'
-import { ElMessage } from 'element-plus'
+::: tip 事件透传原理
+组件使用 `v-on="$attrs"` 实现事件批量透传，无需手动定义每个事件。
 
-const dialogVisible = ref(false)
+**透传链路：**
 
-const treeData = [
-  // 树形数据...
-]
-
-const handleConfirm = (selectedData) => {
-  const names = selectedData.map(d => d.label).join(', ')
-  ElMessage.success(`选择了 ${selectedData.length} 项: ${names}`)
-  dialogVisible.value = false
-}
-
-const handleClose = () => {
-  ElMessage.info('对话框已关闭')
-}
-</script>
+```
+父组件 → MlTreeSelectDialog → MlTreeSelect → el-tree
 ```
 
-:::
+这意味着你可以直接在 `<ml-tree-select-dialog>` 上监听所有 el-tree 的事件，如：
+
+- `@node-click` - 节点被点击
+- `@node-contextmenu` - 节点右键菜单
+- `@check-change` - 勾选状态变化
+- `@check` - 勾选节点
+- `@current-change` - 当前选中节点变化
+- `@node-expand` - 节点展开
+- `@node-collapse` - 节点收起
+- `@node-drag-start` - 节点开始拖拽
+- `@node-drag-enter` - 拖拽进入节点
+- `@node-drag-leave` - 拖拽离开节点
+- `@node-drag-over` - 拖拽经过节点
+- `@node-drag-end` - 拖拽结束
+- `@node-drop` - 拖拽成功
+  :::
 
 ## Props
 
 ### 对话框特有属性
 
-| 参数  | 说明                   | 类型     | 可选值 | 默认值     |
-| ----- | ---------------------- | -------- | ------ | ---------- |
-| modelValue | 对话框的显示状态（v-model） | `boolean` | — | `false` |
-| title | 对话框的标题           | `string` | —      | `'树形选择'` |
-| width | 对话框的宽度           | `string` | —      | `'500px'` |
+| 参数       | 说明                        | 类型      | 可选值 | 默认值       |
+| ---------- | --------------------------- | --------- | ------ | ------------ |
+| modelValue | 对话框的显示状态（v-model） | `boolean` | —      | `false`      |
+| title      | 对话框的标题                | `string`  | —      | `'树形选择'` |
+| width      | 对话框的宽度                | `string`  | —      | `'500px'`    |
 
 ### 树形选择属性
 
-继承 `MlTreeSelect` 的所有属性：
-
-| 参数                   | 说明                  | 类型                  | 可选值 | 默认值                          |
-| ---------------------- | --------------------- | --------------------- | ------ | ------------------------------- |
-| treeData               | 树形数据              | `T[]`                 | —      | `[]`                            |
-| treeProps              | 树的节点属性配置      | `Record<string, any>` | —      | `{ label: 'label', children: 'children' }` |
-| multiple               | 是否为多选            | `boolean`             | —      | `false`                         |
-| defaultExpandAll       | 是否默认展开所有节点  | `boolean`             | —      | `true`                          |
-| defaultSelectedKeys    | 默认选中的节点 key    | `any[]`               | —      | `[]`                            |
-| nodeKey                | 节点的唯一标识字段    | `string`              | —      | `'id'`                          |
-| showSearch             | 是否显示搜索框        | `boolean`             | —      | `true`                          |
-| placeholder            | 搜索框占位符          | `string`              | —      | `'请输入关键词搜索'`            |
+继承 `MlTreeSelect` 的所有属性，如 `treeData`、`multiple`、`nodeKey` 等。
 
 ## Events
 
-| 事件名 | 说明                     | 回调参数          |
-| ------ | ------------------------ | ----------------- |
-| confirm | 确认选择时触发           | `(selectedData: T \| T[]) => void` |
-| close | 对话框关闭时触发         | `() => void`      |
+### 组件自定义事件
 
-## v-model
+| 事件名  | 说明               | 回调参数                           |
+| ------- | ------------------ | ---------------------------------- |
+| confirm | 确认选择时触发     | `(selectedData: T \| T[]) => void` |
+| close   | 对话框关闭时触发   | `() => void`                       |
+| input   | 搜索输入变化时触发 | `(value: string) => void`          |
 
-使用 `v-model` 双向绑定对话框的显示状态：
+### el-tree 透传事件
 
-```vue
-<ml-tree-select-dialog v-model="dialogVisible" />
-```
+所有 el-tree 的事件都会自动透传，包括：
+
+| 事件名           | 说明                       | 回调参数                                    |
+| ---------------- | -------------------------- | ------------------------------------------- |
+| node-click       | 节点被点击时触发           | `(data, node, instance)`                    |
+| node-contextmenu | 节点被鼠标右键点击时触发   | `(event, data, node, instance)`             |
+| check-change     | 节点选中状态发生变化时触发 | `(data, checked, indeterminate)`            |
+| check            | 点击复选框时触发           | `(data, checkState)`                        |
+| current-change   | 当前选中节点变化时触发     | `(data, node)`                              |
+| node-expand      | 节点被展开时触发           | `(data, node, instance)`                    |
+| node-collapse    | 节点被关闭时触发           | `(data, node, instance)`                    |
+| node-drag-start  | 节点开始拖拽时触发         | `(node, event)`                             |
+| node-drag-enter  | 拖拽进入其他节点时触发     | `(draggingNode, dropNode, event)`           |
+| node-drag-leave  | 拖拽离开某个节点时触发     | `(draggingNode, dropNode, event)`           |
+| node-drag-over   | 在拖拽节点时触发           | `(draggingNode, dropNode, event)`           |
+| node-drag-end    | 拖拽结束时触发             | `(draggingNode, dropNode, dropType, event)` |
+| node-drop        | 拖拽成功完成时触发         | `(draggingNode, dropNode, dropType, event)` |
+
+## 方法
+
+组件通过 `defineExpose` 暴露以下方法：
+
+| 方法名 | 说明         | 参数            | 返回值 |
+| ------ | ------------ | --------------- | ------ |
+| input  | 触发输入事件 | `value: string` | `void` |
+
+::: tip
+更多方法请参考内部 `MlTreeSelect` 组件的方法，可以通过组件实例访问。
+:::
 
 ## 使用场景
 
@@ -163,5 +119,5 @@ const handleClose = () => {
 
 1. **对话框关闭时重置**：关闭对话框时会自动重置树形选择的状态
 2. **属性透传**：对话框的其他属性（如 `close-on-click-modal`）可以直接传递
-3. **与 MlTreeSelect 的关系**：本组件内部使用 `MlTreeSelect`，支持其所有配置
+3. **事件透传**：所有 el-tree 的事件都会自动透传，无需手动定义
 4. **双向绑定**：务必使用 `v-model` 绑定 `visible` 属性，否则对话框无法正确打开/关闭

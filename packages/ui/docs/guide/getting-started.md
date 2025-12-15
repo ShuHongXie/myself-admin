@@ -145,6 +145,10 @@ import '@minilo/ui/theme-chalk/ml-chart'
 - `<ml-button />` → `MlButton`
 - `<ml-search-table />` → `MlSearchTable`
 - `<ml-virtual-list />` → `MlVirtualList`
+- `<ml-number-range-input />` → `MlNumberRangeInput`
+- `<ml-tree-select />` → `MlTreeSelect`
+- `<ml-tree-select-dialog />` → `MlTreeSelectDialog`
+- `<ml-tree-select-drawer />` → `MlTreeSelectDrawer`
 
 #### 高级配置
 

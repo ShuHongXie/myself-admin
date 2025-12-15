@@ -1,15 +1,12 @@
 <template>
   <div class="demo-tree-select">
-    <div class="demo-section">
-      <h4>多选模式</h4>
-      <ml-tree-select
-        :tree-data="treeData"
-        :multiple="true"
-        :default-selected-keys="['1-1', '2-1']"
-        @confirm="handleConfirm"
-        @cancel="handleCancel"
-      />
-    </div>
+    <ml-tree-select
+      :tree-data="treeData"
+      multiple
+      :default-selected-keys="['1', '1-1']"
+      @confirm="handleConfirm"
+      @cancel="handleCancel"
+    />
   </div>
 </template>
 
@@ -19,79 +16,52 @@ import { ElMessage } from 'element-plus'
 const treeData = [
   {
     id: '1',
-    label: '一级 1',
+    label: '一级节点 1',
     children: [
       {
         id: '1-1',
-        label: '二级 1-1',
+        label: '二级节点 1-1',
         children: [
           {
             id: '1-1-1',
-            label: '三级 1-1-1'
-          },
-          {
-            id: '1-1-2',
-            label: '三级 1-1-2'
+            label: '三级节点 1-1-1'
           }
         ]
       },
       {
         id: '1-2',
-        label: '二级 1-2',
-        children: [
-          {
-            id: '1-2-1',
-            label: '三级 1-2-1'
-          }
-        ]
+        label: '二级节点 1-2'
       }
     ]
   },
   {
     id: '2',
-    label: '一级 2',
+    label: '一级节点 2',
     children: [
       {
         id: '2-1',
-        label: '二级 2-1'
+        label: '二级节点 2-1'
       },
       {
         id: '2-2',
-        label: '二级 2-2'
+        label: '二级节点 2-2'
       }
     ]
-  },
-  {
-    id: '3',
-    label: '一级 3'
   }
 ]
 
 const handleConfirm = (selectedData) => {
-  const names = selectedData.map((d) => d.label).join(', ')
-  ElMessage.success(`选择了 ${selectedData.length} 项: ${names}`)
+  const labels = selectedData.map((d) => d.label).join(', ')
+  ElMessage.success(`已选择: ${labels}`)
 }
 
 const handleCancel = () => {
-  ElMessage.info('已取消选择')
+  ElMessage.info('已取消')
 }
 </script>
 
 <style scoped>
 .demo-tree-select {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-
-.demo-section {
-  flex: 1;
-  min-width: 300px;
-}
-
-.demo-section h4 {
-  margin-bottom: 12px;
-  font-size: 14px;
-  font-weight: 600;
+  padding: 20px;
 }
 </style>

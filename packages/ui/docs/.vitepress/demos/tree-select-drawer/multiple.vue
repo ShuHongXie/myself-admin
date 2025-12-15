@@ -1,15 +1,15 @@
 <template>
   <div class="demo-tree-select-drawer">
-    <el-button type="success" @click="drawerVisible = true">多选抽屉</el-button>
+    <el-button type="primary" @click="drawerVisible = true">打开多选抽屉</el-button>
 
     <ml-tree-select-drawer
       v-model="drawerVisible"
-      title="批量分配权限"
+      title="选择权限（多选）"
       :tree-data="treeData"
-      :multiple="true"
-      :default-selected-keys="['1-1', '2-1']"
+      multiple
+      size="500px"
+      :default-selected-keys="['1', '1-1']"
       @confirm="handleConfirm"
-      @close="handleClose"
     />
   </div>
 </template>
@@ -23,62 +23,41 @@ const drawerVisible = ref(false)
 const treeData = [
   {
     id: '1',
-    label: '权限管理',
+    label: '用户管理',
     children: [
       {
         id: '1-1',
-        label: '用户权限',
-        children: [
-          {
-            id: '1-1-1',
-            label: '查看用户'
-          },
-          {
-            id: '1-1-2',
-            label: '编辑用户'
-          },
-          {
-            id: '1-1-3',
-            label: '删除用户'
-          }
-        ]
+        label: '用户列表'
       },
       {
         id: '1-2',
-        label: '角色权限',
-        children: [
-          {
-            id: '1-2-1',
-            label: '配置角色'
-          }
-        ]
+        label: '用户新增'
+      },
+      {
+        id: '1-3',
+        label: '用户编辑'
       }
     ]
   },
   {
     id: '2',
-    label: '内容管理',
+    label: '角色管理',
     children: [
       {
         id: '2-1',
-        label: '文章管理'
+        label: '角色列表'
       },
       {
         id: '2-2',
-        label: '分类管理'
+        label: '角色配置'
       }
     ]
   }
 ]
 
 const handleConfirm = (selectedData) => {
-  const names = selectedData.map((d) => d.label).join(', ')
-  ElMessage.success(`已分配 ${selectedData.length} 项权限: ${names}`)
-  drawerVisible.value = false
-}
-
-const handleClose = () => {
-  ElMessage.info('抽屉已关闭')
+  const labels = selectedData.map((d) => d.label).join(', ')
+  ElMessage.success(`已选择: ${labels}`)
 }
 </script>
 
