@@ -14,5 +14,6 @@ import treeSelectDialog from './preview/treeSelectDialog.vue'
 </template>
 
 <style lang="scss">
-@import './style/index.scss';
+// @import './style/index.scss';
+@use './style/index.scss' as *;
 </style>

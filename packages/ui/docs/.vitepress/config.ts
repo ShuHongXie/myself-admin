@@ -53,6 +53,9 @@ export default defineConfig({
           { text: 'MlSearchTable 搜索表格', link: '/components/search-table' },
           { text: 'MlDetail 详情', link: '/components/detail' },
           { text: 'MlButton 按钮', link: '/components/button' },
+          { text: 'MlTreeSelect 树形选择', link: '/components/tree-select' },
+          { text: 'MlTreeSelectDialog 树形选择对话框', link: '/components/tree-select-dialog' },
+          { text: 'MlTreeSelectDrawer 树形选择抽屉', link: '/components/tree-select-drawer' },
           { text: 'MlVirtualList 虚拟列表', link: '/components/virtual-list' },
           { text: 'MlNumberRangeInput 数值范围输入框', link: '/components/number-range-input' }
         ]

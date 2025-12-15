@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MlSearch from '../search/index.vue'
-import { ref, onMounted, defineProps, useAttrs, defineEmits } from 'vue'
+import { ref, onMounted, useAttrs } from 'vue'
 import { searchTableProps, RequestMethodType } from './props'
 import { type SearchModel } from '../search/props'
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'

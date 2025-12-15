@@ -1,22 +1,23 @@
 <script setup lang="ts" generic="T = any">
 import { ref, watch, useAttrs, computed } from 'vue'
-import MlTreeSelect from '../tree-select'
-import type { TreeSelectDialogProps } from './type'
-import { dialogPropKeys } from './type'
+import type { TreeSelectDrawerProps } from './type'
+import { drawerPropKeys } from './type'
 import type { TreeSelectExpose } from '../tree-select/type'
+import MlTreeSelect from '../tree-select/index.vue'
 import { bem } from '../../utils'
 
 defineOptions({
-  name: 'MlTreeSelectDialog'
+  name: 'MlTreeSelectDrawer'
 })
 
-// 使用 defineModel 双向绑定弹窗显示状态
+// 使用 defineModel 双向绑定抽屉显示状态
 const visible = defineModel<boolean>({ default: false })
 
 // Props 定义
-const props = withDefaults(defineProps<TreeSelectDialogProps<T>>(), {
+const props = withDefaults(defineProps<TreeSelectDrawerProps<T>>(), {
   title: '树形选择',
-  width: '500px',
+  size: '400px',
+  direction: 'rtl',
   treeProps: () => ({ label: 'label', children: 'children' }),
   multiple: false,
   defaultExpandAll: true,
@@ -28,20 +29,21 @@ const props = withDefaults(defineProps<TreeSelectDialogProps<T>>(), {
 // 事件定义
 const emit = defineEmits<{
   confirm: [selectedData: T | T[]] // 确认选择事件
-  close: [] // 弹窗关闭事件
+  close: [] // 抽屉关闭事件
 }>()
 
 // 获取透传属性
 const attrs = useAttrs()
 
-// 过滤 Dialog 属性
-const dialogAttrs = computed(() => {
+// 过滤 Drawer 属性
+const drawerAttrs = computed(() => {
   const result: Record<string, any> = {
     title: props.title,
-    width: props.width
+    size: props.size,
+    direction: props.direction
   }
   Object.keys(attrs).forEach((key) => {
-    if (dialogPropKeys.includes(key)) {
+    if (drawerPropKeys.includes(key)) {
       result[key] = attrs[key]
     }
   })
@@ -51,7 +53,6 @@ const dialogAttrs = computed(() => {
 // 过滤 TreeSelect 属性
 const treeSelectAttrs = computed(() => {
   const result: Record<string, any> = {
-    treeData: props.treeData,
     treeProps: props.treeProps,
     multiple: props.multiple,
     defaultExpandAll: props.defaultExpandAll,
@@ -60,7 +61,7 @@ const treeSelectAttrs = computed(() => {
     showSearch: props.showSearch
   }
   Object.keys(attrs).forEach((key) => {
-    if (!dialogPropKeys.includes(key) && !key.startsWith('on')) {
+    if (!drawerPropKeys.includes(key) && !key.startsWith('on')) {
       result[key] = attrs[key]
     }
   })
@@ -70,17 +71,18 @@ const treeSelectAttrs = computed(() => {
 // 树形选择组件引用
 const treeSelectRef = ref<TreeSelectExpose>()
 
-// 监听弹窗显示状态
+// 监听抽屉显示状态
 watch(visible, (val) => {
   if (!val && treeSelectRef.value) {
-    // 弹窗关闭时重置
+    // 抽屉关闭时重置
     treeSelectRef.value.reset()
   }
 })
 
-// 弹窗关闭前回调
-const handleBeforeClose = () => {
+// 抽屉关闭前回调
+const handleBeforeClose = (done: () => void) => {
   visible.value = false
+  done()
 }
 
 // 确认选择
@@ -96,19 +98,19 @@ const handleCancel = () => {
 </script>
 
 <template>
-  <el-dialog
+  <el-drawer
     v-model="visible"
-    v-bind="dialogAttrs"
-    :class="bem('tree-select-dialog')"
+    v-bind="drawerAttrs"
+    :class="bem('tree-select-drawer')"
     :before-close="handleBeforeClose"
     @close="emit('close')"
   >
     <MlTreeSelect
       ref="treeSelectRef"
-      :tree-data="props.treeData"
+      :tree-data="treeData"
       v-bind="treeSelectAttrs"
       @confirm="handleConfirm"
       @cancel="handleCancel"
     />
-  </el-dialog>
+  </el-drawer>
 </template>

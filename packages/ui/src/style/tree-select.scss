@@ -1,0 +1,47 @@
+@use './mixins/mixin.scss' as *;
+@use './default/variable.scss' as *;
+
+// 核心树形选择组件
+@include bem('tree-select') {
+  height: 100%;
+  @include flex($direction: column, $justify: flex-start, $align-items: stretch);
+
+  &__search {
+    margin-bottom: 16px;
+  }
+
+  &__tree {
+    flex: 1;
+    overflow: auto;
+    min-height: 200px;
+  }
+
+  &__footer {
+    @include flex($justify: flex-end, $align-items: center);
+    padding-top: 16px;
+    border-top: 1px solid var(--el-border-color-light);
+    margin-top: 16px;
+  }
+}
+
+// 弹窗版本
+@include bem('tree-select-dialog') {
+  .el-dialog__header {
+    margin-bottom: 0;
+  }
+  .el-dialog__body {
+    padding-top: 10px;
+  }
+}
+
+// 抽屉版本
+@include bem('tree-select-drawer') {
+  .el-drawer__header {
+    margin-bottom: 0;
+  }
+  .el-drawer__body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+}
