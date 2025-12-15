@@ -22,9 +22,7 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish --registry=https://registry.npmjs.com/ --access=public",
-    "docs:dev": "pnpm --filter @minilo/ui docs:dev",
-    "docs:build": "pnpm --filter @minilo/ui docs:build",
-    "docs:preview": "pnpm --filter @minilo/ui docs:preview"
+    "gh-pages": "npx gh-pages -d packages/ui/docs/.vitepress/dist -b gh-pages -f"
   },
   "lint-staged": {
     "*.{js,ts,tsx,vue}": [
@@ -76,7 +74,9 @@
   "pnpm": {
     "overrides": {
       "@minilo/ui": "^0.0.2",
-      "@minilo/utils": "^0.0.2"
+      "@minilo/utils": "^0.0.2",
+      "@vueuse/core": "13.9.0",
+      "@vueuse/shared": "13.9.0"
     }
   }
 }

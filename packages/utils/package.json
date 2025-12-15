@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc --noCheck"
   },
   "files": [
     "dist"

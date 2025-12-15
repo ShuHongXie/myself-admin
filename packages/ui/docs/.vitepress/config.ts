@@ -5,28 +5,32 @@ import { resolve } from 'path'
 export default defineConfig({
   title: 'Minilo-UI',
   description: 'Minilo-UI组件库',
+  base: '/minilo/',
   vite: {
     resolve: {
       alias: {
         '#': resolve(__dirname, '../../src'),
-        '@minilo/utils': resolve(__dirname, '../../../utils'),
-        '@minilo/types': resolve(__dirname, '../../../types')
+        '@minilo/utils': resolve(__dirname, '../../../utils/index.ts'),
+        '@minilo/types': resolve(__dirname, '../../../types/index.ts')
       }
     },
     ssr: {
       noExternal: [
         'element-plus',
-        '@minilo/utils',
         '@minilo/types',
         '@vueuse/core',
         'lodash.clonedeep',
-        'axios',
-        'defu'
-      ],
-      external: ['axios-mock-adapter']
+        'defu',
+        'echarts'
+      ]
     },
     optimizeDeps: {
-      include: ['axios-mock-adapter']
+      exclude: ['@minilo/utils', '@minilo/types']
+    },
+    build: {
+      rollupOptions: {
+        external: ['crypto', 'stream', 'util', 'http', 'https', 'path', 'fs', 'zlib', 'url']
+      }
     }
   },
   themeConfig: {

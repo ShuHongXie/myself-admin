@@ -81,6 +81,7 @@
     "echarts": "^6.0.0",
     "esbuild": "^0.25.12",
     "fs-extra": "^11.3.2",
+    "gh-pages": "^6.3.0",
     "gulp": "^5.0.1",
     "gulp-autoprefixer": "^10.0.0",
     "gulp-rename": "^2.1.0",
@@ -103,5 +104,11 @@
   },
   "peerDependencies": {
     "vue": "^3.5.17"
+  },
+  "pnpm": {
+    "overrides": {
+      "@vueuse/core": "13.9.0",
+      "@vueuse/shared": "13.9.0"
+    }
   }
 }
