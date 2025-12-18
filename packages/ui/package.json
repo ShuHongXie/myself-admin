@@ -59,7 +59,8 @@
   "dependencies": {
     "@iconify/vue": "catalog:",
     "element-plus": "catalog:",
-    "vue": "^3.5.22"
+    "vue": "^3.5.22",
+    "xlsx": "catalog:"
   },
   "devDependencies": {
     "@minilo/utils": "workspace:^",

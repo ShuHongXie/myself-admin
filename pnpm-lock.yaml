@@ -145,7 +145,7 @@ catalogs:
       specifier: 2.2.12
       version: 2.2.12
     xlsx:
-      specifier: ^0.18.5
+      specifier: 0.18.5
       version: 0.18.5
 
 overrides:
@@ -579,6 +579,9 @@ importers:
       vue:
         specifier: ^3.5.22
         version: 3.5.22(typescript@5.9.3)
+      xlsx:
+        specifier: 'catalog:'
+        version: 0.18.5
     devDependencies:
       '@minilo/utils':
         specifier: ^0.0.2
