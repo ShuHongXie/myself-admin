@@ -481,7 +481,7 @@ defineExpose({
       :accept="acceptType"
       :show-file-list="false"
     >
-      <el-button type="primary">选择图片</el-button>
+      <el-button :disabled="fileList.length === props.maxCount" type="primary">选择图片</el-button>
       <template #tip>
         <div :class="bem('image-upload-pro', 'upload-text')">
           支持格式：{{ acceptDesc }} | 单文件大小≤{{ props.sizeLimit.size }}MB
@@ -529,7 +529,8 @@ defineExpose({
     <el-dialog
       v-model="cropDialogVisible"
       title="图片裁剪"
-      width="800px"
+      width="900px"
+      :close-on-click-modal="false"
       destroy-on-close
       @close="resetCropper"
     >
