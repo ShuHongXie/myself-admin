@@ -1,7 +1,8 @@
 import { defineConfig } from 'vitepress'
 import { resolve } from 'path'
 
-// https://vitepress.dev/reference/site-config
+// 获取环境变量中的 API 地址，默认使用相对路径
+const API_BASE_URL = process.env.VITE_API_BASE_URL || '/api'
 export default defineConfig({
   title: 'Minilo-UI',
   description: 'Minilo-UI组件库',
@@ -13,6 +14,9 @@ export default defineConfig({
         '@minilo/utils': resolve(__dirname, '../../../utils/index.ts'),
         '@minilo/types': resolve(__dirname, '../../../types/index.ts')
       }
+    },
+    define: {
+      __API_BASE_URL__: JSON.stringify(API_BASE_URL)
     },
     ssr: {
       noExternal: [

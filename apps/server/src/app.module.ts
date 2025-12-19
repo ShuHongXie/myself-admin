@@ -15,6 +15,7 @@ import { StringToNullInterceptor } from './common/interceptor/stringToNull.inter
 import { LogModule } from './modules/log/log.module'
 import { OperationLogInterceptor } from '@interceptor/log.interceptor'
 import { UploadModule } from './modules/upload/upload.module'
+import { MockModule } from './modules/mock/mock.module'
 @Module({
   imports: [
     // 加载环境变量配置
@@ -56,7 +57,8 @@ import { UploadModule } from './modules/upload/upload.module'
     MenuModule,
     RoleModule,
     LogModule,
-    UploadModule
+    UploadModule,
+    MockModule
   ],
   controllers: [AppController],
   providers: [
