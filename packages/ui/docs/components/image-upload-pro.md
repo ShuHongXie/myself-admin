@@ -6,6 +6,9 @@
 import BasicDemo from '../.vitepress/demos/image-upload-pro/basic.vue'
 import CropDemo from '../.vitepress/demos/image-upload-pro/crop.vue'
 import LimitDemo from '../.vitepress/demos/image-upload-pro/limit.vue'
+import FormDemo from '../.vitepress/demos/image-upload-pro/form.vue'
+import CustomApiDemo from '../.vitepress/demos/image-upload-pro/custom-api.vue'
+import DynamicLimitDemo from '../.vitepress/demos/image-upload-pro/dynamic-limit.vue'
 </script>
 
 ## 基础用法
@@ -14,7 +17,40 @@ import LimitDemo from '../.vitepress/demos/image-upload-pro/limit.vue'
 
 <BasicDemo />
 
-# 裁剪功能
+### 代码示例
+
+::: details 点击查看代码
+
+```vue
+<template>
+  <div>
+    <ml-image-upload-pro
+      v-model="imageList"
+      :max-count="9"
+      :auto-upload="true"
+      :allow-crop="false"
+      :upload-api="uploadApi"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const imageList = ref([])
+
+const uploadApi = {
+  url: '/api/upload', // 后端上传接口
+  method: 'post',
+  fieldName: 'file',
+  responseUrlField: 'data.url' // 从响应中提取图片URL的字段路径
+}
+</script>
+```
+
+:::
+
+## 裁剪功能
 
 启用图片裁剪功能，支持自由比例、1:1、4:3、16:9 等多种裁剪比例。
 
@@ -32,25 +68,251 @@ import LimitDemo from '../.vitepress/demos/image-upload-pro/limit.vue'
 4. **完成裁剪** - 点击"确认裁剪"按钮完成操作
    :::
 
+### 代码示例
+
+::: details 点击查看代码
+
+```vue
+<template>
+  <div>
+    <ml-image-upload-pro
+      v-model="imageList"
+      :max-count="5"
+      :auto-upload="false"
+      :allow-crop="true"
+      :allow-sort="true"
+      :size-limit="{
+        width: 400,
+        height: 300,
+        size: 5
+      }"
+      :upload-api="uploadApi"
+    />
+
+    <!-- 上传按钮（手动上传） -->
+    <el-button
+      v-if="imageList.length"
+      type="primary"
+      @click="handleUpload"
+      style="margin-top: 16px"
+    >
+      上传所有图片
+    </el-button>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
+
+const imageList = ref([])
+
+const uploadApi = {
+  url: '/api/upload',
+  method: 'post',
+  fieldName: 'file',
+  responseUrlField: 'data.url'
+}
+
+// 手动上传
+const handleUpload = () => {
+  const urls = imageList.value.map((img) => img.serverUrl || img.url)
+  console.log('上传的图片 URL:', urls)
+  ElMessage.success('图片上传成功')
+}
+</script>
+```
+
+:::
+
 ## 限制配置
 
 通过配置参数限制上传数量、尺寸等。
 
 <LimitDemo />
 
+### 代码示例
+
+::: details 点击查看代码
+
+```vue
+<template>
+  <ml-image-upload-pro
+    v-model="imageList"
+    :max-count="3"
+    :accept-type="'image/jpeg,image/png'"
+    :size-limit="{
+      width: 800, // 最小宽度
+      height: 600, // 最小高度
+      size: 2 // 单文件最大 2MB
+    }"
+    :upload-api="uploadApi"
+  />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const imageList = ref([])
+
+const uploadApi = {
+  url: '/api/upload',
+  method: 'post',
+  fieldName: 'file',
+  responseUrlField: 'data.url'
+}
+</script>
+```
+
+:::
+
+## 高级用法
+
+### 配合表单使用
+
+在表单中使用图片上传组件，配合其他表单项一起提交。
+
+<FormDemo />
+
+#### 代码示例
+
+::: details 点击查看代码
+
+```vue
+<template>
+  <el-form :model="form" label-width="100px">
+    <el-form-item label="商品图片">
+      <ml-image-upload-pro
+        v-model="form.images"
+        :max-count="9"
+        :auto-upload="true"
+        :upload-api="uploadApi"
+      />
+    </el-form-item>
+
+    <el-form-item label="产品名称">
+      <el-input v-model="form.name" placeholder="请输入产品名称" />
+    </el-form-item>
+
+    <el-form-item>
+      <el-button type="primary" @click="handleSubmit"> 保存 </el-button>
+    </el-form-item>
+  </el-form>
+</template>
+
+<script setup lang="ts">
+import { reactive } from 'vue'
+import { ElMessage } from 'element-plus'
+
+const form = reactive({
+  name: '',
+  images: []
+})
+
+const uploadApi = {
+  url: '/api/upload',
+  method: 'post',
+  fieldName: 'file',
+  responseUrlField: 'data.url'
+}
+
+const handleSubmit = () => {
+  // 获取所有图片的 URL
+  const imageUrls = form.images.map((img) => img.serverUrl || img.url)
+
+  // 提交表单数据
+  const submitData = {
+    name: form.name,
+    images: imageUrls
+  }
+
+  console.log('提交数据:', submitData)
+  ElMessage.success('保存成功')
+}
+</script>
+```
+
+:::
+
+### 自定义上传接口配置
+
+自定义上传接口的各种配置项，包括请求头、额外数据等。
+
+<CustomApiDemo />
+
+#### 代码示例
+
+::: details 点击查看代码
+
+```typescript
+const uploadApi = {
+  // 上传接口地址
+  url: '/api/v1/upload/image',
+
+  // 请求方法
+  method: 'post',
+
+  // 上传文件的字段名
+  fieldName: 'img',
+
+  // 请求头（如添加授权令牌）
+  headers: {
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+
+  // 额外的表单数据
+  data: {
+    category: 'product',
+    bizType: 'shop'
+  },
+
+  // 从响应中提取图片 URL 的字段路径
+  responseUrlField: 'result.imageUrl'
+}
+```
+
+:::
+
+### 动态限制参数
+
+根据不同场景动态调整上传限制参数。
+
+<DynamicLimitDemo />
+
+#### 代码示例
+
+::: details 点击查看代码
+
+```typescript
+const sizeLimit = reactive({
+  width: 800,
+  height: 600,
+  size: 5
+})
+
+// 根据条件修改限制
+if (useHighQuality) {
+  sizeLimit.width = 1920
+  sizeLimit.height = 1080
+  sizeLimit.size = 10
+}
+```
+
+:::
+
 ## Props
 
-| 参数       | 说明                      | 类型              | 可选值 | 默认值                                                   |
-| ---------- | ------------------------- | ----------------- | ------ | -------------------------------------------------------- |
-| modelValue | 已上传图片列表（v-model） | `UploadFile[]`    | —      | `[]`                                                     |
-| maxCount   | 最大上传数量              | `number`          | —      | `9`                                                      |
-| autoUpload | 是否自动上传              | `boolean`         | —      | `true`                                                   |
-| allowCrop  | 是否允许裁剪              | `boolean`         | —      | `false`                                                  |
-| allowSort  | 是否允许拖拽排序          | `boolean`         | —      | `true`                                                   |
-| acceptType | 接受的文件类型            | `string`          | —      | `'image/jpeg,image/png,image/gif,image/webp'`            |
-| accept     | 接受的 MIME 类型数组      | `string[]`        | —      | `['image/jpeg', 'image/png', 'image/gif', 'image/webp']` |
-| sizeLimit  | 大小限制配置              | `SizeLimit`       | —      | `{ width: 0, height: 0, size: 10 }`                      |
-| uploadApi  | 上传接口配置              | `UploadApiConfig` | —      | `undefined`                                              |
+| 参数       | 说明                                  | 类型              | 可选值 | 默认值                                                   |
+| :--------- | :------------------------------------ | :---------------- | :----- | :------------------------------------------------------- |
+| modelValue | 已上传图片列表（v-model）             | `UploadFile[]`    | —      | `[]`                                                     |
+| maxCount   | 最大上传数量                          | `number`          | —      | `9`                                                      |
+| autoUpload | 是否自动上传（启用后需配置uploadApi） | `boolean`         | —      | `true`                                                   |
+| allowCrop  | 是否允许裁剪                          | `boolean`         | —      | `false`                                                  |
+| allowSort  | 是否允许拖拽排序                      | `boolean`         | —      | `true`                                                   |
+| acceptType | 接受的文件类型                        | `string`          | —      | `'image/jpeg,image/png,image/gif,image/webp'`            |
+| accept     | 接受的 MIME 类型数组                  | `string[]`        | —      | `['image/jpeg', 'image/png', 'image/gif', 'image/webp']` |
+| sizeLimit  | 大小限制配置                          | `SizeLimit`       | —      | `{ width: 0, height: 0, size: 10 }`                      |
+| uploadApi  | 上传接口配置                          | `UploadApiConfig` | —      | `undefined`                                              |
 
 ### SizeLimit 配置
 
@@ -151,53 +413,3 @@ interface PreviewItem extends UploadFile {
 3. **CORS 问题**：如果上传跨域图片进行裁剪，组件会自动使用 Blob URL 避免 CORS 错误
 4. **大小限制**：`sizeLimit.size` 单位为 MB，最大值受浏览器和服务器限制
 5. **格式支持**：默认支持 JPEG、PNG、GIF、WebP 格式
-
-## 高级用法
-
-### 配合表单使用
-
-```typescript
-const form = reactive({
-  images: []
-})
-
-const handleSubmit = () => {
-  // 获取已上传的图片 URL
-  const imageUrls = form.images.map((img) => img.serverUrl || img.url)
-  // 提交表单
-  submitForm({ ...form, images: imageUrls })
-}
-```
-
-### 自定义上传 API
-
-```typescript
-const uploadApi = {
-  url: '/api/upload',
-  method: 'post',
-  fieldName: 'img',
-  headers: {
-    Authorization: 'Bearer token'
-  },
-  data: {
-    category: 'product'
-  },
-  responseUrlField: 'result.imageUrl'
-}
-```
-
-### 动态限制参数
-
-```typescript
-const sizeLimit = reactive({
-  width: 800,
-  height: 600,
-  size: 5
-})
-
-// 根据条件修改限制
-if (useHighQuality) {
-  sizeLimit.width = 1920
-  sizeLimit.height = 1080
-}
-```

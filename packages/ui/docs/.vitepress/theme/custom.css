@@ -1,0 +1,42 @@
+/* 自定义表格样式 - 让"说明"列更宽 */
+.vp-doc table {
+  table-layout: auto !important;
+  width: 100%;
+}
+
+/* Props 表格列宽优化 */
+.vp-doc table th:nth-child(1),
+.vp-doc table td:nth-child(1) {
+  width: 120px;
+  min-width: 120px;
+}
+
+.vp-doc table th:nth-child(2),
+.vp-doc table td:nth-child(2) {
+  width: auto;
+  min-width: 200px;
+}
+
+.vp-doc table th:nth-child(3),
+.vp-doc table td:nth-child(3) {
+  width: 180px;
+  min-width: 180px;
+}
+
+.vp-doc table th:nth-child(4),
+.vp-doc table td:nth-child(4) {
+  width: 80px;
+  min-width: 80px;
+}
+
+.vp-doc table th:nth-child(5),
+.vp-doc table td:nth-child(5) {
+  width: 280px;
+  min-width: 280px;
+}
+
+/* 说明列文字不换行或合理换行 */
+.vp-doc table td:nth-child(2) {
+  white-space: normal;
+  word-break: break-word;
+}

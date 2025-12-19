@@ -35,17 +35,18 @@ export class MockService {
       }
 
       // 分页
-      const total = filteredUsers.length
+      const total = this.mockUsers.length
       const start = (currentPage - 1) * pageSize
       const end = start + pageSize
-      const result = filteredUsers.slice(start, end)
+      const result = this.mockUsers
 
       return ResultData.success('获取用户列表成功', {
-        items: result,
-        total,
-        pageSize,
-        currentPage,
-        totalPages: Math.ceil(total / pageSize)
+        result,
+        total: total
+        // total,
+        // pageSize,
+        // currentPage,
+        // totalPages: Math.ceil(total / pageSize)
       })
     } catch (error) {
       return ResultData.fail('获取用户列表失败')

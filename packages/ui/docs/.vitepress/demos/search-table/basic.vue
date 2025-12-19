@@ -4,10 +4,12 @@ import { ElMessage } from 'element-plus'
 
 // 从全局变量获取 API 基础地址
 const apiBaseUrl = typeof __API_BASE_URL__ !== 'undefined' ? __API_BASE_URL__ : '/api'
+console.log('apiBaseUrl:', apiBaseUrl)
 
 const searchModel = ref({
   name: '',
-  status: ''
+  status: '',
+  _component: 'basic' // 添加组件标识，避免重复请求被取消
 })
 
 const searchConfig = {
