@@ -75,9 +75,7 @@ export const initRequestInstance = (
       interceptorsResponseFn(response)
       // 从pending列表移除请求
       removePendingRequest(response.config)
-
       const data = response.data as ApiResponse<any>
-      console.log(data)
 
       // 根据实际后端接口规范处理响应
       if (data.code === 200) {

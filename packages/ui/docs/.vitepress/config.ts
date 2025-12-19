@@ -6,6 +6,15 @@ export default defineConfig({
   title: 'Minilo-UI',
   description: 'Minilo-UI组件库',
   vite: {
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:4000', // 后端接口地址
+          changeOrigin: true, // 允许跨域
+          rewrite: (path) => path.replace(/^\/api/, '') // 移除请求路径中的/api前缀
+        }
+      }
+    },
     resolve: {
       alias: {
         '#': resolve(__dirname, '../../src'),

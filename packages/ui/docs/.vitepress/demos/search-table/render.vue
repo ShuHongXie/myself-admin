@@ -1,10 +1,15 @@
 <script setup>
-import { ref, onMounted, h } from 'vue'
+import { ref, h } from 'vue'
 import { ElTag, ElButton, ElMessage } from 'element-plus'
+
+// 从全局变量获取 API 基础地址
+const apiBaseUrl = typeof __API_BASE_URL__ !== 'undefined' ? __API_BASE_URL__ : '/api'
+console.log('apiBaseUrl:', apiBaseUrl)
 
 const searchModel = ref({
   name: '',
-  status: ''
+  status: '',
+  _component: 'render' // 添加组件标识，避免重复请求被取消
 })
 
 const searchConfig = {
@@ -55,25 +60,7 @@ const columns = [
       )
     }
   },
-  {
-    prop: 'score',
-    label: '评分',
-    width: 120,
-    render: (row) => {
-      const score = row.score || 0
-      const color = score >= 80 ? '#67C23A' : score >= 60 ? '#E6A23C' : '#F56C6C'
-      return h(
-        'span',
-        {
-          style: {
-            color,
-            fontWeight: 'bold'
-          }
-        },
-        `${score} 分`
-      )
-    }
-  },
+
   {
     label: '操作',
     width: 150,
@@ -111,64 +98,12 @@ const handleEdit = (row) => {
 const handleDelete = (row) => {
   ElMessage.warning(`删除用户: ${row.name}`)
 }
-
-// 模拟后端 API
-let mockServer
-if (typeof window !== 'undefined') {
-  onMounted(async () => {
-    try {
-      const MockAdapter = (await import('axios-mock-adapter')).default
-      const axios = (await import('axios')).default
-
-      mockServer = new MockAdapter(axios, { delayResponse: 500 })
-
-      mockServer.onPost('/api/mock/users-render').reply((config) => {
-        const params = JSON.parse(config.data || '{}')
-
-        let users = [
-          { id: 1, name: '张三', email: 'zhangsan@example.com', status: 1, score: 95 },
-          { id: 2, name: '李四', email: 'lisi@example.com', status: 0, score: 72 },
-          { id: 3, name: '王五', email: 'wangwu@example.com', status: 1, score: 88 },
-          { id: 4, name: '赵六', email: 'zhaoliu@example.com', status: 1, score: 56 },
-          { id: 5, name: '孙七', email: 'sunqi@example.com', status: 0, score: 91 }
-        ]
-
-        if (params.name) {
-          users = users.filter((u) => u.name.includes(params.name))
-        }
-        if (params.status !== undefined && params.status !== '') {
-          users = users.filter((u) => u.status === params.status)
-        }
-
-        const pageSize = params.pageSize || 20
-        const currentPage = params.currentPage || 1
-        const start = (currentPage - 1) * pageSize
-        const end = start + pageSize
-        const paginatedUsers = users.slice(start, end)
-
-        return [
-          200,
-          {
-            data: {
-              result: paginatedUsers,
-              total: users.length
-            },
-            code: 200,
-            msg: '成功'
-          }
-        ]
-      })
-    } catch (error) {
-      console.warn('Mock adapter 加载失败', error)
-    }
-  })
-}
 </script>
 
 <template>
   <ml-search-table
     v-model:search="searchModel"
-    url="/api/mock/users-render"
+    :url="apiBaseUrl + '/mock/users/list'"
     method-type="post"
     :search-props="searchConfig"
     :columns="columns"

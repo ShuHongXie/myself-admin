@@ -5,6 +5,7 @@ import * as echarts from 'echarts'
 import * as MiniloUI from '../../../src/components'
 import '../../../src/style/index.scss'
 import DemoBlock from '../components/DemoBlock.vue'
+import './custom.css'
 
 export default {
   extends: DefaultTheme,

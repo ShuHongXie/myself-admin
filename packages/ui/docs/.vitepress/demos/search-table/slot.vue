@@ -1,10 +1,15 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+
+// 从全局变量获取 API 基础地址
+const apiBaseUrl = typeof __API_BASE_URL__ !== 'undefined' ? __API_BASE_URL__ : '/api'
+console.log('apiBaseUrl:', apiBaseUrl)
 
 const searchModel = ref({
   name: '',
-  status: ''
+  status: '',
+  _component: 'slot' // 添加组件标识，避免重复请求被取消
 })
 
 const searchConfig = {
@@ -70,64 +75,12 @@ const handleEdit = (row) => {
 const handleDelete = (row) => {
   ElMessage.warning(`删除用户: ${row.name}`)
 }
-
-// 模拟后端 API
-let mockServer
-if (typeof window !== 'undefined') {
-  onMounted(async () => {
-    try {
-      const MockAdapter = (await import('axios-mock-adapter')).default
-      const axios = (await import('axios')).default
-
-      mockServer = new MockAdapter(axios, { delayResponse: 500 })
-
-      mockServer.onPost('/api/mock/users-slot').reply((config) => {
-        const params = JSON.parse(config.data || '{}')
-
-        let users = [
-          { id: 1, name: '张三', email: 'zhangsan@example.com', status: 1 },
-          { id: 2, name: '李四', email: 'lisi@example.com', status: 0 },
-          { id: 3, name: '王五', email: 'wangwu@example.com', status: 1 },
-          { id: 4, name: '赵六', email: 'zhaoliu@example.com', status: 1 },
-          { id: 5, name: '孙七', email: 'sunqi@example.com', status: 0 }
-        ]
-
-        if (params.name) {
-          users = users.filter((u) => u.name.includes(params.name))
-        }
-        if (params.status !== undefined && params.status !== '') {
-          users = users.filter((u) => u.status === params.status)
-        }
-
-        const pageSize = params.pageSize || 20
-        const currentPage = params.currentPage || 1
-        const start = (currentPage - 1) * pageSize
-        const end = start + pageSize
-        const paginatedUsers = users.slice(start, end)
-
-        return [
-          200,
-          {
-            data: {
-              result: paginatedUsers,
-              total: users.length
-            },
-            code: 200,
-            msg: '成功'
-          }
-        ]
-      })
-    } catch (error) {
-      console.warn('Mock adapter 加载失败', error)
-    }
-  })
-}
 </script>
 
 <template>
   <ml-search-table
     v-model:search="searchModel"
-    url="/api/mock/users-slot"
+    :url="apiBaseUrl + '/mock/users/list'"
     method-type="post"
     :search-props="searchConfig"
     :columns="columns"
