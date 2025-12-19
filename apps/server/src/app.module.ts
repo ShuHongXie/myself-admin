@@ -14,6 +14,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { StringToNullInterceptor } from './common/interceptor/stringToNull.interceptor'
 import { LogModule } from './modules/log/log.module'
 import { OperationLogInterceptor } from '@interceptor/log.interceptor'
+import { UploadModule } from './modules/upload/upload.module'
 @Module({
   imports: [
     // 加载环境变量配置
@@ -54,7 +55,8 @@ import { OperationLogInterceptor } from '@interceptor/log.interceptor'
     CacheModule,
     MenuModule,
     RoleModule,
-    LogModule
+    LogModule,
+    UploadModule
   ],
   controllers: [AppController],
   providers: [

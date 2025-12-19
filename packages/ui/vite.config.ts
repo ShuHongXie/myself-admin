@@ -24,6 +24,20 @@ export default defineConfig({
       localsConvention: 'camelCaseOnly'
     }
   },
+  server: {
+    proxy: {
+      '/egc-': {
+        target: 'https://uat2-smart.hengdayun.com/',
+        secure: false,
+        changeOrigin: true
+      },
+      '/api': {
+        target: 'http://localhost:4000', // 后端接口地址
+        changeOrigin: true, // 允许跨域
+        rewrite: (path) => path.replace(/^\/api/, '') // 移除请求路径中的/api前缀
+      }
+    }
+  },
   resolve: {
     alias: {
       '#': resolve(__dirname, 'src'),
