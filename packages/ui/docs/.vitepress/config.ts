@@ -49,7 +49,19 @@ export default defineConfig({
     },
     build: {
       rollupOptions: {
-        external: ['crypto', 'stream', 'util', 'http', 'https', 'path', 'fs', 'zlib', 'url']
+        external: [
+          'crypto',
+          'stream',
+          'util',
+          'http',
+          'https',
+          'path',
+          'fs',
+          'zlib',
+          'url',
+          'vue-router', // 文档不需要 vue-router
+          '@minilo/store' // 文档不需要 store
+        ]
       }
     }
   },

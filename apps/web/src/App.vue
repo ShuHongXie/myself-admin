@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { computed } from 'vue'
 import { RouterView } from 'vue-router'
-import { useInitGlobalStyle } from '@minilo/utils'
+import { useInitGlobalStyle } from '@minilo/store'
 import { i18n } from '@minilo/locales'
 // import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
