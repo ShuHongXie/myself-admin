@@ -11,7 +11,6 @@ if (typeof globalThis.cancelAnimationFrame === 'undefined') {
 export default defineConfig({
   title: 'Minilo-UI',
   description: 'Minilo-UI组件库',
-  base: '/minilo/',
   vite: {
     server: {
       proxy: {
