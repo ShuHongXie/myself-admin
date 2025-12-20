@@ -7,7 +7,7 @@ catalog:
   '@babel/core': ^7.28.5
   '@babel/preset-env': ^7.28.5
   '@ctrl/tinycolor': ^4.1.0
-  '@element-plus/icons-vue': ^2.3.1
+  '@element-plus/icons-vue': 2.3.1
   '@hey-api/client-axios': ^0.9.1
   '@iconify/vue': 5.0.0
   '@nestjs/config': ^4.0.2
