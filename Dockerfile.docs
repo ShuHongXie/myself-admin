@@ -33,6 +33,8 @@ COPY packages/locales/ ./packages/locales/
 
 # 进入 packages/ui 目录执行文档构建
 WORKDIR /app/packages/ui
+# 目录打印
+RUN ls -la /app/packages/ui/src/components/
 RUN echo "开始构建 Minilo-UI 文档..."
 RUN pnpm docs:build
 
