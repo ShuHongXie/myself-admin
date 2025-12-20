@@ -54,6 +54,9 @@ catalogs:
     '@vue/tsconfig':
       specifier: ^0.7.0
       version: 0.7.0
+    '@vueuse/core':
+      specifier: 13.6.0
+      version: 13.6.0
     axios:
       specifier: 1.13.2
       version: 1.11.0
@@ -579,6 +582,9 @@ importers:
       '@iconify/vue':
         specifier: 'catalog:'
         version: 5.0.0(vue@3.5.22(typescript@5.9.3))
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 13.6.0(vue@3.5.22(typescript@5.9.3))
       element-plus:
         specifier: 'catalog:'
         version: 2.10.4(vue@3.5.22(typescript@5.9.3))
@@ -690,7 +696,7 @@ importers:
         version: 5.9.3
       unplugin-auto-import:
         specifier: 'catalog:'
-        version: 0.17.8(@vueuse/core@13.9.0(vue@3.5.22(typescript@5.9.3)))(rollup@4.52.5)
+        version: 0.17.8(@vueuse/core@13.6.0(vue@3.5.22(typescript@5.9.3)))(rollup@4.52.5)
       unplugin-vue-components:
         specifier: 'catalog:'
         version: 0.26.0(@babel/parser@7.28.5)(rollup@4.52.5)(vue@3.5.22(typescript@5.9.3))
@@ -3486,6 +3492,11 @@ packages:
       vue:
         optional: true
 
+  '@vueuse/core@13.6.0':
+    resolution: {integrity: sha512-DJbD5fV86muVmBgS9QQPddVX7d9hWYswzlf4bIyUD2dj8GC46R1uNClZhVAmsdVts4xb2jwp1PbpuiA50Qee1A==}
+    peerDependencies:
+      vue: ^3.5.0
+
   '@vueuse/core@13.9.0':
     resolution: {integrity: sha512-ts3regBQyURfCE2BcytLqzm8+MmLlo5Ln/KLoxDVcsZ2gzIwVNnQpQOL/UKV8alUqjSZOlpFZcRNsLRqj+OzyA==}
     peerDependencies:
@@ -3532,6 +3543,9 @@ packages:
         optional: true
       universal-cookie:
         optional: true
+
+  '@vueuse/metadata@13.6.0':
+    resolution: {integrity: sha512-rnIH7JvU7NjrpexTsl2Iwv0V0yAx9cw7+clymjKuLSXG0QMcLD0LDgdNmXic+qL0SGvgSVPEpM9IDO/wqo1vkQ==}
 
   '@vueuse/metadata@13.9.0':
     resolution: {integrity: sha512-1AFRvuiGphfF7yWixZa0KwjYH8ulyjDCC0aFgrGRz8+P4kvDFSdXLVfTk5xAN9wEuD1J6z4/myMoYbnHoX07zg==}
@@ -12052,6 +12066,13 @@ snapshots:
       typescript: 5.9.3
       vue: 3.5.22(typescript@5.9.3)
 
+  '@vueuse/core@13.6.0(vue@3.5.22(typescript@5.9.3))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 13.6.0
+      '@vueuse/shared': 13.9.0(vue@3.5.22(typescript@5.9.3))
+      vue: 3.5.22(typescript@5.9.3)
+
   '@vueuse/core@13.9.0(vue@3.5.17(typescript@5.8.3))':
     dependencies:
       '@types/web-bluetooth': 0.0.21
@@ -12083,6 +12104,8 @@ snapshots:
       axios: 1.13.2
       focus-trap: 7.6.6
       nprogress: 0.2.0
+
+  '@vueuse/metadata@13.6.0': {}
 
   '@vueuse/metadata@13.9.0': {}
 
@@ -17624,6 +17647,21 @@ snapshots:
 
   unpipe@1.0.0: {}
 
+  unplugin-auto-import@0.17.8(@vueuse/core@13.6.0(vue@3.5.22(typescript@5.9.3)))(rollup@4.52.5):
+    dependencies:
+      '@antfu/utils': 0.7.10
+      '@rollup/pluginutils': 5.2.0(rollup@4.52.5)
+      fast-glob: 3.3.3
+      local-pkg: 0.5.1
+      magic-string: 0.30.21
+      minimatch: 9.0.5
+      unimport: 3.14.6(rollup@4.52.5)
+      unplugin: 1.16.1
+    optionalDependencies:
+      '@vueuse/core': 13.6.0(vue@3.5.22(typescript@5.9.3))
+    transitivePeerDependencies:
+      - rollup
+
   unplugin-auto-import@0.17.8(@vueuse/core@13.9.0(vue@3.5.17(typescript@5.8.3)))(rollup@4.52.5):
     dependencies:
       '@antfu/utils': 0.7.10
@@ -17636,21 +17674,6 @@ snapshots:
       unplugin: 1.16.1
     optionalDependencies:
       '@vueuse/core': 13.9.0(vue@3.5.17(typescript@5.8.3))
-    transitivePeerDependencies:
-      - rollup
-
-  unplugin-auto-import@0.17.8(@vueuse/core@13.9.0(vue@3.5.22(typescript@5.9.3)))(rollup@4.52.5):
-    dependencies:
-      '@antfu/utils': 0.7.10
-      '@rollup/pluginutils': 5.2.0(rollup@4.52.5)
-      fast-glob: 3.3.3
-      local-pkg: 0.5.1
-      magic-string: 0.30.21
-      minimatch: 9.0.5
-      unimport: 3.14.6(rollup@4.52.5)
-      unplugin: 1.16.1
-    optionalDependencies:
-      '@vueuse/core': 13.9.0(vue@3.5.22(typescript@5.9.3))
     transitivePeerDependencies:
       - rollup
 

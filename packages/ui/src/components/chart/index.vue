@@ -11,7 +11,7 @@ import {
   computed
 } from 'vue'
 import { ElEmpty } from 'element-plus'
-import { useResizeObserver, useDebounceFn } from '@minilo/utils'
+import { useResizeObserver, useDebounceFn } from '@vueuse/core'
 import type { MlChartProps } from './type'
 import { bem } from '../../utils'
 
