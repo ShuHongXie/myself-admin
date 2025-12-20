@@ -7,6 +7,14 @@ import '../../../src/style/index.scss'
 import DemoBlock from '../components/DemoBlock.vue'
 import './custom.css'
 
+// SSR 环境 polyfill（确保客户端也有定义）
+if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'undefined') {
+  window.requestAnimationFrame = (cb: any) => setTimeout(cb, 16)
+}
+if (typeof window !== 'undefined' && typeof window.cancelAnimationFrame === 'undefined') {
+  window.cancelAnimationFrame = (id: any) => clearTimeout(id)
+}
+
 export default {
   extends: DefaultTheme,
   enhanceApp({ app }) {
