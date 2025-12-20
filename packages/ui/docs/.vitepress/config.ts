@@ -1,10 +1,12 @@
 import { defineConfig } from 'vitepress'
 import { resolve } from 'path'
 
-// https://vitepress.dev/reference/site-config
+// 获取环境变量中的 API 地址，默认使用相对路径
+const API_BASE_URL = process.env.VITE_API_BASE_URL || '/api'
 export default defineConfig({
   title: 'Minilo-UI',
   description: 'Minilo-UI组件库',
+  base: '/minilo/',
   vite: {
     server: {
       proxy: {
@@ -18,24 +20,31 @@ export default defineConfig({
     resolve: {
       alias: {
         '#': resolve(__dirname, '../../src'),
-        '@minilo/utils': resolve(__dirname, '../../../utils'),
-        '@minilo/types': resolve(__dirname, '../../../types')
+        '@minilo/utils': resolve(__dirname, '../../../utils/index.ts'),
+        '@minilo/types': resolve(__dirname, '../../../types/index.ts')
       }
+    },
+    define: {
+      __API_BASE_URL__: JSON.stringify(API_BASE_URL)
     },
     ssr: {
       noExternal: [
         'element-plus',
-        '@minilo/utils',
         '@minilo/types',
         '@vueuse/core',
         'lodash.clonedeep',
-        'axios',
-        'defu'
-      ],
-      external: ['axios-mock-adapter']
+        'defu',
+        'echarts',
+        'vue-cropper'
+      ]
     },
     optimizeDeps: {
-      include: ['axios-mock-adapter']
+      exclude: ['@minilo/utils', '@minilo/types']
+    },
+    build: {
+      rollupOptions: {
+        external: ['crypto', 'stream', 'util', 'http', 'https', 'path', 'fs', 'zlib', 'url']
+      }
     }
   },
   themeConfig: {
@@ -55,15 +64,24 @@ export default defineConfig({
         ]
       },
       {
-        text: '组件',
+        text: '基础组件',
         items: [
           { text: 'MlChart 图表', link: '/components/chart' },
           { text: 'MlSearch 搜索', link: '/components/search' },
-          { text: 'MlSearchTable 搜索表格', link: '/components/search-table' },
           { text: 'MlDetail 详情', link: '/components/detail' },
           { text: 'MlButton 按钮', link: '/components/button' },
-          { text: 'MlVirtualList 虚拟列表', link: '/components/virtual-list' },
-          { text: 'MlNumberRangeInput 数值范围输入框', link: '/components/number-range-input' }
+          { text: 'MlNumberRangeInput 数值范围输入框', link: '/components/number-range-input' },
+          { text: 'MlTreeSelect 树形选择', link: '/components/tree-select' },
+          { text: 'MlTreeSelectDialog 树形选择对话框', link: '/components/tree-select-dialog' },
+          { text: 'MlTreeSelectDrawer 树形选择抽屉', link: '/components/tree-select-drawer' }
+        ]
+      },
+      {
+        text: '复杂组件',
+        items: [
+          { text: 'MlImageUploadPro 图片上传裁剪', link: '/components/image-upload-pro' },
+          { text: 'MlSearchTable 搜索表格', link: '/components/search-table' },
+          { text: 'MlVirtualList 虚拟列表', link: '/components/virtual-list' }
         ]
       },
       {

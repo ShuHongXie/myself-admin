@@ -118,6 +118,33 @@ const chartOptions = ref({
 </template>
 ```
 
+## 组件概览
+
+### 基础组件
+
+Minilo-UI 提供了一系列功能丰富的基础组件，覆盖常见的 UI 需求：
+
+| 组件名             | 说明                       | 文档                                       |
+| ------------------ | -------------------------- | ------------------------------------------ |
+| MlChart            | 图表组件，基于 ECharts     | [查看文档](/components/chart)              |
+| MlSearch           | 搜索组件，支持多种搜索条件 | [查看文档](/components/search)             |
+| MlDetail           | 详情展示组件               | [查看文档](/components/detail)             |
+| MlButton           | 按钮组件                   | [查看文档](/components/button)             |
+| MlNumberRangeInput | 数值范围输入框             | [查看文档](/components/number-range-input) |
+| MlTreeSelect       | 树形选择组件               | [查看文档](/components/tree-select)        |
+| MlTreeSelectDialog | 树形选择对话框             | [查看文档](/components/tree-select-dialog) |
+| MlTreeSelectDrawer | 树形选择抽屉               | [查看文档](/components/tree-select-drawer) |
+
+### 复杂组件
+
+Minilo-UI 还提供了功能强大的复杂组件，适用于各种复杂业务场景：
+
+| 组件名           | 说明                                 | 文档                                     |
+| ---------------- | ------------------------------------ | ---------------------------------------- |
+| MlImageUploadPro | 功能完整的图片上传、裁剪、排序组件   | [查看文档](/components/image-upload-pro) |
+| MlSearchTable    | 搜索表格组件，集成搜索、表格、分页   | [查看文档](/components/search-table)     |
+| MlVirtualList    | 虚拟列表组件，支持大数据量高性能渲染 | [查看文档](/components/virtual-list)     |
+
 ## Resolver 配置说明
 
 ### MiniloUiResolver
@@ -143,6 +170,11 @@ import '@minilo/ui/theme-chalk/ml-chart'
 - `<ml-search />` → `MlSearch`
 - `<ml-detail />` → `MlDetail`
 - `<ml-button />` → `MlButton`
+- `<ml-number-range-input />` → `MlNumberRangeInput`
+- `<ml-tree-select />` → `MlTreeSelect`
+- `<ml-tree-select-dialog />` → `MlTreeSelectDialog`
+- `<ml-tree-select-drawer />` → `MlTreeSelectDrawer`
+- `<ml-image-upload-pro />` → `MlImageUploadPro`
 - `<ml-search-table />` → `MlSearchTable`
 - `<ml-virtual-list />` → `MlVirtualList`
 

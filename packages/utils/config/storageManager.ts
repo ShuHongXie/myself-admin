@@ -12,17 +12,23 @@ interface StorageItem<T> {
 
 class StorageManager {
   private prefix: string
-  private storage: Storage
+  private storage: Storage | null
 
   constructor({ prefix = '', storageType = 'localStorage' }: StorageManagerOptions = {}) {
     this.prefix = prefix
-    this.storage = storageType === 'localStorage' ? window.localStorage : window.sessionStorage
+    // SSR 兼容性检查
+    if (typeof window !== 'undefined') {
+      this.storage = storageType === 'localStorage' ? window.localStorage : window.sessionStorage
+    } else {
+      this.storage = null
+    }
   }
 
   /**
    * 清除所有带前缀的存储项
    */
   clear(): void {
+    if (!this.storage) return
     const keysToRemove: string[] = []
     for (let i = 0; i < this.storage.length; i++) {
       const key = this.storage.key(i)
@@ -30,13 +36,14 @@ class StorageManager {
         keysToRemove.push(key)
       }
     }
-    keysToRemove.forEach((key) => this.storage.removeItem(key))
+    keysToRemove.forEach((key) => this.storage?.removeItem(key))
   }
 
   /**
    * 清除所有过期的存储项
    */
   clearExpiredItems(): void {
+    if (!this.storage) return
     for (let i = 0; i < this.storage.length; i++) {
       const key = this.storage.key(i)
       if (key && key.startsWith(this.prefix)) {
@@ -53,6 +60,7 @@ class StorageManager {
    * @returns 值，如果项已过期或解析错误则返回默认值
    */
   getItem<T>(key: string, defaultValue: null | T = null): null | T {
+    if (!this.storage) return defaultValue
     const fullKey = this.getFullKey(key)
     const itemStr = this.storage.getItem(fullKey)
     if (!itemStr) {
@@ -78,6 +86,7 @@ class StorageManager {
    * @param key 键
    */
   removeItem(key: string): void {
+    if (!this.storage) return
     const fullKey = this.getFullKey(key)
     this.storage.removeItem(fullKey)
   }
@@ -89,6 +98,7 @@ class StorageManager {
    * @param ttl 存活时间（毫秒）
    */
   setItem<T>(key: string, value: T, ttl?: number): void {
+    if (!this.storage) return
     const fullKey = this.getFullKey(key)
     const expiry = ttl ? Date.now() + ttl : undefined
     const item: StorageItem<T> = { expiry, value }

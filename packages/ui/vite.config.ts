@@ -16,55 +16,26 @@ export default defineConfig({
     //css代码分割
     cssCodeSplit: true,
     //压缩
-    minify: false,
-    rollupOptions: {
-      //忽略打包vue文件
-      external: [
-        'vue',
-        'element-plus',
-        'unplugin-vue-components',
-        'unplugin-auto-import',
-        '@minilo/utils'
-      ],
-      input: ['./src/index.ts'],
-      output: [
-        {
-          //打包格式
-          format: 'es',
-          //打包后文件名
-          entryFileNames: '[name].mjs',
-          //让打包目录和我们目录对应
-          preserveModules: true,
-          preserveModulesRoot: 'src', // 从src文件夹开始打包
-          exports: 'named',
-          //配置打包根目录
-          dir: `./${outDir}/es`
-        },
-        {
-          //打包格式
-          format: 'cjs',
-          //打包后文件名
-          entryFileNames: '[name].js',
-          //让打包目录和我们目录对应
-          preserveModules: true,
-          preserveModulesRoot: 'src',
-          exports: 'named',
-          //配置打包根目录
-          dir: `./${outDir}/lib`
-        }
-      ]
-    },
-    lib: {
-      entry: './src/index.ts',
-      name: outDir,
-      fileName: 'index',
-      formats: ['es', 'cjs']
-    }
+    minify: false
   },
   css: {
     // 确保所有 CSS 都被正确处理
     modules: {
       localsConvention: 'camelCaseOnly'
+    }
+  },
+  server: {
+    proxy: {
+      '/egc-': {
+        target: 'https://uat2-smart.hengdayun.com/',
+        secure: false,
+        changeOrigin: true
+      },
+      '/api': {
+        target: 'http://localhost:4000', // 后端接口地址
+        changeOrigin: true, // 允许跨域
+        rewrite: (path) => path.replace(/^\/api/, '') // 移除请求路径中的/api前缀
+      }
     }
   },
   resolve: {

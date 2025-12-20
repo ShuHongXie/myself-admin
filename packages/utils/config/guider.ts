@@ -15,7 +15,12 @@ class Guider {
     ...this.loadConfig()
   })
   constructor() {
-    this.cache = new StorageManager()
+    // SSR 兼容性检查：仅在浏览器中创建 StorageManager
+    if (typeof window !== 'undefined') {
+      this.cache = new StorageManager()
+    } else {
+      this.cache = null
+    }
   }
 
   // 初始化配置
@@ -40,12 +45,14 @@ class Guider {
 
   // 保存配置
   public saveConfig(config: Config) {
-    this.cache?.setItem(STORAGE_KEY, config)
+    if (!this.cache) return
+    this.cache.setItem(STORAGE_KEY, config)
   }
 
   // 加载配置
   private loadConfig() {
-    return this.cache?.getItem<Config>(STORAGE_KEY)
+    if (!this.cache) return undefined
+    return this.cache.getItem<Config>(STORAGE_KEY)
   }
 
   // 获取配置
