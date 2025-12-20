@@ -20,12 +20,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api'
 
 const imageList = ref([])
 
 const uploadApi = {
   // 上传接口地址
-  url: '/api/upload/image',
+  url: apiBaseUrl + '/upload/image',
 
   // 请求方法
   method: 'post',

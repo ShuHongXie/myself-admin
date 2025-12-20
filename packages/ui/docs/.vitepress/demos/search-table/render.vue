@@ -2,9 +2,8 @@
 import { ref, h } from 'vue'
 import { ElTag, ElButton, ElMessage } from 'element-plus'
 
-// 从全局变量获取 API 基础地址
-const apiBaseUrl = typeof __API_BASE_URL__ !== 'undefined' ? __API_BASE_URL__ : '/api'
-console.log('apiBaseUrl:', apiBaseUrl)
+// 从环境变量获取 API 基础地址
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api'
 
 const searchModel = ref({
   name: '',
