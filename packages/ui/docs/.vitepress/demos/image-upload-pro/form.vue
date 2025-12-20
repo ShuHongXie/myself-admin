@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api'
 
 const form = reactive({
   name: '',
@@ -29,7 +30,7 @@ const form = reactive({
 })
 
 const uploadApi = {
-  url: '/api/upload/image',
+  url: apiBaseUrl + '/upload/image',
   method: 'post',
   fieldName: 'file',
   responseUrlField: 'data.url'

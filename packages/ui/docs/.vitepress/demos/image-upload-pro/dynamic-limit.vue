@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api'
 
 const imageList = ref([])
 const quality = ref('normal')
@@ -42,7 +43,7 @@ const sizeLimit = reactive({
 })
 
 const uploadApi = {
-  url: '/api/upload/image',
+  url: apiBaseUrl + '/upload/image',
   method: 'post',
   fieldName: 'file',
   responseUrlField: 'data.url'

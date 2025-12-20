@@ -44,7 +44,12 @@ async function bootstrap() {
     })
   )
   // 启用CORS
-  app.enableCors()
+  app.enableCors({
+    origin: 'https://shuhongxie.github.io', // 精确指定允许的源
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // 允许的请求方法
+    allowedHeaders: ['Content-Type', 'Authorization'], // 允许的自定义请求头
+    maxAge: 3600 // 预检请求缓存时间（秒）
+  })
   // 集成swagger文档
   const config = new DocumentBuilder()
     .setTitle('Minilo后台管理系统')
