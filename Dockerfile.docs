@@ -14,8 +14,8 @@ COPY pnpm-lock.yaml ./
 COPY packages/ui/package*.json ./packages/ui/
 COPY packages/utils/package*.json ./packages/utils/
 COPY packages/types/package*.json ./packages/types/
-COPY packages/store/ ./packages/store/
-COPY packages/locales/ ./packages/locales/
+COPY packages/store/package*.json ./packages/store/
+COPY packages/locales/package*.json ./packages/locales/
 
 # 安装依赖（包括 VitePress 构建所需的所有依赖）
 RUN pnpm install \
