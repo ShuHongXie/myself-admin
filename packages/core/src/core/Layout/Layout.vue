@@ -333,11 +333,13 @@ watch(
           <div class="layout-main__content">
             <slot name="routerView">
               <RouterView v-slot="{ Component, route }">
-                <Transition name="fade-slide" appear mode="out-in">
-                  <KeepAlive v-if="route.meta?.isCache">
-                    <component :is="Component" />
-                  </KeepAlive>
-                  <component :is="Component" v-else />
+                <KeepAlive v-if="route.meta?.isCache">
+                  <Transition name="fade-slide" appear mode="out-in">
+                    <component :is="Component" :key="route.path" />
+                  </Transition>
+                </KeepAlive>
+                <Transition name="fade-slide" appear mode="out-in" v-else>
+                  <component :is="Component" :key="route.path" />
                 </Transition>
               </RouterView>
             </slot>

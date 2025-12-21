@@ -88,6 +88,7 @@ function setupAccessGuard(router: Router) {
 
     // 如果正在初始化，直接放行
     if (initializing) {
+      console.log('🔄 正在初始化，放行:', to.path)
       return next()
     }
 
@@ -102,26 +103,34 @@ function setupAccessGuard(router: Router) {
 
         const { dynamicRoutes, menuData } = generateRoutes(initStore.routers)
         const mergeRoutes = [...dynamicRoutes, ...matchRoutes]
-        console.log('dynamicRoutes:', dynamicRoutes)
+        console.log('🔍 即将添加的路由:', mergeRoutes)
+
         // 添加动态路由
         mergeRoutes.forEach((routes) => {
           router.addRoute('Layout', routes)
+          console.log('✅ 已添加路由到 Layout:', routes.path)
         })
 
-        // 设置路由状态
+        // 关键：必须在 next 之前设置，避免重复初始化
         routesStore.setDynamicRoutes(dynamicRoutes)
         routesStore.setRouterInitialized(true)
         configStore.setMenuData(menuData)
+        initializing = false
+
+        console.log(
+          '📋 当前所有路由:',
+          router.getRoutes().map((r) => ({ name: r.name, path: r.path }))
+        )
+        console.log('🎯 当前目标路由:', to.path)
 
         // 检查是否需要跳转到默认路由地址
-        // 如果当前路径是根路径'/'，则跳转到配置的默认首页路径
         if (to.path === '/' && userConfig.app?.defaultHomePath) {
-          initializing = false
+          console.log('🏠 重定向到默认首页:', userConfig.app.defaultHomePath)
           return next({ path: userConfig.app.defaultHomePath, replace: true })
         }
 
-        // 使用 replace: true 避免重复触发路由守卫
-        initializing = false
+        // 重新触发路由导航，这次会匹配到动态路由
+        console.log('🔄 重新导航到:', to.fullPath)
         return next({ ...to, replace: true })
       } catch (error) {
         console.error('加载路由失败:', error)
