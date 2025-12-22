@@ -143,9 +143,11 @@ onMounted(() => {
       @reset="reset"
       @select-all="handleSelect"
       @select="handleSelect"
+      v-permission="'sys:user:list'"
     >
       <template #status="scope">
         <el-switch
+          v-permission.disable="'sys:user:edit'"
           @click="handleSwitchChange(scope.row)"
           v-model="scope.row.status"
           :loading="currentOperateItem.id === scope.row.id && switchLoading"
@@ -159,8 +161,15 @@ onMounted(() => {
       </template>
       <template #operation="scope">
         <el-space>
-          <el-link type="primary" @click="handleOperate('edit', scope.row)">编辑</el-link>
-          <el-link type="primary" @click="handleDelete(scope.row)">删除</el-link>
+          <el-link
+            v-permission="'sys:user:edit'"
+            type="primary"
+            @click="handleOperate('edit', scope.row)"
+            >编辑</el-link
+          >
+          <el-link v-permission="'sys:user:del'" type="primary" @click="handleDelete(scope.row)"
+            >删除</el-link
+          >
         </el-space>
       </template>
       <template #prefix>

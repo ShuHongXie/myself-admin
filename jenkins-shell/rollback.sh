@@ -108,8 +108,6 @@ fi
 BRANCH_ID="${BRANCH_NAME##*/}"
 log_info "当前分支：${BRANCH_NAME} → ${BRANCH_ID}"
 
-pull_latest_code
-
 
 # 分支+端口映射（完全保留你的逻辑）
 case "${BRANCH_ID}" in
@@ -132,6 +130,11 @@ case "${BRANCH_ID}" in
         APP_NAME="server"
         BUILD_ENV="prod"
         SERVICE_PORT="8084"
+        ;;
+    "docs")
+        APP_NAME="docs"
+        BUILD_ENV="docs"
+        SERVICE_PORT="8085"
         ;;
     *)
         log_error "分支仅支持：web-test/web-prod/server-test/server-prod"

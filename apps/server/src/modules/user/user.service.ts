@@ -17,6 +17,7 @@ import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate'
 import { GetUserListDto } from './dto/getUserList.dto'
 import { paginateTransform } from '@utils/paginate'
 import { UpdateUserPasswordDto } from './dto/updateUserPassword.dto'
+import { log } from 'console'
 
 @Injectable()
 export class UserService {
@@ -279,29 +280,39 @@ export class UserService {
       throw new ApiException('用户不存在', ApiErrorCode.USER_NOTEXIST)
     }
     // 根据关联关系通过 user 查询 user 下的菜单和角色
+    // 查询用户所属角色下的所有 menuType=3 的菜单
     const userList: User | null = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.roles', 'role')
       .leftJoinAndSelect('role.menus', 'menu')
-      .where({ id: userId })
+      .where('user.id = :userId', { userId })
       .getOne()
 
     const isAdmin = userInfo.isAdmin
     let permissions: string[] = []
     try {
+      console.log('userList:', userList)
+      console.log('isAdmin:', isAdmin)
       if (userList) {
         if (isAdmin) {
           permissions = ['*:*:*']
         } else {
-          // 非超级管理员的话就查询所有权限
+          // 非超级管理员的话就查询用户所属所有角色下的所有 menuType=3 的按钮权限
           const unFilterPermissions: string[] = []
-          userList.roles.forEach((role) => {
-            role.menus.forEach((menu) => {
-              if (menu.permission) {
-                unFilterPermissions.push(menu.permission)
+          if (userList.roles && userList.roles.length > 0) {
+            userList.roles.forEach((role) => {
+              console.log('role:', role.menus)
+              if (role.menus && role.menus.length > 0) {
+                role.menus.forEach((menu) => {
+                  // 只获取 menuType=3（按钮）且有权限标识的菜单
+                  if (menu.menuType === 3 && menu.permission) {
+                    unFilterPermissions.push(menu.permission)
+                  }
+                })
               }
             })
-          })
+          }
+          // 对权限标识进行去重
           permissions = [...new Set(unFilterPermissions)]
         }
       }

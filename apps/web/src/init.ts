@@ -8,6 +8,7 @@ import * as echarts from 'echarts' // 引入echarts
 
 import App from './App.vue'
 import NProgress from 'nprogress'
+import directives from './directives'
 
 // import 'virtual:svg-icons-register'
 import 'nprogress/nprogress.css'
@@ -43,6 +44,9 @@ export const init = async () => {
 
   // echarts使用
   app.config.globalProperties.$echarts = echarts // 全局使用
+
+  // 注册指令
+  app.use(directives)
 
   app.mount('#app')
 }

@@ -65,7 +65,7 @@ const handleLogin = async (formData: {
       userStore.setUserInfo(userInfo)
       // 保存权限
       if (permissions && Array.isArray(permissions)) {
-        userStore.setButtonPermissions(permissions)
+        userStore.setPermissionList(permissions)
       }
     } catch (infoError) {
       console.warn('获取用户信息失败:', infoError)

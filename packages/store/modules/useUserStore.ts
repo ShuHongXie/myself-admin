@@ -16,7 +16,6 @@ export const useUserStore = defineStore(
   () => {
     const userInfo = ref<UserInfo>({})
     const permissionList = ref<string[]>([])
-    const buttonPermissions = ref<string[]>([])
     const token = ref('')
 
     // 设置用户信息
@@ -27,37 +26,30 @@ export const useUserStore = defineStore(
     const setPermissionList = (data: any) => {
       permissionList.value = data
     }
-    // 设置按钮权限列表
-    const setButtonPermissions = (data: string[]) => {
-      buttonPermissions.value = data
-    }
     // 设置token信息
     const setToken = (data: string) => {
       token.value = data
     }
-    // 检查是否具有按钮权限
-    const hasButtonPermission = (permission: string): boolean => {
-      return buttonPermissions.value.includes(permission)
+    // 检查是否具有权限
+    const hasPermission = (permission: string): boolean => {
+      return permissionList.value.includes(permission)
     }
 
     // 登出 - 清除所有用户信息
     const logout = () => {
       userInfo.value = {}
       permissionList.value = []
-      buttonPermissions.value = []
       token.value = ''
     }
 
     return {
       userInfo,
       permissionList,
-      buttonPermissions,
       token,
       setToken,
       setUserInfo,
       setPermissionList,
-      setButtonPermissions,
-      hasButtonPermission,
+      hasPermission,
       logout
     }
   },
