@@ -83,15 +83,15 @@ export default defineConfig(({ mode }) => ({
       enableBuild: true,
       enableDev: true // 启用开发时监听
     }),
-    mode === 'development' && analyzer(),
-    cdn({
-      modules: [
-        {
-          name: 'echarts',
-          var: 'echarts',
-          path: 'https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js'
-        }
-      ]
-    })
+    mode === 'development' && analyzer()
+    // cdn({
+    //   modules: [
+    //     {
+    //       name: 'echarts',
+    //       var: 'echarts',
+    //       path: 'https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js'
+    //     }
+    //   ]
+    // })
   ]
 }))
