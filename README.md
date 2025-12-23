@@ -129,8 +129,9 @@ pnpm type-check
 - **数据输入**: MlSearch（搜索）、MlForm（表单）、MlTreeSelect（树形选择）
 - **交互组件**: MlVirtualList（虚拟列表）、MlButton（按钮）
 - **选择器**: MlTreeSelectDialog（对话框树选择）、MlTreeSelectDrawer（抽屉树选择）
+- **复杂组件**: MlImageUploadPro（高级上传）
 
-📖 **完整文档**: [https://shuhongxie.github.io/minilo/](https://shuhongxie.github.io/minilo/)
+📖 **完整文档**: [http://1.12.51.201:8085/](http://1.12.51.201:8085/)
 
 ### @minilo/core - 核心布局
 
@@ -253,12 +254,12 @@ VitePress            文档生成
 
 ## 📖 项目文档
 
-| 文档       | 链接                                                                         |
-| ---------- | ---------------------------------------------------------------------------- |
-| 组件库文档 | [https://shuhongxie.github.io/minilo/](https://shuhongxie.github.io/minilo/) |
-| 快速开始   | `/docs/GETTING_STARTED.md`                                                   |
-| 项目架构   | `/docs/ARCHITECTURE.md`                                                      |
-| 开发指南   | `/docs/DEVELOPMENT.md`                                                       |
+| 文档       | 链接                                                 |
+| ---------- | ---------------------------------------------------- |
+| 组件库文档 | [http://1.12.51.201:8085/](http://1.12.51.201:8085/) |
+| 快速开始   | `/docs/GETTING_STARTED.md`                           |
+| 项目架构   | `/docs/ARCHITECTURE.md`                              |
+| 开发指南   | `/docs/DEVELOPMENT.md`                               |
 
 ## 🤝 贡献指南
 
@@ -286,7 +287,7 @@ VitePress            文档生成
 ## 📮 联系方式
 
 - GitHub: [@ShuHongXie](https://github.com/ShuHongXie)
-- 组件库文档: [https://shuhongxie.github.io/minilo/](https://shuhongxie.github.io/minilo/)
+- 组件库文档: [http://1.12.51.201:8085/](http://1.12.51.201:8085/)
 
 ## 🙏 致谢
 
