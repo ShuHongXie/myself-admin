@@ -27,9 +27,6 @@ catalogs:
     '@iconify/vue':
       specifier: 5.0.0
       version: 5.0.0
-    '@minilo/utils':
-      specifier: ^0.0.2
-      version: 0.0.2
     '@nestjs/config':
       specifier: ^4.0.2
       version: 4.0.2
@@ -553,7 +550,7 @@ importers:
   packages/store:
     dependencies:
       '@minilo/utils':
-        specifier: 'catalog:'
+        specifier: ^0.0.2
         version: 0.0.2(vue@3.5.17(typescript@5.9.3))
       element-plus:
         specifier: 'catalog:'

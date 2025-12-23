@@ -34,5 +34,8 @@
   "peerDependencies": {
     "pinia": "3.0.3",
     "vue": "^3.5.17"
+  },
+  "overrides": {
+    "@minilo/utils": "^0.0.2"
   }
 }
