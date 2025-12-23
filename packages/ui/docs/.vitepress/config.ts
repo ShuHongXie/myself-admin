@@ -11,7 +11,6 @@ if (typeof globalThis.cancelAnimationFrame === 'undefined') {
 export default defineConfig({
   title: 'Minilo-UI',
   description: 'Minilo-UI组件库',
-  base: '/minilo/',
   vite: {
     server: {
       proxy: {
@@ -29,10 +28,11 @@ export default defineConfig({
         '@minilo/types': resolve(__dirname, '../../../types/index.ts')
       }
     },
-    define: {
-      'globalThis.requestAnimationFrame': 'undefined',
-      'globalThis.cancelAnimationFrame': 'undefined'
-    },
+    // define 配置会导致覆盖 polyfill，已移除
+    // define: {
+    //   'globalThis.requestAnimationFrame': 'undefined',
+    //   'globalThis.cancelAnimationFrame': 'undefined'
+    // },
     ssr: {
       noExternal: [
         'element-plus',
@@ -49,7 +49,19 @@ export default defineConfig({
     },
     build: {
       rollupOptions: {
-        external: ['crypto', 'stream', 'util', 'http', 'https', 'path', 'fs', 'zlib', 'url']
+        external: [
+          'crypto',
+          'stream',
+          'util',
+          'http',
+          'https',
+          'path',
+          'fs',
+          'zlib',
+          'url',
+          'vue-router', // 文档不需要 vue-router
+          '@minilo/store' // 文档不需要 store
+        ]
       }
     }
   },

@@ -19,7 +19,7 @@ catalogs:
       specifier: ^4.1.0
       version: 4.1.0
     '@element-plus/icons-vue':
-      specifier: ^2.3.1
+      specifier: 2.3.1
       version: 2.3.1
     '@hey-api/client-axios':
       specifier: ^0.9.1
@@ -549,6 +549,12 @@ importers:
 
   packages/store:
     dependencies:
+      '@minilo/utils':
+        specifier: ^0.0.2
+        version: 0.0.2(vue@3.5.17(typescript@5.9.3))
+      element-plus:
+        specifier: 'catalog:'
+        version: 2.10.4(vue@3.5.17(typescript@5.9.3))
       pinia:
         specifier: 'catalog:'
         version: 3.0.3(typescript@5.9.3)(vue@3.5.17(typescript@5.9.3))
@@ -573,9 +579,15 @@ importers:
 
   packages/ui:
     dependencies:
+      '@element-plus/icons-vue':
+        specifier: 'catalog:'
+        version: 2.3.1(vue@3.5.22(typescript@5.9.3))
       '@iconify/vue':
         specifier: 'catalog:'
         version: 5.0.0(vue@3.5.22(typescript@5.9.3))
+      '@vueuse/core':
+        specifier: 13.9.0
+        version: 13.9.0(vue@3.5.22(typescript@5.9.3))
       element-plus:
         specifier: 'catalog:'
         version: 2.10.4(vue@3.5.22(typescript@5.9.3))
@@ -10831,6 +10843,19 @@ snapshots:
       lodash.clonedeep: 4.5.0
       theme-colors: 0.1.0
       vue: 3.5.17(typescript@5.8.3)
+    transitivePeerDependencies:
+      - debug
+
+  '@minilo/utils@0.0.2(vue@3.5.17(typescript@5.9.3))':
+    dependencies:
+      '@ctrl/tinycolor': 4.1.0
+      '@vueuse/core': 13.9.0(vue@3.5.17(typescript@5.9.3))
+      axios: 1.13.2
+      defu: 6.1.4
+      element-plus: 2.10.4(vue@3.5.17(typescript@5.9.3))
+      lodash.clonedeep: 4.5.0
+      theme-colors: 0.1.0
+      vue: 3.5.17(typescript@5.9.3)
     transitivePeerDependencies:
       - debug
 

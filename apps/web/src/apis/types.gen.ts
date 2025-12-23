@@ -583,3 +583,27 @@ export type ExportData = {
 export type ExportResponses = {
   200: unknown
 }
+
+export type UploadImageData = {
+  body: {
+    file?: Blob | File
+  }
+  path?: never
+  query?: never
+  url: '/upload/image'
+}
+
+export type UploadImageResponses = {
+  201: unknown
+}
+
+export type GetUserListData = {
+  body?: never
+  path?: never
+  query?: never
+  url: '/mock/users/list'
+}
+
+export type GetUserListResponses = {
+  201: unknown
+}

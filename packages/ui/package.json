@@ -57,7 +57,9 @@
     "@minilo/utils/**/*.ts"
   ],
   "dependencies": {
+    "@element-plus/icons-vue": "catalog:",
     "@iconify/vue": "catalog:",
+    "@vueuse/core": "13.9.0",
     "element-plus": "catalog:",
     "vue": "^3.5.22",
     "vue-cropper": "^1.1.4"

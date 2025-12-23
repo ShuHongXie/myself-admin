@@ -1,7 +1,7 @@
 import { useRouter } from 'vue-router'
 import { useUserStore, useRoutesStore, useConfigStore } from '@minilo/store'
 import { ElMessageBox, ElMessage } from 'element-plus'
-import { LOGIN_PATH } from '../constrant'
+import { LOGIN_PATH } from '@minilo/utils'
 
 /**
  * 登出功能 Hook

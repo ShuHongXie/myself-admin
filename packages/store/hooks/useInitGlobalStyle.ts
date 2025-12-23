@@ -1,7 +1,7 @@
 import { watch } from 'vue'
-import { convertToRgb } from '../func'
-import { userConfig } from '../config'
-import { executeUpdateCSSVariables } from '../config'
+import { convertToRgb } from '@minilo/utils'
+import { userConfig } from '@minilo/utils'
+import { executeUpdateCSSVariables } from '@minilo/utils'
 
 // 初始化全局样式
 export const useInitGlobalStyle = () => {
