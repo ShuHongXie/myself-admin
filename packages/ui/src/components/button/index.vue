@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import type { MlButtonSelfProps as MlButtonProps } from './type'
 import { bem } from '../../utils'
 import { ElButton, ElTooltip } from 'element-plus'
+console.log(ElButton)
 
 defineOptions({
   name: 'MlButton'
@@ -32,12 +33,12 @@ const handleClick = () => {
 </script>
 
 <template>
-  <el-tooltip v-if="tip" :content="tip" :placement="placement" v-bind="tipProps">
-    <el-button v-bind="$attrs" :class="bem('button', 'tip')" @click="handleClick">
-      <slot />
-    </el-button>
-  </el-tooltip>
-  <el-button v-else v-bind="$attrs" @click="handleClick">
-    <slot />
-  </el-button>
+  <ElTooltip v-if="tip" :content="tip" :placement="placement" v-bind="tipProps">
+    <ElButton v-bind="$attrs" :class="bem('button', 'tip')" @click="handleClick">
+      <slot></slot>
+    </ElButton>
+  </ElTooltip>
+  <ElButton v-else v-bind="$attrs" @click="handleClick">
+    <slot></slot>
+  </ElButton>
 </template>
