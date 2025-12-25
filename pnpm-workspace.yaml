@@ -18,7 +18,7 @@ catalog:
   '@tailwindcss/vite': ^4.1.11
   '@types/lodash.clonedeep': ^4.5.9
   '@types/nprogress': ^0.2.3
-  '@vitejs/plugin-vue': ^6.0.0
+  '@vitejs/plugin-vue': ^6.0.3
   '@vitejs/plugin-vue-jsx': 5.1.1
   '@vue/tsconfig': ^0.7.0
   '@vueuse/core': 13.6.0
@@ -51,7 +51,7 @@ catalog:
   vite: 7.0.5
   vite-bundle-visualizer: ^1.2.1
   vite-plugin-svg-icons: ^2.0.1
-  vue: ^3.5.17
+  vue: ^3.5.26
   vue-i18n: 11.1.11
   vue-router: ^4.5.1
   vue-tsc: 2.2.12

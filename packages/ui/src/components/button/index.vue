@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import type { MlButtonSelfProps as MlButtonProps } from './type'
 import { bem } from '../../utils'
 import { ElButton, ElTooltip } from 'element-plus'
-console.log(ElButton)
 
 defineOptions({
   name: 'MlButton'

@@ -49,7 +49,7 @@
     "@eslint/json": "^0.13.0",
     "@typescript-eslint/eslint-plugin": "^8.37.0",
     "@typescript-eslint/parser": "^8.37.0",
-    "@vitejs/plugin-vue": "catalog:",
+    "@vitejs/plugin-vue": "^6.0.3",
     "@vue/tsconfig": "catalog:",
     "commitizen": "^4.3.1",
     "cz-custom": "^0.0.2",
@@ -65,7 +65,7 @@
     "typescript": "catalog:",
     "typescript-eslint": "^8.37.0",
     "vite": "catalog:",
-    "vue": "catalog:",
+    "vue": "^3.5.26",
     "vue-tsc": "catalog:"
   },
   "dependencies": {
