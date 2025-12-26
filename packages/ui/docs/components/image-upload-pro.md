@@ -408,6 +408,34 @@ interface PreviewItem extends UploadFile {
 
 ## 注意事项
 
+### ⚠️ 依赖安装
+
+如果使用裁剪功能（`allowCrop: true`），**必须先安装 `vue-cropper` 依赖**：
+
+```bash
+pnpm add vue-cropper
+```
+
+安装后，需要在项目入口文件（如 `main.ts`）中全局注册 `vue-cropper` 组件：
+
+```ts
+import { createApp } from 'vue'
+import App from './App.vue'
+import { VueCropper } from 'vue-cropper'
+import 'vue-cropper/dist/index.css'
+
+const app = createApp(App)
+
+// 全局注册 vue-cropper
+app.component('VueCropper', VueCropper)
+
+app.mount('#app')
+```
+
+如果未安装此依赖或未注册组件而启用了裁剪功能，会导致编译错误。
+
+### 其他事项
+
 1. **API 配置**：需要配置 `uploadApi` 才能实现自动上传功能
 2. **响应格式**：服务器返回的响应格式应匹配 `responseUrlField` 配置
 3. **CORS 问题**：如果上传跨域图片进行裁剪，组件会自动使用 Blob URL 避免 CORS 错误

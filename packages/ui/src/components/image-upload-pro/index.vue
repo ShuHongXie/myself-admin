@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import 'vue-cropper/dist/index.css'
 import { VueCropper } from 'vue-cropper'
-import type { ElUpload, UploadProps } from 'element-plus'
-import { imageUploadProProps, type SizeLimit, type AspectRatio, type PreviewItem } from './type'
+import type { ElUpload, UploadFile, UploadProps } from 'element-plus'
+import { imageUploadProProps, type AspectRatio, type PreviewItem } from './type'
 import { initRequestInstance, getNestedValue } from '@minilo/utils'
 import { bem } from '../../utils'
 
@@ -84,7 +83,7 @@ watch(
     if (val.length) {
       previewList.value = val.map((item) => ({
         ...item,
-        url: item.url || item.response?.url || ''
+        url: item.url || (item.response as { url?: string })?.url || ''
       }))
       fileList.value = val
     }
@@ -128,7 +127,7 @@ const uploadSingleFile = async (file: File): Promise<string> => {
  */
 const handleBeforeUpload: UploadProps['beforeUpload'] = (file) => {
   // 1. 格式校验
-  const isAccept = props.accept.includes(file.type)
+  const isAccept = props.acceptType.includes(file.type)
   if (!isAccept) {
     ElMessage.error(`仅支持上传${acceptDesc.value}格式的图片`)
     return false
@@ -277,7 +276,9 @@ const handleAspectRatioChange = (val: string) => {
     aspectRatio.fixed = false
   } else {
     aspectRatio.fixed = true
-    const [w, h] = val.split(':').map(Number)
+    const parts = val.split(':').map(Number)
+    const w = parts[0] ?? 1
+    const h = parts[1] ?? 1
     aspectRatio.value = [w, h]
   }
 }
@@ -326,14 +327,16 @@ const handleCropConfirm = () => {
 
         // 更新预览项
         const index = previewList.value.findIndex((item) => item.uid === cropTargetItem.value!.uid)
-        if (index > -1) {
-          previewList.value[index].url = displayUrl // 显示 URL
-          previewList.value[index].blobUrl = newBlobUrl // 保存 blob URL
-          previewList.value[index].serverUrl = serverUrl // 保存服务器 URL
-          previewList.value[index].rawFile = croppedFile
+        const targetItem = previewList.value[index]
+        if (index > -1 && targetItem) {
+          targetItem.url = displayUrl // 显示 URL
+          targetItem.blobUrl = newBlobUrl // 保存 blob URL
+          targetItem.serverUrl = serverUrl // 保存服务器 URL
+          targetItem.rawFile = croppedFile
         } else {
           previewList.value.push({
-            ...cropTargetItem.value,
+            ...cropTargetItem.value!,
+            name: cropTargetItem.value!.name ?? 'cropped.jpg',
             url: displayUrl,
             blobUrl: newBlobUrl,
             serverUrl: serverUrl,
@@ -348,13 +351,15 @@ const handleCropConfirm = () => {
     } else {
       // 不上传，只更新本地 blob
       const index = previewList.value.findIndex((item) => item.uid === cropTargetItem.value!.uid)
-      if (index > -1) {
-        previewList.value[index].url = newBlobUrl
-        previewList.value[index].blobUrl = newBlobUrl
-        previewList.value[index].rawFile = croppedFile
+      const targetItem = previewList.value[index]
+      if (index > -1 && targetItem) {
+        targetItem.url = newBlobUrl
+        targetItem.blobUrl = newBlobUrl
+        targetItem.rawFile = croppedFile
       } else {
         previewList.value.push({
-          ...cropTargetItem.value,
+          ...cropTargetItem.value!,
+          name: cropTargetItem.value!.name ?? 'cropped.jpg',
           url: newBlobUrl,
           blobUrl: newBlobUrl,
           rawFile: croppedFile
@@ -415,6 +420,7 @@ const handleDrop = (index: number) => {
 
   // 交换位置
   const temp = previewList.value[dragIndex.value]
+  if (!temp) return
   previewList.value.splice(dragIndex.value, 1)
   previewList.value.splice(index, 0, temp)
 

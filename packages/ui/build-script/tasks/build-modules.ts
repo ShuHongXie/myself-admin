@@ -60,11 +60,13 @@ const plugins = [
   commonjs(),
   dts({
     tsconfigPath: resolve(cwd, '../tsconfig.dts.json'),
-    outDir: `${output}/es`
+    outDir: `${output}/es`,
+    exclude: ['node_modules/**']
   }),
   dts({
     tsconfigPath: resolve(cwd, '../tsconfig.dts.json'),
-    outDir: `${output}/lib`
+    outDir: `${output}/lib`,
+    exclude: ['node_modules/**']
   })
 ]
 
@@ -72,7 +74,12 @@ async function buildModulesComponents() {
   console.log('path:', root)
 
   const input = await glob(
-    ['components/**/*.{js,ts,vue}', '!components/**/style/(index|css).{js,ts,vue}'],
+    [
+      'components/**/*.{js,ts,vue}',
+      '!components/**/style/(index|css).{js,ts,vue}',
+      '!components/**/__tests__/**',
+      '!components/**/*.(test|spec).{js,ts,tsx}'
+    ],
     {
       cwd: root,
       absolute: true,
@@ -82,7 +89,7 @@ async function buildModulesComponents() {
   const config = {
     input,
     plugins,
-    external: ['vue', 'element-plus', 'axios', 'defu', '@iconify/vue', 'echarts'],
+    external: ['vue', 'element-plus', 'axios', 'defu', '@iconify/vue', 'echarts', 'vue-cropper'],
     treeshake: { moduleSideEffects: false }
   }
   const bundle = await rollup(config)

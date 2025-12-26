@@ -23,5 +23,6 @@
     "@vitejs/plugin-vue-jsx",
     "vue/jsx-runtime"
   ],
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "docs/**/*.ts", "docs/**/*.vue"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "docs/**/*.ts", "docs/**/*.vue"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/**/*.spec.ts", "src/**/*.spec.tsx"]
 }

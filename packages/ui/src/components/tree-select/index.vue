@@ -79,11 +79,6 @@ const filteredTreeData = computed<any[]>(() => {
   return filterNode(props.treeData)
 })
 
-// 搜索事件
-const handleSearch = () => {
-  // 搜索时可以做其他处理
-}
-
 // 多选时勾选变更
 const handleCheckChange = (data: T, checked: boolean) => {
   const nodeKeyField = props.nodeKey
