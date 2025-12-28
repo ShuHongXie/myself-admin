@@ -11,6 +11,31 @@ import CustomApiDemo from '../.vitepress/demos/image-upload-pro/custom-api.vue'
 import DynamicLimitDemo from '../.vitepress/demos/image-upload-pro/dynamic-limit.vue'
 </script>
 
+### ⚠️ 依赖安装
+
+如果使用该组件，**必须先安装 `vue-cropper` 依赖**：
+
+```bash
+pnpm add vue-cropper
+```
+
+安装后，需要在项目入口文件（如 `main.ts`）中全局注册 `vue-cropper` 组件：
+
+```ts
+import { createApp } from 'vue'
+import App from './App.vue'
+import { VueCropper } from 'vue-cropper'
+import 'vue-cropper/dist/index.css'
+
+const app = createApp(App)
+
+// 全局注册 vue-cropper
+app.component('VueCropper', VueCropper)
+app.mount('#app')
+```
+
+如果未安装此依赖或未注册组件而启用了裁剪功能，会导致编译错误。
+
 ## 基础用法
 
 最简单的使用方式，自动上传到服务器。
@@ -406,35 +431,7 @@ interface PreviewItem extends UploadFile {
   - `serverUrl`：服务器返回的 URL，用于显示和提交
 - **实时同步**：支持通过 v-model 实时同步图片列表
 
-## 注意事项
-
-### ⚠️ 依赖安装
-
-如果使用裁剪功能（`allowCrop: true`），**必须先安装 `vue-cropper` 依赖**：
-
-```bash
-pnpm add vue-cropper
-```
-
-安装后，需要在项目入口文件（如 `main.ts`）中全局注册 `vue-cropper` 组件：
-
-```ts
-import { createApp } from 'vue'
-import App from './App.vue'
-import { VueCropper } from 'vue-cropper'
-import 'vue-cropper/dist/index.css'
-
-const app = createApp(App)
-
-// 全局注册 vue-cropper
-app.component('VueCropper', VueCropper)
-
-app.mount('#app')
-```
-
-如果未安装此依赖或未注册组件而启用了裁剪功能，会导致编译错误。
-
-### 其他事项
+### 注意事项
 
 1. **API 配置**：需要配置 `uploadApi` 才能实现自动上传功能
 2. **响应格式**：服务器返回的响应格式应匹配 `responseUrlField` 配置
