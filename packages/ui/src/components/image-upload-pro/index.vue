@@ -1,11 +1,24 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch, nextTick } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { VueCropper } from 'vue-cropper'
-import type { ElUpload, UploadFile, UploadProps } from 'element-plus'
+import {
+  ElMessage,
+  ElMessageBox,
+  ElForm,
+  ElFormItem,
+  ElRow,
+  ElCol,
+  ElInputNumber,
+  ElSelect,
+  ElButton,
+  ElDialog,
+  ElImage,
+  ElUpload
+} from 'element-plus'
+import type { UploadFile, UploadProps } from 'element-plus'
 import { imageUploadProProps, type AspectRatio, type PreviewItem } from './type'
 import { initRequestInstance, getNestedValue } from '@minilo/utils'
 import { bem } from '../../utils'
+import type VueCropper from 'vue-cropper'
 
 defineOptions({
   name: 'MlImageUploadPro'
@@ -513,7 +526,7 @@ defineExpose({
         <div :class="bem('image-upload-pro', 'preview-img')">
           <el-image
             :src="item.url"
-            :preview-src-list="previewList.map((i) => i.url)"
+            :preview-src-list="previewList.filter((i) => i.url).map((i) => i.url)"
             :preview-current-index="index"
             fit="cover"
           />

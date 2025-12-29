@@ -76,7 +76,7 @@ async function buildModulesComponents() {
   const input = await glob(
     [
       'components/**/*.{js,ts,vue}',
-      '!components/**/style/(index|css).{js,ts,vue}',
+      '!components/**/(type|css|props).{js,ts,vue}',
       '!components/**/__tests__/**',
       '!components/**/*.(test|spec).{js,ts,tsx}'
     ],

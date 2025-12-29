@@ -34,6 +34,7 @@ export interface AspectRatio {
  * 预览项（增强版UploadFile）
  */
 export interface PreviewItem extends UploadFile {
+  url: string // 覆盖父类，确保 url 为必需的字符串
   isCover?: boolean // 是否为封面
   rawFile?: File // 原始文件对象
   blobUrl?: string // 本地 blob URL（用于裁剪）
