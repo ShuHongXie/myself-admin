@@ -1,5 +1,11 @@
 # @minilo/ui
 
+## 0.0.5
+
+### Patch Changes
+
+- 依赖的element-plus版本变更为最新版本
+
 ## 0.0.4
 
 ### Patch Changes
