@@ -1,8 +1,16 @@
 import { config } from '@vue/test-utils'
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import * as echarts from 'echarts' // 引入echarts
+import VueCropper from 'vue-cropper'
+import 'vue-cropper/dist/index.css'
 
 // ===== jsdom 环境兼容 mock =====
+// 模拟 CSS 导入
+vi.mock('element-plus/dist/index.css', () => ({}))
+vi.mock('element-plus/theme-chalk/base.css', () => ({}))
+vi.mock('element-plus/theme-chalk/display.css', () => ({}))
+vi.mock('element-plus/theme-chalk/var.css', () => ({}))
 
 // 模拟 ResizeObserver
 global.ResizeObserver = class ResizeObserver {
@@ -89,3 +97,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 config.global.mocks = {
   $t: (key: string) => key
 }
+
+// 注入全局属性（模拟 app.config.globalProperties）
+config.global.config = config.global.config || {}
+config.global.config.globalProperties = config.global.config.globalProperties || {}
+config.global.config.globalProperties.$echarts = echarts

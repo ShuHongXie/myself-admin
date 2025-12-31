@@ -4,8 +4,8 @@ import { resolve } from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-
 import { defineConfig } from 'vitest/config'
+
 export default defineConfig({
   plugins: [
     vue(),
@@ -28,6 +28,13 @@ export default defineConfig({
     environment: 'happy-dom',
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
+    css: true,
+    server: {
+      deps: {
+        // 内联依赖，直接使用源码，而不是使用构建产物
+        inline: ['element-plus', '@element-plus/icons-vue', '@minilo/utils']
+      }
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

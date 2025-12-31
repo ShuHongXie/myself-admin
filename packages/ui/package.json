@@ -7,6 +7,7 @@
     "tasks": "gulp -f build-script/gulpfile.ts --tasks",
     "test": "vitest --no-watch",
     "test:ui": "vitest --ui",
+    "test:report": "vitest run --reporter html",
     "test:coverage": "vitest run --coverage",
     "test:gulp": "gulp --require ./node_modules/tsx/dist/loader.cjs -f ./gulpfile.ts",
     "build": "gulp --require ./node_modules/tsx/dist/loader.cjs -f ./build-script/gulpfile.ts",
@@ -68,7 +69,7 @@
     "vue-cropper": "^1.1.4"
   },
   "devDependencies": {
-    "@minilo/utils": "workspace:^",
+    "@minilo/utils": "workspace:*",
     "@rollup/plugin-commonjs": "^29.0.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/fs-extra": "^11.0.4",

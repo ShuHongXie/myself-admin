@@ -57,7 +57,7 @@
   },
   "packageManager": "pnpm@10.13.1",
   "overrides": {
-    "@minilo/ui": "^0.0.2",
-    "@minilo/utils": "^0.0.2"
+    "@minilo/ui": "^0.0.5",
+    "@minilo/utils": "^0.0.5"
   }
 }

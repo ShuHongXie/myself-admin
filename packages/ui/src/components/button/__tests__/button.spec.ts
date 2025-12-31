@@ -206,8 +206,8 @@ describe('MlButton', () => {
       })
 
       const button = wrapper.findComponent({ name: 'ElButton' })
-      expect(button.attributes('type')).toBe('primary')
-      expect(button.attributes('size')).toBe('large')
+      expect(button.props('type')).toBe('primary')
+      expect(button.props('size')).toBe('large')
     })
 
     it('在启用提示时向ElButton传递属性', () => {
@@ -225,8 +225,8 @@ describe('MlButton', () => {
       })
 
       const button = wrapper.findComponent({ name: 'ElButton' })
-      expect(button.attributes('type')).toBe('danger')
-      expect(button.attributes('size')).toBe('small')
+      expect(button.props('type')).toBe('danger')
+      expect(button.props('size')).toBe('small')
     })
   })
 })
