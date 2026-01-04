@@ -7,10 +7,10 @@ import 'vue-cropper/dist/index.css'
 
 // ===== jsdom 环境兼容 mock =====
 // 模拟 CSS 导入
-vi.mock('element-plus/dist/index.css', () => ({}))
-vi.mock('element-plus/theme-chalk/base.css', () => ({}))
-vi.mock('element-plus/theme-chalk/display.css', () => ({}))
-vi.mock('element-plus/theme-chalk/var.css', () => ({}))
+// vi.mock('element-plus/dist/index.css', () => ({}))
+// vi.mock('element-plus/theme-chalk/base.css', () => ({}))
+// vi.mock('element-plus/theme-chalk/display.css', () => ({}))
+// vi.mock('element-plus/theme-chalk/var.css', () => ({}))
 
 // 模拟 ResizeObserver
 global.ResizeObserver = class ResizeObserver {

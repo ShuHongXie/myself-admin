@@ -28,8 +28,10 @@ const emit = defineEmits<{
   input: [value: string] // 搜索输入事件
 }>()
 
+// 搜索关键词双向绑定
+const searchKeyword = defineModel<string>('searchText', { default: '' })
+
 // 内部状态
-const searchKeyword = ref('')
 const treeRef = ref<InstanceType<typeof ElTree>>()
 const selectedKeys = ref<any[]>([]) // 选中的节点key
 const selectedData = ref<T | T[]>(props.multiple ? [] : ({} as T)) // 选中的节点数据

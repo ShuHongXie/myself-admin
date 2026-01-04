@@ -71,11 +71,17 @@ const treeSelectAttrs = computed(() => {
 // 树形选择组件引用
 const treeSelectRef = ref<TreeSelectExpose>()
 
+// 搜索文本状态
+const searchText = ref('')
+
 // 监听弹窗显示状态
 watch(visible, (val) => {
-  if (!val && treeSelectRef.value) {
+  if (!val) {
     // 弹窗关闭时重置
-    treeSelectRef.value.reset()
+    searchText.value = ''
+    if (treeSelectRef.value) {
+      treeSelectRef.value.reset()
+    }
   }
 })
 
@@ -95,11 +101,11 @@ const handleCancel = () => {
   visible.value = false
 }
 
-// 暴露方法
-defineExpose<{
-  input: (value: string) => void
-}>({
-  input: (value: string) => emit('input', value)
+// 暴露方法和属性
+defineExpose({
+  input: (value: string) => emit('input', value),
+  searchText,
+  treeRef: treeSelectRef
 })
 </script>
 
@@ -113,6 +119,7 @@ defineExpose<{
   >
     <MlTreeSelect
       ref="treeSelectRef"
+      v-model:search-text="searchText"
       :tree-data="props.treeData"
       v-bind="treeSelectAttrs"
       v-on="$attrs"
