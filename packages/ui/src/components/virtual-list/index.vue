@@ -190,10 +190,13 @@ const initResizeObserver = () => {
 
   // 创建新的 ResizeObserver
   resizeObserver = new ResizeObserver((entries) => {
+    console.log('外部entries:', entries)
+
     let needUpdate = false
     const changedIndices: number[] = []
 
     for (const entry of entries) {
+      console.log('entry:', entry)
       const target = entry.target as HTMLElement
       const index = parseInt(target.dataset.index || '0')
       const pos = positions.value[index]
@@ -251,8 +254,7 @@ const observeVisibleItems = () => {
 
   // 先断开所有旧的观察
   resizeObserver.disconnect()
-
-  const nodes = containerRef.value?.querySelectorAll('.virtual-list-item')
+  const nodes = containerRef.value?.querySelectorAll(`.${bem('virtual-list', 'item')}`)
   if (!nodes) return
 
   nodes.forEach((node) => {
@@ -412,6 +414,8 @@ watch(
 )
 
 onMounted(() => {
+  console.log('onmounted')
+
   // 初始化位置信息
   initPositions()
   // 初始化 ResizeObserver

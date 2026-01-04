@@ -32,8 +32,8 @@ describe('MlVirtualList 虚拟列表', () => {
     })
 
     expect(wrapper.exists()).toBe(true)
-    expect(wrapper.find('.virtual-list-container').exists()).toBe(true)
-    expect(wrapper.find('.virtual-list-phantom').exists()).toBe(true)
+    expect(wrapper.find('.ml-virtual-list__container').exists()).toBe(true)
+    expect(wrapper.find('.ml-virtual-list__phantom').exists()).toBe(true)
   })
 
   it('应支持自定义容器高度', () => {
@@ -45,7 +45,7 @@ describe('MlVirtualList 虚拟列表', () => {
       }
     })
 
-    const container = wrapper.find('.virtual-list-container')
+    const container = wrapper.find('.ml-virtual-list__container')
     expect(container.attributes('style')).toContain('height: 300px')
   })
 
@@ -134,7 +134,7 @@ describe('MlVirtualList 虚拟列表', () => {
     })
 
     expect(wrapper.props('loading')).toBe(true)
-    expect(wrapper.find('.virtual-list-loading-tip').exists()).toBe(true)
+    expect(wrapper.find('.ml-virtual-list__loading-tip').exists()).toBe(true)
   })
 
   it('应支持加载完成状态', () => {
@@ -149,7 +149,7 @@ describe('MlVirtualList 虚拟列表', () => {
 
     expect(wrapper.props('finished')).toBe(true)
     expect(wrapper.props('loading')).toBe(false)
-    expect(wrapper.find('.virtual-list-finished-tip').exists()).toBe(true)
+    expect(wrapper.find('.ml-virtual-list__finished-tip').exists()).toBe(true)
   })
 
   it('应支持阈值配置', () => {
@@ -176,7 +176,7 @@ describe('MlVirtualList 虚拟列表', () => {
       }
     })
 
-    const phantom = wrapper.find('.virtual-list-phantom')
+    const phantom = wrapper.find('.ml-virtual-list__phantom')
     expect(phantom.attributes('style')).toContain(`height: ${expectedHeight}px`)
   })
 
@@ -195,7 +195,7 @@ describe('MlVirtualList 虚拟列表', () => {
     })
 
     // 模拟滚动到底部
-    const container = wrapper.find('.virtual-list-container')
+    const container = wrapper.find('.ml-virtual-list__container')
     await container.trigger('scroll')
 
     expect(wrapper.emitted('load-more')).toBeFalsy() // 由于测试环境限制，事件可能不会触发
@@ -278,7 +278,7 @@ describe('MlVirtualList 虚拟列表', () => {
       }
     })
 
-    const container = wrapper.find('.virtual-list-container')
+    const container = wrapper.find('.ml-virtual-list__container')
     expect(container.attributes('style')).toContain('height: 300px')
     expect(container.attributes('style')).toContain('overflow: auto')
   })

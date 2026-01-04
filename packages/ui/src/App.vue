@@ -3,8 +3,9 @@ import { ref } from 'vue'
 import testSearch from './preview/testSearch.vue'
 import testRangeInput from './preview/testRangeInput.vue'
 import treeSelectDialog from './preview/treeSelectDialog.vue'
-// import dataImportWizard from './preview/dataImportWizard.vue'
+import dataImportWizard from './preview/dataImportWizard.vue'
 import imageUploadPro from './preview/imageUploadPro.vue'
+import testVirtualList from './preview/testVirtualList.vue'
 </script>
 
 <template>
@@ -12,7 +13,8 @@ import imageUploadPro from './preview/imageUploadPro.vue'
     <!-- <testSearch></testSearch> -->
     <!-- <testRangeInput></testRangeInput> -->
     <!-- <treeSelectDialog></treeSelectDialog> -->
-    <imageUploadPro />
+    <!-- <imageUploadPro /> -->
+    <testVirtualList />
   </div>
 </template>
 

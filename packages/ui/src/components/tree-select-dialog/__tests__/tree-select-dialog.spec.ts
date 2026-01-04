@@ -208,10 +208,10 @@ describe('MlTreeSelectDialog 树形选择弹窗', () => {
     })
 
     const keyword = 'keyword'
-    await wrapper.vm.$emit('search', keyword)
-    expect(wrapper.emitted('search')).toBeTruthy()
-    expect(wrapper.emitted('search')).toHaveLength(1)
-    expect(wrapper.emitted('search')[0]).toEqual([keyword])
+    await wrapper.vm.$emit('input', keyword)
+    expect(wrapper.emitted('input')).toBeTruthy()
+    expect(wrapper.emitted('input')).toHaveLength(1)
+    expect(wrapper.emitted('input')[0]).toEqual([keyword])
   })
 
   it('应弹窗关闭时重置树形选择', async () => {
