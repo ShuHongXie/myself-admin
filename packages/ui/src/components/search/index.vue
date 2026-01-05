@@ -54,8 +54,6 @@ const handleReset = () => {
 
 // 生命周期钩子
 onMounted(() => {
-  console.log(props)
-
   // 组装项
   const itemProps = props.item.map((item) => ({
     type: SearchTypeEnum.ITEM,

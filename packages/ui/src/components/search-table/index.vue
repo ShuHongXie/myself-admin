@@ -95,7 +95,10 @@ onMounted(() => {
   handleSearch()
 })
 defineExpose({
-  handleSearch
+  handleSearch,
+  data,
+  loading,
+  pagination
 })
 // 列表初始化-----------end-------------
 
