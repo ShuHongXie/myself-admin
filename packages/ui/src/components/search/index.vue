@@ -162,7 +162,3 @@ defineExpose({})
     </el-form>
   </div>
 </template>
-
-<!-- <style lang="scss">
-@use './index.scss' as *;
-</style> -->
