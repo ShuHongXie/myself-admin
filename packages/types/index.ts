@@ -37,3 +37,20 @@ export interface ButtonPermissionsResponse {
   msg: string
   data: string[]
 }
+
+/**
+ * 图表实例通用接口，支持 ECharts、Chart.js 等主流图表库
+ */
+export interface ChartInstance {
+  resize(): void
+  dispose?(): void
+  setOption?(option: any, notMerge?: boolean, lazyUpdate?: boolean): void
+  on?(event: string, handler: Function): void
+  off?(event: string, handler?: Function): void
+  getWidth?(): number
+  getHeight?(): number
+  getOption?(): any
+  clear?(): void
+  showLoading?(opts?: any): void
+  hideLoading?(): void
+}

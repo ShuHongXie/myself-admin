@@ -28,6 +28,7 @@
     "axios": "catalog:",
     "defu": "catalog:",
     "element-plus": "catalog:",
+    "lodash-es": "^4.17.22",
     "lodash.clonedeep": "catalog:",
     "theme-colors": "catalog:",
     "vue": "catalog:"
