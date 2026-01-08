@@ -5,11 +5,11 @@ import MlVirtualList from '../index.vue'
 describe('MlVirtualList 虚拟列表', () => {
   beforeEach(() => {
     // Mock ResizeObserver
-    window.ResizeObserver = vi.fn(() => ({
-      observe: vi.fn(),
-      unobserve: vi.fn(),
-      disconnect: vi.fn()
-    }))
+    window.ResizeObserver = class {
+      observe = vi.fn()
+      unobserve = vi.fn()
+      disconnect = vi.fn()
+    } as any
   })
 
   afterEach(() => {
@@ -102,7 +102,7 @@ describe('MlVirtualList 虚拟列表', () => {
     })
 
     expect(wrapper.props('dataSource')).toEqual(dataSource)
-    expect(wrapper.props('dataSource').length).toBe(3)
+    expect((wrapper.props('dataSource') as any[]).length).toBe(3)
   })
 
   it('应正确渲染插槽内容', async () => {
@@ -244,7 +244,7 @@ describe('MlVirtualList 虚拟列表', () => {
     })
 
     expect(wrapper.props('dataSource')).toEqual([])
-    expect(wrapper.props('dataSource').length).toBe(0)
+    expect((wrapper.props('dataSource') as any[]).length).toBe(0)
   })
 
   it('应支持动态更新数据源', async () => {
@@ -255,7 +255,7 @@ describe('MlVirtualList 虚拟列表', () => {
       }
     })
 
-    expect(wrapper.props('dataSource').length).toBe(1)
+    expect((wrapper.props('dataSource') as any[]).length).toBe(1)
 
     // 更新数据源
     await wrapper.setProps({
@@ -266,7 +266,7 @@ describe('MlVirtualList 虚拟列表', () => {
       ]
     })
 
-    expect(wrapper.props('dataSource').length).toBe(3)
+    expect((wrapper.props('dataSource') as any[]).length).toBe(3)
   })
 
   it('应支持不同的滚动容器样式', () => {
@@ -331,7 +331,7 @@ describe('MlVirtualList 虚拟列表', () => {
       }
     })
 
-    expect(wrapper.props('dataSource').length).toBe(10000)
+    expect((wrapper.props('dataSource') as any[]).length).toBe(10000)
     // 虚拟滚动应该只渲染可见的项目，而不是全部渲染
     expect(wrapper.findAll('.virtual-list-item').length).toBeLessThan(10000)
   })

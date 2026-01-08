@@ -54,8 +54,6 @@ const handleReset = () => {
 
 // 生命周期钩子
 onMounted(() => {
-  console.log(props)
-
   // 组装项
   const itemProps = props.item.map((item) => ({
     type: SearchTypeEnum.ITEM,
@@ -164,7 +162,3 @@ defineExpose({})
     </el-form>
   </div>
 </template>
-
-<!-- <style lang="scss">
-@use './index.scss' as *;
-</style> -->

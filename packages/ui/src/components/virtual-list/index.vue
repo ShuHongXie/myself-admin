@@ -414,8 +414,6 @@ watch(
 )
 
 onMounted(() => {
-  console.log('onmounted')
-
   // 初始化位置信息
   initPositions()
   // 初始化 ResizeObserver
