@@ -1,10 +1,6 @@
 import { guider } from '@minilo/utils'
 import { config } from './config'
 
-// export default initRequestInstance({
-//   baseURL: import.meta.env.VITE_BASE_URL
-// })
-
 async function start() {
   // name用于指定项目唯一标识
   // 用于区分不同项目的偏好设置以及存储数据的key前缀以及其他一些需要隔离的数据

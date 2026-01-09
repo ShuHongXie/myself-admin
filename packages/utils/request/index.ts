@@ -37,12 +37,41 @@ export const cancelRequestsByUrl = (url: string) => {
   })
 }
 
-// 创建请求实例
+/**
+ * 请求实例初始化配置选项
+ */
+export interface RequestInstanceOptions {
+  /** 请求拦截器额外处理逻辑 */
+  interceptorsRequestFn?: (config: AxiosRequestConfig) => void
+  /** 响应拦截器额外处理逻辑 */
+  interceptorsResponseFn?: (response: AxiosResponse) => void
+  /** 判断响应是否成功的逻辑，默认判断 code === 200 */
+  isSuccess?: (data: any) => boolean
+  /** 从响应中提取数据的逻辑，默认返回 data.data */
+  getData?: (data: any) => any
+  /** 从响应中提取错误消息的逻辑，默认返回 data.msg */
+  getMessage?: (data: any) => string
+}
+
+/**
+ * @description 初始化请求实例
+ * @author xieshuhong
+ * @param {CreateAxiosDefaults} [extendConfig={}] 扩展配置
+ * @param {RequestInstanceOptions} [options={}] 配置选项
+ * @return {*} 请求实例
+ */
 export const initRequestInstance = (
   extendConfig: CreateAxiosDefaults = {},
-  interceptorsRequestFn: (config?: AxiosRequestConfig) => void = () => {},
-  interceptorsResponseFn: (Response?: AxiosResponse) => void = () => {}
+  options: RequestInstanceOptions = {}
 ) => {
+  const {
+    interceptorsRequestFn = () => {},
+    interceptorsResponseFn = () => {},
+    isSuccess = (data: any) => data?.code === 200,
+    getData = (data: any) => data?.data,
+    getMessage = (data: any) => data?.msg || '请求失败'
+  } = options
+
   const axiosConfig = merge({}, extendConfig, {
     baseURL: '/', // 从环境变量获取基础URL
     timeout: 10000, // 超时时间
@@ -75,19 +104,20 @@ export const initRequestInstance = (
       interceptorsResponseFn(response)
       // 从pending列表移除请求
       removePendingRequest(response.config)
-      const data = response.data as ApiResponse<any>
+      const data = response.data
 
-      // 根据实际后端接口规范处理响应
-      if (data.code === 200) {
+      // 根据配置的逻辑处理响应
+      if (isSuccess(data)) {
         return Promise.resolve({
           ...response,
           ...data,
-          data: data.data
+          data: getData(data)
         })
       } else {
         // 非成功状态，显示错误信息
-        ElMessage.error(data.msg || '请求失败')
-        return Promise.reject(new Error(data.msg || '请求失败'))
+        const msg = getMessage(data)
+        ElMessage.error(msg)
+        return Promise.reject(new Error(msg))
       }
     },
     (error) => {
@@ -116,7 +146,6 @@ export const initRequestInstance = (
         switch (response.status) {
           case 401:
             ElMessage.error('身份验证失败，请重新登录')
-            // 可以在这里添加跳转到登录页的逻辑
             break
           case 403:
             ElMessage.error('没有权限执行此操作')
