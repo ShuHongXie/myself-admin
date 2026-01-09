@@ -55,14 +55,16 @@ const request = initRequestInstance(
   {
     baseURL: '/api'
   },
-  // 请求拦截器
-  (config) => {
-    // 在发送请求之前做些什么
-    const token = localStorage.getItem('token')
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`
+  {
+    // 请求拦截器
+    interceptorsRequestFn: (config) => {
+      // 在发送请求之前做些什么
+      const token = localStorage.getItem('token')
+      if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+      console.log('请求配置:', config)
     }
-    console.log('请求配置:', config)
   }
 )
 ```
@@ -76,11 +78,12 @@ const request = initRequestInstance(
   {
     baseURL: '/api'
   },
-  undefined,
-  // 响应拦截器
-  (response) => {
-    // 对响应数据做点什么
-    console.log('响应数据:', response)
+  {
+    // 响应拦截器
+    interceptorsResponseFn: (response) => {
+      // 对响应数据做点什么
+      console.log('响应数据:', response)
+    }
   }
 )
 ```
@@ -89,25 +92,23 @@ const request = initRequestInstance(
 
 ### initRequestInstance
 
-创建一个新的 Axios 实例，支持自定义配置和拦截器。
+创建一个新的 Axios 实例，支持自定义配置、拦截器以及业务响应逻辑适配。
 
 **类型定义：**
 
 ```typescript
 function initRequestInstance(
   extendConfig?: CreateAxiosDefaults,
-  interceptorsRequestFn?: (config?: AxiosRequestConfig) => void,
-  interceptorsResponseFn?: (response?: AxiosResponse) => void
+  options?: RequestInstanceOptions
 ): AxiosInstance
 ```
 
 **参数：**
 
-| 参数                   | 说明           | 类型                                    | 默认值     |
-| ---------------------- | -------------- | --------------------------------------- | ---------- |
-| extendConfig           | Axios 配置对象 | `CreateAxiosDefaults`                   | `{}`       |
-| interceptorsRequestFn  | 请求拦截器函数 | `(config?: AxiosRequestConfig) => void` | `() => {}` |
-| interceptorsResponseFn | 响应拦截器函数 | `(response?: AxiosResponse) => void`    | `() => {}` |
+| 参数         | 说明           | 类型                     | 默认值 |
+| ------------ | -------------- | ------------------------ | ------ |
+| extendConfig | Axios 配置对象 | `CreateAxiosDefaults`    | `{}`   |
+| options      | 初始化配置选项 | `RequestInstanceOptions` | `{}`   |
 
 **返回值：** `AxiosInstance`
 
@@ -119,13 +120,19 @@ const request = initRequestInstance(
     baseURL: '/api',
     timeout: 10000
   },
-  (config) => {
-    // 请求拦截
-    console.log('请求拦截:', config)
-  },
-  (response) => {
-    // 响应拦截
-    console.log('响应拦截:', response)
+  {
+    interceptorsRequestFn: (config) => {
+      // 请求拦截
+      console.log('请求拦截:', config)
+    },
+    interceptorsResponseFn: (response) => {
+      // 响应拦截
+      console.log('响应拦截:', response)
+    },
+    // 自定义业务成功判定逻辑
+    isSuccess: (data) => data.status === 'success',
+    // 自定义数据提取逻辑
+    getData: (data) => data.result
   }
 )
 ```
@@ -193,6 +200,25 @@ function generateRequestKey(config: AxiosRequestConfig): string
 **返回值：** `string` - 请求的唯一标识
 
 ## 类型定义
+
+### RequestInstanceOptions
+
+请求实例初始化时的配置项。
+
+```typescript
+interface RequestInstanceOptions {
+  /** 请求拦截器额外处理逻辑 */
+  interceptorsRequestFn?: (config: AxiosRequestConfig) => void
+  /** 响应拦截器额外处理逻辑 */
+  interceptorsResponseFn?: (response: AxiosResponse) => void
+  /** 判断响应是否成功的逻辑，默认判断 code === 200 */
+  isSuccess?: (data: any) => boolean
+  /** 从响应中提取数据的逻辑，默认返回 data.data */
+  getData?: (data: any) => any
+  /** 从响应中提取错误消息的逻辑，默认返回 data.msg */
+  getMessage?: (data: any) => string
+}
+```
 
 ### ApiResponse
 
@@ -283,16 +309,18 @@ const request = initRequestInstance(
     baseURL: '/api',
     timeout: 10000
   },
-  (config) => {
-    // 添加 token
-    const token = localStorage.getItem('token')
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`
+  {
+    interceptorsRequestFn: (config) => {
+      // 添加 token
+      const token = localStorage.getItem('token')
+      if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+    },
+    interceptorsResponseFn: (response) => {
+      // 记录响应日志
+      console.log('API响应:', response)
     }
-  },
-  (response) => {
-    // 记录响应日志
-    console.log('API响应:', response)
   }
 )
 

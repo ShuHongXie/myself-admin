@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { MlSearch, MlChart, MlSearchTable } from '../index'
 
 const form = ref({

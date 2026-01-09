@@ -13,8 +13,8 @@ import testVirtualList from './preview/testVirtualList.vue'
     <!-- <testSearch></testSearch> -->
     <!-- <testRangeInput></testRangeInput> -->
     <!-- <treeSelectDialog></treeSelectDialog> -->
-    <!-- <imageUploadPro /> -->
-    <testVirtualList />
+    <imageUploadPro />
+    <!-- <testVirtualList /> -->
   </div>
 </template>
 
