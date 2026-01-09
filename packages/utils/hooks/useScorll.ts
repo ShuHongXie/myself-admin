@@ -2,7 +2,7 @@ import { throttle } from 'lodash-es'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 interface ScrollOptions {
-  container?: string | HTMLElement
+  container?: string | HTMLElement | Window
   initialThreshold?: number
   onReach?: Function | null
   direction?: string
@@ -19,22 +19,24 @@ export default function useScroll(options: ScrollOptions = {}) {
   } = options
 
   const threshold = ref(initialThreshold || 0)
-  let target: HTMLElement | Window
+  let target: HTMLElement | Window | null
 
   const scrollPosition = ref(0)
   const isReached = ref(false)
   let rafId: number | null
 
   // 获取容器元素
-  const getContainer = (): HTMLElement | null => {
-    return typeof container === 'string'
-      ? (document.querySelector(container) as HTMLElement)
-      : (container as HTMLElement | Window)
+  const getContainer = (): HTMLElement | Window | null => {
+    if (typeof container === 'string') {
+      return document.querySelector(container) as HTMLElement | null
+    }
+    return container as HTMLElement | Window
   }
 
   const getScrollPosition = () => {
+    if (!target) return 0
     if (target === window) {
-      return direction === 'vertical' ? window.pageYOffset : window.pageXOffset
+      return direction === 'vertical' ? window.scrollY : window.scrollX
     } else {
       return direction === 'vertical'
         ? (target as HTMLElement).scrollTop
@@ -67,11 +69,15 @@ export default function useScroll(options: ScrollOptions = {}) {
 
   onMounted(() => {
     target = getContainer()
-    target.addEventListener('scroll', handleScroll)
+    if (target) {
+      target.addEventListener('scroll', handleScroll)
+    }
   })
 
   onUnmounted(() => {
-    target.removeEventListener('scroll', handleScroll)
+    if (target) {
+      target.removeEventListener('scroll', handleScroll)
+    }
     if (rafId) cancelAnimationFrame(rafId)
   })
 

@@ -20,9 +20,7 @@ describe('MlDetail 详情组件', () => {
       { label: '状态', value: '正常' }
     ]
     const wrapper = mount(MlDetail, {
-      props: {
-        descData
-      }
+      props: { descData }
     })
     expect(wrapper.findAll('.el-descriptions-item')).toHaveLength(2)
   })
@@ -77,6 +75,35 @@ describe('MlDetail 详情组件', () => {
     expect(wrapper.findComponent({ name: 'ElTooltip' }).exists()).toBe(true)
   })
 
+  it('应支持tooltips为函数类型', () => {
+    const tooltipRender = vi.fn((h) => h('div', '自定义提示'))
+    const wrapper = mount(MlDetail, {
+      props: {
+        descData: [{ label: '名称', value: 'Test', tooltip: tooltipRender }]
+      }
+    })
+    expect(wrapper.findComponent({ name: 'ElTooltip' }).exists()).toBe(true)
+  })
+
+  it('应支持图标大小和颜色配置', () => {
+    const wrapper = mount(MlDetail, {
+      props: {
+        descData: [
+          {
+            label: '名称',
+            value: 'Test',
+            tooltip: '提示',
+            iconSize: 20,
+            iconColor: 'red'
+          }
+        ]
+      }
+    })
+    const icon = wrapper.findComponent({ name: 'ElIcon' })
+    expect(icon.props('size')).toBe(20)
+    expect(icon.props('color')).toBe('red')
+  })
+
   it('应支持标签粗体显示', () => {
     const wrapper = mount(MlDetail, {
       props: {
@@ -96,6 +123,16 @@ describe('MlDetail 详情组件', () => {
       }
     })
     expect(wrapper.find('.el-descriptions-item__label').text()).toContain('名称：')
+  })
+
+  it('应支持隐藏冒号', () => {
+    const wrapper = mount(MlDetail, {
+      props: {
+        isColon: false,
+        descData: [{ label: '名称', value: 'Test' }]
+      }
+    })
+    expect(wrapper.find('.el-descriptions-item__label').text()).not.toContain('：')
   })
 
   it('应支持自定义标签渲染', () => {
@@ -128,8 +165,16 @@ describe('MlDetail 详情组件', () => {
         descData: [{ label: '描述', value: '内容', span: 2 }]
       }
     })
-    // Element Plus descriptions item uses the span prop
     expect(wrapper.findComponent({ name: 'ElDescriptionsItem' }).props('span')).toBe(2)
+  })
+
+  it('应支持默认跨度1', () => {
+    const wrapper = mount(MlDetail, {
+      props: {
+        descData: [{ label: '描述', value: '内容' }]
+      }
+    })
+    expect(wrapper.findComponent({ name: 'ElDescriptionsItem' }).props('span')).toBe(1)
   })
 
   it('应支持过滤器自定义key/label字段', () => {
@@ -177,5 +222,31 @@ describe('MlDetail 详情组件', () => {
     })
     const content = wrapper.find('.el-descriptions-item__content')
     expect(content.text()).toBe('')
+  })
+
+  it('应支持tooltip placement配置', () => {
+    const wrapper = mount(MlDetail, {
+      props: {
+        descData: [
+          {
+            label: '名称',
+            value: 'Test',
+            tooltip: '提示',
+            placement: 'top'
+          }
+        ]
+      }
+    })
+    expect(wrapper.findComponent({ name: 'ElTooltip' }).props('placement')).toBe('top')
+  })
+
+  it('应支持组件属性透传', () => {
+    const wrapper = mount(MlDetail, {
+      props: {
+        border: true,
+        descData: [{ label: '名称', value: 'Test' }]
+      }
+    })
+    expect(wrapper.findComponent({ name: 'ElDescriptions' }).props('border')).toBe(true)
   })
 })

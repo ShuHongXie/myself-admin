@@ -1,12 +1,6 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 import type { ChartInstance } from '@minilo/types'
 
-/**
- * 图表自适应尺寸 Hooks（适配 ECharts/Chart.js 等）
- * @param {string|HTMLElement} container - 图表容器（选择器/元素）
- * @param {Function} initChart - 图表初始化函数
- * @returns {Object} 图表实例和刷新方法
- */
 export interface UseChartResizeReturn<T extends ChartInstance = ChartInstance> {
   chartInstance: { value: T | null }
   resizeChart: () => void
@@ -14,6 +8,15 @@ export interface UseChartResizeReturn<T extends ChartInstance = ChartInstance> {
   refresh: () => void
 }
 
+/**
+ * @description 图表自适应尺寸 Hooks（适配 ECharts/Chart.js 等）
+ * @author xieshuhong
+ * @export
+ * @template T
+ * @param {(string | HTMLElement)} container 图表容器（选择器/元素）
+ * @param {(container: HTMLElement) => T} initChart 图表初始化函数
+ * @return {*}  {UseChartResizeReturn<T>} 图表实例和刷新方法
+ */
 export default function useChartResize<T extends ChartInstance = ChartInstance>(
   container: string | HTMLElement,
   initChart: (container: HTMLElement) => T
